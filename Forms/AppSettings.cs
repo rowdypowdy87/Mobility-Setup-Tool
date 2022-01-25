@@ -98,19 +98,28 @@ namespace Mobility_Setup_Tool
             // Set colors
             TitleBar.BackColor            = RefForm.ThemeController.GetBordercolor();
             BackColor                     = RefForm.ThemeController.GetBackcolor();
-    
         }
 
         private void Apply_BTN_Click(object sender, EventArgs e)
         {
             // Set colors
-            TitleBar.BackColor = RefForm.ThemeController.GetBordercolor();
-            BackColor = RefForm.ThemeController.GetBackcolor();
+            TitleBar.BackColor  = RefForm.ThemeController.GetBordercolor();
+            BackColor           = RefForm.ThemeController.GetBackcolor();
 
             // Set app defaults && theme settings
             RefForm.AppSettings.SaveSettings();
             RefForm.ThemeController.RefreshTheme();
             RefForm.ThemeController.SaveTheme();
+
+            // Set field defaults
+            RefForm.FunctionLoc_CB.Text         = RefForm.AppSettings.ADefaults.FunctionLocation;
+            RefForm.PartyName_CB.Text           = RefForm.AppSettings.ADefaults.SoldToParty;
+            RefForm.PMActivityType_CB.Text      = RefForm.AppSettings.ADefaults.PmActivityType;
+            RefForm.Priority_CB.Text            = RefForm.AppSettings.ADefaults.Priority;
+            RefForm.ExternalReference_TB.Text   = RefForm.AppSettings.ADefaults.ExternalReference;
+
+            // Close form after applying settings
+            Close();
         }
 
         private void AppSettings_Paint(object sender, PaintEventArgs e)

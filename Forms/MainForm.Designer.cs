@@ -346,7 +346,7 @@ namespace Mobility_Setup_Tool
             this.resyncDataToolStripMenuItem.Name = "resyncDataToolStripMenuItem";
             this.resyncDataToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
             this.resyncDataToolStripMenuItem.Text = "Reset Setings";
-            this.resyncDataToolStripMenuItem.Click += new System.EventHandler(this.resyncDataToolStripMenuItem_Click);
+            this.resyncDataToolStripMenuItem.Click += new System.EventHandler(this.ResyncDataToolStripMenuItem_Click);
             // 
             // Help_MN
             // 
@@ -570,11 +570,11 @@ namespace Mobility_Setup_Tool
             this.LongText_LBL.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.LongText_LBL.AutoSize = true;
             this.LongText_LBL.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LongText_LBL.Location = new System.Drawing.Point(262, 338);
+            this.LongText_LBL.Location = new System.Drawing.Point(216, 338);
             this.LongText_LBL.Name = "LongText_LBL";
-            this.LongText_LBL.Size = new System.Drawing.Size(75, 18);
+            this.LongText_LBL.Size = new System.Drawing.Size(167, 18);
             this.LongText_LBL.TabIndex = 2;
-            this.LongText_LBL.Text = "LONG TEXT";
+            this.LongText_LBL.Text = "NOTIFICATION LONG TEXT";
             // 
             // VarOrderInfo_LBL
             // 
@@ -1169,7 +1169,7 @@ namespace Mobility_Setup_Tool
             // 
             this.PartyName_CB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.PartyName_CB.FormattingEnabled = true;
-            this.PartyName_CB.Location = new System.Drawing.Point(303, 11);
+            this.PartyName_CB.Location = new System.Drawing.Point(303, 12);
             this.PartyName_CB.Name = "PartyName_CB";
             this.PartyName_CB.Size = new System.Drawing.Size(294, 26);
             this.PartyName_CB.TabIndex = 6;
@@ -1309,7 +1309,7 @@ namespace Mobility_Setup_Tool
             // 
             this.PMActivityType_CB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.PMActivityType_CB.FormattingEnabled = true;
-            this.PMActivityType_CB.Location = new System.Drawing.Point(292, 11);
+            this.PMActivityType_CB.Location = new System.Drawing.Point(292, 12);
             this.PMActivityType_CB.Name = "PMActivityType_CB";
             this.PMActivityType_CB.Size = new System.Drawing.Size(306, 26);
             this.PMActivityType_CB.TabIndex = 11;
@@ -1379,7 +1379,7 @@ namespace Mobility_Setup_Tool
             // 
             this.Priority_CB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.Priority_CB.FormattingEnabled = true;
-            this.Priority_CB.Location = new System.Drawing.Point(292, 161);
+            this.Priority_CB.Location = new System.Drawing.Point(292, 162);
             this.Priority_CB.Name = "Priority_CB";
             this.Priority_CB.Size = new System.Drawing.Size(306, 26);
             this.Priority_CB.TabIndex = 14;
@@ -1476,7 +1476,7 @@ namespace Mobility_Setup_Tool
             // 
             this.TemplateEquipmentList_CB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.TemplateEquipmentList_CB.FormattingEnabled = true;
-            this.TemplateEquipmentList_CB.Location = new System.Drawing.Point(296, 44);
+            this.TemplateEquipmentList_CB.Location = new System.Drawing.Point(296, 45);
             this.TemplateEquipmentList_CB.Name = "TemplateEquipmentList_CB";
             this.TemplateEquipmentList_CB.Size = new System.Drawing.Size(511, 26);
             this.TemplateEquipmentList_CB.TabIndex = 3;
@@ -1487,7 +1487,7 @@ namespace Mobility_Setup_Tool
             // 
             this.TaskType_CB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.TaskType_CB.FormattingEnabled = true;
-            this.TaskType_CB.Location = new System.Drawing.Point(296, 83);
+            this.TaskType_CB.Location = new System.Drawing.Point(296, 84);
             this.TaskType_CB.Name = "TaskType_CB";
             this.TaskType_CB.Size = new System.Drawing.Size(511, 26);
             this.TaskType_CB.TabIndex = 4;
@@ -1496,7 +1496,7 @@ namespace Mobility_Setup_Tool
             // 
             this.FunctionLoc_CB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.FunctionLoc_CB.FormattingEnabled = true;
-            this.FunctionLoc_CB.Location = new System.Drawing.Point(296, 122);
+            this.FunctionLoc_CB.Location = new System.Drawing.Point(296, 123);
             this.FunctionLoc_CB.Name = "FunctionLoc_CB";
             this.FunctionLoc_CB.Size = new System.Drawing.Size(511, 26);
             this.FunctionLoc_CB.TabIndex = 5;

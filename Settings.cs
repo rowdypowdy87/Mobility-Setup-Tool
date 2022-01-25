@@ -11,8 +11,6 @@ using System.Collections.Generic;
 
 namespace Mobility_Setup_Tool
 {
-    
-
     public struct SAP_DEFAULTS
     {
         public string Organization { get; set; }
@@ -36,12 +34,6 @@ namespace Mobility_Setup_Tool
         public string PmActivityType { get; set;}
         public string Priority { get; set;}
         public string ExternalReference { get; set; }
-    }
-
-    public class FunctionLocationConverter : StringConverter
-    {   
-        
-
     }
 
     [DefaultPropertyAttribute("Distribution")]
@@ -71,85 +63,112 @@ namespace Mobility_Setup_Tool
             set { ADefaults.FunctionLocation = value ?? ""; }
         }
 
-        [CategoryAttribute("Application Defaults"), Description("Default sold to party"), DisplayName("SoldToParty")]
+        [Category("Application Defaults")]
+        [Description("Default sold to party")]
+        [DisplayName("SoldToParty")]
+        [TypeConverter(typeof(PartyConverter))]
         public string SoldToParty
         {
             get { return ADefaults.SoldToParty; }
             set { ADefaults.SoldToParty = value ?? ""; }
         }
 
-        [CategoryAttribute("Application Defaults"), Description("Default maint activity type"), DisplayName("PMActivityType")]
+        [Category("Application Defaults")] 
+        [Description("Default maint activity type")]
+        [DisplayName("PMActivityType")]
+        [TypeConverter(typeof(ActTypeConverter))]
         public string PmActivityType
         {
             get { return ADefaults.PmActivityType; }
             set { ADefaults.PmActivityType = value ?? ""; }
         }
 
-        [CategoryAttribute("Application Defaults"), Description("Default priority"), DisplayName("Service Order Priority")]
+        [Category("Application Defaults")]
+        [Description("Default priority")]
+        [DisplayName("Service Order Priority")]
+        [TypeConverter(typeof(PriorityTypeConverter))]
         public string Priority
         {
             get { return ADefaults.Priority; }
             set { ADefaults.Priority = value ?? ""; }
         }
 
-        [CategoryAttribute("Application Defaults"), Description("Default external reference"), DisplayName("Customer Reference")]
+        [Category("Application Defaults")]
+        [Description("Default external reference")]
+        [DisplayName("Customer Reference")]
         public string ExternalReference
         {
             get { return ADefaults.ExternalReference; }
             set { ADefaults.ExternalReference = value ?? ""; }
         }
 
-
-        // Add property info
-        [CategoryAttribute("SAP Defaults"), Description("Distribution channel for SAP"), DisplayName("Distribution Channel")]
+        [Category("SAP Defaults")]
+        [Description("Distribution channel for SAP")]
+        [DisplayName("Distribution Channel")]
         public string Distribution {
             get { return Defaults.Distribution; }
             set { Defaults.Distribution = value ?? ""; }
         }
 
-        [CategoryAttribute("SAP Defaults"), Description("Division of company"), DisplayName("Division")]
+        [Category("SAP Defaults")]
+        [Description("Division of company")]
+        [DisplayName("Division")]
         public string Division {
             get { return Defaults.Division; }
             set { Defaults.Division = value ?? ""; }
         }
 
-        [CategoryAttribute("SAP Defaults"), Description("Default notification effect"), DisplayName("Effect")]
+        [Category("SAP Defaults")]
+        [Description("Default notification effect")]
+        [DisplayName("Effect")]
         public string Effect {
             get { return Defaults.Effect; }
             set { Defaults.Effect = value ?? ""; }
         }
 
-        [CategoryAttribute("SAP Defaults"), Description("Current site location"), DisplayName("Location")]
+        [Category("SAP Defaults")]
+        [Description("Current site location")]
+        [DisplayName("Location")]
         public string Location {
             get { return Defaults.Location; }
             set { Defaults.Location = value ?? ""; }
         }
 
-        [CategoryAttribute("SAP Defaults"), Description("Organization number"), DisplayName("Organization")]
+        [Category("SAP Defaults")]
+        [Description("Organization number")]
+        [DisplayName("Organization")]
         public string Organization {
             get { return Defaults.Organization; }
             set { Defaults.Organization = value ?? ""; }
         }
 
-        [CategoryAttribute("SAP Defaults"), Description("Current site planner group number"), DisplayName("Planner Group")]
+        [Category("SAP Defaults")]
+        [Description("Current site planner group number")]
+        [DisplayName("Planner Group")]
         public string PlannerGroup {
             get { return Defaults.PlannerGroup; }
             set { Defaults.PlannerGroup = value ?? ""; }
         }
 
-        [CategoryAttribute("SAP Defaults"), Description("Current site plant number"), DisplayName("Plant")]
+        [Category("SAP Defaults")]
+        [Description("Current site plant number")] 
+        [DisplayName("Plant")]
         public string Plant {
             get { return Defaults.Plant; }
             set { Defaults.Plant = value ?? ""; }
         }
 
-        [CategoryAttribute("SAP Defaults"), Description("Number of months for which to check if a service order is a warranty or not"), DisplayName("Warranty Limit (months)")]
+        [Category("SAP Defaults")]
+        [Description("Number of months for which to check if a service order is a warranty or not")]
+        [DisplayName("Warranty Limit (months)")]
         public string WarrantyMonthLimit {
             get { return Defaults.WarrantyMonthLimit; }
             set { Defaults.WarrantyMonthLimit = value ?? ""; }
         }
 
-        [CategoryAttribute("Theme Settings"), Description("Color of form borders and title bar"), DisplayName("Border Color")]
+        [Category("Theme Settings")]
+        [Description("Color of form borders and title bar")]
+        [DisplayName("Border Color")]
         [Editor(typeof(MyColorEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(MyTypeConverter))]
         public Color BorderColor {
@@ -157,7 +176,7 @@ namespace Mobility_Setup_Tool
             set { ThemeController.ThemeBorderColor = value != null ? value : Color.Black; }
         }
 
-        [CategoryAttribute("Theme Settings"), Description("Background color of forms"), DisplayName("Background Color")]
+        [Category("Theme Settings"), Description("Background color of forms"), DisplayName("Background Color")]
         [Editor(typeof(MyColorEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(MyTypeConverter))]
         public Color BackgroundColor {
@@ -165,8 +184,10 @@ namespace Mobility_Setup_Tool
             set { ThemeController.ThemeBackgroundColor = value != null ? value : Color.LightGray; }
         }
 
-        [CategoryAttribute("Folder Paths"), Description("Server path index for current plant"), DisplayName("Server Path")]
-        [EditorAttribute(typeof(FileNameEditor), typeof(UITypeEditor))]
+        [Category("Folder Paths")]
+        [Description("Server path index for current plant")]
+        [DisplayName("Server Path")]
+        [Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
         public string ServerIndex {
             get { return Defaults.ServerIndex; } 
             set { Defaults.ServerIndex = value ?? ""; }
@@ -182,24 +203,37 @@ namespace Mobility_Setup_Tool
         }
         internal class MyColorEditor : UITypeEditor
         {
-            public override UITypeEditorEditStyle GetEditStyle(System.ComponentModel.ITypeDescriptorContext context)
+            public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
             {
                 return UITypeEditorEditStyle.Modal;
             }
-            public override bool GetPaintValueSupported(System.ComponentModel.ITypeDescriptorContext context)
+            public override bool GetPaintValueSupported(ITypeDescriptorContext context)
             {
                 return false;
             }
-            public override object EditValue(System.ComponentModel.ITypeDescriptorContext context, IServiceProvider provider, object value)
+            public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
             {
-                ColorDialog cd = new ColorDialog();
+                ColorDialog cd          = new ColorDialog();
+                cd.AllowFullOpen        = true;
+                cd.AnyColor             = true;
+                cd.SolidColorOnly       = false;
+
+                // Convert color to integer
+                static int ToInt(Color c)
+                {
+                    return c.R + c.G * 0x100 + c.B * 0x10000;
+                }
+
+                // Define nice custom colors for them :)
+                cd.CustomColors = new int[]{ToInt(Color.FromArgb(1,230,232,237)), ToInt(Color.FromArgb(1, 214, 220, 228)), ToInt(Color.FromArgb(1, 251, 229, 213)), ToInt(Color.FromArgb(1, 226, 239, 217)), ToInt(Color.FromArgb(1, 255, 242, 204)), ToInt(Color.FromArgb(1, 222, 235, 246)), ToInt(Color.FromArgb(1, 222, 235, 246)), ToInt(Color.FromArgb(1, 222, 235, 246)),
+                                            ToInt(Color.FromArgb(1,58,56,56)),    ToInt(Color.FromArgb(1, 50, 63, 79)),    ToInt(Color.FromArgb(1, 131, 60, 11)),   ToInt(Color.FromArgb(1, 55, 86, 35)),    ToInt(Color.FromArgb(1, 127, 96, 0)),    ToInt(Color.FromArgb(1, 30, 78, 121)),   ToInt(Color.FromArgb(1, 222, 235, 246)),  ToInt(Color.FromArgb(1, 222, 235, 246))};
+
                 cd.ShowDialog();
                 return cd.Color;
             }
         }
 
-    
-
+        // Download data files from sharepoint
         public void DownloadFromSharepoint(string Link, string SavePath)
         {
             FileStream SaveData;
@@ -235,7 +269,7 @@ namespace Mobility_Setup_Tool
             bool   FoundPlant   = false;
 
             // Download master links
-            DownloadFromSharepoint("http://uglteams/sites/fs/AdminLibrary/MST_DataLinks", $"{AppData}\\MST_DataLinks");
+            DownloadFromSharepoint("http://uglteams/sites/fs/_layouts/15/DocIdRedir.aspx?ID=FSDS-25-507", $"{AppData}\\MST_DataLinks");
 
             // Check version
             StreamReader MasterData = new StreamReader($"{AppData}\\MST_DataLinks");
@@ -356,12 +390,15 @@ namespace Mobility_Setup_Tool
         // Delete appsettings file
         public void ResetSettings()
         {
-            if (File.Exists($"{AppData}\\APPSETTINGS")) File.Delete($"{AppData}\\APPSETTINGS");
-            if (File.Exists($"{AppData}\\THEME")) File.Delete($"{AppData}\\THEME");
-            if (File.Exists($"{AppData}\\MST_DataLinks")) File.Delete($"{AppData}\\MST_DataLinks");
-            if (File.Exists(Defaults.CELPath)) File.Delete(Defaults.CELPath);
-            if (File.Exists(Defaults.InputsPath)) File.Delete(Defaults.InputsPath);
-            if (File.Exists(Defaults.QuotePath)) File.Delete(Defaults.QuotePath);
+            try { 
+                File.Delete($"{AppData}\\APPSETTINGS"); 
+            } catch {  }
+
+            try { File.Delete($"{AppData}\\THEME"); } catch {  }
+            try { File.Delete($"{AppData}\\MST_DataLinks"); } catch {  }
+            try { File.Delete(Defaults.CELPath); } catch {  }
+            try { File.Delete(Defaults.InputsPath); } catch {  }
+            try { File.Delete(Defaults.QuotePath); } catch {  }
         }
 
         // Save settings to file
@@ -393,15 +430,75 @@ namespace Mobility_Setup_Tool
     // Get functionlocation combobox from main screen and add it to the property grid
     public class FLConverter : StringConverter
     { 
-        public override Boolean GetStandardValuesSupported(ITypeDescriptorContext context) { return true; }
-        public override Boolean GetStandardValuesExclusive(ITypeDescriptorContext context) { return true; }
-        public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+        public override bool GetStandardValuesSupported(ITypeDescriptorContext context) { return true; }
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext context) { return true; }
+        public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             Settings     refMyObject    = context.Instance as Settings;
             ComboBox     FLCB           = refMyObject.Reference.FunctionLoc_CB;
-            List<String> list           = new List<String>();
+            List<string> list           = new List<string>();
             
             for(int i = 0; i < FLCB.Items.Count; i++)
+            {
+                list.Add(FLCB.Items[i].ToString());
+            }
+
+            return new StandardValuesCollection(list);
+        }
+    }
+
+    // Get activity type combobox from main screen and add it to the property grid
+    public class ActTypeConverter : StringConverter
+    {
+        public override bool GetStandardValuesSupported(ITypeDescriptorContext context) { return true; }
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext context) { return true; }
+        public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+        {
+            Settings refMyObject = context.Instance as Settings;
+            ComboBox FLCB = refMyObject.Reference.PMActivityType_CB;
+            List<string> list = new List<string>();
+
+            for (int i = 0; i < FLCB.Items.Count; i++)
+            {
+                list.Add(FLCB.Items[i].ToString());
+            }
+
+            return new StandardValuesCollection(list);
+        }
+    }
+
+    // Get priority type combobox from main screen and add it to the property grid
+    public class PriorityTypeConverter : StringConverter
+    {
+        public override bool GetStandardValuesSupported(ITypeDescriptorContext context) { return true; }
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext context) { return true; }
+        public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+        {
+            Settings refMyObject = context.Instance as Settings;
+            ComboBox FLCB = refMyObject.Reference.Priority_CB;
+            List<string> list = new List<string>();
+
+            for (int i = 0; i < FLCB.Items.Count; i++)
+            {
+                list.Add(FLCB.Items[i].ToString());
+            }
+
+            return new StandardValuesCollection(list);
+        }
+    }
+
+    // Get sold to party type combobox from main screen and add it to the property grid
+    public class PartyConverter : StringConverter
+    {
+        public override bool GetStandardValuesSupported(ITypeDescriptorContext context) { return true; }
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext context) { return true; }
+        public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+        {
+            Settings refMyObject = context.Instance as Settings;
+            ComboBox FLCB = refMyObject.Reference.PartyName_CB;
+            List<string> list = new List<string>();
+
+            for (int i = 0; i < FLCB.Items.Count; i++)
             {
                 list.Add(FLCB.Items[i].ToString());
             }

@@ -1386,10 +1386,11 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        private void resyncDataToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ResyncDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AppSettings.ResetSettings();
             AppSettings.GetSharepointData();
+            AppSettings.LoadSettings();
             DatabaseController.Load();
 
             MsgBox_Normal("Reset settings, re-sync data completed");
