@@ -68,6 +68,7 @@ namespace Mobility_Setup_Tool
         public Databases    DatabaseController;
         public Settings     AppSettings;
         public DataTable    QuoteTable;
+        public AUTOSAP      SapSession;
 
         // Settings
         public static bool   IsRunning            = false;
@@ -715,6 +716,7 @@ namespace Mobility_Setup_Tool
             // Create controller instances
             AppSettings         = new Settings(ThemeController, this);
             DatabaseController  = new Databases(this);
+            SapSession          = new AUTOSAP(this);
             //QuoteOutput         = new QuoteConsole(this);
             //QuoteOutput.Hide();
 
@@ -760,24 +762,28 @@ namespace Mobility_Setup_Tool
         // Equipment list combobox text changed event 
         private void TemplateEquipmentList_CB_TextChanged(object sender, EventArgs e) 
         {
-            // Clear combobox
-            TaskType_CB.Items.Clear();
+            // If there is text in the field
+            if (TemplateEquipmentList_CB.Text != "")
+            {
+                // Clear combobox
+                TaskType_CB.Items.Clear();
 
-            List<MobilityTask> LeadTasks = DatabaseController.GetTasks(true);
+                List<MobilityTask> LeadTasks = DatabaseController.GetTasks(true);
 
-            // Search for matching equipment name in task data table and add to task list combo
-            for (int Row = 0; Row < LeadTasks.Count(); Row++) {
-                if (LeadTasks[Row].Equipment1 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
-                if (LeadTasks[Row].Equipment2 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
-                if (LeadTasks[Row].Equipment3 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
-                if (LeadTasks[Row].Equipment4 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
-                if (LeadTasks[Row].Equipment5 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
-                if (LeadTasks[Row].Equipment6 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
-                if (LeadTasks[Row].Equipment7 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
-                if (LeadTasks[Row].Equipment8 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
-                if (LeadTasks[Row].Equipment9 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
-                if (LeadTasks[Row].Equipment10 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
+                // Search for matching equipment name in task data table and add to task list combo
+                for (int Row = 0; Row < LeadTasks.Count(); Row++) {
+                    if (LeadTasks[Row].Equipment1 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
+                    if (LeadTasks[Row].Equipment2 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
+                    if (LeadTasks[Row].Equipment3 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
+                    if (LeadTasks[Row].Equipment4 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
+                    if (LeadTasks[Row].Equipment5 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
+                    if (LeadTasks[Row].Equipment6 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
+                    if (LeadTasks[Row].Equipment7 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
+                    if (LeadTasks[Row].Equipment8 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
+                    if (LeadTasks[Row].Equipment9 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
+                    if (LeadTasks[Row].Equipment10 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
 
+                }
             }
         }
 
@@ -1119,9 +1125,11 @@ namespace Mobility_Setup_Tool
             {
                 isTopPanelDragged = true;
                 Point pointStartPosition = this.PointToScreen(new Point(e.X, e.Y));
-                offset = new Point();
-                offset.X = this.Location.X - pointStartPosition.X;
-                offset.Y = this.Location.Y - pointStartPosition.Y;
+                offset = new Point
+                {
+                    X = this.Location.X - pointStartPosition.X,
+                    Y = this.Location.Y - pointStartPosition.Y
+                };
             }
             else
             {
@@ -1183,7 +1191,16 @@ namespace Mobility_Setup_Tool
             } else {
                 isTopPanelDragged = false;
             }
-            if (e.Clicks == 2) isTopPanelDragged = false;
+            if (e.Clicks == 2) {
+                if (WindowState == FormWindowState.Maximized) {
+                    WindowState = FormWindowState.Normal;
+                }
+                else { 
+                    WindowState = FormWindowState.Maximized;
+                }
+
+                isTopPanelDragged = false;
+            }
         }
 
         // Titlebar mouse down event 
@@ -1208,17 +1225,16 @@ namespace Mobility_Setup_Tool
 
         // SAP verify timer Tick event 
         private void CheckSAP_Tick(object sender, EventArgs e) {
-            AUTOSAP SapCheck = new AUTOSAP(this);
-
-            if (SapCheck.GetSession()) {
-                StatusInfo_LBL.Text = "SAP Connected";
-                StatusInfo_LBL.ForeColor = Color.DarkGreen;
-            } else {
-                StatusInfo_LBL.Text = "SAP Disconnected";
-                StatusInfo_LBL.ForeColor = Color.DarkRed;
+            // Only if tool is currently idling
+            if (!IsRunning) { 
+                if (SapSession.GetSession()) {
+                    StatusInfo_LBL.Text = "SAP Connected";
+                    StatusInfo_LBL.ForeColor = Color.DarkGreen;
+                } else {
+                    StatusInfo_LBL.Text = "SAP Disconnected";
+                    StatusInfo_LBL.ForeColor = Color.DarkRed;
+                }
             }
-
-            SapCheck.Dispose();
         }
 
         // Vairation list box double click event 
@@ -1262,7 +1278,7 @@ namespace Mobility_Setup_Tool
         {
             if (e.KeyCode == Keys.Enter)
             {
-                AUTOSAP Session = new AUTOSAP(this);
+
                 string EqNumber, SerialNumber;
                 ExcelDataTables TableManager = new ExcelDataTables();
 
@@ -1271,34 +1287,34 @@ namespace Mobility_Setup_Tool
 
                 if (SerialNumber != "" && !SerialNumber.Contains(" "))
                 {
-                    if (Session.GetSession())
+                    if (SapSession.GetSession())
                     {
                         // Convert serial to equipment number
-                        EqNumber = Session.EquipmentNumberFromSerial(SerialNumber);
+                        EqNumber = SapSession.EquipmentNumberFromSerial(SerialNumber);
 
                         // Verify we have got the equipment number
                         if (EqNumber != "NO EQUIPMENT FOUND")
                         {
 
-                            Session.StartTransaction("ZIW58");
-                            Session.SetVariant("/FSDS-25-32");
-                            Session.GetButton("%_QMART_%_APP_%-VALU_PUSH").Press();
-                            GuiModalWindow Popup = (GuiModalWindow)Session.GetFormById("wnd[1]");
+                            SapSession.StartTransaction("ZIW58");
+                            SapSession.SetVariant("/FSDS-25-32");
+                            SapSession.GetButton("%_QMART_%_APP_%-VALU_PUSH").Press();
+                            GuiModalWindow Popup = (GuiModalWindow)SapSession.GetFormById("wnd[1]");
                             ((GuiButton)Popup.FindById("tbar[0]/btn[16]")).Press();
                             ((GuiButton)Popup.FindById("tbar[0]/btn[8]")).Press();
-                            Session.GetCTextField("QMART-LOW").Text = "Z3";
-                            Session.GetCTextField("EQUNR-LOW").Text = EqNumber;
-                            Session.SendVKey(8);
+                            SapSession.GetCTextField("QMART-LOW").Text = "Z3";
+                            SapSession.GetCTextField("EQUNR-LOW").Text = EqNumber;
+                            SapSession.SendVKey(8);
 
-                            switch (Session.GetSessionInfo().ScreenNumber)
+                            switch (SapSession.GetSessionInfo().ScreenNumber)
                             {
                                 // One notification
                                 case 7200:
                                     SAP_VARS _add = new SAP_VARS
                                     {
-                                        LongText = Session.GetShell("shell").Text,
-                                        Description = Session.GetTextField("VIQMEL-QMTXT").Text,
-                                        Number = Session.GetTextField("VIQMEL-QMNUM").Text
+                                        LongText = SapSession.GetShell("shell").Text,
+                                        Description = SapSession.GetTextField("VIQMEL-QMTXT").Text,
+                                        Number = SapSession.GetTextField("VIQMEL-QMNUM").Text
                                     };
 
                                     Variations.Add(_add);
@@ -1308,11 +1324,11 @@ namespace Mobility_Setup_Tool
 
                                 // Multiple notifications
                                 case 500:
-                                    ((GuiMenu)Session.GetFormById("wnd[0]/mbar/menu[0]/menu[11]/menu[2]")).Select();
-                                    Session.SendVKey(0);
+                                    ((GuiMenu)SapSession.GetFormById("wnd[0]/mbar/menu[0]/menu[11]/menu[2]")).Select();
+                                    SapSession.SendVKey(0);
 
                                     // Filename popup
-                                    Popup = (GuiModalWindow)Session.GetFormById("wnd[1]");
+                                    Popup = (GuiModalWindow)SapSession.GetFormById("wnd[1]");
                                     ((GuiCTextField)Popup.FindByName("DY_PATH", "GuiCTextField")).Text = Environment.GetEnvironmentVariable("TEMP");
                                     ((GuiCTextField)Popup.FindByName("DY_FILENAME", "GuiCTextField")).Text = $"IW58DUMP{EqNumber}.txt";
                                     ((GuiButton)Popup.FindById("tbar[0]/btn[11]")).Press();
@@ -1331,11 +1347,11 @@ namespace Mobility_Setup_Tool
                                             Number = VariationList.Rows[i]["Notification"].ToString()
                                         };
 
-                                        Session.StartTransaction("IW52");
-                                        Session.GetCTextField("RIWO00-QMNUM").Text = _madd.Number;
-                                        Session.SendVKey(0);
+                                        SapSession.StartTransaction("IW52");
+                                        SapSession.GetCTextField("RIWO00-QMNUM").Text = _madd.Number;
+                                        SapSession.SendVKey(0);
 
-                                        _madd.LongText = Session.GetShell("shell").Text;
+                                        _madd.LongText = SapSession.GetShell("shell").Text;
 
                                         Variations.Add(_madd);
 
@@ -1389,6 +1405,18 @@ namespace Mobility_Setup_Tool
         private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             
+        }
+
+        // Clear task type if template equipent is empty
+        private void TemplateEquipment_CB_KeyPress(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                if(((ComboBox)sender).Text == "")
+                {
+                    TaskType_CB.Items.Clear();
+                }
+            }
         }
     }
 }

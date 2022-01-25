@@ -337,14 +337,14 @@ namespace Mobility_Setup_Tool
             // StopAuto_MN
             // 
             this.StopAuto_MN.Name = "StopAuto_MN";
-            this.StopAuto_MN.Size = new System.Drawing.Size(224, 26);
+            this.StopAuto_MN.Size = new System.Drawing.Size(222, 26);
             this.StopAuto_MN.Text = "Stop Automation [ESC]";
             this.StopAuto_MN.Click += new System.EventHandler(this.StopAuto_MN_Click);
             // 
             // resyncDataToolStripMenuItem
             // 
             this.resyncDataToolStripMenuItem.Name = "resyncDataToolStripMenuItem";
-            this.resyncDataToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.resyncDataToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
             this.resyncDataToolStripMenuItem.Text = "Reset Setings";
             this.resyncDataToolStripMenuItem.Click += new System.EventHandler(this.resyncDataToolStripMenuItem_Click);
             // 
@@ -1481,6 +1481,7 @@ namespace Mobility_Setup_Tool
             this.TemplateEquipmentList_CB.Size = new System.Drawing.Size(511, 26);
             this.TemplateEquipmentList_CB.TabIndex = 3;
             this.TemplateEquipmentList_CB.TextChanged += new System.EventHandler(this.TemplateEquipmentList_CB_TextChanged);
+            this.TemplateEquipmentList_CB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TemplateEquipment_CB_KeyPress);
             // 
             // TaskType_CB
             // 

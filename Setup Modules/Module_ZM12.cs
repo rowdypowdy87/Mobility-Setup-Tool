@@ -347,7 +347,8 @@ namespace Mobility_Setup_Tool
                 int Delete = 0, Change = 0, Create = 0;
 
                 // Sort numbers
-                for(int i = 0; i < MeasuresToChange.Count; i++){
+                for(int i = 0; i < MeasuresToChange.Count; i++)
+                {
                     switch(MeasuresToChange[i].Action){
                         case ACTION.CREATE: Create++; break;
                         case ACTION.CHANGE: Change++; break;
@@ -388,7 +389,10 @@ namespace Mobility_Setup_Tool
                         case ACTION.CREATE:
                             if (Create > 0)
                             {
-                                if (!RefForm.SetStatus($"Creating measurement point {MeasuresToChange[i].Info.Description} - [{i}/{MeasuresToChange.Count - 1}]", perc > 0 ? Convert.ToInt32(perc) : 1)) return false;
+                                if (!RefForm.SetStatus($"Creating measurement point {MeasuresToChange[i].Info.Description} - [{i}/{MeasuresToChange.Count - 1}]", perc > 0 ? Convert.ToInt32(perc) : 1))
+                                {
+                                    return false;
+                                }
                                 Session.CreateMeasurementPoint(MeasuresToChange[i].Info, InputInfo.EquipmentNumber);
                             }
                             break;
@@ -396,13 +400,19 @@ namespace Mobility_Setup_Tool
                         case ACTION.CHANGE:
                             if (Change > 0)
                             {
-                               if (!RefForm.SetStatus($"Changing measurement point {MeasuresToChange[i].Info.Description} - [{i}/{MeasuresToChange.Count - 1}]", perc > 0 ? Convert.ToInt32(perc) : 1)) return false;
+                                if (!RefForm.SetStatus($"Changing measurement point {MeasuresToChange[i].Info.Description} - [{i}/{MeasuresToChange.Count - 1}]", perc > 0 ? Convert.ToInt32(perc) : 1)) 
+                                {
+                                    return false;
+                                }
                                 Session.ChangeMeasurementPoint(MeasuresToChange[i].Info, MeasuresToChange[i].ChangeNumber);
                             }
                             break;
 
                         case ACTION.DEACTIVATE:
-                            if (!RefForm.SetStatus($"De-activating measurement point {MeasuresToChange[i].Info.Description} - [{i}/{MeasuresToChange.Count-1}]", perc > 0 ? Convert.ToInt32(perc) : 1)) return false;
+                            if (!RefForm.SetStatus($"De-activating measurement point {MeasuresToChange[i].Info.Description} - [{i}/{MeasuresToChange.Count-1}]", perc > 0 ? Convert.ToInt32(perc) : 1))
+                            {
+                                return false;
+                            }
                             Session.DeactiveMeasurement(MeasuresToChange[i].Info.Number);
                             break;
                     }
@@ -1004,6 +1014,8 @@ namespace Mobility_Setup_Tool
                     ((GuiCTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/ctxtCOBRB-PERBZ[5,0]")).Text = "FUL";
                     Session.SendVKey(3);
                 }
+
+                return false;
 
                 // Release order
                 if (MsgBox_Question("Would you like to release this service order?") == DialogResult.Yes) {

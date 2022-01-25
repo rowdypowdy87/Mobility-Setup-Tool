@@ -123,7 +123,7 @@ public struct MobilityServiceOrder
 
 namespace Mobility_Setup_Tool
 {
-    class AUTOSAP : IDisposable
+    public class AUTOSAP : IDisposable
     {
         // Internal class control objects
         public static GuiSession       SapSession    { get; set; }
@@ -139,52 +139,55 @@ namespace Mobility_Setup_Tool
         // Find any open SAP session, return false if not open
         public bool GetSession()
         {
-            // Create new instance of ROT wrapper to attach to SAPGUI
-            CSapROTWrapper sapROT = new CSapROTWrapper();
+            if(SapConnection == null)
+            { 
+                // Create new instance of ROT wrapper to attach to SAPGUI
+                CSapROTWrapper sapROT = new CSapROTWrapper();
 
-            // Attach to GUI
-            object sapGui = sapROT.GetROTEntry("SAPGUI");
+                // Attach to GUI
+                object sapGui = sapROT.GetROTEntry("SAPGUI");
 
-            if (sapGui == null) return false;
+                if (sapGui == null) return false;
 
-            // Find & attach to scripting engine
-            try
-            {
-                SapApp = (sapGui.GetType().InvokeMember("GetScriptingEngine", System.Reflection.BindingFlags.InvokeMethod, null, sapGui, null) as GuiApplication);
-            } catch (Exception ex) {
-                MsgBox_Error(ex.Message);
-                return false;
-            }
+                // Find & attach to scripting engine
+                try
+                {
+                    SapApp = (sapGui.GetType().InvokeMember("GetScriptingEngine", System.Reflection.BindingFlags.InvokeMethod, null, sapGui, null) as GuiApplication);
+                } catch (Exception ex) {
+                    MsgBox_Error(ex.Message);
+                    return false;
+                }
 
-            // Find connection to scripting engine
-            for (int i = 0; i< SapApp.Children.Count; i++)
-            {
-                SapConnection = (SapApp.Children.ElementAt(i) as GuiConnection);
-            }
+                // Find connection to scripting engine
+                for (int i = 0; i< SapApp.Children.Count; i++)
+                {
+                    SapConnection = (SapApp.Children.ElementAt(i) as GuiConnection);
+                }
 
-            // Verify the connection
-            if (SapConnection == null)
-            {
-                SapConnected = false;
+                // Verify the connection
+                if (SapConnection == null)
+                {
+                    SapConnected = false;
                 
-                return false;
+                    return false;
+                }
+
+                // Get SAP session
+                SapSession = (GuiSession)SapConnection.Children.ElementAt(0);
+
+                // Verify the sesssion
+                if (SapSession == null)
+                {
+                    SapConnected = false;
+                    return false;
+                }
+
+                // Get SAP window
+                SapWindow = (GuiMainWindow)SapSession.Children.ElementAt(0);
+
+                // Success
+                SapConnected = true;
             }
-
-            // Get SAP session
-            SapSession = (GuiSession)SapConnection.Children.ElementAt(0);
-
-            // Verify the sesssion
-            if (SapSession == null)
-            {
-                SapConnected = false;
-                return false;
-            }
-
-            // Get SAP window
-            SapWindow = (GuiMainWindow)SapSession.Children.ElementAt(0);
-
-            // Success
-            SapConnected = true;
             return true;
         }
 
@@ -353,246 +356,224 @@ namespace Mobility_Setup_Tool
         // Get all fields by name & type
         public GuiComponentCollection GetAllByName(string fieldName, string fieldType)
         {
-            GuiComponentCollection fieldComponentCollection;
-
             if (SapConnected)
             {
                 try
                 {
-                    fieldComponentCollection = SapWindow.FindAllByName(fieldName, fieldType);
+                    return SapWindow.FindAllByName(fieldName, fieldType);
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-                return fieldComponentCollection;
-            }
+            } else { 
 
-            // SAP not connected return null
-            return null;
+                // SAP not connected return null
+                return null;
+            }
         }
 
         // Get GuiComboBox by name
         public GuiComboBox GetComboBox(string fieldName)
         {
-            GuiComboBox comboBox;
-
             if (SapConnected)
             {
-                // Try to find by name and catch any exceptions
                 try
                 {
-                    comboBox = (GuiComboBox)SapWindow.FindByName(fieldName, "GuiComboBox");
+                    return (GuiComboBox)SapWindow.FindByName(fieldName, "GuiComboBox");
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-                return comboBox;
             }
-            // SAP not connected return null
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         // Get CTextfield by ID
         public GuiCTextField GetCTextFieldByID(string Address)
-        {
-            GuiCTextField textField;
-
+        { 
             if (SapConnected) {
                 // Try to find by name and catch any exceptions
                 try {
-                    textField = (GuiCTextField)SapWindow.FindById(Address);
+                    return  (GuiCTextField)SapWindow.FindById(Address);
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-                return textField;
+            } else { 
+                // SAP not connected return null
+                return null;
             }
-            // SAP not connected return null
-            return null;
         }
 
         // Get Textfield by ID
         public GuiTextField GetTextFieldByID(string Address) {
-            GuiTextField textField;
-
             if (SapConnected) {
                 // Try to find by name and catch any exceptions
                 try {
-                    textField = (GuiTextField)SapWindow.FindById(Address);
+                    return (GuiTextField)SapWindow.FindById(Address);
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-                return textField;
+            } else
+            {
+                return null;
             }
             // SAP not connected return null
-            return null;
+            
         }
 
         // Get Button by ID
         public GuiButton GetButtonByID(string Address) {
-            GuiButton textField;
 
             if (SapConnected) {
                 // Try to find by name and catch any exceptions
                 try {
-                    textField = (GuiButton)SapWindow.FindById(Address);
+                    return (GuiButton)SapWindow.FindById(Address);
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-                return textField;
+            } else
+            {
+                return null;
             }
-            // SAP not connected return null
-            return null;
         }
 
         // Get CTextField by name
         public GuiCTextField GetCTextField(string fieldName)
         {
-            GuiCTextField textField;
-
             if (SapConnected)
             {
                 // Try to find by name and catch any exceptions
                 try
                 {
-                    textField = (GuiCTextField)SapWindow.FindByName(fieldName, "GuiCTextField");
+                    return (GuiCTextField)SapWindow.FindByName(fieldName, "GuiCTextField");
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-                return textField;
             }
-            // SAP not connected return null
-            return null;
+            else {
+                return null;
+            }
         }
 
         // Get TextField by name
         public GuiTextField GetTextField(string fieldName)
         {
-            GuiTextField textField;
-
             if (SapConnected)
             {
                 // Try to find by name and catch any exceptions
                 try
                 {
-                    textField = (GuiTextField)SapWindow.FindByName(fieldName, "GuiTextField");
+                    return (GuiTextField)SapWindow.FindByName(fieldName, "GuiTextField");
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-                return textField;
             }
-            // SAP not connected return null
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         // Get GuiButton
         public GuiButton GetButton(string fieldName)
         {
-            GuiButton button;
-
             if (SapConnected)
             {
                 // Try to find by name and catch any exceptions
                 try
                 {
-                    button = (GuiButton)SapWindow.FindByName(fieldName, "GuiButton");
+                    return (GuiButton)SapWindow.FindByName(fieldName, "GuiButton");
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-                return button;
             }
-            // SAP not connected return null
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         // Get GuiTable
         public GuiTableControl GetTable(string fieldName)
         {
-            GuiTableControl table;
-
             if (SapConnected)
             {
-                // Try to find by name and catch any exceptions
                 try
                 {
-                    table = (GuiTableControl)SapWindow.FindByName(fieldName, "GuiTableControl");
+                    return (GuiTableControl)SapWindow.FindByName(fieldName, "GuiTableControl");
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-                return table;
             }
-            // SAP not connected return null
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         // Get GuiGridView
         public GuiGridView GetGridView(string fieldName)
         {
-            GuiGridView gridView;
-
             if (SapConnected)
             {
-                // Try to find by name and catch any exceptions
                 try
                 {
-                    gridView = (GuiGridView)SapWindow.FindByName(fieldName, "GuiGridView");
+                    return (GuiGridView)SapWindow.FindByName(fieldName, "GuiGridView");
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-                return gridView;
             }
-            // SAP not connected return null
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         // Get GuiCheckBox
         public GuiCheckBox GetCheckBox(string fieldName)
         {
-            GuiCheckBox checkBox;
-
             if (SapConnected)
             {
-                // Try to find by name and catch any exceptions
                 try
                 {
-                    checkBox = (GuiCheckBox)SapWindow.FindByName(fieldName, "GuiCheckBox");
+                    return (GuiCheckBox)SapWindow.FindByName(fieldName, "GuiCheckBox");
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-                return checkBox;
             }
-            // SAP not connected return null
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         // Get GuiRadioButton
         public GuiRadioButton GetRadioButton(string fieldName)
         {
-            GuiRadioButton radioButton;
-
-            // Try to find by name and catch any exceptions
             if (SapConnected)
             {
                 try
                 {
-                    radioButton = (GuiRadioButton)SapWindow.FindByName(fieldName, "GuiRadioButton");
+                    return (GuiRadioButton)SapWindow.FindByName(fieldName, "GuiRadioButton");
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-                return radioButton;
             }
-            // SAP not connected return null
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         // Get GuiTab
         public GuiTab GetTab(string fieldName)
         {
-            GuiTab tab;
-
             if (SapConnected)
             {
-                // Try to find by name and catch any exceptions
                 try
                 {
-                    tab = (GuiTab)SapWindow.FindByName(fieldName, "GuiTab");
+                    return (GuiTab)SapWindow.FindByName(fieldName, "GuiTab");
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-                return tab;
             }
-            // SAP not connected return null
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         // Send key stroke
         public void SendVKey(int keyId)
         {
-
             if (SapConnected)
             {
                 try
@@ -666,7 +647,7 @@ namespace Mobility_Setup_Tool
         }
 
         // Set variant
-        public string SetVariant(string VarName)
+        public void SetVariant(string VarName)
         {
             if (SapConnected)
             {
@@ -679,16 +660,11 @@ namespace Mobility_Setup_Tool
                 ((GuiTextField)SapSession.FindById("wnd[1]/usr/txtMLANGU-LOW")).Text = "";
 
                 SendVKey(8);
-
-                return "";
-
             }
-            // SAP not connected return null
-            return null;
         }
 
         // Create measurement point
-        public string CreateMeasurementPoint(MobilityMeasurement NewMeasurement, string EquipmentNumber)
+        public void CreateMeasurementPoint(MobilityMeasurement NewMeasurement, string EquipmentNumber)
         {
             if (SapConnected)
             {
@@ -708,7 +684,8 @@ namespace Mobility_Setup_Tool
                 {
                     // Equipment locked
                     case 1110:
-                        return "Could not create measurement point";
+                        MsgBox_Error($"Could not create measurement point {NewMeasurement.Description}");
+                        break;
 
                     // All good
                     default:
@@ -741,15 +718,11 @@ namespace Mobility_Setup_Tool
                         break;
 
                 }
-
-                return "";
             }
-            // SAP not connected return null
-            return null;
         }
 
         // Change measurement point
-        public string ChangeMeasurementPoint(MobilityMeasurement ExistingMeasurement, string Number)
+        public void ChangeMeasurementPoint(MobilityMeasurement ExistingMeasurement, string Number)
         {
             if (SapConnected)
             {
@@ -771,6 +744,7 @@ namespace Mobility_Setup_Tool
 
                 // Enter data
                 StartTransaction("IK02");
+
                 GetCTextField("IMPT-POINT").Text = Number;
                 SendVKey(0);
 
@@ -799,8 +773,6 @@ namespace Mobility_Setup_Tool
                 GetButton("btn[11]").Press();
 
             }
-            // SAP not connected return null
-            return null;
         }
 
         // De-active measurement
@@ -858,7 +830,7 @@ namespace Mobility_Setup_Tool
                 switch (GetSessionInfo().ScreenNumber)
                 {
                     case 1000:
-                        return "No equipment found";
+                        return "";
 
                     case 500:
 
