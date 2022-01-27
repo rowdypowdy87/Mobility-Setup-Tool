@@ -12,8 +12,10 @@ namespace Mobility_Setup_Tool
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing) {
-            if (disposing && (components != null)) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -25,7 +27,8 @@ namespace Mobility_Setup_Tool
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SelectNewStore));
             this.StoreLocation_LBL = new System.Windows.Forms.Label();
             this.StoreLocation_TB = new System.Windows.Forms.TextBox();
@@ -127,6 +130,8 @@ namespace Mobility_Setup_Tool
             this.CloseButton_LBL.Size = new System.Drawing.Size(40, 40);
             this.CloseButton_LBL.TabIndex = 9;
             this.CloseButton_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.CloseButton_LBL.MouseEnter += new System.EventHandler(this.CloseButton_LBL_MouseEnter);
+            this.CloseButton_LBL.MouseLeave += new System.EventHandler(this.CloseButton_LBL_MouseLeave);
             // 
             // UGLLogo_PB
             // 
@@ -164,6 +169,7 @@ namespace Mobility_Setup_Tool
             this.Border_PNL.Name = "Border_PNL";
             this.Border_PNL.Size = new System.Drawing.Size(497, 220);
             this.Border_PNL.TabIndex = 4;
+            this.Border_PNL.Paint += new System.Windows.Forms.PaintEventHandler(this.NewStore_Paint);
             // 
             // Cancel_BTN
             // 
@@ -195,9 +201,12 @@ namespace Mobility_Setup_Tool
             this.Controls.Add(this.TitleBar_PNL);
             this.Controls.Add(this.Border_PNL);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Location = new System.Drawing.Point(20, 20);
             this.Name = "SelectNewStore";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "SelectNewStore";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.SelectNewStore_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.NewStore_Paint);
             this.tableLayoutPanel1.ResumeLayout(false);

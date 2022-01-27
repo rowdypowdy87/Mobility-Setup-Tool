@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using static Mobility_Setup_Tool.MsgBoxs;
+using Mobility_Setup_Tool.Forms;
 
 public enum SETUP_MODULE: int
 {
@@ -399,9 +400,10 @@ namespace Mobility_Setup_Tool
 
             return true;
         }
+
         private bool VerifyInputs(ref MobilityEquipment Eq, ref MobilityServiceOrder So)
         {
-            if (RunFullSetup == true)
+            /*if (RunFullSetup == true) Doing this error checking on the fly now/
             {
                 if (RequiredStartDate_DP.Value < DateTime.Now.AddDays(-1))
                 {
@@ -430,6 +432,15 @@ namespace Mobility_Setup_Tool
                 if (PurchaseOrderDate_DP.Value > DateTime.Now)
                 {
                     MsgBox_Error("The Purchase Order Date cannot be in the future.");
+                    return false;
+                }
+            }*/
+
+            // Verify you want to create warranty service order
+            if (WarrantyClaim_CHB.Checked && RunFullSetup)
+            {
+                if(MsgBox_Question($"Warranty Claim has been selected {Environment.NewLine}Are you sure you want to create a Warranty Claim Service Order?") == DialogResult.No)
+                {
                     return false;
                 }
             }
@@ -528,23 +539,31 @@ namespace Mobility_Setup_Tool
             // Check measurements
             if (SetupModule.CheckMeasurementPoints(SelectedTask, SingleSetup_BW) == false)
             {
-                if (SingleSetup_BW.CancellationPending) MsgBox_Error("User cancelled");
+                if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
                 return;
             }
 
             // Create CEL
             if (SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW) == false)
             {
-                if (SingleSetup_BW.CancellationPending) MsgBox_Error("User cancelled");
+                if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
                 return;
             }
 
             if(RunFullSetup)
-            { 
+            {
+                // Get long text
+                GetLongText LText = new GetLongText(this);
+
+                LText.LongText = SelectedTask.LongText;
+                LText.ShowDialog();
+
+                SelectedTask.LongText = LText.LongText;
+
                 // Check notification and create service order
                 if (SetupModule.CreateServiceOrderFromNotification(SelectedTask, SelectedEquipment, OrderInfo, Components, NotificationNumber, SingleSetup_BW) == false)
                 {
-                    if (SingleSetup_BW.CancellationPending) MsgBox_Error("User cancelled");
+                    if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
                     return;
                 }
             }
@@ -553,9 +572,9 @@ namespace Mobility_Setup_Tool
         // Initial overhaul setup
         private void Setup(MobilityTask SelectedTask, MobilityServiceOrder OrderInfo, MobilityEquipment SelectedEquipment, List<SAPComponent> Components)
         {
-
             // Check fields are filled
-            switch (GetModuleNumber(SelectedTask.Module)) {
+            switch (GetModuleNumber(SelectedTask.Module)) 
+            {
                 // Standard setup
                 case SETUP_MODULE.OT_STANDARD_ZM12:
 
@@ -591,13 +610,15 @@ namespace Mobility_Setup_Tool
             }
 
             // Equipment setup
-            if (SelectedEquipment.UpdateToTemplate) {
+            if (SelectedEquipment.UpdateToTemplate)
+            {
                 switch (SetupModule.InitialEquipmentCheck(SelectedEquipment.TemplateNumber,
                                                             SelectedEquipment.SerialNumber.ToUpper(),
                                                             SelectedEquipment.ZAWA,
                                                             SelectedEquipment.FunctionLoc,
                                                             SingleSetup_BW,
-                                                            ref SelectedEquipment)) {
+                                                            ref SelectedEquipment)) 
+                {
                     case "CANCEL":
                         MsgBox_Normal("User cancelled tool");
                         return;
@@ -610,43 +631,61 @@ namespace Mobility_Setup_Tool
                         MsgBox_Error("Please ensure SAP is running to continue");
                         return;
                 }
-            } else {
+            } 
+            else 
+            {
                 MsgBox_Normal("This equipment type is flagged as DO NOT UPDATE TO TEMPLATE, no changes will be made to the equipment.");
             }
 
             // Check measurements
-            if (SetupModule.CheckMeasurementPoints(SelectedTask, SingleSetup_BW) == false) {
-                if (SingleSetup_BW.CancellationPending) MsgBox_Error("User cancelled");
+            if (SetupModule.CheckMeasurementPoints(SelectedTask, SingleSetup_BW) == false) 
+            {
+                if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
                 return;
             }
 
             // Create CEL
-            if (SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW) == false) {
-                if (SingleSetup_BW.CancellationPending) MsgBox_Error("User cancelled");
+            if (SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW) == false) 
+            {
+                if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
                 return;
             }
 
             // Do service order setup
-            if (RunFullSetup == true) {
+            if (RunFullSetup == true) 
+            {
+                // Get long text
+                GetLongText LText = new GetLongText(this);
+                
+                LText.LongText = SelectedTask.LongText;
+                LText.ShowDialog();
+
+                SelectedTask.LongText = LText.LongText;
+
                 // Check service order can be setup
-                if (!SetupModule.InitialServiceCheck(SelectedTask, SelectedEquipment.EquipmentNumber, SingleSetup_BW)) {
-                    if (SingleSetup_BW.CancellationPending) MsgBox_Error("User cancelled");
+                if (!SetupModule.InitialServiceCheck(SelectedTask, SelectedEquipment.EquipmentNumber, SingleSetup_BW)) 
+                {
+                    if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
                     return;
                 }
 
                 // Create notification
-                if (!SetupModule.CreateNotification(SelectedTask, SelectedEquipment, OrderInfo, SingleSetup_BW)) {
-                    if (SingleSetup_BW.CancellationPending) MsgBox_Error("User cancelled");
+                if (!SetupModule.CreateNotification(SelectedTask, SelectedEquipment, OrderInfo, SingleSetup_BW)) 
+                {
+                    if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
                     return;
                 }
 
                 // Create service order
-                if (!SetupModule.CreateServiceOrder(SelectedTask, SelectedEquipment, OrderInfo, Components, SingleSetup_BW)) {
-                    if (SingleSetup_BW.CancellationPending) MsgBox_Error("User cancelled");
+                if (!SetupModule.CreateServiceOrder(SelectedTask, SelectedEquipment, OrderInfo, Components, SingleSetup_BW)) 
+                {
+                    if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
                     return;
                 }
 
-            } else {
+            } 
+            else 
+            {
                 MsgBox_Normal("Equipment setup completed successfully!");
             }
         }
@@ -720,13 +759,6 @@ namespace Mobility_Setup_Tool
             //QuoteOutput         = new QuoteConsole(this);
             //QuoteOutput.Hide();
 
-            // Set date to current
-            PurchaseOrderDate_DP.Value  = DateTime.Now;
-            BasicStartDate_DP.Value     = DateTime.Now;
-            RequiredStartDate_DP.Value  = DateTime.Now.AddDays(1.0);
-            BasicEndDate_DP.Value       = DateTime.Now.AddDays(40.0);
-            RequiredEndDate_DP.Value    = DateTime.Now.AddDays(40.0);
-
             // Set defaults
             AppSettings.LoadSettings();
 
@@ -798,7 +830,6 @@ namespace Mobility_Setup_Tool
         // Options menu click event 
         private void FileOptions_Click(object sender, EventArgs e) 
         {
-
             AppSettings Settings = new AppSettings(this);
             Settings.ShowInTaskbar = false;
             Settings.ShowDialog();
@@ -1056,47 +1087,59 @@ namespace Mobility_Setup_Tool
             return Parts.GetSelectedComponents();
 
         }
-                        
+
         // Close button label mouse enter event 
-        private void CloseButton_LBL_MouseEnter(object sender, EventArgs e) {
+        public virtual void CloseButton_LBL_MouseEnter(object sender, EventArgs e) 
+        {
             General_TT.SetToolTip((Label)sender, "Close");
             CloseButton_LBL.BackColor = ThemeController.GetBackcolor(); 
         }
 
         // Close button label mouse leave event 
-        private void CloseButton_LBL_MouseLeave(object sender, EventArgs e) { CloseButton_LBL.BackColor = ThemeController.GetBordercolor(); }
+        public virtual void CloseButton_LBL_MouseLeave(object sender, EventArgs e) 
+        { 
+            CloseButton_LBL.BackColor = ThemeController.GetBordercolor(); 
+        }
 
         // Close button label mouse down 
-        private void CloseButton_LBL_MouseDown(object sender, MouseEventArgs e) {
+        public virtual void CloseButton_LBL_MouseDown(object sender, MouseEventArgs e) 
+        {
             if (e.Button == MouseButtons.Left) Close();
         }
 
         // Minimize button label mouse down event 
-        private void MiniButton_LBL_MouseDown(object sender, MouseEventArgs e) {
+        public virtual void MiniButton_LBL_MouseDown(object sender, MouseEventArgs e) 
+        {
             if (e.Button == MouseButtons.Left)  WindowState = FormWindowState.Minimized;
         }
 
         // Minimize button label mouse enter event 
-        private void MiniButton_LBL_MouseEnter(object sender, EventArgs e) {
+        private void MiniButton_LBL_MouseEnter(object sender, EventArgs e) 
+        {
             General_TT.SetToolTip((Label)sender, "Minimize");
             MinimizeButton_LBL.BackColor = ThemeController.GetBackcolor(); 
         }
 
         // Minimize button label mouse leave event 
-        private void MiniButton_LBL_MouseLeave(object sender, EventArgs e) { MinimizeButton_LBL.BackColor = ThemeController.GetBordercolor(); }
+        public virtual void MiniButton_LBL_MouseLeave(object sender, EventArgs e) 
+        { 
+            MinimizeButton_LBL.BackColor = ThemeController.GetBordercolor(); 
+        }
 
         // Maximize button mouse enter event 
-        private void MaxButton_LBL_MouseEnter(object sender, EventArgs e) {
+        public virtual void MaxButton_LBL_MouseEnter(object sender, EventArgs e) 
+        {
             General_TT.SetToolTip((Label)sender, "Maximize");
-            MaximizeButton_LBL.BackColor = ThemeController.GetBackcolor(); }
+            MaximizeButton_LBL.BackColor = ThemeController.GetBackcolor();
+        }
 
 
         // Maximize button label mouse leave event 
-        private void MaxButton_LBL_MouseLeave(object sender, EventArgs e) { MaximizeButton_LBL.BackColor = ThemeController.GetBordercolor();}
+        public virtual void MaxButton_LBL_MouseLeave(object sender, EventArgs e) { MaximizeButton_LBL.BackColor = ThemeController.GetBordercolor();}
 
-       
+
         // Main form paint event 
-        private void MainForm_Paint(object sender, PaintEventArgs e) {
+        public virtual void MainForm_Paint(object sender, PaintEventArgs e) {
             DoubleBuffered = true;
             ResizeRedraw = true;
 
@@ -1107,7 +1150,7 @@ namespace Mobility_Setup_Tool
         }
 
         // Title movements
-        private void Title_MouseMove(object sender, MouseEventArgs e)
+        public virtual void Title_MouseMove(object sender, MouseEventArgs e)
         {
             if (isTopPanelDragged)
             {
@@ -1119,7 +1162,7 @@ namespace Mobility_Setup_Tool
         }
 
         // Move window
-        private void Title_MouseDown(object sender, MouseEventArgs e)
+        public virtual void Title_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -1142,13 +1185,13 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        private void Title_MouseUp(object sender, MouseEventArgs e)
+        public virtual void Title_MouseUp(object sender, MouseEventArgs e)
         {
             isTopPanelDragged = false;
         }
 
         // Maximize button label mouse down event 
-        private void MaxButton_LBL_MouseDown(object sender, MouseEventArgs e) {
+        public virtual void MaxButton_LBL_MouseDown(object sender, MouseEventArgs e) {
             if (e.Button == MouseButtons.Left) {
                 if (WindowState == FormWindowState.Maximized) {
                     WindowState = FormWindowState.Normal;
@@ -1161,19 +1204,25 @@ namespace Mobility_Setup_Tool
         }
 
         // Title bar double click event 
-        private void TitleBar_DoubleClick(object sender, EventArgs e) {
-            if (WindowState == FormWindowState.Maximized) {
+        public virtual void TitleBar_DoubleClick(object sender, EventArgs e) 
+        {
+            if (WindowState == FormWindowState.Maximized) 
+            {
                 WindowState = FormWindowState.Normal;
                 MaximizeButton_LBL.Image = ((Image)(Properties.Resources.ResourceManager.GetObject("MS")));
-            }  else {
+            } 
+            else 
+            {
                 WindowState = FormWindowState.Maximized;
                 MaximizeButton_LBL.Image = ((Image)(Properties.Resources.ResourceManager.GetObject("MF")));
             }
         }
 
         // Titlebar mouse move event 
-        private void TitleBar_MouseMove(object sender, MouseEventArgs e) {
-            if (isTopPanelDragged) {
+        public virtual void TitleBar_MouseMove(object sender, MouseEventArgs e) 
+        {
+            if (isTopPanelDragged) 
+            {
                 Point newPoint = TitleBar_PNL.PointToScreen(new Point(e.X, e.Y));
                 newPoint.Offset(offset);
                 Location = newPoint;
@@ -1181,21 +1230,29 @@ namespace Mobility_Setup_Tool
         }
 
         // Titlebar mouse down event 
-        private void TitleBar_MouseDown(object sender, MouseEventArgs e) {
-            if (e.Button == MouseButtons.Left) {
+        public virtual void TitleBar_MouseDown(object sender, MouseEventArgs e) 
+        {
+            if (e.Button == MouseButtons.Left) 
+            {
                 isTopPanelDragged = true;
                 Point pointStartPosition = this.PointToScreen(new Point(e.X, e.Y));
                 offset = new Point();
                 offset.X = this.Location.X - pointStartPosition.X;
                 offset.Y = this.Location.Y - pointStartPosition.Y;
-            } else {
+            } 
+            else 
+            {
                 isTopPanelDragged = false;
             }
-            if (e.Clicks == 2) {
-                if (WindowState == FormWindowState.Maximized) {
+
+            if (e.Clicks == 2) 
+            {
+                if (WindowState == FormWindowState.Maximized) 
+                {
                     WindowState = FormWindowState.Normal;
                 }
-                else { 
+                else 
+                { 
                     WindowState = FormWindowState.Maximized;
                 }
 
@@ -1204,13 +1261,14 @@ namespace Mobility_Setup_Tool
         }
 
         // Titlebar mouse down event 
-        private void TitleBar_MouseUp(object sender, MouseEventArgs e) { isTopPanelDragged = false; }
+        public virtual  void TitleBar_MouseUp(object sender, MouseEventArgs e) { isTopPanelDragged = false; }
 
         // Exit menu button click event 
         private void Exit_MN_Click(object sender, EventArgs e) { Close(); }
 
         // Main form key down event 
-        private void MainForm_KeyDown(object sender, KeyEventArgs e) {
+        private void MainForm_KeyDown(object sender, KeyEventArgs e) 
+        {
             if (e.KeyCode == Keys.Escape && IsRunning) {
                 SingleSetup_BW.CancelAsync();
                 SetStatus("Cancelling..", 0);
@@ -1218,45 +1276,49 @@ namespace Mobility_Setup_Tool
         }
 
         // Background work completed event 
-        private void SingleSetup_Completed(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
+        private void SingleSetup_Completed(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) 
+        {
             IsRunning = false;
             SetStatus("", 0);
         }
 
         // SAP verify timer Tick event 
-        private void CheckSAP_Tick(object sender, EventArgs e) {
+        private void CheckSAP_Tick(object sender, EventArgs e) 
+        {
             // Only if tool is currently idling
-            if (!IsRunning) { 
-                if (SapSession.GetSession()) {
+            if (!IsRunning) 
+            { 
+                if (SapSession.GetSession()) 
+                {
                     StatusInfo_LBL.Text = "SAP Connected";
                     StatusInfo_LBL.ForeColor = Color.DarkGreen;
-                } else {
+                } else 
+                {
                     StatusInfo_LBL.Text = "SAP Disconnected";
                     StatusInfo_LBL.ForeColor = Color.DarkRed;
                 }
             }
         }
 
-        // Vairation list box double click event 
-        private void Variation_LB_DoubleClick(object sender, EventArgs e) {
-           
-        }
-
         // Variations list box selection changed event 
-        private void Variations_LB_SelectionIndexChanged(object sender, EventArgs e) {
-            if (Variations_LB.SelectedIndex > -1) {
+        private void Variations_LB_SelectionIndexChanged(object sender, EventArgs e) 
+        {
+            if (Variations_LB.SelectedIndex > -1) 
+            {
                 LongText_LBL.Text = $"LONG TEXT - {Variations[Variations_LB.SelectedIndex].Number}";
                 LongText_TB.Text = Variations[Variations_LB.SelectedIndex].LongText;
             }
         }
 
         // Variation template combo box text change event 
-        private void VarTemplate_CB_TextChanged(object sender, EventArgs e) {
+        private void VarTemplate_CB_TextChanged(object sender, EventArgs e)
+        {
             // Clear combobox
             VarTaskType_CB.Items.Clear();
 
             // Search for matching equipment name in task data table and add to task list combo
-            for (int Row = 0; Row < DatabaseController.GetTasks(false).Count(); Row++) {
+            for (int Row = 0; Row < DatabaseController.GetTasks(false).Count(); Row++) 
+            {
                 if (DatabaseController.GetTasks(false)[Row].Equipment1 == VarTemplate_CB.Text) VarTaskType_CB.Items.Add(DatabaseController.GetTasks(false)[Row].Name);
                 if (DatabaseController.GetTasks(false)[Row].Equipment2 == VarTemplate_CB.Text) VarTaskType_CB.Items.Add(DatabaseController.GetTasks(false)[Row].Name);
                 if (DatabaseController.GetTasks(false)[Row].Equipment3 == VarTemplate_CB.Text) VarTaskType_CB.Items.Add(DatabaseController.GetTasks(false)[Row].Name);
@@ -1278,7 +1340,6 @@ namespace Mobility_Setup_Tool
         {
             if (e.KeyCode == Keys.Enter)
             {
-
                 string EqNumber, SerialNumber;
                 ExcelDataTables TableManager = new ExcelDataTables();
 
@@ -1417,6 +1478,58 @@ namespace Mobility_Setup_Tool
                 {
                     TaskType_CB.Items.Clear();
                 }
+            }
+        }
+
+        private void PODate_ValueChanged(object sender, EventArgs e)
+        {
+            if (PurchaseOrderDate_DP.Value.CompareTo(DateTime.Today) == 1)
+            {
+                MsgBox_Warning("You cannot enter a date greater than the current date!");
+                PurchaseOrderDate_DP.Value = DateTime.Today.AddDays(-1.0);
+            }
+        }
+
+        private void BasicStartDate_ValueChanged(object sender, EventArgs e)
+        {
+            if (BasicStartDate_DP.Value.CompareTo(BasicEndDate_DP.Value) == 1)
+            {
+                MsgBox_Warning("You cannot enter a date greater than the planned end date!");
+                BasicStartDate_DP.Value = DateTime.Today.AddDays(-1.0);
+            }
+        }
+
+        private void BasicEndDate_ValueChanged(object sender, EventArgs e)
+        {
+            if (BasicEndDate_DP.Value.CompareTo(BasicStartDate_DP.Value) == -1)
+            {
+                MsgBox_Warning("You cannot enter a date less than the planned start date!");
+                BasicEndDate_DP.Value = DateTime.Today.AddDays(10.0);
+            }
+        }
+
+        private void ReqStartDate_ValueChanged(object sender, EventArgs e)
+        {
+            // Set the planned start date to the required start date
+            BasicStartDate_DP.Value = RequiredStartDate_DP.Value;
+
+            // Check
+            if (RequiredStartDate_DP.Value.CompareTo(RequiredEndDate_DP.Value) == 1)
+            {
+                MsgBox_Warning("Required start date cannot be greater than required end date");
+                RequiredStartDate_DP.Value = DateTime.Today;
+            }
+        }
+
+        private void ReqEndDate_ValueChanged(object sender, EventArgs e)
+        {
+            // Set the planned start date to the required start date
+            BasicEndDate_DP.Value = RequiredEndDate_DP.Value;
+
+            if (RequiredEndDate_DP.Value.CompareTo(RequiredStartDate_DP.Value) == -1)
+            {
+                MsgBox_Warning("Required end date cannot be less than required start date");
+                RequiredEndDate_DP.Value = DateTime.Today.AddDays(10.0);
             }
         }
     }

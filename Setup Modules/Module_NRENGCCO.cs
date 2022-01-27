@@ -11,19 +11,25 @@ namespace Mobility_Setup_Tool
 {
     class Module_NRENGINECCO : Module_ZM12
     {
-
-        public override string InitialEquipmentCheck(string TemplateEquipment, string InputSerial, string InputZawa, string InputFuncLoc, BackgroundWorker Parent, ref MobilityEquipment OutputEq) {
+        public override bool InitialEquipmentCheck(string TemplateEquipment, 
+                                                     string InputSerial, 
+                                                     string InputZawa, 
+                                                     string InputFuncLoc, 
+                                                     BackgroundWorker Parent, 
+                                                     ref MobilityEquipment OutputEq) 
+        {
             string InputEquipment;
 
             // Check for open session first
-            if (Session.GetSession()) {
+            if (Session.GetSession()) 
+            {
 
-                if (!RefForm.SetStatus("Checking if equipment is a material serial", 0)) return "CANCEL";
+                if (!RefForm.SetStatus("Checking if equipment is a material serial", 0)) return false;
 
                 // Check if linked to material
                 if (!Session.CheckMaterialSerial(InputSerial, InputZawa)) return "";
 
-                if(!RefForm.SetStatus("Finding equipment number from input serial", 0)) return "CANCEL";
+                if(!RefForm.SetStatus("Finding equipment number from input serial", 0)) return false;
 
                 // Get equipment number
                 InputEquipment = Session.EquipmentNumberFromSerial(InputSerial);
@@ -35,7 +41,7 @@ namespace Mobility_Setup_Tool
                 OutputEq.SerialNumber = InputSerial;
                 OutputEq.FunctionLoc = InputFuncLoc;
 
-                if (InputEquipment == "") return "CANCEL";
+                if (InputEquipment == "") return false;
 
                 if (InputEquipment.Length > 8) {
                     if (InputEquipment == "No equipment found")
@@ -48,12 +54,12 @@ namespace Mobility_Setup_Tool
                         }
                         else
                         {
-                            return "ERROR";
+                            return false;
                         }
                     }
                 }
 
-                if(!RefForm.SetStatus("Getting template equipment information", 0)) return "CANCEL";
+                if(!RefForm.SetStatus("Getting template equipment information", 0)) return false;
 
                 // Get template equipment info
                 Session.StartTransaction("IE03");
@@ -93,7 +99,7 @@ namespace Mobility_Setup_Tool
 
                 Session.EndTransaction();
 
-                if(!RefForm.SetStatus("Getting input equipment information", 0)) return "CANCEL";
+                if(!RefForm.SetStatus("Getting input equipment information", 0)) return false;
 
                 // Get input equipment info
                 Session.StartTransaction("IE03");
@@ -145,7 +151,7 @@ namespace Mobility_Setup_Tool
                 ChangeInfo.DistChan = "";
                 ChangeInfo.ZAWA = "";
 
-                if(!RefForm.SetStatus("Updating input equipment to template", 0)) return "CANCEL";
+                if(!RefForm.SetStatus("Updating input equipment to template", 0)) return false;
 
                 if (InputInfo.Description != TemplateInfo.Description && !InputInfo.Description.Contains("LOCO")) {
                     if (MsgBox_Question($"Equipment description {InputInfo.Description} does not match template description {TemplateInfo.Description}. Do you want to change this to match the template?") == DialogResult.Yes)
@@ -253,7 +259,8 @@ namespace Mobility_Setup_Tool
         }
 
         // Check for existing orders
-        public override bool InitialServiceCheck(MobilityTask TaskInfo, string Equipmentnumber, BackgroundWorker Parent) {
+        public override bool InitialServiceCheck(MobilityTask TaskInfo, string Equipmentnumber, BackgroundWorker Parent) 
+        {
             if (Session.GetSession())
             {
                 DateTime StartDate;
@@ -392,7 +399,7 @@ namespace Mobility_Setup_Tool
                     Session.GetCTextField("ILOA-SPART").Text = RefForm.AppSettings.Division;
 
                     // Set WBS element
-                    if (TaskInfo.WBS != "") {
+                    /*if (TaskInfo.WBS != "") {
                         if (Session.GetCTextField("ILOA-PROID").Text != "" || Session.GetCTextField("ILOA-PROID").Text != TaskInfo.WBS) {
                             Session.GetCTextField("ILOA-PROID").Text = "";
                             Session.ClearErrors(30, true);
@@ -400,7 +407,7 @@ namespace Mobility_Setup_Tool
 
                         Session.GetCTextField("ILOA-PROID").Text = TaskInfo.WBS;
                         Session.ClearErrors(30, true);
-                    }
+                    }*/
 
                 }
 

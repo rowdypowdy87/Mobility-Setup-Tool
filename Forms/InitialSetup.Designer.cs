@@ -314,6 +314,7 @@ namespace Mobility_Setup_Tool
             this.Controls.Add(this.TitleBar_PNL);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "InitialSetup";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "lnitialSetup";
             this.Load += new System.EventHandler(this.InitialSetup_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.InitialSetup_Paint);

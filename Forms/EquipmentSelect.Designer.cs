@@ -171,11 +171,13 @@ namespace Mobility_Setup_Tool
             this.EqDesc});
             this.EqFound_LV.HideSelection = false;
             this.EqFound_LV.Location = new System.Drawing.Point(17, 124);
+            this.EqFound_LV.MultiSelect = false;
             this.EqFound_LV.Name = "EqFound_LV";
             this.EqFound_LV.Size = new System.Drawing.Size(1102, 682);
             this.EqFound_LV.TabIndex = 11;
             this.EqFound_LV.UseCompatibleStateImageBehavior = false;
             this.EqFound_LV.View = System.Windows.Forms.View.Details;
+            this.EqFound_LV.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.EqFound_LV_ItemCheck);
             // 
             // EqNumber
             // 

@@ -1,23 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Mobility_Setup_Tool
 {
     public partial class SelectNewStore : Form
     {
-        bool     isTopPanelDragged;
-        Point    offset;
-        MainForm RefForm;
-        public string StoreLoc {get; set;}
-        public string SpecStock { get; set;}
+        bool            isTopPanelDragged;
+        Point           offset;
+        MainForm        RefForm;
+        public string   StoreLoc {get; set;}
+        public string   SpecStock {get; set;}
+        public bool     RunChangeStore = true;
 
-        public SelectNewStore(MainForm r) {
-            RefForm = r;
+        public SelectNewStore(MainForm r) 
+        {
+            RefForm     = r;
+
             InitializeComponent();
         }
 
@@ -31,8 +30,10 @@ namespace Mobility_Setup_Tool
         }
 
         // Move window
-        private void TitleBar_MouseDown(object sender, MouseEventArgs e) {
-            if (e.Button == MouseButtons.Left) {
+        private void TitleBar_MouseDown(object sender, MouseEventArgs e) 
+        {
+            if (e.Button == MouseButtons.Left) 
+            {
                 isTopPanelDragged = true;
                 Point pointStartPosition = this.PointToScreen(new Point(e.X, e.Y));
                 offset = new Point();
@@ -59,7 +60,7 @@ namespace Mobility_Setup_Tool
             {
                 Point newPoint = TitleBar_PNL.PointToScreen(new Point(e.X, e.Y));
                 newPoint.Offset(offset);
-                this.Location = newPoint;
+                Location = newPoint;
 
             }
         }
@@ -95,7 +96,7 @@ namespace Mobility_Setup_Tool
         private void NewStore_Paint(object sender, PaintEventArgs e)
         {
             DoubleBuffered = true;
-            ResizeRedraw = true;
+            ResizeRedraw   = true;
 
             using (Pen BorderPen = new Pen(RefForm.ThemeController.GetBordercolor(), 2.0f))
             {
@@ -103,35 +104,52 @@ namespace Mobility_Setup_Tool
             };
         }
 
-        
-
         // Theme EVENTS
-        private void CloseButton_LBL_MouseEnter(object sender, EventArgs e) {
+        private void CloseButton_LBL_MouseEnter(object sender, EventArgs e) 
+        {
             CloseButton_LBL.BackColor = RefForm.ThemeController.GetBackcolor();
         }
 
-        private void CloseButton_LBL_MouseLeave(object sender, EventArgs e) {
+        private void CloseButton_LBL_MouseLeave(object sender, EventArgs e) 
+        {
             CloseButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
         }
 
-        private void CloseButton_LBL_MouseDown(object sender, MouseEventArgs e) {
-            if (e.Button == MouseButtons.Left) {
+        private void CloseButton_LBL_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
                 Close();
             }
         }
 
-        private void SelectNewStore_Load(object sender, EventArgs e) {
-            TitleBar_PNL.BackColor  = RefForm.ThemeController.GetBordercolor();
-            Border_PNL.ForeColor    = RefForm.ThemeController.GetBordercolor();
+        private void SelectNewStore_Load(object sender, EventArgs e) 
+        {
+            TitleBar_PNL.BackColor    = RefForm.ThemeController.GetBordercolor();
+            Border_PNL.ForeColor      = RefForm.ThemeController.GetBordercolor();
+            CloseButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
+
+            // Manually centre the form to MainForm
+            Location = new Point((RefForm.Location.X + RefForm.Width / 2) - Width / 2, (RefForm.Location.Y + RefForm.Height / 2) - Height / 2);
         }
 
-        private void Apply_BTN_Click(object sender, EventArgs e) {
+        private void Apply_BTN_Click(object sender, EventArgs e) 
+        {
             StoreLoc  = StoreLocation_TB.Text;
             SpecStock = SpecialStock_TB.Text;
-            Close();
+
+            if(StoreLoc == "")
+            {
+                MsgBoxs.MsgBox_Warning("Please enter a store location!");
+            }
+            else
+            { 
+                Close();
+            }
         }
 
         private void Cancel_BTN_Click(object sender, EventArgs e) {
+            RunChangeStore = false;
             Close();
         }
     }

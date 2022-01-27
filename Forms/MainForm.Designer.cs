@@ -530,7 +530,7 @@ namespace Mobility_Setup_Tool
             this.LongText_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.LongText_TB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LongText_TB.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.LongText_TB.Cursor = System.Windows.Forms.Cursors.Default;
             this.LongText_TB.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.LongText_TB.Location = new System.Drawing.Point(3, 359);
@@ -552,7 +552,6 @@ namespace Mobility_Setup_Tool
             this.Variations_LB.Size = new System.Drawing.Size(594, 274);
             this.Variations_LB.TabIndex = 10;
             this.Variations_LB.SelectedIndexChanged += new System.EventHandler(this.Variations_LB_SelectionIndexChanged);
-            this.Variations_LB.DoubleClick += new System.EventHandler(this.Variation_LB_DoubleClick);
             // 
             // label2
             // 
@@ -1168,8 +1167,10 @@ namespace Mobility_Setup_Tool
             // PartyName_CB
             // 
             this.PartyName_CB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.PartyName_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.PartyName_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.PartyName_CB.FormattingEnabled = true;
-            this.PartyName_CB.Location = new System.Drawing.Point(303, 12);
+            this.PartyName_CB.Location = new System.Drawing.Point(303, 11);
             this.PartyName_CB.Name = "PartyName_CB";
             this.PartyName_CB.Size = new System.Drawing.Size(294, 26);
             this.PartyName_CB.TabIndex = 6;
@@ -1196,29 +1197,38 @@ namespace Mobility_Setup_Tool
             // PurchaseOrderDate_DP
             // 
             this.PurchaseOrderDate_DP.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.PurchaseOrderDate_DP.CustomFormat = "dd.MM.yyyy";
+            this.PurchaseOrderDate_DP.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.PurchaseOrderDate_DP.Location = new System.Drawing.Point(303, 112);
             this.PurchaseOrderDate_DP.Name = "PurchaseOrderDate_DP";
             this.PurchaseOrderDate_DP.Size = new System.Drawing.Size(294, 26);
             this.PurchaseOrderDate_DP.TabIndex = 8;
-            this.PurchaseOrderDate_DP.Value = new System.DateTime(2021, 9, 20, 0, 0, 0, 0);
+            this.PurchaseOrderDate_DP.Value = new System.DateTime(2022, 1, 25, 0, 0, 0, 0);
+            this.PurchaseOrderDate_DP.ValueChanged += new System.EventHandler(this.PODate_ValueChanged);
             // 
             // RequiredStartDate_DP
             // 
             this.RequiredStartDate_DP.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.RequiredStartDate_DP.CustomFormat = "dd.MM.yyyy";
+            this.RequiredStartDate_DP.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.RequiredStartDate_DP.Location = new System.Drawing.Point(303, 162);
             this.RequiredStartDate_DP.Name = "RequiredStartDate_DP";
             this.RequiredStartDate_DP.Size = new System.Drawing.Size(294, 26);
             this.RequiredStartDate_DP.TabIndex = 9;
-            this.RequiredStartDate_DP.Value = new System.DateTime(2021, 9, 20, 0, 0, 0, 0);
+            this.RequiredStartDate_DP.Value = new System.DateTime(2022, 1, 25, 0, 0, 0, 0);
+            this.RequiredStartDate_DP.ValueChanged += new System.EventHandler(this.ReqStartDate_ValueChanged);
             // 
             // RequiredEndDate_DP
             // 
             this.RequiredEndDate_DP.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.RequiredEndDate_DP.CustomFormat = "dd.MM.yyyy";
+            this.RequiredEndDate_DP.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.RequiredEndDate_DP.Location = new System.Drawing.Point(303, 212);
             this.RequiredEndDate_DP.Name = "RequiredEndDate_DP";
             this.RequiredEndDate_DP.Size = new System.Drawing.Size(294, 26);
             this.RequiredEndDate_DP.TabIndex = 10;
-            this.RequiredEndDate_DP.Value = new System.DateTime(2021, 9, 30, 0, 0, 0, 0);
+            this.RequiredEndDate_DP.Value = new System.DateTime(2022, 3, 6, 0, 0, 0, 0);
+            this.RequiredEndDate_DP.ValueChanged += new System.EventHandler(this.ReqEndDate_ValueChanged);
             // 
             // label3
             // 
@@ -1308,8 +1318,10 @@ namespace Mobility_Setup_Tool
             // PMActivityType_CB
             // 
             this.PMActivityType_CB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.PMActivityType_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.PMActivityType_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.PMActivityType_CB.FormattingEnabled = true;
-            this.PMActivityType_CB.Location = new System.Drawing.Point(292, 12);
+            this.PMActivityType_CB.Location = new System.Drawing.Point(292, 11);
             this.PMActivityType_CB.Name = "PMActivityType_CB";
             this.PMActivityType_CB.Size = new System.Drawing.Size(306, 26);
             this.PMActivityType_CB.TabIndex = 11;
@@ -1336,11 +1348,14 @@ namespace Mobility_Setup_Tool
             // BasicStartDate_DP
             // 
             this.BasicStartDate_DP.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.BasicStartDate_DP.CustomFormat = "dd.MM.yyyy";
+            this.BasicStartDate_DP.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.BasicStartDate_DP.Location = new System.Drawing.Point(292, 62);
             this.BasicStartDate_DP.Name = "BasicStartDate_DP";
             this.BasicStartDate_DP.Size = new System.Drawing.Size(306, 26);
             this.BasicStartDate_DP.TabIndex = 12;
-            this.BasicStartDate_DP.Value = new System.DateTime(2021, 9, 20, 9, 42, 51, 0);
+            this.BasicStartDate_DP.Value = new System.DateTime(2022, 1, 25, 0, 0, 0, 0);
+            this.BasicStartDate_DP.ValueChanged += new System.EventHandler(this.BasicStartDate_ValueChanged);
             // 
             // BasicEndDate_LBL
             // 
@@ -1378,8 +1393,10 @@ namespace Mobility_Setup_Tool
             // Priority_CB
             // 
             this.Priority_CB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.Priority_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.Priority_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.Priority_CB.FormattingEnabled = true;
-            this.Priority_CB.Location = new System.Drawing.Point(292, 162);
+            this.Priority_CB.Location = new System.Drawing.Point(292, 161);
             this.Priority_CB.Name = "Priority_CB";
             this.Priority_CB.Size = new System.Drawing.Size(306, 26);
             this.Priority_CB.TabIndex = 14;
@@ -1387,11 +1404,14 @@ namespace Mobility_Setup_Tool
             // BasicEndDate_DP
             // 
             this.BasicEndDate_DP.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.BasicEndDate_DP.CustomFormat = "dd.MM.yyyy";
+            this.BasicEndDate_DP.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.BasicEndDate_DP.Location = new System.Drawing.Point(292, 112);
             this.BasicEndDate_DP.Name = "BasicEndDate_DP";
             this.BasicEndDate_DP.Size = new System.Drawing.Size(306, 26);
             this.BasicEndDate_DP.TabIndex = 13;
-            this.BasicEndDate_DP.Value = new System.DateTime(2021, 9, 20, 9, 42, 51, 0);
+            this.BasicEndDate_DP.Value = new System.DateTime(2022, 3, 6, 0, 0, 0, 0);
+            this.BasicEndDate_DP.ValueChanged += new System.EventHandler(this.BasicEndDate_ValueChanged);
             // 
             // SetupEquipment_BTN
             // 
@@ -1467,7 +1487,7 @@ namespace Mobility_Setup_Tool
             // EquipmentSerial_TB
             // 
             this.EquipmentSerial_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.EquipmentSerial_TB.Location = new System.Drawing.Point(296, 6);
+            this.EquipmentSerial_TB.Location = new System.Drawing.Point(420, 6);
             this.EquipmentSerial_TB.Name = "EquipmentSerial_TB";
             this.EquipmentSerial_TB.Size = new System.Drawing.Size(511, 26);
             this.EquipmentSerial_TB.TabIndex = 2;
@@ -1475,8 +1495,10 @@ namespace Mobility_Setup_Tool
             // TemplateEquipmentList_CB
             // 
             this.TemplateEquipmentList_CB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.TemplateEquipmentList_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.TemplateEquipmentList_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.TemplateEquipmentList_CB.FormattingEnabled = true;
-            this.TemplateEquipmentList_CB.Location = new System.Drawing.Point(296, 45);
+            this.TemplateEquipmentList_CB.Location = new System.Drawing.Point(420, 44);
             this.TemplateEquipmentList_CB.Name = "TemplateEquipmentList_CB";
             this.TemplateEquipmentList_CB.Size = new System.Drawing.Size(511, 26);
             this.TemplateEquipmentList_CB.TabIndex = 3;
@@ -1486,8 +1508,10 @@ namespace Mobility_Setup_Tool
             // TaskType_CB
             // 
             this.TaskType_CB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.TaskType_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.TaskType_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.TaskType_CB.FormattingEnabled = true;
-            this.TaskType_CB.Location = new System.Drawing.Point(296, 84);
+            this.TaskType_CB.Location = new System.Drawing.Point(420, 83);
             this.TaskType_CB.Name = "TaskType_CB";
             this.TaskType_CB.Size = new System.Drawing.Size(511, 26);
             this.TaskType_CB.TabIndex = 4;
@@ -1495,8 +1519,10 @@ namespace Mobility_Setup_Tool
             // FunctionLoc_CB
             // 
             this.FunctionLoc_CB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.FunctionLoc_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.FunctionLoc_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.FunctionLoc_CB.FormattingEnabled = true;
-            this.FunctionLoc_CB.Location = new System.Drawing.Point(296, 123);
+            this.FunctionLoc_CB.Location = new System.Drawing.Point(420, 122);
             this.FunctionLoc_CB.Name = "FunctionLoc_CB";
             this.FunctionLoc_CB.Size = new System.Drawing.Size(511, 26);
             this.FunctionLoc_CB.TabIndex = 5;
@@ -1506,7 +1532,7 @@ namespace Mobility_Setup_Tool
             this.SerialNumber_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.SerialNumber_LBL.AutoSize = true;
             this.SerialNumber_LBL.ForeColor = System.Drawing.Color.Black;
-            this.SerialNumber_LBL.Location = new System.Drawing.Point(180, 10);
+            this.SerialNumber_LBL.Location = new System.Drawing.Point(304, 10);
             this.SerialNumber_LBL.Name = "SerialNumber_LBL";
             this.SerialNumber_LBL.Size = new System.Drawing.Size(110, 18);
             this.SerialNumber_LBL.TabIndex = 0;
@@ -1517,7 +1543,7 @@ namespace Mobility_Setup_Tool
             this.TemplateEquipment_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.TemplateEquipment_LBL.AutoSize = true;
             this.TemplateEquipment_LBL.ForeColor = System.Drawing.Color.Black;
-            this.TemplateEquipment_LBL.Location = new System.Drawing.Point(140, 49);
+            this.TemplateEquipment_LBL.Location = new System.Drawing.Point(264, 49);
             this.TemplateEquipment_LBL.Name = "TemplateEquipment_LBL";
             this.TemplateEquipment_LBL.Size = new System.Drawing.Size(150, 18);
             this.TemplateEquipment_LBL.TabIndex = 0;
@@ -1528,7 +1554,7 @@ namespace Mobility_Setup_Tool
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(171, 88);
+            this.label4.Location = new System.Drawing.Point(295, 88);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(119, 18);
             this.label4.TabIndex = 0;
@@ -1539,7 +1565,7 @@ namespace Mobility_Setup_Tool
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label5.AutoSize = true;
             this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(147, 127);
+            this.label5.Location = new System.Drawing.Point(271, 127);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(143, 18);
             this.label5.TabIndex = 0;
@@ -1551,9 +1577,9 @@ namespace Mobility_Setup_Tool
             this.WarrantyClaim_CHB.ForeColor = System.Drawing.Color.Black;
             this.WarrantyClaim_CHB.Location = new System.Drawing.Point(3, 3);
             this.WarrantyClaim_CHB.Name = "WarrantyClaim_CHB";
-            this.WarrantyClaim_CHB.Size = new System.Drawing.Size(131, 22);
+            this.WarrantyClaim_CHB.Size = new System.Drawing.Size(255, 22);
             this.WarrantyClaim_CHB.TabIndex = 1;
-            this.WarrantyClaim_CHB.Text = "Warranty Claim?";
+            this.WarrantyClaim_CHB.Text = "Create Warranty Claim Service Order";
             this.WarrantyClaim_CHB.UseVisualStyleBackColor = true;
             // 
             // General_TT

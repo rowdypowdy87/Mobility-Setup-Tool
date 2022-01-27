@@ -1,7 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Data;
-using System.IO;
 using System.Windows.Forms;
 using SAPFEWSELib;
 using System.Collections.Generic;
@@ -13,7 +11,9 @@ namespace Mobility_Setup_Tool
     class Module_ZM25 : Module_ZM12
     {
         // Check for existing orders
-        public override bool InitialServiceCheck(MobilityTask TaskInfo, string Equipmentnumber, BackgroundWorker Parent)
+        public override bool InitialServiceCheck(MobilityTask       TaskInfo, 
+                                                 string             Equipmentnumber, 
+                                                 BackgroundWorker   Parent)
         {
             if (Session.GetSession())
             {
@@ -76,7 +76,11 @@ namespace Mobility_Setup_Tool
         }
 
         // Create service order
-        public override bool CreateServiceOrder(MobilityTask TaskInfo, MobilityEquipment SetupEquipment, MobilityServiceOrder SOInfo, List<SAPComponent> Components, BackgroundWorker Parent)
+        public override bool CreateServiceOrder(MobilityTask            TaskInfo, 
+                                                MobilityEquipment       SetupEquipment, 
+                                                MobilityServiceOrder    SOInfo, 
+                                                List<SAPComponent>      Components, 
+                                                BackgroundWorker        Parent)
         {
             if (Session.GetSession())
             {

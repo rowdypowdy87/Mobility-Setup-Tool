@@ -75,7 +75,6 @@ namespace Mobility_Setup_Tool
 
         public void RefreshTheme()
         {
-
             for (int i = 0; i < Controls.Count; i++)
             {
                 if (Type[i] == "background")
@@ -88,5 +87,6 @@ namespace Mobility_Setup_Tool
                 }
             }
         }
+
     }
 }

@@ -11,13 +11,13 @@ namespace Mobility_Setup_Tool
 {
     class Module_ZM12
     {
-        public static AUTOSAP Session;
+        public static AUTOSAP           Session;
         public static MobilityEquipment TemplateInfo;
         public static MobilityEquipment InputInfo;
         public static MobilityEquipment ChangeInfo;
-        public static MainForm RefForm;
-        public static ExcelDataTables TableManager = new ExcelDataTables();
-        public static bool NewEquipment = false;
+        public static MainForm          RefForm;
+        public static ExcelDataTables   TableManager = new ExcelDataTables();
+        public static bool              NewEquipment = false;
 
         public virtual void SetMainForm(MainForm Reference)
         {
@@ -25,19 +25,34 @@ namespace Mobility_Setup_Tool
             Session = new AUTOSAP(RefForm);
         }
 
-        public virtual string InitialEquipmentCheck(string TemplateEquipment, string InputSerial, string InputZawa, string InputFuncLoc, BackgroundWorker Parent, ref MobilityEquipment OutputEq) 
+        public virtual bool InitialEquipmentCheck(string              TemplateEquipment, 
+                                                  string              InputSerial, 
+                                                  string              InputZawa,
+                                                  string              InputFuncLoc, 
+                                                  BackgroundWorker    Parent, 
+                                              ref MobilityEquipment   OutputEq) 
         {
             string InputEquipment;
   
             // Check for open session first
-            if (Session.GetSession()) {
-
-                if (!RefForm.SetStatus("Checking if equipment is a material serial", 0)) return "CANCEL";
+            if (Session.GetSession()) 
+            {
+                _ = RefForm.SetStatus("Checking if equipment is a material serial", 0);
 
                 // Check if linked to material
-                if (!Session.CheckMaterialSerial(InputSerial, InputZawa)) return "";
+                if (!Session.CheckMaterialSerial(InputSerial, InputZawa)) 
+                {
+                    return false;
+                }
 
-                if(!RefForm.SetStatus("Finding equipment number from input serial", 0)) return "CANCEL";
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
+                _ = RefForm.SetStatus("Finding equipment number from input serial", 0);
 
                 // Get equipment number
                 InputEquipment = Session.EquipmentNumberFromSerial(InputSerial);
@@ -47,7 +62,11 @@ namespace Mobility_Setup_Tool
                 OutputEq.SerialNumber       = InputSerial;
                 OutputEq.FunctionLoc        = InputFuncLoc;
 
-                if (InputEquipment == "") return "CANCEL";
+                // Cannot find equipment number
+                if (InputEquipment == "") 
+                {
+                    return false;
+                }
 
                 if (InputEquipment.Length > 8) 
                 {
@@ -57,11 +76,16 @@ namespace Mobility_Setup_Tool
                         {
                             InputEquipment  = Session.CreateNewEquipment(TemplateEquipment, InputSerial, InputZawa, InputFuncLoc);
                             NewEquipment    = true;
-                            if (InputEquipment == "") MsgBox_Error($"Failed to create new equipment from {TemplateEquipment}, please check your inputs");
+
+                            // Create equipment failed
+                            if (InputEquipment == "")
+                            {
+                                MsgBox_Error($"Failed to create new equipment from {TemplateEquipment}, please check your inputs");
+                            }
                         }
                         else
                         {
-                            return "ERROR";
+                            return false;
                         }
                     }
                 }
@@ -70,7 +94,14 @@ namespace Mobility_Setup_Tool
                 RefForm.Output_EQNum     = InputEquipment;
                 OutputEq.EquipmentNumber = InputEquipment;
 
-                if (!RefForm.SetStatus("Getting template equipment information", 0)) return "CANCEL";
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
+                _ = RefForm.SetStatus("Getting template equipment information", 0);
 
                 // Get template equipment info
                 Session.StartTransaction("IE03");
@@ -110,7 +141,14 @@ namespace Mobility_Setup_Tool
 
                 Session.EndTransaction();
 
-                if(!RefForm.SetStatus("Getting input equipment information", 0)) return "CANCEL";
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
+                _ = RefForm.SetStatus("Getting input equipment information", 0);
 
                 // Get input equipment info
                 Session.StartTransaction("IE03");
@@ -120,9 +158,10 @@ namespace Mobility_Setup_Tool
                 // Check we have moved to next screen
                 switch (Session.GetSessionInfo().ScreenNumber)
                 {
+                    // Not found
                     case 100:
                         MsgBox_Error("Could not access input equipment, is the equipment locked?");
-                        return "ERROR";
+                        return false;
 
                     default:
                         // Front tab
@@ -159,10 +198,18 @@ namespace Mobility_Setup_Tool
                 ChangeInfo.DistChan     = "";
                 ChangeInfo.ZAWA         = "";
 
-                if(!RefForm.SetStatus("Updating input equipment to template", 0)) return "CANCEL";
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
 
-                if (InputInfo.Description != TemplateInfo.Description) {
-                    if (MsgBox_Question($"Equipment description {InputInfo.Description} does not match template description {TemplateInfo.Description}. Do you want to change this to match the template?") == DialogResult.Yes)
+                _ = RefForm.SetStatus("Updating input equipment to template", 0);
+
+                if (InputInfo.Description != TemplateInfo.Description) 
+                {
+                    if (MsgBox_Question($"Equipment description does not match template description {Environment.NewLine}CURRENT: {InputInfo.Description}{Environment.NewLine}TEMPLATE: {TemplateInfo.Description}{Environment.NewLine}Do you want to change this to match the template?") == DialogResult.Yes)
                     {
                         ChangeInfo.Description  = TemplateInfo.Description;
                         OutputEq.Description    = TemplateInfo.Description;
@@ -175,23 +222,22 @@ namespace Mobility_Setup_Tool
                 }
 
                 // Check model number integrity
-                if(InputInfo.ModelNumber.Length > 4) { 
-                    if (InputInfo.ModelNumber.Substring(InputInfo.ModelNumber.Length-4, 4).Contains("x") || InputInfo.ModelNumber.Substring(InputInfo.ModelNumber.Length - 4, 4).Contains("X") || InputInfo.ModelNumber.Contains("??"))
+                if (InputInfo.ModelNumber.Substring(InputInfo.ModelNumber.Length-4, 4).Contains("x") || InputInfo.ModelNumber.Substring(InputInfo.ModelNumber.Length - 4, 4).Contains("X") || InputInfo.ModelNumber.Contains("??"))
+                {
+LBL_FAIL_MODEL:
+                    string Result = RefForm.GetInput("Model number is invalid please enter the correct number in the box below", InputInfo.ModelNumber, InputInfo.ModelNumber);
+
+                    if (Result == "")
                     {
-    LBL_FAIL_MODEL:
-                        string Result = RefForm.GetInput("Model number is invalid please enter the correct number in the box below", InputInfo.ModelNumber, InputInfo.ModelNumber);
+                        MsgBox_Error("Model number cannot be blank, please enter a model number");
+                        goto LBL_FAIL_MODEL;
+                    }
 
-                        if (Result == "")
-                        {
-                            MsgBox_Error("Model number cannot be blank, please enter a model number");
-                            goto LBL_FAIL_MODEL;
-                        }
+                    ChangeInfo.ModelNumber = Result;
+                    OutputEq.ModelNumber   = Result;
+                } 
 
-                        ChangeInfo.ModelNumber = Result;
-                        OutputEq.ModelNumber   = Result;
-                    } 
-                }
-
+                // Compare information found
                 if (InputInfo.CatProfile != TemplateInfo.CatProfile)
                 {
                     ChangeInfo.CatProfile = TemplateInfo.CatProfile;
@@ -221,10 +267,13 @@ namespace Mobility_Setup_Tool
                 Session.GetCTextField("RM63E-EQUNR").Text = InputInfo.EquipmentNumber;
                 Session.SendVKey(0);
 
-                if (ChangeInfo.Description != "") Session.GetTextField("ITOB-SHTXT").Text = ChangeInfo.Description;
+                // If user has asked to change description
+                if (ChangeInfo.Description != "") 
+                {
+                    Session.GetTextField("ITOB-SHTXT").Text = ChangeInfo.Description;
+                }
 
-                if (ChangeInfo.ModelNumber != "") Session.GetTextField("ITOB-TYPBZ").Text = ChangeInfo.ModelNumber;
-
+                Session.GetTextField("ITOB-MAPAR").Text = ChangeInfo.ModelNumber;
                 Session.GetTextField("ITOB-TYPBZ").Text = ChangeInfo.ModelNumber;
                 Session.GetTextField("ITOB-SERGE").Text = OutputEq.SerialNumber;
 
@@ -235,6 +284,13 @@ namespace Mobility_Setup_Tool
                 {
                     Session.GetCTextField("ITOB-RBNR").Text = ChangeInfo.CatProfile;
                     Session.SendVKey(0);
+                }
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
                 }
 
                 // Structure tab
@@ -264,6 +320,13 @@ namespace Mobility_Setup_Tool
                         Session.GetCTextField("ITOB-SUBMT").Text = "";
                         Session.GetTextField("ITOB-TIDNR").Text = "";
                     }
+                }
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
                 }
 
                 // Sales tab
@@ -303,45 +366,48 @@ namespace Mobility_Setup_Tool
                 Session.GetButton("btn[11]").Press();
                 Session.EndTransaction();
 
-
-                return "";
+                return true;
 
             }
                 else
             {
-                return "NOSAP";
+                return false;
             }
 
         }
 
-        public virtual AUTOSAP ReturnSession() {
+        public virtual AUTOSAP ReturnSession() 
+        {
             return Session;
         }
 
         //Check measurement point
         public virtual bool CheckMeasurementPoints(MobilityTask TaskInfo, BackgroundWorker Parent) 
         {
-            if (TaskInfo.CEL == "NON-STANDARD VARIATION" || TaskInfo.CEL == "NONE" || NewEquipment) return true;
+            if (TaskInfo.CEL == "NON-STANDARD VARIATION" || TaskInfo.CEL == "NONE" || NewEquipment) 
+            {
+                return true;
+            }
 
             if (Session.GetSession())
             {
                 // Import template measurements from SAP
-                RefForm.SetStatus("Getting template equipment measurements points", 0);
+                _ = RefForm.SetStatus("Getting template equipment measurements points", 0);
                 DataTable TemplateMeasures = Session.GetMeasurementPoints(TemplateInfo.EquipmentNumber);
 
                 // Check for cancel
                 if (Parent.CancellationPending)
                 {
-                    RefForm.SetStatus("User canceled", 0);
+                    _ = RefForm.SetStatus("User canceled", 0);
                     return false;
                 }
 
                 // Import input measurements from SAP
-                if(!RefForm.SetStatus("Getting input equipment measurement points", 0)) return false;
+                _ = RefForm.SetStatus("Getting input equipment measurement points", 0);
                 DataTable EquipmentMeasures = Session.GetMeasurementPoints(InputInfo.EquipmentNumber);
 
                 // Compare the measurements
-                if(!RefForm.SetStatus("Comparing input measurement points to template", 0)) return false;
+                _ = RefForm.SetStatus("Comparing input measurement points to template", 0);
                 List<MeasurementUpdate> MeasuresToChange = TableManager.CompareMeasurements(TemplateMeasures, EquipmentMeasures);
 
                 int Delete = 0, Change = 0, Create = 0;
@@ -349,25 +415,33 @@ namespace Mobility_Setup_Tool
                 // Sort numbers
                 for(int i = 0; i < MeasuresToChange.Count; i++)
                 {
-                    switch(MeasuresToChange[i].Action){
-                        case ACTION.CREATE: Create++; break;
-                        case ACTION.CHANGE: Change++; break;
+                    switch(MeasuresToChange[i].Action)
+                    {
+                        case ACTION.CREATE:     Create++; break;
+                        case ACTION.CHANGE:     Change++; break;
                         case ACTION.DEACTIVATE: Delete++; break;
 
                     }
                 }
 
+                // Ask user if they would like to fix measurements
                 if (MeasuresToChange.Count > 0)
                 {
-                    if (MsgBox_Question($"EQUIPMENT MEASUREMENT ASSESSMENT:{Environment.NewLine}{Environment.NewLine}{Create} measurements missing and need to be created{Environment.NewLine}{Change} measurements found but require correction{Environment.NewLine}{Delete} duplicate measurement will be de-activated{Environment.NewLine}{Environment.NewLine}Do you want to continue?") == DialogResult.No) {
+                    if (MsgBox_Question($"EQUIPMENT MEASUREMENT ASSESSMENT:{Environment.NewLine}" +
+                                        $"{Environment.NewLine}{Create} measurements missing and need to be created " +
+                                        $"{Environment.NewLine}{Change} measurements found but require correction" +
+                                        $"{Environment.NewLine}{Delete} duplicate measurement will be de-activated" +
+                                        $"{Environment.NewLine}{Environment.NewLine}Do you want to continue?") == DialogResult.No) 
+                    {
                         return false;
                     }
                 }
                 else
                 {
                     MsgBox_Normal($"No errors found when comparing measurement");
+
                     // Finish
-                    RefForm.SetStatus("", 0);
+                    _ = RefForm.SetStatus("", 0);
                     TemplateMeasures.Dispose();
                     EquipmentMeasures.Dispose();
                     return true;
@@ -377,8 +451,9 @@ namespace Mobility_Setup_Tool
                 for (int i = 0; i < MeasuresToChange.Count; i++)
                 {
                     // Check for cancel
-                    if (Parent.CancellationPending) {
-                        RefForm.SetStatus("User canceled", 0);
+                    if (Parent.CancellationPending) 
+                    {
+                        _ = RefForm.SetStatus("User canceled", 0);
                         return false;
                     }
 
@@ -419,7 +494,7 @@ namespace Mobility_Setup_Tool
                 }
 
                 // Finish
-                RefForm.SetStatus("", 0);
+                _ = RefForm.SetStatus("", 0);
                 TemplateMeasures.Dispose();
                 EquipmentMeasures.Dispose();
 
@@ -434,15 +509,24 @@ namespace Mobility_Setup_Tool
         // Create CEL
         public virtual bool CreateEntryList(MobilityTask TaskInfo, BackgroundWorker Parent) 
         {
-            bool OverwriteList = false;
-            string EntryListNumber = "";
+            // Variables
+            int     ErrorCount = 0;
+            string  KeyInput, KeyCEL;
+            bool    Matched;
+            bool    OverwriteList   = false;
+            string  EntryListNumber = "";
 
-            if(TaskInfo.CEL == "NON-STANDARD VARIATION" || TaskInfo.CEL == "NONE") return true;
+            switch (TaskInfo.CEL)
+            {
+                case "NON-STANDARD VARIATION": return true;
+                case "NONE":                   return true;
+            }
 
             if (Session.GetSession())
             {
                 // Create data table from CEL tab
-                if(!RefForm.SetStatus("Loading selected entry list from database", 0)) return false;
+                _ = RefForm.SetStatus("Loading selected entry list from database", 0);
+
                 DataTable CELTable = TableManager.ConvertExcelToDataTable_Name(RefForm.AppSettings.Defaults.CELPath, TaskInfo.CEL);
 
                 if (CELTable == null)
@@ -452,11 +536,11 @@ namespace Mobility_Setup_Tool
                 }
 
                 // Get measurement points
-                if(!RefForm.SetStatus("Getting input equipment measurement points", 0)) return false;
+                _ = RefForm.SetStatus("Getting input equipment measurement points", 0);
                 DataTable InputMeasures = Session.GetMeasurementPoints(InputInfo.EquipmentNumber);
 
                 // Create output table
-                if(!RefForm.SetStatus("Building entry list data table into memory", 0)) return false;
+                _ = RefForm.SetStatus("Building entry list data table into memory", 0);
                 DataTable OutputEntryList = new DataTable();
                 DataTable ErrorTable = new DataTable();
 
@@ -467,10 +551,12 @@ namespace Mobility_Setup_Tool
                 ErrorTable.Columns.Add("Position");
                 ErrorTable.Columns.Add("Description");
 
-                // Variables
-                int ErrorCount = 0;
-                string KeyInput, KeyCEL;
-                bool Matched;
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
 
                 // Find measurements
                 foreach (DataRow CELRow in CELTable.Rows)
@@ -509,7 +595,7 @@ namespace Mobility_Setup_Tool
                     {
                         DataRow ErrorRow = ErrorTable.NewRow();
 
-                        ErrorRow["Position"] = CELRow["MeasPosition"].ToString();
+                        ErrorRow["Position"]    = CELRow["MeasPosition"].ToString();
                         ErrorRow["Description"] = CELRow["MeasPoint Description"].ToString();
 
                         ErrorTable.Rows.Add(ErrorRow);
@@ -517,6 +603,13 @@ namespace Mobility_Setup_Tool
                         ErrorCount++;
                     }
 
+                }
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
                 }
 
                 // Errors found
@@ -535,8 +628,15 @@ namespace Mobility_Setup_Tool
                     return false;
                 }
 
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
                 // Check for existing lists
-                if(!RefForm.SetStatus("Checking for existing entry lists", 0)) return false;
+                _ = RefForm.SetStatus("Checking for existing entry lists", 0);
 
                 Session.StartTransaction("IK33");
                 Session.GetCTextField("IMEL-MELNR").SetFocus();
@@ -577,7 +677,9 @@ namespace Mobility_Setup_Tool
                     Session.SendVKey(0);
                 }
 
+                // MAximize SAP screen to get most lines possible
                 Session.GetWindow().Maximize();
+
                 if (TaskInfo.Name.Length > 40)
                 {
                     Session.GetTextField("IMEL-MELTX").Text = TaskInfo.Name.Substring(0, 39);
@@ -587,22 +689,20 @@ namespace Mobility_Setup_Tool
                     Session.GetTextField("IMEL-MELTX").Text = TaskInfo.Name;
                 }
 
-                GuiTableControl Table = Session.GetTable("SAPLIMR7ERFALIST");
+                GuiTableControl Table   = Session.GetTable("SAPLIMR7ERFALIST");
 
-                int MaxRow = 0;
-                int Interval = (OutputEntryList.Rows.Count) / 100;
+                int MaxRow              = 0;
+                int Interval            = (OutputEntryList.Rows.Count) / 100;
+                int VisRows             = Table.VisibleRowCount - 2; // -1 creates problem in CEL upload, so we use visible rows minus 2
 
-                Table       = Session.GetTable("SAPLIMR7ERFALIST");
-                int VisRows = Table.VisibleRowCount - 1;
-
-                RefForm.SetStatus("Uploading entry list..", 0);
+                _ = RefForm.SetStatus("Uploading entry list..", 0);
 
                 for (int i = 0; i < OutputEntryList.Rows.Count; i++)
                 {
                     // Check for cancel
                     if (Parent.CancellationPending)
                     {
-                        RefForm.SetStatus("User canceled", 0);
+                        _ = RefForm.SetStatus("User canceled", 0);
                         return false;
                     }
 
@@ -628,7 +728,7 @@ namespace Mobility_Setup_Tool
                 Session.StartTransaction("IK32");
                 RefForm.Output_CELNum = Session.GetCTextField("IMEL-MELNR").Text;
 
-                RefForm.SetStatus("Upload completed", 0);
+                _ = RefForm.SetStatus("Upload completed", 0);
 
                 // Release memory
                 CELTable.Dispose();
@@ -656,7 +756,14 @@ namespace Mobility_Setup_Tool
                 StartDate = RefForm.GetBasicStartDate.AddMonths(-Convert.ToInt32(RefForm.AppSettings.WarrantyMonthLimit));
                 EndDate = RefForm.GetBasicStartDate;
 
-                if(!RefForm.SetStatus($"Checking for previous work orders in the last {RefForm.AppSettings.WarrantyMonthLimit} months..", 0)) return false;
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
+                _ = RefForm.SetStatus($"Checking for previous work orders in the last {RefForm.AppSettings.WarrantyMonthLimit} months..", 0);
 
                 Session.StartTransaction("IW73");
                 Session.SetVariant("/FSDS-25-32");
@@ -709,17 +816,29 @@ namespace Mobility_Setup_Tool
         }
 
         // Create notification
-        public virtual bool CreateNotification(MobilityTask TaskInfo, MobilityEquipment SetupEquipment, MobilityServiceOrder SOInfo, BackgroundWorker Parent) 
+        public virtual bool CreateNotification(MobilityTask             TaskInfo, 
+                                               MobilityEquipment        SetupEquipment,
+                                               MobilityServiceOrder     SOInfo, 
+                                               BackgroundWorker         Parent) 
         {
 
             if (Session.GetSession())
             {
-                if(!RefForm.SetStatus("Creating notification", 0)) return false;
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
+                _ = RefForm.SetStatus("Creating notification", 0);
 
                 Session.StartTransaction("IW51");
-                if (TaskInfo.WarrantyClaim) {
+                if (TaskInfo.WarrantyClaim)
+                {
                     Session.GetCTextField("RIWO00-QMART").Text = "Z3";
-                }else{
+                }else
+                {
                     Session.GetCTextField("RIWO00-QMART").Text = "Z8";
                 }
 
@@ -730,10 +849,12 @@ namespace Mobility_Setup_Tool
                 string OutputDesc;
 
                 // Truncate task description if longer than 40 characters
-                if (TaskInfo.Name.Length > 40) {
+                if (TaskInfo.Name.Length > 40) 
+                {
                     OutputDesc = TaskInfo.Name.Remove(40, TaskInfo.Name.Length - 40);
                 }
-                else {
+                else 
+                {
                     OutputDesc = TaskInfo.Name;
                 }
 
@@ -744,6 +865,13 @@ namespace Mobility_Setup_Tool
                 Session.GetComboBox("VIQMEL-PRIOK").Key = SOInfo.Priority.Substring(0,1);
 
                 Session.ClearErrors(30, true);
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
 
                 // Reset reference object view
                 ((GuiMenu)Session.GetFormById("wnd[0]/mbar/menu[3]/menu[9]/menu[0]")).Select();
@@ -781,6 +909,13 @@ namespace Mobility_Setup_Tool
                 Session.GetCTextField("RILA0-ARBPL").Text = TaskInfo.Workcentre;
                 Session.GetCTextField("ILOA-VKORG").Text = RefForm.AppSettings.Organization;
 
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
                 Session.ClearErrors(30, true);
 
                 Session.GetCTextField("ILOA-VTWEG").Text = RefForm.AppSettings.Distribution;
@@ -800,6 +935,13 @@ namespace Mobility_Setup_Tool
                 Session.GetTextField("ILOA-EQFNR").Text = SOInfo.ExternalReference != "" ? SOInfo.ExternalReference : "N/A";
 
                 Session.GetTab(@"10\TAB01").Select();
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
 
                 // Reset data after location
                 Session.GetCTextField("VIQMEL-IWERK").Text = RefForm.AppSettings.Plant;
@@ -823,16 +965,31 @@ namespace Mobility_Setup_Tool
         }
 
         // Create service order
-        public virtual bool CreateServiceOrder(MobilityTask TaskInfo, MobilityEquipment SetupEquipment, MobilityServiceOrder SOInfo, List<SAPComponent> Components, BackgroundWorker Parent) {
+        public virtual bool CreateServiceOrder(MobilityTask             TaskInfo, 
+                                               MobilityEquipment        SetupEquipment,
+                                               MobilityServiceOrder     SOInfo, 
+                                               List<SAPComponent>       Components, 
+                                               BackgroundWorker         Parent) 
+        {
             if (Session.GetSession())
             {
-                if (!RefForm.SetStatus("Creating service order", 0)) return false;
+                _ = RefForm.SetStatus("Creating service order", 0);
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
 
                 Session.GetButton("*VIQMEL-AUFNR").Press();
 
-                if (!TaskInfo.WarrantyClaim){
+                if (!TaskInfo.WarrantyClaim)
+                {
                     ((GuiCTextField)Session.GetFormById("wnd[1]/usr/ctxtRIWO00-AUART")).Text = "ZM12";
-                } else {
+                } 
+                else 
+                {
                     ((GuiCTextField)Session.GetFormById("wnd[1]/usr/ctxtRIWO00-AUART")).Text = "ZM32";
                 }
                 ((GuiButton)Session.GetFormById("wnd[1]/tbar[0]/btn[0]")).Press();
@@ -843,11 +1000,21 @@ namespace Mobility_Setup_Tool
                 Session.SendVKey(0); 
                 Session.SendVKey(0);
 
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
                 // Set ZDI1
-                if (TaskInfo.WarrantyClaim) {
+                if (TaskInfo.WarrantyClaim) 
+                {
                     Session.GetCTextField("PMSDO-MATNR").Text = SetupEquipment.ZDI1;
                     Session.GetCTextField("CAUFVD-BEMOT").Text = "02";
-                }else{
+                }
+                else
+                {
                     Session.GetCTextField("PMSDO-MATNR").Text = SetupEquipment.ZDI1;
                 }
 
@@ -877,12 +1044,26 @@ namespace Mobility_Setup_Tool
 
                 Session.GetTab("ILOA").Select();
 
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
                 Session.GetCTextField("ILOA-SWERK").Text    = RefForm.AppSettings.Plant;
                 Session.GetCTextField("ILOA-STORT").Text    = RefForm.AppSettings.Location;
                 Session.GetCTextField("RILA0-ARBPL").Text   = TaskInfo.Workcentre;
                 Session.GetTextField("ILOA-EQFNR").Text     = SOInfo.ExternalReference != "" ? SOInfo.ExternalReference : "N/A";
 
                 Session.ClearErrors(30, true);
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
 
                 // Add tasklist
                 if (TaskInfo.Group != "" || TaskInfo.CEL != "NON-STANDARD VARIATION")
@@ -916,15 +1097,25 @@ namespace Mobility_Setup_Tool
                 if (Components == null)
                 {
                     Session.GetTab("MUEB").Select();
-                
+
+                    // Check for cancel
+                    if (Parent.CancellationPending)
+                    {
+                        _ = RefForm.SetStatus("User canceled", 0);
+                        return false;
+                    }
+
                     // Set to B03
                     if (MsgBox_Question("Would you like to change the component's store location?") == DialogResult.Yes){
 
                         using SelectNewStore NewStoreDialog = new SelectNewStore(RefForm);
                         NewStoreDialog.ShowDialog();
-                        Session.ChangeStore(NewStoreDialog.StoreLoc, NewStoreDialog.SpecStock, Parent);
-                    }
 
+                        if (NewStoreDialog.RunChangeStore)
+                        { 
+                            Session.ChangeStore(NewStoreDialog.StoreLoc, NewStoreDialog.SpecStock, Parent);
+                        }
+                    }
                 }
                     else
                 {
@@ -995,6 +1186,13 @@ namespace Mobility_Setup_Tool
                         CurRow++;
 
                     }
+                }
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    _ = RefForm.SetStatus("User canceled", 0);
+                    return false;
                 }
 
                 // Set settlement rule for warranty

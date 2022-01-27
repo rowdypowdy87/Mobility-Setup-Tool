@@ -29,9 +29,12 @@ namespace Mobility_Setup_Tool
 
         private void InputBox_Load(object sender, EventArgs e)
         {
-            TitleBar_PNL.BackColor = RefForm.ThemeController.GetBordercolor();
-            BackColor = RefForm.ThemeController.GetBackcolor();
+            TitleBar_PNL.BackColor  = RefForm.ThemeController.GetBordercolor();
+            BackColor               = RefForm.ThemeController.GetBackcolor();
             TBInformation.BackColor = RefForm.ThemeController.GetBackcolor();
+
+            // Manually centre the form to MainForm
+            Location = new Point((RefForm.Location.X + RefForm.Width / 2) - Width / 2, (RefForm.Location.Y + RefForm.Height / 2) - Height / 2);
         }
 
         private void InputBox_Paint(object sender, PaintEventArgs e)

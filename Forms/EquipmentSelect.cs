@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
+using static System.Windows.Forms.ListView;
+
 namespace Mobility_Setup_Tool
 {
     public partial class EquipmentSelect : Form
@@ -166,6 +168,24 @@ namespace Mobility_Setup_Tool
             {
                 Close();
             }
+        }
+
+        // I need to know the last item checked
+        private ListViewItem lastItemChecked;
+
+        private void EqFound_LV_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            // if we have the lastItem set as checked, and it is different
+            // item than the one that fired the event, uncheck it
+            if (lastItemChecked != null && lastItemChecked.Checked
+                && lastItemChecked != EqFound_LV.Items[e.Index])
+            {
+                // uncheck the last item and store the new one
+                lastItemChecked.Checked = false;
+            }
+
+            // store current item
+            lastItemChecked = EqFound_LV.Items[e.Index];
         }
     }
 }

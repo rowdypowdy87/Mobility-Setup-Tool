@@ -643,7 +643,7 @@ namespace Mobility_Setup_Tool
                 }
             }
 
-            return false;
+            return true;
         }
 
         // Set variant
@@ -769,9 +769,9 @@ namespace Mobility_Setup_Tool
                 ((GuiTextField)SapSession.FindById("wnd[1]/usr/txtRIMR0-MRMAC")).Text = ExistingMeasurement.UpperLimit;
                 ((GuiTextField)SapSession.FindById("wnd[1]/usr/txtRIMR0-MRMIC")).Text = ExistingMeasurement.LowerLimit;
                 ((GuiButton)SapSession.FindById("wnd[1]/tbar[0]/btn[0]")).Press();
+
                 // Save
                 GetButton("btn[11]").Press();
-
             }
         }
 
@@ -843,8 +843,8 @@ namespace Mobility_Setup_Tool
                             string[] ToAdd = new string[3];
 
                             ToAdd[0] = EqTable.GetCellValue(i, "EQUNR");
-                            ToAdd[1] = EqTable.GetCellValue(i, "EQKTX");
-                            ToAdd[2] = EqTable.GetCellValue(i, "SERNR");
+                            ToAdd[2] = EqTable.GetCellValue(i, "EQKTX");
+                            ToAdd[1] = EqTable.GetCellValue(i, "SERNR");
 
                             ToFind.EqFound_LV.Items.Add(new ListViewItem(ToAdd));
 

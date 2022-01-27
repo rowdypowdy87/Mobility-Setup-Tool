@@ -167,13 +167,16 @@ namespace Mobility_Setup_Tool
         }
 
         // Convert from text
-        public DataTable ControlTexttoDataTable(string path) {
+        public DataTable ControlTexttoDataTable(string path) 
+        {
             string Text;
 
-            try {
+            try 
+            {
                 Text = File.ReadAllText(path);
             }
-            catch (Exception ex) {
+            catch (Exception ex) 
+            {
                 MsgBoxs.MsgBox_Error(ex.Message); return null;
             }
 
@@ -197,49 +200,24 @@ namespace Mobility_Setup_Tool
             // Split text into rows with columns
             string[] TextData = Text.Split("|");
 
-            for (int i = 15; i < TextData.Length; i += 14) {
+            for (int i = 15; i < TextData.Length; i += 14) 
+            {
                 // Create and add new row
                 DataRow NewRow = Export.NewRow();
-                string chk;
 
-                chk = TextData[i].Trim();
-                if (!ContainsChars(chk)) { NewRow["Measurement Point"] = ""; } else { NewRow["Measurement Point"] = chk; }
-
-                chk = TextData[i + 1].Trim();
-                if (!ContainsChars(chk)) { NewRow["Equipment"] = ""; } else { NewRow["Equipment"] = chk; }
-
-                chk = TextData[i + 2].Trim();
-                if (!ContainsChars(chk)) { NewRow["Position"] = ""; } else { NewRow["Position"] = chk; }
-
-                chk = TextData[i + 3].Trim();
-                if (!ContainsChars(chk)) { NewRow["Description"] = ""; } else { NewRow["Description"] = chk; }
-
-                chk = TextData[i + 4].Trim();
-                if (!ContainsChars(chk)) { NewRow["Characteristic Name"] = ""; } else { NewRow["Characteristic Name"] = chk; }
-
-                chk = TextData[i + 5].Trim();
-                if (!ContainsChars(chk)) { NewRow["Decimal Places"] = ""; } else { NewRow["Decimal Places"] = chk; }
-
-                chk = TextData[i + 6].Trim();
-                if (!ContainsChars(chk)) { NewRow["Code Group"] = ""; } else { NewRow["Code Group"] = chk; }
-
-                chk = TextData[i + 7].Trim();
-                if (!ContainsChars(chk)) { NewRow["Target Value"] = ""; } else { NewRow["Target Value"] = chk; }
-
-                chk = TextData[i + 8].Trim();
-                if (!ContainsChars(chk)) { NewRow["Lower Limit"] = ""; } else { NewRow["Lower Limit"] = chk; }
-
-                chk = TextData[i + 9].Trim();
-                if (!ContainsChars(chk)) { NewRow["Upper Limit"] = ""; } else { NewRow["Upper Limit"] = chk; }
-
-                chk = TextData[i + 10].Trim();
-                if (!ContainsChars(chk)) { NewRow["Text"] = ""; } else { NewRow["Text"] = chk; }
-
-                chk = TextData[i + 12].Trim();
-                if (!ContainsChars(chk)) { NewRow["ValueCode Sufficient"] = ""; } else { NewRow["ValueCode Sufficient"] = chk; }
-
-                chk = TextData[i + 11].Trim();
-                if (!ContainsChars(chk)) { NewRow["Is Counter"] = ""; } else { NewRow["Is Counter"] = chk; }
+                NewRow["Measurement Point"]     = !ContainsChars(TextData[i].Trim()) ? ""       : TextData[i].Trim();
+                NewRow["Equipment"]             = !ContainsChars(TextData[i + 1].Trim()) ? ""   : TextData[i + 1].Trim();
+                NewRow["Position"]              = !ContainsChars(TextData[i + 2].Trim()) ? ""   : TextData[i + 2].Trim();
+                NewRow["Description"]           = !ContainsChars(TextData[i + 3].Trim()) ? ""   : TextData[i + 3].Trim();
+                NewRow["Characteristic Name"]   = !ContainsChars(TextData[i + 4].Trim()) ? ""   : TextData[i + 4].Trim();
+                NewRow["Decimal Places"]        = !ContainsChars(TextData[i + 5].Trim()) ? ""   : TextData[i + 5].Trim();
+                NewRow["Code Group"]            = !ContainsChars(TextData[i + 6].Trim()) ? ""   : TextData[i + 6].Trim();
+                NewRow["Target Value"]          = !ContainsChars(TextData[i + 7].Trim()) ? ""   : TextData[i + 7].Trim();
+                NewRow["Lower Limit"]           = !ContainsChars(TextData[i + 8].Trim()) ? ""   : TextData[i + 8].Trim();
+                NewRow["Upper Limit"]           = !ContainsChars(TextData[i + 9].Trim()) ? ""   : TextData[i + 9].Trim();
+                NewRow["Text"]                  = !ContainsChars(TextData[i + 10].Trim()) ? ""  : TextData[i + 10].Trim();
+                NewRow["ValueCode Sufficient"]  = !ContainsChars(TextData[i + 11].Trim()) ? ""  : TextData[i + 11].Trim();
+                NewRow["Is Counter"]            = !ContainsChars(TextData[i + 12].Trim()) ? ""  : TextData[i + 12].Trim();
 
                 // Add data
                 Export.Rows.Add(NewRow);
@@ -269,22 +247,22 @@ namespace Mobility_Setup_Tool
             for (int i = 0; i < Input.Rows.Count; i++) 
             {
                 // Create instances
-                MobilityMeasurement MeasToAdd = new MobilityMeasurement();
-
-                // Build measurement point
-                MeasToAdd.Number            = Input.Rows[i]["Measurement Point"].ToString();
-                MeasToAdd.Position          = Input.Rows[i]["Position"].ToString();
-                MeasToAdd.Description       = Input.Rows[i]["Description"].ToString();
-                MeasToAdd.CharCode          = Input.Rows[i]["Characteristic Name"].ToString();
-                MeasToAdd.Decimals          = Input.Rows[i]["Decimal Places"].ToString();
-                MeasToAdd.CodeGroup         = Input.Rows[i]["Code Group"].ToString();
-                MeasToAdd.TargetValue       = Input.Rows[i]["Target Value"].ToString();
-                MeasToAdd.TargetText        = Input.Rows[i]["Target Value"].ToString();
-                MeasToAdd.LowerLimit        = Input.Rows[i]["Lower Limit"].ToString();
-                MeasToAdd.UpperLimit        = Input.Rows[i]["Upper Limit"].ToString();
-                MeasToAdd.TargetText        = Input.Rows[i]["Text"].ToString();
-                MeasToAdd.IsCounter         = Input.Rows[i]["Is Counter"].ToString();
-                MeasToAdd.IsValueCodeSuff   = Input.Rows[i]["ValueCode Sufficient"].ToString();
+                MobilityMeasurement MeasToAdd = new MobilityMeasurement
+                {
+                    // Build measurement point
+                    Number              = Input.Rows[i]["Measurement Point"].ToString(),
+                    Position            = Input.Rows[i]["Position"].ToString(),
+                    Description         = Input.Rows[i]["Description"].ToString(),
+                    CharCode            = Input.Rows[i]["Characteristic Name"].ToString(),
+                    Decimals            = Input.Rows[i]["Decimal Places"].ToString(),
+                    CodeGroup           = Input.Rows[i]["Code Group"].ToString(),
+                    TargetValue         = Input.Rows[i]["Target Value"].ToString(),
+                    LowerLimit          = Input.Rows[i]["Lower Limit"].ToString(),
+                    UpperLimit          = Input.Rows[i]["Upper Limit"].ToString(),
+                    TargetText          = Input.Rows[i]["Text"].ToString(),
+                    IsCounter           = Input.Rows[i]["Is Counter"].ToString(),
+                    IsValueCodeSuff     = Input.Rows[i]["ValueCode Sufficient"].ToString()
+                };
 
                 // Build measurement update structure
                 ReturnVal.Add(MeasToAdd);
