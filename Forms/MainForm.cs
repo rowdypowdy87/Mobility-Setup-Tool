@@ -188,7 +188,8 @@ namespace Mobility_Setup_Tool
         }
 
         // Cross threading methods for controls
-        public string GetText(dynamic control) {
+        public string GetText(dynamic control) 
+        {
             string strFolderName = "";
             control.Invoke((MethodInvoker)delegate { strFolderName = control.Text; });
             return strFolderName;
@@ -254,18 +255,36 @@ namespace Mobility_Setup_Tool
             return value;
         }
 
-        public SETUP_MODULE GetModuleNumber(string input)
+        public SETUP_MODULE GetModuleNumber(string input, MobilityTask Task)
         {
-            return input switch
+            if(Task.Name != "")
+            { 
+                return input switch
+                {
+                    "OT_STANDARD_ZM12"  => SETUP_MODULE.OT_STANDARD_ZM12,
+                    "OT_NRCCO_ZM03"     => SETUP_MODULE.OT_NRCCO_ZM03,
+                    "OT_STANDARD_ZM25"  => SETUP_MODULE.OT_STANDARD_ZM25,
+                    _                   => SETUP_MODULE.UKNOWN,
+                };
+            }
+                else
             {
-                "OT_STANDARD_ZM12"  => SETUP_MODULE.OT_STANDARD_ZM12,
-                "OT_NRCCO_ZM03"     => SETUP_MODULE.OT_NRCCO_ZM03,
-                "OT_STANDARD_ZM25"  => SETUP_MODULE.OT_STANDARD_ZM25,
-                _                   => SETUP_MODULE.UKNOWN,
-            };
+                SelectModule Window = new SelectModule(this);
+
+                Window.ShowDialog();
+
+                return Window.Modules_CMB.Text switch
+                {
+                    "ZM12" => SETUP_MODULE.OT_STANDARD_ZM12,
+                    "ZM03" => SETUP_MODULE.OT_NRCCO_ZM03,
+                    "ZM25" => SETUP_MODULE.OT_STANDARD_ZM25,
+                    _ => SETUP_MODULE.UKNOWN,
+                };
+            }
         }
 
-        public DateTime GetDateTime(DateTimePicker control) {
+        public DateTime GetDateTime(DateTimePicker control) 
+        {
             DateTime getValue = DateTime.Now;
 
             control.Invoke((MethodInvoker)delegate { getValue = control.Value; });
@@ -294,8 +313,9 @@ namespace Mobility_Setup_Tool
                 return false;
             }
 
+
             if (Full)
-            { 
+            {
                 // Check variations are loaded
                 if (GetItems(Variations_LB) <= 0)
                 {
@@ -470,16 +490,20 @@ namespace Mobility_Setup_Tool
         }
 
         // Variation setup
-        private void VarSetup(MobilityTask SelectedTask, MobilityServiceOrder OrderInfo, MobilityEquipment SelectedEquipment, string NotificationNumber, List<SAPComponent> Components)
+        private void VarSetup(MobilityTask              SelectedTask, 
+                              MobilityServiceOrder      OrderInfo,
+                              MobilityEquipment         SelectedEquipment, 
+                              string                    NotificationNumber, 
+                              List<SAPComponent>        Components)
         {
             // Check fields are filled
-            switch (GetModuleNumber(SelectedTask.Module))
+            switch (GetModuleNumber(SelectedTask.Module, SelectedTask))
             {
                 // Standard setup
                 case SETUP_MODULE.OT_STANDARD_ZM12:
 
                     Output_SetupMod = "OT_STANDARD_ZM12";
-                    SetupModule = new Module_ZM12();
+                    SetupModule     = new Module_ZM12();
                     SetupModule.SetMainForm(this);
 
                     break;
@@ -488,7 +512,7 @@ namespace Mobility_Setup_Tool
                 case SETUP_MODULE.OT_STANDARD_ZM25:
 
                     Output_SetupMod = "OT_STANDARD_ZM25";
-                    SetupModule = new Module_ZM25();
+                    SetupModule     = new Module_ZM25();
                     SetupModule.SetMainForm(this);
 
                     break;
@@ -497,7 +521,7 @@ namespace Mobility_Setup_Tool
                 case SETUP_MODULE.OT_NRCCO_ZM03:
 
                     Output_SetupMod = "OT_NRCCO_ZM03";
-                    SetupModule = new Module_NRENGINECCO();
+                    SetupModule     = new Module_NRENGINECCO();
                     SetupModule.SetMainForm(this);
 
                     break;
@@ -511,24 +535,14 @@ namespace Mobility_Setup_Tool
             // Equipment setup
             if (SelectedEquipment.UpdateToTemplate)
             {
-                switch (SetupModule.InitialEquipmentCheck(SelectedEquipment.TemplateNumber,
-                                                            SelectedEquipment.SerialNumber.ToUpper(),
-                                                            SelectedEquipment.ZAWA,
-                                                            SelectedEquipment.FunctionLoc,
-                                                            SingleSetup_BW,
-                                                            ref SelectedEquipment))
+                if(!SetupModule.InitialEquipmentCheck(SelectedEquipment.TemplateNumber,
+                                                      SelectedEquipment.SerialNumber.ToUpper(),
+                                                      SelectedEquipment.ZAWA,
+                                                      SelectedEquipment.FunctionLoc,
+                                                      SingleSetup_BW,
+                                                  ref SelectedEquipment))
                 {
-                    case "CANCEL":
-                        MsgBox_Normal("User cancelled tool");
-                        return;
-
-                    case "ERROR":
-                        MsgBox_Error("Failed intial equipment check, please verify data & SAP connection and try again");
-                        return;
-
-                    case "NOSAP":
-                        MsgBox_Error("Please ensure SAP is running to continue");
-                        return;
+                    MsgBox_Error("Initial equipment check has failed");
                 }
             }
             else
@@ -539,23 +553,41 @@ namespace Mobility_Setup_Tool
             // Check measurements
             if (SetupModule.CheckMeasurementPoints(SelectedTask, SingleSetup_BW) == false)
             {
-                if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
+                if (SingleSetup_BW.CancellationPending) {
+                    MsgBox_Normal("User cancelled");
+                }
                 return;
             }
 
             // Create CEL
-            if (SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW) == false)
+            if (SelectedTask.CEL != "NONE" && SelectedTask.CEL != "NON-STANDARD VARIATION" && SelectedTask.CEL != null)
+            { 
+                if (SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW) == false)
+                {
+                    if (SingleSetup_BW.CancellationPending) {
+                        MsgBox_Normal("User cancelled");
+                    }
+                    return;
+                }
+            }
+                else
             {
-                if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
-                return;
+                // Only if we are doing equipment check, stop here is no CEL is required
+                if(!RunFullSetup)
+                { 
+                    MsgBox_Normal("There is no template CEL for this tasklist, equipment check complete!");
+                    return;
+                }
             }
 
             if(RunFullSetup)
             {
                 // Get long text
-                GetLongText LText = new GetLongText(this);
+                GetLongText LText = new GetLongText(this)
+                {
+                    LongText = LongText_TB.Text
+                };
 
-                LText.LongText = SelectedTask.LongText;
                 LText.ShowDialog();
 
                 SelectedTask.LongText = LText.LongText;
@@ -563,9 +595,15 @@ namespace Mobility_Setup_Tool
                 // Check notification and create service order
                 if (SetupModule.CreateServiceOrderFromNotification(SelectedTask, SelectedEquipment, OrderInfo, Components, NotificationNumber, SingleSetup_BW) == false)
                 {
-                    if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
+                    if (SingleSetup_BW.CancellationPending) {
+                        MsgBox_Normal("User cancelled");
+                    }
                     return;
                 }
+            }
+            else
+            {
+                MsgBox_Normal("Equipment setup completed successfully!");
             }
         }
 
@@ -573,7 +611,7 @@ namespace Mobility_Setup_Tool
         private void Setup(MobilityTask SelectedTask, MobilityServiceOrder OrderInfo, MobilityEquipment SelectedEquipment, List<SAPComponent> Components)
         {
             // Check fields are filled
-            switch (GetModuleNumber(SelectedTask.Module)) 
+            switch (GetModuleNumber(SelectedTask.Module, SelectedTask)) 
             {
                 // Standard setup
                 case SETUP_MODULE.OT_STANDARD_ZM12:
@@ -612,24 +650,14 @@ namespace Mobility_Setup_Tool
             // Equipment setup
             if (SelectedEquipment.UpdateToTemplate)
             {
-                switch (SetupModule.InitialEquipmentCheck(SelectedEquipment.TemplateNumber,
-                                                            SelectedEquipment.SerialNumber.ToUpper(),
-                                                            SelectedEquipment.ZAWA,
-                                                            SelectedEquipment.FunctionLoc,
-                                                            SingleSetup_BW,
-                                                            ref SelectedEquipment)) 
+                if (!SetupModule.InitialEquipmentCheck(SelectedEquipment.TemplateNumber,
+                                                       SelectedEquipment.SerialNumber.ToUpper(),
+                                                       SelectedEquipment.ZAWA,
+                                                       SelectedEquipment.FunctionLoc,
+                                                       SingleSetup_BW,
+                                                   ref SelectedEquipment)) 
                 {
-                    case "CANCEL":
-                        MsgBox_Normal("User cancelled tool");
-                        return;
-
-                    case "ERROR":
-                        MsgBox_Error("Failed intial equipment check, please verify data & SAP connection and try again");
-                        return;
-
-                    case "NOSAP":
-                        MsgBox_Error("Please ensure SAP is running to continue");
-                        return;
+                    MsgBox_Error("Initial equipment check has failed");
                 }
             } 
             else 
@@ -759,6 +787,8 @@ namespace Mobility_Setup_Tool
             //QuoteOutput         = new QuoteConsole(this);
             //QuoteOutput.Hide();
 
+            
+
             // Set defaults
             AppSettings.LoadSettings();
 
@@ -768,6 +798,9 @@ namespace Mobility_Setup_Tool
             PMActivityType_CB.Text          = AppSettings.ADefaults.PmActivityType;
             Priority_CB.Text                = AppSettings.ADefaults.Priority;
             ExternalReference_TB.Text       = AppSettings.ADefaults.ExternalReference;
+            VarPMActivityType_CB.Text       = AppSettings.ADefaults.PmActivityType;
+            VarSOPriority_CB.Text           = AppSettings.ADefaults.Priority;
+            VarExternalReference_TB.Text    = AppSettings.ADefaults.ExternalReference;
 
             // Theme settings
             ThemeController.AddControls(CloseButton_LBL, "border");
@@ -803,7 +836,8 @@ namespace Mobility_Setup_Tool
                 List<MobilityTask> LeadTasks = DatabaseController.GetTasks(true);
 
                 // Search for matching equipment name in task data table and add to task list combo
-                for (int Row = 0; Row < LeadTasks.Count(); Row++) {
+                for (int Row = 0; Row < LeadTasks.Count(); Row++) 
+                {
                     if (LeadTasks[Row].Equipment1 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
                     if (LeadTasks[Row].Equipment2 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
                     if (LeadTasks[Row].Equipment3 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
@@ -814,7 +848,6 @@ namespace Mobility_Setup_Tool
                     if (LeadTasks[Row].Equipment8 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
                     if (LeadTasks[Row].Equipment9 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
                     if (LeadTasks[Row].Equipment10 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
-
                 }
             }
         }
@@ -914,14 +947,14 @@ namespace Mobility_Setup_Tool
             MobilityTask         InputTask  = new MobilityTask();
 
             // Reset outputs
-            Output_CELNum = "";
-            Output_EQDesc = "";
-            Output_EQNum = "";
-            Output_Notification = "";
-            Output_ServiceOrder = "";
-            Output_SetupMod = "";
-            Output_WBS = "";
-            Output_WorkCenter = "";
+            Output_CELNum           = "";
+            Output_EQDesc           = "";
+            Output_EQNum            = "";
+            Output_Notification     = "";
+            Output_ServiceOrder     = "";
+            Output_SetupMod         = "";
+            Output_WBS              = "";
+            Output_WorkCenter       = "";
 
             switch (SetupType) 
             {
@@ -975,7 +1008,10 @@ namespace Mobility_Setup_Tool
                         }
 
                         // Verify data and run setup
-                        if (VerifyInputs(ref InputEq, ref InputSO)) { Setup(InputTask, InputSO, InputEq, null);  }
+                        if (VerifyInputs(ref InputEq, ref InputSO)) 
+                        { 
+                            Setup(InputTask, InputSO, InputEq, null);    
+                        }
                     }
 
                     break;
@@ -986,7 +1022,7 @@ namespace Mobility_Setup_Tool
                     {
                         // Get task info
                         InputTask                   = DatabaseController.GetTask_ByName(GetText(VarTaskType_CB),false);
-                        InputTask.WarrantyClaim = false;
+                        InputTask.WarrantyClaim     = false;
 
                         // Get input equipment info
                         InputEq.TemplateNumber      = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).EquipmentNumber;
@@ -1020,11 +1056,17 @@ namespace Mobility_Setup_Tool
                         }
 
                         // Full setup
-                        if(RunFullSetup)
-                        { 
+                        if (RunFullSetup)
+                        {
                             List<SAPComponent> Components = null;
 
-                            if (MsgBox_Question("Do you want to add components to this variation?") == DialogResult.Yes) Components = GetParts(GetText(VarTaskType_CB));
+                            if (InputTask.Group == "")
+                            { 
+                                if (MsgBox_Question("Do you want to add components to this variation?") == DialogResult.Yes) 
+                                {
+                                    Components = GetParts(GetText(VarTaskType_CB));
+                                }
+                            }
 
                             VarSetup(InputTask, InputSO, InputEq, Variations[GetCBIndex(Variations_LB)].Number, Components);
                         }
@@ -1135,18 +1177,50 @@ namespace Mobility_Setup_Tool
 
 
         // Maximize button label mouse leave event 
-        public virtual void MaxButton_LBL_MouseLeave(object sender, EventArgs e) { MaximizeButton_LBL.BackColor = ThemeController.GetBordercolor();}
+        public virtual void MaxButton_LBL_MouseLeave(object sender, EventArgs e) 
+        { 
+            MaximizeButton_LBL.BackColor = ThemeController.GetBordercolor();
+        }
 
-
-        // Main form paint event 
-        public virtual void MainForm_Paint(object sender, PaintEventArgs e) {
+        // Override paint event on the main form
+        protected override void OnPaint(PaintEventArgs e)
+        {
             DoubleBuffered = true;
             ResizeRedraw = true;
 
-            using (Pen BorderPen = new Pen(ThemeController.GetBordercolor(), 2.0f))
-            {
-                e.Graphics.DrawRectangle(BorderPen, 0, 0, Width, Height - 1);
-            };
+            // Do form painting first
+            base.OnPaint(e);
+
+            // Variables
+            Pen       BorderPen  = new Pen(ThemeController.GetBordercolor(), 1.0f);
+            Brush     Fill       = BorderPen.Brush;
+            Graphics  FormGFX    = e.Graphics;
+            Rectangle FormBorder,
+                      OutputBorder,
+                      TabsBorder;
+
+            // Get rect
+            FormBorder   = new Rectangle(ClientRectangle.X,
+                                         ClientRectangle.Y, 
+                                         ClientRectangle.Width - 1, 
+                                         ClientRectangle.Height - 1);
+
+            OutputBorder = new Rectangle(Output_PNL.Location.X - 1,
+                                         Output_PNL.Location.Y + 67,
+                                         Output_PNL.Width + 1,
+                                         Output_PNL.Height + 1);
+            
+            TabsBorder   = new Rectangle(DataTabs_TC.Location.X - 1,
+                                         DataTabs_TC.Location.Y + 92,
+                                         DataTabs_TC.Width + 1,
+                                         DataTabs_TC.Height - 24);
+
+            // Draw rectangles
+            FormGFX.DrawRectangle(BorderPen, TabsBorder);
+            FormGFX.FillRectangle(Fill, TabsBorder);
+            FormGFX.DrawRectangle(BorderPen, OutputBorder);
+            FormGFX.FillRectangle(Fill, OutputBorder);
+            FormGFX.DrawRectangle(BorderPen, FormBorder);
         }
 
         // Title movements
@@ -1156,7 +1230,7 @@ namespace Mobility_Setup_Tool
             {
                 Point newPoint = TitleBar_PNL.PointToScreen(new Point(e.X, e.Y));
                 newPoint.Offset(offset);
-                this.Location = newPoint;
+                Location = newPoint;
 
             }
         }
@@ -1166,12 +1240,13 @@ namespace Mobility_Setup_Tool
         {
             if (e.Button == MouseButtons.Left)
             {
-                isTopPanelDragged = true;
-                Point pointStartPosition = this.PointToScreen(new Point(e.X, e.Y));
+                isTopPanelDragged        = true;
+                Point pointStartPosition = PointToScreen(new Point(e.X, e.Y));
+
                 offset = new Point
                 {
-                    X = this.Location.X - pointStartPosition.X,
-                    Y = this.Location.Y - pointStartPosition.Y
+                    X = Location.X - pointStartPosition.X,
+                    Y = Location.Y - pointStartPosition.Y
                 };
             }
             else
@@ -1191,12 +1266,16 @@ namespace Mobility_Setup_Tool
         }
 
         // Maximize button label mouse down event 
-        public virtual void MaxButton_LBL_MouseDown(object sender, MouseEventArgs e) {
-            if (e.Button == MouseButtons.Left) {
-                if (WindowState == FormWindowState.Maximized) {
+        public virtual void MaxButton_LBL_MouseDown(object sender, MouseEventArgs e) 
+        {
+            if (e.Button == MouseButtons.Left) 
+            {
+                if (WindowState == FormWindowState.Maximized) 
+                {
                     WindowState = FormWindowState.Normal;
                     MaximizeButton_LBL.Image = ((Image)(Properties.Resources.ResourceManager.GetObject("MS")));
-                } else {
+                } else 
+                {
                     WindowState = FormWindowState.Maximized;
                     MaximizeButton_LBL.Image = ((Image)(Properties.Resources.ResourceManager.GetObject("MF")));
                 }
@@ -1245,6 +1324,7 @@ namespace Mobility_Setup_Tool
                 isTopPanelDragged = false;
             }
 
+            // Double click to drag
             if (e.Clicks == 2) 
             {
                 if (WindowState == FormWindowState.Maximized) 
@@ -1336,117 +1416,6 @@ namespace Mobility_Setup_Tool
 
         #endregion
 
-        private void VarSerialNumber_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                string EqNumber, SerialNumber;
-                ExcelDataTables TableManager = new ExcelDataTables();
-
-                EqNumber = "";
-                SerialNumber = GetText(VarSerialNumber_TB);
-
-                if (SerialNumber != "" && !SerialNumber.Contains(" "))
-                {
-                    if (SapSession.GetSession())
-                    {
-                        // Convert serial to equipment number
-                        EqNumber = SapSession.EquipmentNumberFromSerial(SerialNumber);
-
-                        // Verify we have got the equipment number
-                        if (EqNumber != "NO EQUIPMENT FOUND")
-                        {
-
-                            SapSession.StartTransaction("ZIW58");
-                            SapSession.SetVariant("/FSDS-25-32");
-                            SapSession.GetButton("%_QMART_%_APP_%-VALU_PUSH").Press();
-                            GuiModalWindow Popup = (GuiModalWindow)SapSession.GetFormById("wnd[1]");
-                            ((GuiButton)Popup.FindById("tbar[0]/btn[16]")).Press();
-                            ((GuiButton)Popup.FindById("tbar[0]/btn[8]")).Press();
-                            SapSession.GetCTextField("QMART-LOW").Text = "Z3";
-                            SapSession.GetCTextField("EQUNR-LOW").Text = EqNumber;
-                            SapSession.SendVKey(8);
-
-                            switch (SapSession.GetSessionInfo().ScreenNumber)
-                            {
-                                // One notification
-                                case 7200:
-                                    SAP_VARS _add = new SAP_VARS
-                                    {
-                                        LongText = SapSession.GetShell("shell").Text,
-                                        Description = SapSession.GetTextField("VIQMEL-QMTXT").Text,
-                                        Number = SapSession.GetTextField("VIQMEL-QMNUM").Text
-                                    };
-
-                                    Variations.Add(_add);
-                                    Variations_LB.Items.Add(Variations[0].Description);
-
-                                    break;
-
-                                // Multiple notifications
-                                case 500:
-                                    ((GuiMenu)SapSession.GetFormById("wnd[0]/mbar/menu[0]/menu[11]/menu[2]")).Select();
-                                    SapSession.SendVKey(0);
-
-                                    // Filename popup
-                                    Popup = (GuiModalWindow)SapSession.GetFormById("wnd[1]");
-                                    ((GuiCTextField)Popup.FindByName("DY_PATH", "GuiCTextField")).Text = Environment.GetEnvironmentVariable("TEMP");
-                                    ((GuiCTextField)Popup.FindByName("DY_FILENAME", "GuiCTextField")).Text = $"IW58DUMP{EqNumber}.txt";
-                                    ((GuiButton)Popup.FindById("tbar[0]/btn[11]")).Press();
-
-                                    // Add to list
-                                    DataTable VariationList = TableManager.ControlTexttoDataTable_IW58(Environment.GetEnvironmentVariable("TEMP") + $"\\IW58DUMP{EqNumber}.txt");
-
-                                    Variations_LB.Items.Clear();
-
-                                    for (int i = 0; i < VariationList.Rows.Count; i++)
-                                    {
-
-                                        SAP_VARS _madd = new SAP_VARS
-                                        {
-                                            Description = VariationList.Rows[i]["Description"].ToString(),
-                                            Number = VariationList.Rows[i]["Notification"].ToString()
-                                        };
-
-                                        SapSession.StartTransaction("IW52");
-                                        SapSession.GetCTextField("RIWO00-QMNUM").Text = _madd.Number;
-                                        SapSession.SendVKey(0);
-
-                                        _madd.LongText = SapSession.GetShell("shell").Text;
-
-                                        Variations.Add(_madd);
-
-                                        Variations_LB.Items.Add(Variations[i].Description);
-                                    }
-
-                                    VariationList.Dispose();
-
-                                    MsgBox_Normal("Variations loaded");
-                                    break;
-
-                                default:
-                                    MsgBox_Error("No variations found");
-                                    break;
-                            }
-
-                        }
-                        else
-                        {
-                            MsgBox_Error($"No equipment number found for serial {SerialNumber}");
-                        }
-                    }
-                    else
-                    {
-                        MsgBox_Error("Please ensure SAP is running");
-                    }
-                }
-                else
-                {
-                    MsgBox_Error("Please enter a serial number to get the variation list");
-                }
-            }
-        }
-
         private void ResyncDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AppSettings.ResetSettings();
@@ -1530,6 +1499,180 @@ namespace Mobility_Setup_Tool
             {
                 MsgBox_Warning("Required end date cannot be less than required start date");
                 RequiredEndDate_DP.Value = DateTime.Today.AddDays(10.0);
+            }
+        }
+
+        // Draw a box around the longtext RTB
+        private void RightSide_TBL_Paint(object sender, PaintEventArgs e)
+        {
+            Point TBLoc = LongText_TB.Location;
+
+            using (Pen BorderPen = new Pen(Color.FromArgb(130,135,144), 1.0f))
+            {
+                e.Graphics.DrawRectangle(BorderPen, 
+                                         TBLoc.X - 1, 
+                                         TBLoc.Y - 1,
+                                         LongText_TB.Width + 2, 
+                                         LongText_TB.Height + 2);
+            };
+        }
+
+        private void LoadVariation_BTN_Click(object sender, EventArgs e)
+        {
+            string          EqNumber, SerialNumber;
+            ExcelDataTables TableManager            = new ExcelDataTables();
+            SerialNumber                            = GetText(VarSerialNumber_TB);
+
+            if (SerialNumber != "" && !SerialNumber.Contains(" "))
+            {
+                if (SapSession.GetSession())
+                {
+                    _ = SetStatus("Getting equipment details", 0);
+
+                    // Convert serial to equipment number
+                    EqNumber = SapSession.EquipmentNumberFromSerial(SerialNumber);
+
+                    // Verify we have got the equipment number
+                    if (EqNumber != "NO EQUIPMENT FOUND")
+                    {
+                        Variations_LB.Items.Clear();
+                        Variations.Clear();
+
+                        SapSession.StartTransaction("ZIW58");
+                        SapSession.SetVariant("/FSDS-25-32");
+                        SapSession.GetButton("%_QMART_%_APP_%-VALU_PUSH").Press();
+                        GuiModalWindow Popup = (GuiModalWindow)SapSession.GetFormById("wnd[1]");
+                        ((GuiButton)Popup.FindById("tbar[0]/btn[16]")).Press();
+                        ((GuiButton)Popup.FindById("tbar[0]/btn[8]")).Press();
+                        SapSession.GetCTextField("QMART-LOW").Text = "Z3";
+                        SapSession.GetCTextField("EQUNR-LOW").Text = EqNumber;
+
+                        // Set to not show converted notification
+                        SapSession.GetCTextField("AUFNR-LOW").SetFocus();
+                        SapSession.SendVKey(2);
+                        SapSession.SendVKey(0);
+
+                        SapSession.SendVKey(8);
+
+                        _ = SetStatus("Loading notifications", 0);
+
+                        switch (SapSession.GetSessionInfo().ScreenNumber)
+                        {
+                            // One notification
+                            case 7200:
+                                SAP_VARS _add = new SAP_VARS
+                                {
+                                    LongText = SapSession.GetShell("shell").Text,
+                                    Description = SapSession.GetTextField("VIQMEL-QMTXT").Text,
+                                    Number = SapSession.GetTextField("VIQMEL-QMNUM").Text
+                                };
+
+
+                                Variations.Add(_add);
+                                Variations_LB.Items.Add(Variations[0].Description);
+
+                                MsgBox_Normal("Notification loaded");
+                                _ = SetStatus("", 0);
+
+                                break;
+
+                            // Multiple notifications
+                            case 500:
+                                ((GuiMenu)SapSession.GetFormById("wnd[0]/mbar/menu[0]/menu[11]/menu[2]")).Select();
+                                SapSession.SendVKey(0);
+
+                                // Filename popup
+                                Popup = (GuiModalWindow)SapSession.GetFormById("wnd[1]");
+                                ((GuiCTextField)Popup.FindByName("DY_PATH", "GuiCTextField")).Text          = Environment.GetEnvironmentVariable("TEMP");
+                                ((GuiCTextField)Popup.FindByName("DY_FILENAME", "GuiCTextField")).Text      = $"IW58DUMP{EqNumber}.txt";
+                                ((GuiButton)Popup.FindById("tbar[0]/btn[11]")).Press();
+
+                                // Add to list
+                                DataTable VariationList = TableManager.ControlTexttoDataTable_IW58(Environment.GetEnvironmentVariable("TEMP") + $"\\IW58DUMP{EqNumber}.txt");
+
+                                for (int i = 0; i < VariationList.Rows.Count; i++)
+                                {
+                                    SAP_VARS _madd = new SAP_VARS
+                                    {
+                                        Description = VariationList.Rows[i]["Description"].ToString(),
+                                        Number      = VariationList.Rows[i]["Notification"].ToString()
+                                    };
+
+                                    SapSession.StartTransaction("IW52");
+                                    SapSession.GetCTextField("RIWO00-QMNUM").Text = _madd.Number;
+                                    SapSession.SendVKey(0);
+
+                                    _madd.LongText = SapSession.GetShell("shell").Text;
+
+                                    Variations.Add(_madd);
+
+                                    Variations_LB.Items.Add(Variations[i].Description);
+                                }
+
+                                VariationList.Dispose();
+
+                                MsgBox_Normal("Notifications loaded");
+                                _ = SetStatus("", 0);
+                                break;
+
+                            default:
+                                MsgBox_Error("No unconverted notifications found");
+                                _ = SetStatus("", 0);
+                                break;
+                        }
+
+                    }
+                    else
+                    {
+                        MsgBox_Error($"No equipment number found for serial {SerialNumber}");
+                        _ = SetStatus("", 0);
+                    }
+                }
+                else
+                {
+                    MsgBox_Error("Please ensure SAP is running");
+                    _ = SetStatus("", 0);
+                }
+            }
+            else
+            {
+                MsgBox_Error("Please enter a serial number to get the variation list");
+                _ = SetStatus("", 0);
+            }
+        }
+
+        // Change output information depending on tab page selection
+        private void DataTabs_TC_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            // Quote tab
+            if (e.TabPageIndex > 1)
+            {
+                QuoteOutput_PNL.Visible = true;
+                OutputOrder_PNL.Visible = false;
+            }
+            // Orders tabs
+                else
+            {
+                QuoteOutput_PNL.Visible = false;
+                OutputOrder_PNL.Visible = true;
+            }
+        }
+
+        private void VarBasicEndDate_ValueChanged(object sender, EventArgs e)
+        {
+            if (VarSOEndDate_DP.Value.CompareTo(VarSOStartDate_DP.Value) == -1)
+            {
+                MsgBox_Warning("You cannot enter a date less than the planned start date!");
+                VarSOEndDate_DP.Value = DateTime.Today.AddDays(10.0);
+            }
+        }
+
+        private void VarBasicStartDate_ValueChanged(object sender, EventArgs e)
+        {
+            if (VarSOStartDate_DP.Value.CompareTo(VarSOEndDate_DP.Value) == 1)
+            {
+                MsgBox_Warning("You cannot enter a date greater than the planned end date!");
+                VarSOStartDate_DP.Value = DateTime.Today.AddDays(-1.0);
             }
         }
     }

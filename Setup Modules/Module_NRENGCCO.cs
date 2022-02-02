@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Data;
 using System.IO;
 using System.Windows.Forms;
 using SAPFEWSELib;
@@ -11,12 +10,12 @@ namespace Mobility_Setup_Tool
 {
     class Module_NRENGINECCO : Module_ZM12
     {
-        public override bool InitialEquipmentCheck(string TemplateEquipment, 
-                                                     string InputSerial, 
-                                                     string InputZawa, 
-                                                     string InputFuncLoc, 
-                                                     BackgroundWorker Parent, 
-                                                     ref MobilityEquipment OutputEq) 
+        public override bool InitialEquipmentCheck(string               TemplateEquipment, 
+                                                   string               InputSerial, 
+                                                   string               InputZawa, 
+                                                   string               InputFuncLoc, 
+                                                   BackgroundWorker     Parent, 
+                                               ref MobilityEquipment    OutputEq) 
         {
             string InputEquipment;
 
@@ -24,12 +23,15 @@ namespace Mobility_Setup_Tool
             if (Session.GetSession()) 
             {
 
-                if (!RefForm.SetStatus("Checking if equipment is a material serial", 0)) return false;
+                _ = RefForm.SetStatus("Checking if equipment is a material serial", 0);
 
                 // Check if linked to material
-                if (!Session.CheckMaterialSerial(InputSerial, InputZawa)) return "";
+                if (!Session.CheckMaterialSerial(InputSerial, InputZawa)) 
+                {
+                    return false;
+                }
 
-                if(!RefForm.SetStatus("Finding equipment number from input serial", 0)) return false;
+                _ = RefForm.SetStatus("Finding equipment number from input serial", 0);
 
                 // Get equipment number
                 InputEquipment = Session.EquipmentNumberFromSerial(InputSerial);
@@ -41,9 +43,13 @@ namespace Mobility_Setup_Tool
                 OutputEq.SerialNumber = InputSerial;
                 OutputEq.FunctionLoc = InputFuncLoc;
 
-                if (InputEquipment == "") return false;
+                if (InputEquipment == "")
+                {
+                    return false;
+                }
 
-                if (InputEquipment.Length > 8) {
+                if (InputEquipment.Length > 8) 
+                {
                     if (InputEquipment == "No equipment found")
                     {
                         if (MsgBox_Question("No equipment number found with this serial number, do you want to create a new equipment from the template?") == DialogResult.Yes)
@@ -59,7 +65,7 @@ namespace Mobility_Setup_Tool
                     }
                 }
 
-                if(!RefForm.SetStatus("Getting template equipment information", 0)) return false;
+                _ = RefForm.SetStatus("Getting template equipment information", 0);
 
                 // Get template equipment info
                 Session.StartTransaction("IE03");
@@ -75,31 +81,31 @@ namespace Mobility_Setup_Tool
 
                     default:
                         // Front tab
-                        TemplateInfo.EquipmentNumber = TemplateEquipment;
-                        TemplateInfo.Description = Session.GetTextField("ITOB-SHTXT").Text;
-                        TemplateInfo.ObjectType = Session.GetCTextField("ITOB-EQART").Text;
-                        TemplateInfo.ModelNumber = Session.GetTextField("ITOB-TYPBZ").Text;
+                        TemplateInfo.EquipmentNumber    = TemplateEquipment;
+                        TemplateInfo.Description        = Session.GetTextField("ITOB-SHTXT").Text;
+                        TemplateInfo.ObjectType         = Session.GetCTextField("ITOB-EQART").Text;
+                        TemplateInfo.ModelNumber        = Session.GetTextField("ITOB-TYPBZ").Text;
 
-                        RefForm.Output_EQDesc = TemplateInfo.Description;
+                        RefForm.Output_EQDesc           = TemplateInfo.Description;
 
                         // Organization Tab
                         Session.GetTab(@"T\03").Select();
-                        TemplateInfo.CatProfile = Session.GetCTextField("ITOB-RBNR").Text;
+                        TemplateInfo.CatProfile         = Session.GetCTextField("ITOB-RBNR").Text;
 
                         // Sales and Dist Tab
                         Session.GetTab(@"T\06").Select();
-                        TemplateInfo.DistChan = Session.GetCTextField("ITOB-VTWEG").Text;
-                        TemplateInfo.Division = Session.GetCTextField("ITOB-SPART").Text;
+                        TemplateInfo.DistChan           = Session.GetCTextField("ITOB-VTWEG").Text;
+                        TemplateInfo.Division           = Session.GetCTextField("ITOB-SPART").Text;
 
                         // SerData
                         Session.GetTab(@"T\07").Select();
-                        TemplateInfo.ZAWA = Session.GetCTextField("ITOB-MATNR").Text;
+                        TemplateInfo.ZAWA               = Session.GetCTextField("ITOB-MATNR").Text;
                         break;
                 }
 
                 Session.EndTransaction();
 
-                if(!RefForm.SetStatus("Getting input equipment information", 0)) return false;
+                _ = RefForm.SetStatus("Getting input equipment information", 0);
 
                 // Get input equipment info
                 Session.StartTransaction("IE03");
@@ -111,29 +117,29 @@ namespace Mobility_Setup_Tool
                 {
                     case 100:
                         MsgBox_Error("Could not access input equipment, is the equipment locked?");
-                        return "ERROR";
+                        return false;
 
                     default:
                         // Front tab
-                        InputInfo.EquipmentNumber = InputEquipment;
-                        InputInfo.Description = Session.GetTextField("ITOB-SHTXT").Text;
-                        InputInfo.ObjectType = Session.GetCTextField("ITOB-EQART").Text;
-                        InputInfo.ModelNumber = Session.GetTextField("ITOB-TYPBZ").Text;
+                        InputInfo.EquipmentNumber   = InputEquipment;
+                        InputInfo.Description       = Session.GetTextField("ITOB-SHTXT").Text;
+                        InputInfo.ObjectType        = Session.GetCTextField("ITOB-EQART").Text;
+                        InputInfo.ModelNumber       = Session.GetTextField("ITOB-TYPBZ").Text;
 
                         // Organization Tab
                         Session.GetTab(@"T\03").Select();
-                        InputInfo.CatProfile = Session.GetCTextField("ITOB-RBNR").Text;
+                        InputInfo.CatProfile        = Session.GetCTextField("ITOB-RBNR").Text;
 
                         // Sales and Dist Tab
                         Session.GetTab(@"T\06").Select();
-                        InputInfo.DistChan = Session.GetCTextField("ITOB-VTWEG").Text;
-                        InputInfo.Division = Session.GetCTextField("ITOB-SPART").Text;
+                        InputInfo.DistChan          = Session.GetCTextField("ITOB-VTWEG").Text;
+                        InputInfo.Division          = Session.GetCTextField("ITOB-SPART").Text;
 
                         // SerData
                         Session.GetTab(@"T\07").Select();
-                        InputInfo.ZAWA = Session.GetCTextField("ITOB-MATNR").Text;
+                        InputInfo.ZAWA              = Session.GetCTextField("ITOB-MATNR").Text;
 
-                        InputInfo.FunctionLoc = InputFuncLoc;
+                        InputInfo.FunctionLoc       = InputFuncLoc;
                         break;
                 }
 
@@ -151,9 +157,10 @@ namespace Mobility_Setup_Tool
                 ChangeInfo.DistChan = "";
                 ChangeInfo.ZAWA = "";
 
-                if(!RefForm.SetStatus("Updating input equipment to template", 0)) return false;
+                _ = RefForm.SetStatus("Updating input equipment to template", 0);
 
-                if (InputInfo.Description != TemplateInfo.Description && !InputInfo.Description.Contains("LOCO")) {
+                if (InputInfo.Description != TemplateInfo.Description && !InputInfo.Description.Contains("LOCO")) 
+                {
                     if (MsgBox_Question($"Equipment description {InputInfo.Description} does not match template description {TemplateInfo.Description}. Do you want to change this to match the template?") == DialogResult.Yes)
                     {
                         Matching = false;
@@ -162,19 +169,22 @@ namespace Mobility_Setup_Tool
                     }
                 }
 
-                if (InputInfo.ObjectType != TemplateInfo.ObjectType) {
+                if (InputInfo.ObjectType != TemplateInfo.ObjectType) 
+                {
                     Matching = false;
                     ChangeInfo.ObjectType = TemplateInfo.ObjectType;
                     OutputEq.ObjectType = TemplateInfo.ObjectType;
                 }
 
-                if (InputInfo.CatProfile != TemplateInfo.CatProfile) {
+                if (InputInfo.CatProfile != TemplateInfo.CatProfile) 
+                {
                     Matching = false;
                     ChangeInfo.CatProfile = TemplateInfo.CatProfile;
                     OutputEq.CatProfile = TemplateInfo.CatProfile;
                 }
 
-                if (InputInfo.DistChan != TemplateInfo.DistChan) {
+                if (InputInfo.DistChan != TemplateInfo.DistChan)
+                {
                     Matching = false;
                     ChangeInfo.DistChan = TemplateInfo.DistChan;
                     OutputEq.DistChan = TemplateInfo.DistChan;
@@ -187,7 +197,8 @@ namespace Mobility_Setup_Tool
                     OutputEq.Division = TemplateInfo.Division;
                 }
 
-                if (InputInfo.ZAWA != TemplateInfo.ZAWA) {
+                if (InputInfo.ZAWA != TemplateInfo.ZAWA) 
+                {
                     Matching = false;
                     ChangeInfo.ZAWA = TemplateInfo.ZAWA;
                     OutputEq.ZAWA = TemplateInfo.ZAWA;
@@ -206,7 +217,8 @@ namespace Mobility_Setup_Tool
                     // Organization tab
                     Session.GetTab(@"T\03").Select();
 
-                    if (ChangeInfo.CatProfile != "") {
+                    if (ChangeInfo.CatProfile != "") 
+                    {
                         Session.GetCTextField("ITOB-RBNR").Text = ChangeInfo.CatProfile;
                         Session.SendVKey(0);
                     }
@@ -250,10 +262,10 @@ namespace Mobility_Setup_Tool
 
                 }
 
-                return "";
+                return true;
 
             } else {
-                return "NOSAP";
+                return false;
             }
 
         }
@@ -269,7 +281,7 @@ namespace Mobility_Setup_Tool
                 StartDate = RefForm.GetBasicStartDate.AddMonths(-Convert.ToInt32(RefForm.AppSettings.WarrantyMonthLimit));
                 EndDate = RefForm.GetBasicStartDate;
 
-                if(!RefForm.SetStatus($"Checking for previous work orders in the last {RefForm.AppSettings.WarrantyMonthLimit} months..", 0)) return false;
+                _ = RefForm.SetStatus($"Checking for previous work orders in the last {RefForm.AppSettings.WarrantyMonthLimit} months..", 0);
 
                 Session.StartTransaction("IW73");
                 Session.SetVariant("/FSDS-25-32");
@@ -322,10 +334,14 @@ namespace Mobility_Setup_Tool
         }
 
         // Create notification
-        public override bool CreateNotification(MobilityTask TaskInfo, MobilityEquipment SetupEquipment, MobilityServiceOrder SOInfo, BackgroundWorker Parent) {
+        public override bool CreateNotification(MobilityTask            TaskInfo, 
+                                                MobilityEquipment       SetupEquipment, 
+                                                MobilityServiceOrder    SOInfo, 
+                                                BackgroundWorker        Parent) 
+        {
             if (Session.GetSession())
             {
-                if(!RefForm.SetStatus("Creating notification", 0)) return false;
+                _ = RefForm.SetStatus("Creating notification", 0);
 
                 Session.StartTransaction("IW51");
                 Session.GetCTextField("RIWO00-QMART").Text = "Z8";
@@ -336,18 +352,20 @@ namespace Mobility_Setup_Tool
                 string OutputDesc;
 
                 // Truncate task description if longer than 40 characters
-                if (TaskInfo.Name.Length > 40) {
+                if (TaskInfo.Name.Length > 40) 
+                {
                     OutputDesc = TaskInfo.Name.Remove(40, TaskInfo.Name.Length - 40);
                 }
-                else {
+                else 
+                {
                     OutputDesc = TaskInfo.Name;
                 }
 
                 // Fill in notification
-                Session.GetTextField("VIQMEL-QMTXT").Text   = OutputDesc;
-                Session.GetCTextField("VIQMEL-QMDAT").Text  = SOInfo.PurchaseOrderDate;
-                Session.GetCTextField("VIQMEL-MZEIT").Text  = DateTime.Now.ToShortTimeString();
-                Session.GetComboBox("VIQMEL-PRIOK").Key     = SOInfo.Priority.Substring(0,1);
+                Session.GetTextField("VIQMEL-QMTXT").Text       = OutputDesc;
+                Session.GetCTextField("VIQMEL-QMDAT").Text      = SOInfo.PurchaseOrderDate;
+                Session.GetCTextField("VIQMEL-MZEIT").Text      = DateTime.Now.ToShortTimeString();
+                Session.GetComboBox("VIQMEL-PRIOK").Key         = SOInfo.Priority.Substring(0,1);
 
                 Session.ClearErrors(30, true);
 
@@ -356,11 +374,11 @@ namespace Mobility_Setup_Tool
                 ((GuiLabel)Session.GetFormById("wnd[1]/usr/lbl[6,3]")).SetFocus();
                 ((GuiButton)Session.GetFormById("wnd[1]/tbar[0]/btn[0]")).Press();
 
-                Session.GetCTextField("VIQMEL-AUSWK").Text = RefForm.AppSettings.Effect;
-                Session.GetCTextField("RIWO00-GEWRK").Text = TaskInfo.Workcentre;
-                Session.GetCTextField("VIQMEL-VKBUR").Text = SOInfo.SalesOffice;
-                Session.GetCTextField("VIQMEL-INGRP").Text = SOInfo.PlannerGroup;
-                Session.GetCTextField("RIWO00-SWERK").Text = SOInfo.Plant;
+                Session.GetCTextField("VIQMEL-AUSWK").Text      = RefForm.AppSettings.Effect;
+                Session.GetCTextField("RIWO00-GEWRK").Text      = TaskInfo.Workcentre;
+                Session.GetCTextField("VIQMEL-VKBUR").Text      = SOInfo.SalesOffice;
+                Session.GetCTextField("VIQMEL-INGRP").Text      = SOInfo.PlannerGroup;
+                Session.GetCTextField("RIWO00-SWERK").Text      = SOInfo.Plant;
 
                 Session.SendVKey(0);
 
@@ -372,15 +390,15 @@ namespace Mobility_Setup_Tool
 
                 Session.ClearErrors(30, true);
 
-                Session.GetCTextField("VIQMEL-LTRMN").Text = SOInfo.BasicEndDate;
+                Session.GetCTextField("VIQMEL-LTRMN").Text      = SOInfo.BasicEndDate;
                 Session.ClearErrors(30, true);
-                Session.GetCTextField("VIQMEL-STRMN").Text = SOInfo.BasicStartDate;
+                Session.GetCTextField("VIQMEL-STRMN").Text      = SOInfo.BasicStartDate;
                 Session.ClearErrors(30, true);
 
                 Session.GetShell("shell").Text = TaskInfo.LongText;
 
-                Session.GetCTextField("VIQMEL-KDAUF").Text = TaskInfo.SalesDoc;
-                Session.GetCTextField("VIQMEL-KDPOS").Text = TaskInfo.SalesDocItem;
+                Session.GetCTextField("VIQMEL-KDAUF").Text      = TaskInfo.SalesDoc;
+                Session.GetCTextField("VIQMEL-KDPOS").Text      = TaskInfo.SalesDocItem;
 
                 Session.ClearErrors(30, true);
 
@@ -395,8 +413,8 @@ namespace Mobility_Setup_Tool
 
                     Session.ClearErrors(30, true);
 
-                    Session.GetCTextField("ILOA-VTWEG").Text = RefForm.AppSettings.Distribution;
-                    Session.GetCTextField("ILOA-SPART").Text = RefForm.AppSettings.Division;
+                    Session.GetCTextField("ILOA-VTWEG").Text    = RefForm.AppSettings.Distribution;
+                    Session.GetCTextField("ILOA-SPART").Text    = RefForm.AppSettings.Division;
 
                     // Set WBS element
                     /*if (TaskInfo.WBS != "") {
@@ -441,7 +459,7 @@ namespace Mobility_Setup_Tool
         {
             if (Session.GetSession())
             {
-                if (!RefForm.SetStatus("Creating service order", 0)) return false;
+                _ = RefForm.SetStatus("Creating service order", 0);
 
                 Session.GetButton("*VIQMEL-AUFNR").Press();
 
@@ -461,24 +479,24 @@ namespace Mobility_Setup_Tool
                 Session.SendVKey(0);
                 Session.SendVKey(0);
 
-                Session.GetCTextField("CAUFVD-GSTRP").Text = SOInfo.BasicStartDate;
+                Session.GetCTextField("CAUFVD-GSTRP").Text      = SOInfo.BasicStartDate;
 
                 Session.ClearErrors(30, true);
 
-                Session.GetCTextField("CAUFVD-GLTRP").Text = SOInfo.BasicEndDate;
+                Session.GetCTextField("CAUFVD-GLTRP").Text      = SOInfo.BasicEndDate;
 
                 Session.ClearErrors(30, true);
 
-                Session.GetCTextField("CAUFVD-ILART").Text = "062";
-                Session.GetComboBox("CAUFVD-PRIOK").Key = SOInfo.Priority.Substring(0, 1);
-                Session.GetCTextField("CAUFVD-VAPLZ").Text = TaskInfo.Workcentre;
+                Session.GetCTextField("CAUFVD-ILART").Text      = "062";
+                Session.GetComboBox("CAUFVD-PRIOK").Key         = SOInfo.Priority.Substring(0, 1);
+                Session.GetCTextField("CAUFVD-VAPLZ").Text      = TaskInfo.Workcentre;
 
                 Session.GetTab("ILOA").Select();
 
-                Session.GetCTextField("ILOA-SWERK").Text = RefForm.AppSettings.Plant;
-                Session.GetCTextField("ILOA-STORT").Text = RefForm.AppSettings.Location;
-                Session.GetCTextField("RILA0-ARBPL").Text = TaskInfo.Workcentre;
-                Session.GetTextField("ILOA-EQFNR").Text = SOInfo.ExternalReference;
+                Session.GetCTextField("ILOA-SWERK").Text        = RefForm.AppSettings.Plant;
+                Session.GetCTextField("ILOA-STORT").Text        = RefForm.AppSettings.Location;
+                Session.GetCTextField("RILA0-ARBPL").Text       = TaskInfo.Workcentre;
+                Session.GetTextField("ILOA-EQFNR").Text         = SOInfo.ExternalReference;
 
                 Session.ClearErrors(30, true);
 
@@ -655,7 +673,10 @@ namespace Mobility_Setup_Tool
                     Session.SendVKey(0);
 
                     // Verify order created
-                    if (Session.GetSessionInfo().ScreenNumber != 3000) return false;
+                    if (Session.GetSessionInfo().ScreenNumber != 3000)
+                    {
+                        return false;
+                    }
 
                     Customer = InputSO.CustomerName.Replace(@"/", "");
                     Customer = InputSO.CustomerName.Replace(@"\", "");

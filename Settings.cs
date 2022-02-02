@@ -268,13 +268,25 @@ namespace Mobility_Setup_Tool
             string SP_Quote     = "", SP_Inputs = "", SP_CEL = "", Ver;
             bool   FoundPlant   = false;
 
+            // Delete file is it exists
+            if (File.Exists($"{AppData}\\MST_DataLinks"))
+            {
+                File.Delete($"{AppData}\\MST_DataLinks");
+            }
+
             // Download master links
-            DownloadFromSharepoint("http://uglteams/sites/fs/_layouts/15/DocIdRedir.aspx?ID=FSDS-25-507", $"{AppData}\\MST_DataLinks");
+            DownloadFromSharepoint("http://uglteams/sites/fs/AdminLibrary/Mobility%20Setup%20Tool/MST_DataLinks", $"{AppData}\\MST_DataLinks");
 
             // Check version
             StreamReader MasterData = new StreamReader($"{AppData}\\MST_DataLinks");
 
             Ver = MasterData.ReadLine();
+
+            if (Ver == "")
+            {
+                MsgBoxs.MsgBox_Error("Could not retrieve version data");
+                Application.Exit();
+            }
 
             // Check version
             if (VersionNumber != Ver)

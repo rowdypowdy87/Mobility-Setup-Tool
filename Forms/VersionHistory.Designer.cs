@@ -31,6 +31,8 @@ namespace Mobility_Setup_Tool
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VersionHistory));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.TitleBar_PNL = new System.Windows.Forms.Panel();
             this.MinimizeButton_LBL = new System.Windows.Forms.Label();
             this.UGLLogo_PB = new System.Windows.Forms.PictureBox();
@@ -41,12 +43,13 @@ namespace Mobility_Setup_Tool
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.VersionHist_DGV = new System.Windows.Forms.DataGridView();
+            this.MainUGLLogo_PB = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.RevisionNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ChangedBy = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ApprovedBy = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ChangedOn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MainUGLLogo_PB = new System.Windows.Forms.PictureBox();
             this.TitleBar_PNL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UGLLogo_PB)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -169,7 +172,7 @@ namespace Mobility_Setup_Tool
             this.tabControl1.MinimumSize = new System.Drawing.Size(600, 400);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1234, 748);
+            this.tabControl1.Size = new System.Drawing.Size(1234, 810);
             this.tabControl1.TabIndex = 5;
             // 
             // tabPage1
@@ -178,13 +181,14 @@ namespace Mobility_Setup_Tool
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1226, 715);
+            this.tabPage1.Size = new System.Drawing.Size(1226, 777);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Version History";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // VersionHist_DGV
             // 
+            this.VersionHist_DGV.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.VersionHist_DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.VersionHist_DGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.RevisionNumber,
@@ -198,43 +202,8 @@ namespace Mobility_Setup_Tool
             this.VersionHist_DGV.RowHeadersVisible = false;
             this.VersionHist_DGV.RowHeadersWidth = 51;
             this.VersionHist_DGV.RowTemplate.Height = 29;
-            this.VersionHist_DGV.Size = new System.Drawing.Size(1220, 709);
+            this.VersionHist_DGV.Size = new System.Drawing.Size(1220, 771);
             this.VersionHist_DGV.TabIndex = 0;
-            // 
-            // RevisionNumber
-            // 
-            this.RevisionNumber.HeaderText = "Revision Number";
-            this.RevisionNumber.MinimumWidth = 6;
-            this.RevisionNumber.Name = "RevisionNumber";
-            this.RevisionNumber.Width = 125;
-            // 
-            // Description
-            // 
-            this.Description.HeaderText = "Description";
-            this.Description.MinimumWidth = 6;
-            this.Description.Name = "Description";
-            this.Description.Width = 125;
-            // 
-            // ChangedBy
-            // 
-            this.ChangedBy.HeaderText = "Changed By";
-            this.ChangedBy.MinimumWidth = 6;
-            this.ChangedBy.Name = "ChangedBy";
-            this.ChangedBy.Width = 125;
-            // 
-            // ApprovedBy
-            // 
-            this.ApprovedBy.HeaderText = "Approved By";
-            this.ApprovedBy.MinimumWidth = 6;
-            this.ApprovedBy.Name = "ApprovedBy";
-            this.ApprovedBy.Width = 125;
-            // 
-            // ChangedOn
-            // 
-            this.ChangedOn.HeaderText = "Changed On";
-            this.ChangedOn.MinimumWidth = 6;
-            this.ChangedOn.Name = "ChangedOn";
-            this.ChangedOn.Width = 125;
             // 
             // MainUGLLogo_PB
             // 
@@ -250,6 +219,57 @@ namespace Mobility_Setup_Tool
             this.MainUGLLogo_PB.TabIndex = 10;
             this.MainUGLLogo_PB.TabStop = false;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(148, 104);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(477, 20);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "This is a list of all Tasklist, Equipment, CEL related changes and updates";
+            // 
+            // RevisionNumber
+            // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.RevisionNumber.DefaultCellStyle = dataGridViewCellStyle1;
+            this.RevisionNumber.HeaderText = "Revision Number";
+            this.RevisionNumber.MinimumWidth = 50;
+            this.RevisionNumber.Name = "RevisionNumber";
+            this.RevisionNumber.Width = 80;
+            // 
+            // Description
+            // 
+            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopLeft;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Description.DefaultCellStyle = dataGridViewCellStyle2;
+            this.Description.HeaderText = "Description";
+            this.Description.MinimumWidth = 300;
+            this.Description.Name = "Description";
+            this.Description.Width = 300;
+            // 
+            // ChangedBy
+            // 
+            this.ChangedBy.HeaderText = "Changed By";
+            this.ChangedBy.MinimumWidth = 6;
+            this.ChangedBy.Name = "ChangedBy";
+            this.ChangedBy.Width = 108;
+            // 
+            // ApprovedBy
+            // 
+            this.ApprovedBy.HeaderText = "Approved By";
+            this.ApprovedBy.MinimumWidth = 6;
+            this.ApprovedBy.Name = "ApprovedBy";
+            this.ApprovedBy.Width = 114;
+            // 
+            // ChangedOn
+            // 
+            this.ChangedOn.HeaderText = "Changed On";
+            this.ChangedOn.MinimumWidth = 6;
+            this.ChangedOn.Name = "ChangedOn";
+            this.ChangedOn.Width = 110;
+            // 
             // VersionHistory
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -257,6 +277,7 @@ namespace Mobility_Setup_Tool
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ClientSize = new System.Drawing.Size(1280, 945);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.MainUGLLogo_PB);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.TitleBar_PNL);
@@ -277,6 +298,7 @@ namespace Mobility_Setup_Tool
             ((System.ComponentModel.ISupportInitialize)(this.VersionHist_DGV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainUGLLogo_PB)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -293,6 +315,7 @@ namespace Mobility_Setup_Tool
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.PictureBox MainUGLLogo_PB;
         private System.Windows.Forms.DataGridView VersionHist_DGV;
+        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridViewTextBoxColumn RevisionNumber;
         private System.Windows.Forms.DataGridViewTextBoxColumn Description;
         private System.Windows.Forms.DataGridViewTextBoxColumn ChangedBy;

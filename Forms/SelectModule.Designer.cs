@@ -1,7 +1,7 @@
 ﻿
-namespace Mobility_Setup_Tool
+namespace Mobility_Setup_Tool.Forms
 {
-    partial class AppSettings
+    partial class SelectModule
     {
         /// <summary>
         /// Required designer variable.
@@ -29,18 +29,15 @@ namespace Mobility_Setup_Tool
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AppSettings));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SelectModule));
             this.TitleBar = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.LBTitle = new System.Windows.Forms.Label();
             this.CloseButton = new System.Windows.Forms.PictureBox();
             this.MenuPanel = new System.Windows.Forms.Panel();
-            this.WarLimit_TT = new System.Windows.Forms.ToolTip(this.components);
-            this.AppColor_CD = new System.Windows.Forms.ColorDialog();
-            this.AppSettings_PG = new System.Windows.Forms.PropertyGrid();
-            this.Cancel_BTN = new System.Windows.Forms.Button();
-            this.Apply_BTN = new System.Windows.Forms.Button();
+            this.Modules_CMB = new System.Windows.Forms.ComboBox();
+            this.Continue_BTN = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.TitleBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CloseButton)).BeginInit();
@@ -48,6 +45,8 @@ namespace Mobility_Setup_Tool
             // 
             // TitleBar
             // 
+            this.TitleBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.TitleBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.TitleBar.Controls.Add(this.pictureBox2);
             this.TitleBar.Controls.Add(this.LBTitle);
@@ -56,11 +55,8 @@ namespace Mobility_Setup_Tool
             this.TitleBar.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.TitleBar.Location = new System.Drawing.Point(0, 0);
             this.TitleBar.Name = "TitleBar";
-            this.TitleBar.Size = new System.Drawing.Size(1021, 40);
-            this.TitleBar.TabIndex = 4;
-            this.TitleBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseDown);
-            this.TitleBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseMove);
-            this.TitleBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseUp);
+            this.TitleBar.Size = new System.Drawing.Size(437, 40);
+            this.TitleBar.TabIndex = 5;
             // 
             // pictureBox2
             // 
@@ -78,13 +74,10 @@ namespace Mobility_Setup_Tool
             this.LBTitle.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.LBTitle.Location = new System.Drawing.Point(40, 0);
             this.LBTitle.Name = "LBTitle";
-            this.LBTitle.Size = new System.Drawing.Size(519, 40);
+            this.LBTitle.Size = new System.Drawing.Size(360, 40);
             this.LBTitle.TabIndex = 5;
-            this.LBTitle.Text = "Mobility Setup and Planning Tool - Application Settings";
+            this.LBTitle.Text = "Mobility Setup and Planning Tool - Select Module";
             this.LBTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.LBTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Title_MouseDown);
-            this.LBTitle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Title_MouseMove);
-            this.LBTitle.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Title_MouseUp);
             // 
             // CloseButton
             // 
@@ -102,54 +95,57 @@ namespace Mobility_Setup_Tool
             this.MenuPanel.Size = new System.Drawing.Size(1280, 76);
             this.MenuPanel.TabIndex = 4;
             // 
-            // AppSettings_PG
+            // Modules_CMB
             // 
-            this.AppSettings_PG.Location = new System.Drawing.Point(17, 57);
-            this.AppSettings_PG.Name = "AppSettings_PG";
-            this.AppSettings_PG.Size = new System.Drawing.Size(555, 611);
-            this.AppSettings_PG.TabIndex = 12;
+            this.Modules_CMB.FormattingEnabled = true;
+            this.Modules_CMB.Items.AddRange(new object[] {
+            "ZM03",
+            "ZM12",
+            "ZM25"});
+            this.Modules_CMB.Location = new System.Drawing.Point(39, 88);
+            this.Modules_CMB.Name = "Modules_CMB";
+            this.Modules_CMB.Size = new System.Drawing.Size(361, 28);
+            this.Modules_CMB.TabIndex = 6;
             // 
-            // Cancel_BTN
+            // Continue_BTN
             // 
-            this.Cancel_BTN.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Cancel_BTN.Location = new System.Drawing.Point(307, 688);
-            this.Cancel_BTN.Name = "Cancel_BTN";
-            this.Cancel_BTN.Size = new System.Drawing.Size(265, 60);
-            this.Cancel_BTN.TabIndex = 11;
-            this.Cancel_BTN.Text = "Close";
-            this.Cancel_BTN.UseVisualStyleBackColor = true;
-            this.Cancel_BTN.Click += new System.EventHandler(this.Cancel_BTN_Click);
+            this.Continue_BTN.Location = new System.Drawing.Point(39, 136);
+            this.Continue_BTN.Name = "Continue_BTN";
+            this.Continue_BTN.Size = new System.Drawing.Size(361, 58);
+            this.Continue_BTN.TabIndex = 7;
+            this.Continue_BTN.Text = "Continue";
+            this.Continue_BTN.UseVisualStyleBackColor = true;
+            this.Continue_BTN.Click += new System.EventHandler(this.Continue_BTN_Click);
             // 
-            // Apply_BTN
+            // label1
             // 
-            this.Apply_BTN.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Apply_BTN.Location = new System.Drawing.Point(17, 688);
-            this.Apply_BTN.Name = "Apply_BTN";
-            this.Apply_BTN.Size = new System.Drawing.Size(264, 60);
-            this.Apply_BTN.TabIndex = 10;
-            this.Apply_BTN.Text = "Apply";
-            this.Apply_BTN.UseVisualStyleBackColor = true;
-            this.Apply_BTN.Click += new System.EventHandler(this.Apply_BTN_Click);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(39, 65);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(286, 20);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Please select a setup module (order type):";
             // 
-            // AppSettings
+            // SelectModule
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(589, 773);
-            this.Controls.Add(this.AppSettings_PG);
-            this.Controls.Add(this.Cancel_BTN);
-            this.Controls.Add(this.Apply_BTN);
+            this.ClientSize = new System.Drawing.Size(437, 224);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.Continue_BTN);
+            this.Controls.Add(this.Modules_CMB);
             this.Controls.Add(this.TitleBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "AppSettings";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "AppSettings";
-            this.Load += new System.EventHandler(this.AppSettings_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.AppSettings_Paint);
+            this.Name = "SelectModule";
+            this.Padding = new System.Windows.Forms.Padding(1);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.Text = "SelectModule";
+            this.Load += new System.EventHandler(this.Module_Load);
             this.TitleBar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CloseButton)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -160,10 +156,8 @@ namespace Mobility_Setup_Tool
         private System.Windows.Forms.Label LBTitle;
         private System.Windows.Forms.PictureBox CloseButton;
         private System.Windows.Forms.Panel MenuPanel;
-        private System.Windows.Forms.ToolTip WarLimit_TT;
-        private System.Windows.Forms.ColorDialog AppColor_CD;
-        private System.Windows.Forms.PropertyGrid AppSettings_PG;
-        private System.Windows.Forms.Button Cancel_BTN;
-        private System.Windows.Forms.Button Apply_BTN;
+        private System.Windows.Forms.Button Continue_BTN;
+        public System.Windows.Forms.ComboBox Modules_CMB;
+        private System.Windows.Forms.Label label1;
     }
 }

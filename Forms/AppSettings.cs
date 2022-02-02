@@ -112,11 +112,14 @@ namespace Mobility_Setup_Tool
             RefForm.ThemeController.SaveTheme();
 
             // Set field defaults
-            RefForm.FunctionLoc_CB.Text         = RefForm.AppSettings.ADefaults.FunctionLocation;
-            RefForm.PartyName_CB.Text           = RefForm.AppSettings.ADefaults.SoldToParty;
-            RefForm.PMActivityType_CB.Text      = RefForm.AppSettings.ADefaults.PmActivityType;
-            RefForm.Priority_CB.Text            = RefForm.AppSettings.ADefaults.Priority;
-            RefForm.ExternalReference_TB.Text   = RefForm.AppSettings.ADefaults.ExternalReference;
+            RefForm.FunctionLoc_CB.Text                 = RefForm.AppSettings.ADefaults.FunctionLocation;
+            RefForm.PartyName_CB.Text                   = RefForm.AppSettings.ADefaults.SoldToParty;
+            RefForm.PMActivityType_CB.Text              = RefForm.AppSettings.ADefaults.PmActivityType;
+            RefForm.Priority_CB.Text                    = RefForm.AppSettings.ADefaults.Priority;
+            RefForm.ExternalReference_TB.Text           = RefForm.AppSettings.ADefaults.ExternalReference;
+            RefForm.VarPMActivityType_CB.Text           = RefForm.AppSettings.ADefaults.PmActivityType;
+            RefForm.VarSOPriority_CB.Text               = RefForm.AppSettings.ADefaults.Priority;
+            RefForm.VarExternalReference_TB.Text        = RefForm.AppSettings.ADefaults.ExternalReference;
 
             // Close form after applying settings
             Close();

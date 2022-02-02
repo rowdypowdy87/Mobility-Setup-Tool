@@ -15,8 +15,6 @@ namespace Mobility_Setup_Tool
         // Window movement globals
         public bool isTopPanelDragged;
         public Point offset;
-        
-        
 
         public VersionHistory(MainForm r)
         {
@@ -36,11 +34,13 @@ namespace Mobility_Setup_Tool
 
             for(int i = 0; i < VersionHist.Count; i++)
             {
+                VersionHist_DGV.Rows.Add();
+
                 VersionHist_DGV[0, i].Value = VersionHist[i].ChangeNumber;
                 VersionHist_DGV[1, i].Value = VersionHist[i].Description;
-                VersionHist_DGV[2, i].Value = VersionHist[i].ChangedBy;
+                VersionHist_DGV[2, i].Value = VersionHist[i].ChangedOn;
                 VersionHist_DGV[3, i].Value = VersionHist[i].ApprovedBy;
-                VersionHist_DGV[4, i].Value = VersionHist[i].ChangedOn;
+                VersionHist_DGV[4, i].Value = VersionHist[i].ChangedBy;
             }
             
         }

@@ -222,20 +222,23 @@ namespace Mobility_Setup_Tool
                 }
 
                 // Check model number integrity
-                if (InputInfo.ModelNumber.Substring(InputInfo.ModelNumber.Length-4, 4).Contains("x") || InputInfo.ModelNumber.Substring(InputInfo.ModelNumber.Length - 4, 4).Contains("X") || InputInfo.ModelNumber.Contains("??"))
-                {
-LBL_FAIL_MODEL:
-                    string Result = RefForm.GetInput("Model number is invalid please enter the correct number in the box below", InputInfo.ModelNumber, InputInfo.ModelNumber);
-
-                    if (Result == "")
+                if(InputInfo.ModelNumber != "")
+                { 
+                    if (InputInfo.ModelNumber.Substring(InputInfo.ModelNumber.Length-4, 4).Contains("x") || InputInfo.ModelNumber.Substring(InputInfo.ModelNumber.Length - 4, 4).Contains("X") || InputInfo.ModelNumber.Contains("??"))
                     {
-                        MsgBox_Error("Model number cannot be blank, please enter a model number");
-                        goto LBL_FAIL_MODEL;
-                    }
+    LBL_FAIL_MODEL:
+                        string Result = RefForm.GetInput("Model number is invalid please enter the correct number in the box below", InputInfo.ModelNumber, InputInfo.ModelNumber);
 
-                    ChangeInfo.ModelNumber = Result;
-                    OutputEq.ModelNumber   = Result;
-                } 
+                        if (Result == "")
+                        {
+                            MsgBox_Error("Model number cannot be blank, please enter a model number");
+                            goto LBL_FAIL_MODEL;
+                        }
+
+                        ChangeInfo.ModelNumber = Result;
+                        OutputEq.ModelNumber   = Result;
+                    } 
+                }
 
                 // Compare information found
                 if (InputInfo.CatProfile != TemplateInfo.CatProfile)
@@ -371,6 +374,7 @@ LBL_FAIL_MODEL:
             }
                 else
             {
+                MsgBox_Error("Please ensure SAP is running!");
                 return false;
             }
 
@@ -502,6 +506,7 @@ LBL_FAIL_MODEL:
             }
             else
             {
+                MsgBox_Error("Please ensure SAP is running!");
                 return false;
             }
         }
@@ -510,17 +515,11 @@ LBL_FAIL_MODEL:
         public virtual bool CreateEntryList(MobilityTask TaskInfo, BackgroundWorker Parent) 
         {
             // Variables
-            int     ErrorCount = 0;
-            string  KeyInput, KeyCEL;
-            bool    Matched;
+            int     ErrorCount      = 0;
             bool    OverwriteList   = false;
             string  EntryListNumber = "";
-
-            switch (TaskInfo.CEL)
-            {
-                case "NON-STANDARD VARIATION": return true;
-                case "NONE":                   return true;
-            }
+            string  KeyInput, KeyCEL;
+            bool    Matched;
 
             if (Session.GetSession())
             {
@@ -691,9 +690,13 @@ LBL_FAIL_MODEL:
 
                 GuiTableControl Table   = Session.GetTable("SAPLIMR7ERFALIST");
 
+                // Use visible rows to determine how many lines to update at once this way
+                // on smaller resolution screens the tool will still work
+                // NOTE: we chose visible lines - 2 because SAP was not always showing the same
+                // amount of visible lines each time.
                 int MaxRow              = 0;
                 int Interval            = (OutputEntryList.Rows.Count) / 100;
-                int VisRows             = Table.VisibleRowCount - 2; // -1 creates problem in CEL upload, so we use visible rows minus 2
+                int VisRows             = Table.VisibleRowCount - 2; 
 
                 _ = RefForm.SetStatus("Uploading entry list..", 0);
 
@@ -706,9 +709,12 @@ LBL_FAIL_MODEL:
                         return false;
                     }
 
-                    if(!RefForm.SetStatus("Uploading entry list", i / VisRows * Interval)) return false;
+                    if(!RefForm.SetStatus("Uploading entry list", i / VisRows * Interval)) 
+                    {
+                        return false;
+                    }
 
-                    ((GuiTextField)Table.FindById($"txtIMEP-SORTF[1,{MaxRow}]")).Text = OutputEntryList.Rows[i]["Sort Order"].ToString();
+                    ((GuiTextField)Table.FindById($"txtIMEP-SORTF[1,{MaxRow}]")).Text   = OutputEntryList.Rows[i]["Sort Order"].ToString();
                     ((GuiCTextField)Table.FindById($"ctxtIMEP-POINT[3,{MaxRow}]")).Text = OutputEntryList.Rows[i]["Measurement Point"].ToString();
 
                     MaxRow++;
@@ -716,7 +722,7 @@ LBL_FAIL_MODEL:
                     if (MaxRow > VisRows)
                     {
                         Table.VerticalScrollbar.Position += VisRows+1;
-                        Table = Session.GetTable("SAPLIMR7ERFALIST");
+                        Table  = Session.GetTable("SAPLIMR7ERFALIST");
                         MaxRow = 0;
                     }
                 }
@@ -738,7 +744,7 @@ LBL_FAIL_MODEL:
             }
             else
             {
-                MsgBox_Error("Please ensure SAP is running");
+                MsgBox_Error("Please ensure SAP is running!");
                 return false;
             }
 
@@ -874,40 +880,46 @@ LBL_FAIL_MODEL:
                 }
 
                 // Reset reference object view
-                ((GuiMenu)Session.GetFormById("wnd[0]/mbar/menu[3]/menu[9]/menu[0]")).Select();
-                ((GuiLabel)Session.GetFormById("wnd[1]/usr/lbl[6,3]")).SetFocus();
+                ((GuiMenu)  Session.GetFormById("wnd[0]/mbar/menu[3]/menu[9]/menu[0]")).Select();
+                ((GuiLabel) Session.GetFormById("wnd[1]/usr/lbl[6,3]")).SetFocus();
                 ((GuiButton)Session.GetFormById("wnd[1]/tbar[0]/btn[0]")).Press();
 
-                Session.GetCTextField("VIQMEL-AUSWK").Text = RefForm.AppSettings.Effect;
-                Session.GetCTextField("RIWO00-GEWRK").Text = TaskInfo.Workcentre;
-                Session.GetCTextField("VIQMEL-VKBUR").Text = SOInfo.SalesOffice;
-                Session.GetCTextField("VIQMEL-VKGRP").Text = SOInfo.SalesGroup;
-                Session.GetCTextField("VIQMEL-INGRP").Text = RefForm.AppSettings.PlannerGroup;
-                Session.GetCTextField("RIWO00-SWERK").Text = RefForm.AppSettings.Plant;
+                Session.GetCTextField("VIQMEL-AUSWK").Text      = RefForm.AppSettings.Effect;
+                Session.GetCTextField("RIWO00-GEWRK").Text      = TaskInfo.Workcentre;
+                Session.GetCTextField("VIQMEL-VKBUR").Text      = SOInfo.SalesOffice;
+                Session.GetCTextField("VIQMEL-VKGRP").Text      = SOInfo.SalesGroup;
+                Session.GetCTextField("VIQMEL-INGRP").Text      = RefForm.AppSettings.PlannerGroup;
+                Session.GetCTextField("RIWO00-SWERK").Text      = RefForm.AppSettings.Plant;
 
                 Session.SendVKey(0);
 
-                Session.GetCTextField("VIQMEL-QMNAM").Text = "CU";
-                Session.GetTextField("VIQMEL-BSTNK").Text = SOInfo.PurchaseOrder;
-                Session.GetCTextField("VIQMEL-BSTDK").Text = SOInfo.PurchaseOrderDate;
-                if (!SOInfo.CreateWithoutEq) Session.GetCTextField("RIWO1-EQUNR").Text = SetupEquipment.EquipmentNumber;
-                Session.GetCTextField("VIQMEL-KUNUM").Text = SOInfo.SoldToParty;
+                Session.GetCTextField("VIQMEL-QMNAM").Text      = "CU";
+                Session.GetTextField("VIQMEL-BSTNK").Text       = SOInfo.PurchaseOrder;
+                Session.GetCTextField("VIQMEL-BSTDK").Text      = SOInfo.PurchaseOrderDate;
+
+                // If we are not creating order without equipment
+                if (!SOInfo.CreateWithoutEq) 
+                {
+                    Session.GetCTextField("RIWO1-EQUNR").Text   = SetupEquipment.EquipmentNumber;
+                }
+
+                Session.GetCTextField("VIQMEL-KUNUM").Text      = SOInfo.SoldToParty;
 
                 Session.ClearErrors(30, true);
 
-                Session.GetCTextField("VIQMEL-LTRMN").Text = SOInfo.BasicEndDate;
+                Session.GetCTextField("VIQMEL-LTRMN").Text      = SOInfo.BasicEndDate;
                 Session.ClearErrors(30, true);
-                Session.GetCTextField("VIQMEL-STRMN").Text = SOInfo.BasicStartDate;
+                Session.GetCTextField("VIQMEL-STRMN").Text      = SOInfo.BasicStartDate;
                 Session.ClearErrors(30, true);
 
-                Session.GetShell("shell").Text = TaskInfo.LongText;
+                Session.GetShell("shell").Text                  = TaskInfo.LongText;
 
                 Session.GetTab(@"10\TAB06").Select();
 
-                Session.GetCTextField("ILOA-SWERK").Text = RefForm.AppSettings.Plant;
-                Session.GetCTextField("ILOA-STORT").Text = RefForm.AppSettings.Location;
-                Session.GetCTextField("RILA0-ARBPL").Text = TaskInfo.Workcentre;
-                Session.GetCTextField("ILOA-VKORG").Text = RefForm.AppSettings.Organization;
+                Session.GetCTextField("ILOA-SWERK").Text        = RefForm.AppSettings.Plant;
+                Session.GetCTextField("ILOA-STORT").Text        = RefForm.AppSettings.Location;
+                Session.GetCTextField("RILA0-ARBPL").Text       = TaskInfo.Workcentre;
+                Session.GetCTextField("ILOA-VKORG").Text        = RefForm.AppSettings.Organization;
 
                 // Check for cancel
                 if (Parent.CancellationPending)
@@ -918,12 +930,14 @@ LBL_FAIL_MODEL:
 
                 Session.ClearErrors(30, true);
 
-                Session.GetCTextField("ILOA-VTWEG").Text = RefForm.AppSettings.Distribution;
-                Session.GetCTextField("ILOA-SPART").Text = RefForm.AppSettings.Division;
+                Session.GetCTextField("ILOA-VTWEG").Text        = RefForm.AppSettings.Distribution;
+                Session.GetCTextField("ILOA-SPART").Text        = RefForm.AppSettings.Division;
 
                 // Set WBS element
-                if (TaskInfo.WBS != "") {
-                    if (Session.GetCTextField("ILOA-PROID").Text != "" || Session.GetCTextField("ILOA-PROID").Text != TaskInfo.WBS) {
+                if (TaskInfo.WBS != "") 
+                {
+                    if (Session.GetCTextField("ILOA-PROID").Text != "" || Session.GetCTextField("ILOA-PROID").Text != TaskInfo.WBS) 
+                    {
                         Session.GetCTextField("ILOA-PROID").Text = "";
                         Session.ClearErrors(30, true);
                     }
@@ -1010,7 +1024,7 @@ LBL_FAIL_MODEL:
                 // Set ZDI1
                 if (TaskInfo.WarrantyClaim) 
                 {
-                    Session.GetCTextField("PMSDO-MATNR").Text = SetupEquipment.ZDI1;
+                    Session.GetCTextField("PMSDO-MATNR").Text  = SetupEquipment.ZDI1;
                     Session.GetCTextField("CAUFVD-BEMOT").Text = "02";
                 }
                 else
@@ -1018,17 +1032,14 @@ LBL_FAIL_MODEL:
                     Session.GetCTextField("PMSDO-MATNR").Text = SetupEquipment.ZDI1;
                 }
 
-                Session.GetTextField("PMSDO-MENGE").Text  = "1";        // Qty
-                Session.GetCTextField("PMSDO-FAKTF").Text = "01";       // Billing form
+                Session.GetTextField("PMSDO-MENGE").Text    = "1";        // Qty
+                Session.GetCTextField("PMSDO-FAKTF").Text   = "01";       // Billing form
 
                 Session.SendVKey(0);
 
-                Session.GetCTextField("CAUFVD-GSTRP").Text = SOInfo.BasicStartDate;
-
-                Session.ClearErrors(30, true);
-
                 Session.GetCTextField("CAUFVD-GLTRP").Text = SOInfo.BasicEndDate;
-
+                Session.ClearErrors(30, true);
+                Session.GetCTextField("CAUFVD-GSTRP").Text = SOInfo.BasicStartDate;
                 Session.ClearErrors(30, true);
 
                 Session.GetCTextField("CAUFVD-ILART").Text = SOInfo.ActivityType;
@@ -1042,6 +1053,10 @@ LBL_FAIL_MODEL:
                 Session.GetCTextField("CAUFVD-EQUNR").Text = SetupEquipment.EquipmentNumber;
                 Session.ClearErrors(30, true);
 
+                // Add missing planner group
+                Session.GetCTextField("CAUFVD-INGPR").Text = RefForm.AppSettings.PlannerGroup;
+
+                // Go to location tab
                 Session.GetTab("ILOA").Select();
 
                 // Check for cancel
@@ -1071,10 +1086,10 @@ LBL_FAIL_MODEL:
                     ((GuiMenu)Session.GetFormById("wnd[0]/mbar/menu[3]/menu[0]/menu[0]")).Select();
                     //if(Session.GetActiveWindow().Type != "GuiMainWindow") ((GuiButton)Session.GetFormById("wnd[1]/usr/btnSPOP-OPTION1")).Press();
 
-                    ((GuiRadioButton)Session.GetFormById("wnd[1]/usr/radRIHEA-PN_IHAN")).Selected = true;
-                    ((GuiCTextField)Session.GetFormById("wnd[1]/usr/ctxtCAUFVD-PLNNR")).Text = TaskInfo.Group;
-                    ((GuiTextField)Session.GetFormById("wnd[1]/usr/txtCAUFVD-PLNAL")).Text = TaskInfo.Counter;
-                    ((GuiButton)Session.GetFormById("wnd[1]/tbar[0]/btn[0]")).Press();
+                    ((GuiRadioButton)   Session.GetFormById("wnd[1]/usr/radRIHEA-PN_IHAN")).Selected    = true;
+                    ((GuiCTextField)    Session.GetFormById("wnd[1]/usr/ctxtCAUFVD-PLNNR")).Text        = TaskInfo.Group;
+                    ((GuiTextField)     Session.GetFormById("wnd[1]/usr/txtCAUFVD-PLNAL")).Text         = TaskInfo.Counter;
+                    ((GuiButton)        Session.GetFormById("wnd[1]/tbar[0]/btn[0]")).Press();
 
                     // Press yes to delete current operations
                     if(Session.GetActiveWindow().Type != "GuiMainWindow")
@@ -1125,9 +1140,9 @@ LBL_FAIL_MODEL:
                     GuiTableControl         ComponentTable;
 
                     // Get table initially 
-                    ComponentTable = Session.GetTable("SAPLCOMKTCTRL_3020");
-                    int VisRows = ComponentTable.VisibleRowCount;
-                    int CurRow = 0;
+                    ComponentTable  = Session.GetTable("SAPLCOMKTCTRL_3020");
+                    int VisRows     = ComponentTable.VisibleRowCount;
+                    int CurRow      = 0;
 
                     // Find next empty slot 
                     for (int i = 0; i < ComponentTable.Rows.Count; i++)
@@ -1184,7 +1199,6 @@ LBL_FAIL_MODEL:
                         Session.ClearErrors(30, true);
 
                         CurRow++;
-
                     }
                 }
 
@@ -1195,6 +1209,8 @@ LBL_FAIL_MODEL:
                     return false;
                 }
 
+                return true;
+
                 // Set settlement rule for warranty
                 if (TaskInfo.WarrantyClaim)
                 {
@@ -1204,31 +1220,32 @@ LBL_FAIL_MODEL:
                     Session.GetButton("btn[14]").Press();
 
                     // Add warranty cost re-direction rule
-                    ((GuiCTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/ctxtCOBRB-KONTY[0,0]")).Text = "G/L";
+                    ((GuiCTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/ctxtCOBRB-KONTY[0,0]")).Text    = "G/L";
                     Session.SendVKey(0);
-                    ((GuiCTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/ctxtDKOBR-EMPGE[1,0]")).Text = "240600";
+                    ((GuiCTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/ctxtDKOBR-EMPGE[1,0]")).Text    = "240600";
                     Session.SendVKey(0);
-                    ((GuiTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/txtCOBRB-PROZS[3,0]")).Text = "100";
-                    ((GuiCTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/ctxtCOBRB-PERBZ[5,0]")).Text = "FUL";
+                    ((GuiTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/txtCOBRB-PROZS[3,0]")).Text      = "100";
+                    ((GuiCTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/ctxtCOBRB-PERBZ[5,0]")).Text    = "FUL";
                     Session.SendVKey(3);
                 }
 
-                return false;
-
                 // Release order
-                if (MsgBox_Question("Would you like to release this service order?") == DialogResult.Yes) {
+                if (MsgBox_Question("Would you like to release this service order?") == DialogResult.Yes)
+                {
                     Session.GetButton("btn[25]").Press();
                 }
 
                 Session.GetButton("btn[11]").Press();
                 
-                if (Session.GetActiveWindow().Type != "GuiMainWindow"){
+                if (Session.GetActiveWindow().Type != "GuiMainWindow")
+                {
                     ((GuiButton)Session.GetFormById("wnd[1]/usr/btnSPOP-OPTION1")).Press();
                    Session.GetButton("btn[11]").Press();
                 }
 
                 // Finalize order
-                if(!Finalize(TaskInfo, SOInfo, SetupEquipment)){
+                if(!Finalize(TaskInfo, SOInfo, SetupEquipment))
+                {
                     MsgBox_Error("Failed to created service order");
                     return false;
                 }
@@ -1245,9 +1262,6 @@ LBL_FAIL_MODEL:
         // Create service order
         public virtual bool Finalize(MobilityTask TaskInfo, MobilityServiceOrder InputSO, MobilityEquipment InputEq) 
         {
-            string Customer = "";
-            string Dir = "";
-
             if (Session.GetSession())
             {
                 Session.StartTransaction("IW32");
@@ -1256,8 +1270,8 @@ LBL_FAIL_MODEL:
                 // Verify order created
                 if (Session.GetSessionInfo().ScreenNumber != 3000) return false;
 
-                Customer = InputSO.CustomerName.Replace(@"/", "");
-                Customer = InputSO.CustomerName.Replace(@"\", "");
+                string Customer = InputSO.CustomerName.Replace(@"/", "");
+                       Customer = InputSO.CustomerName.Replace(@"\", "");
 
                 // Verify the order was created and get the numbers
                 RefForm.Output_ServiceOrder = Session.GetTextField("CAUFVD-AUFNR").Text;
@@ -1291,7 +1305,8 @@ LBL_FAIL_MODEL:
                 if (TaskInfo.FolderPath != "")
                 {
                     // Build path string
-                    Dir = $"{RefForm.AppSettings.ServerIndex}{TaskInfo.FolderPath}\\{RefForm.Output_ServiceOrder} {TaskInfo.Name.Replace("/", "")} SN {InputEq.SerialNumber} ({RefForm.DatabaseController.GetCustomerAbbr_ByName(InputSO.CustomerName)})";
+                    string Dir = $"{RefForm.AppSettings.ServerIndex}{TaskInfo.FolderPath}\\{RefForm.Output_ServiceOrder} {TaskInfo.Name.Replace("/", "")} SN {InputEq.SerialNumber} ({RefForm.DatabaseController.GetCustomerAbbr_ByName(InputSO.CustomerName)})";
+
                     // Create the path
                     Directory.CreateDirectory(Dir);
                     Directory.CreateDirectory($"{Dir}\\REPORTS");
@@ -1335,9 +1350,12 @@ LBL_FAIL_MODEL:
                     Session.SendVKey(0);
 
                     // Verify the notification
-                    if (Session.GetSessionInfo().ScreenNumber == 100) {
+                    if (Session.GetSessionInfo().ScreenNumber == 100) 
+                    {
                         Session.ClearErrors(30, false);
-                        if (Session.GetSessionInfo().ScreenNumber == 100) {
+
+                        if (Session.GetSessionInfo().ScreenNumber == 100) 
+                        {
                             MsgBox_Error("Cannot find notification you have selected!");
                         }
                     }

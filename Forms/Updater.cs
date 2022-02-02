@@ -23,8 +23,8 @@ namespace Mobility_Setup_Tool.Forms
 
         private void Updater_Load(object sender, EventArgs e)
         {
-            BackColor               = RefForm.ThemeController.GetBackcolor();
-            TitleBar_PNL.BackColor  = RefForm.ThemeController.GetBordercolor();
+            //BackColor               = RefForm.ThemeController.GetBackcolor();
+            //TitleBar_PNL.BackColor  = RefForm.ThemeController.GetBordercolor();
             DownloadThread          = new Thread(new ThreadStart(delegate { UpdateApplication(); }));
         }
 

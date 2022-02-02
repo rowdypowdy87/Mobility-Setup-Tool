@@ -63,9 +63,11 @@ namespace Mobility_Setup_Tool
                 _add.ZAWA               = LoadTable.Rows[i][2]  != null ? LoadTable.Rows[i][2].ToString() : "";
                 _add.ZDI1               = LoadTable.Rows[i][3]  != null ? LoadTable.Rows[i][3].ToString() : "";
 
-                if ((LoadTable.Rows[i][4]  != null ? LoadTable.Rows[i][4].ToString() : "") == "YES") {
+                if ((LoadTable.Rows[i][4]  != null ? LoadTable.Rows[i][4].ToString() : "") == "YES") 
+                {
                     _add.UpdateToTemplate = true;
-                } else {
+                } else 
+                {
                     _add.UpdateToTemplate = false;
                 }
 

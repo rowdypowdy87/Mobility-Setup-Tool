@@ -10,71 +10,6 @@ namespace Mobility_Setup_Tool
     // Inheret base from ZM12 setup module (equipment, measures and CEL checks are the same)
     class Module_ZM25 : Module_ZM12
     {
-        // Check for existing orders
-        public override bool InitialServiceCheck(MobilityTask       TaskInfo, 
-                                                 string             Equipmentnumber, 
-                                                 BackgroundWorker   Parent)
-        {
-            if (Session.GetSession())
-            {
-                DateTime StartDate;
-                DateTime EndDate;
-
-                StartDate = RefForm.GetBasicStartDate.AddMonths(-Convert.ToInt32(RefForm.AppSettings.WarrantyMonthLimit));
-                EndDate = RefForm.GetBasicStartDate;
-
-                if (!RefForm.SetStatus($"Checking for previous work orders in the last {RefForm.AppSettings.WarrantyMonthLimit} months..", 0)) return false;
-
-                Session.StartTransaction("IW73");
-                Session.SetVariant("/FSDS-25-32");
-
-                // Set status exclusions to nothign
-                Session.GetCheckBox("DY_OFN").Selected = true;
-                Session.GetCheckBox("DY_IAR").Selected = true;
-                Session.GetCheckBox("DY_MAB").Selected = true;
-                Session.GetCheckBox("DY_HIS").Selected = true;
-
-                // Expand all 
-                Session.GetButton("btn[19]").Press();
-
-                // Clear period
-                Session.GetCTextField("DATUV").Text = "";
-                Session.GetCTextField("DATUB").Text = "01.01.3000";
-
-                // Equipment number
-                Session.GetCTextField("EQUNR-LOW").Text = Equipmentnumber;
-
-                // Set dates
-                Session.GetCTextField("GLTRP-LOW").Text = StartDate.ToShortDateString().Replace("/", ".");
-                Session.GetCTextField("GLTRP-HIGH").Text = EndDate.ToShortDateString().Replace("/", ".");
-
-                // Set tasklist filter
-                Session.GetCTextField("PLNNR-LOW").Text = TaskInfo.Group;
-                Session.GetTextField("PLNAL-LOW").Text = TaskInfo.Counter;
-
-                Session.SendVKey(8);
-
-                if (Session.GetSessionInfo().ScreenNumber != 1000 && !TaskInfo.WarrantyClaim)
-                {
-                    if (MsgBox_Question($"This unit has been here with the same Task Type in the last {RefForm.AppSettings.WarrantyMonthLimit} months, are you sure this is not a warranty claim?") == DialogResult.No)
-                    {
-                        Session.EndTransaction();
-                        return false;
-
-                    }
-                }
-
-                Session.EndTransaction();
-                return true;
-
-            }
-            else
-            {
-                MsgBox_Error("Please ensure SAP is running");
-                return false;
-            }
-        }
-
         // Create service order
         public override bool CreateServiceOrder(MobilityTask            TaskInfo, 
                                                 MobilityEquipment       SetupEquipment, 
@@ -84,7 +19,7 @@ namespace Mobility_Setup_Tool
         {
             if (Session.GetSession())
             {
-                if (!RefForm.SetStatus("Creating service order", 0)) return false;
+                _ = RefForm.SetStatus("Creating service order", 0);
 
                 Session.GetButton("*VIQMEL-AUFNR").Press();
 
@@ -107,37 +42,37 @@ namespace Mobility_Setup_Tool
                 // Set ZDI1
                 if (TaskInfo.WarrantyClaim)
                 {
-                    Session.GetCTextField("PMSDO-MATNR").Text = SetupEquipment.ZDI1;
-                    Session.GetCTextField("CAUFVD-BEMOT").Text = "02";
+                    Session.GetCTextField("PMSDO-MATNR").Text           = SetupEquipment.ZDI1;
+                    Session.GetCTextField("CAUFVD-BEMOT").Text          = "02";
                 }
                 else
                 {
-                    Session.GetCTextField("PMSDO-MATNR").Text = SetupEquipment.ZDI1;
+                    Session.GetCTextField("PMSDO-MATNR").Text           = SetupEquipment.ZDI1;
                 }
 
-                Session.GetTextField("PMSDO-MENGE").Text = "1";        // Qty
-                Session.GetCTextField("PMSDO-FAKTF").Text = "01";       // Billing form
+                Session.GetTextField("PMSDO-MENGE").Text                = "1";        // Qty
+                Session.GetCTextField("PMSDO-FAKTF").Text               = "01";       // Billing form
 
                 Session.SendVKey(0);
 
-                Session.GetCTextField("CAUFVD-GSTRP").Text = SOInfo.BasicStartDate;
+                Session.GetCTextField("CAUFVD-GSTRP").Text              = SOInfo.BasicStartDate;
 
                 Session.ClearErrors(30, true);
 
-                Session.GetCTextField("CAUFVD-GLTRP").Text = SOInfo.BasicEndDate;
+                Session.GetCTextField("CAUFVD-GLTRP").Text              = SOInfo.BasicEndDate;
 
                 Session.ClearErrors(30, true);
 
-                Session.GetCTextField("CAUFVD-ILART").Text = SOInfo.ActivityType;
-                Session.GetComboBox("CAUFVD-PRIOK").Key = SOInfo.Priority.Substring(0, 1);
-                Session.GetCTextField("CAUFVD-VAPLZ").Text = TaskInfo.Workcentre;
+                Session.GetCTextField("CAUFVD-ILART").Text              = SOInfo.ActivityType;
+                Session.GetComboBox("CAUFVD-PRIOK").Key                 = SOInfo.Priority.Substring(0, 1);
+                Session.GetCTextField("CAUFVD-VAPLZ").Text              = TaskInfo.Workcentre;
 
                 Session.GetTab("ILOA").Select();
 
-                Session.GetCTextField("ILOA-SWERK").Text = RefForm.AppSettings.Plant;
-                Session.GetCTextField("ILOA-STORT").Text = RefForm.AppSettings.Location;
-                Session.GetCTextField("RILA0-ARBPL").Text = TaskInfo.Workcentre;
-                Session.GetTextField("ILOA-EQFNR").Text = SOInfo.ExternalReference;
+                Session.GetCTextField("ILOA-SWERK").Text                = RefForm.AppSettings.Plant;
+                Session.GetCTextField("ILOA-STORT").Text                = RefForm.AppSettings.Location;
+                Session.GetCTextField("RILA0-ARBPL").Text               = TaskInfo.Workcentre;
+                Session.GetTextField("ILOA-EQFNR").Text                 = SOInfo.ExternalReference;
 
                 Session.ClearErrors(30, true);
 
