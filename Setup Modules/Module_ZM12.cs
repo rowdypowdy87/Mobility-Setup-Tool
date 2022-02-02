@@ -1209,8 +1209,6 @@ namespace Mobility_Setup_Tool
                     return false;
                 }
 
-                return true;
-
                 // Set settlement rule for warranty
                 if (TaskInfo.WarrantyClaim)
                 {

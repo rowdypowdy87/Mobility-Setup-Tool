@@ -1006,7 +1006,7 @@ namespace Mobility_Setup_Tool
             this.PartyName_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.PartyName_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.PartyName_CB.FormattingEnabled = true;
-            this.PartyName_CB.Location = new System.Drawing.Point(301, 19);
+            this.PartyName_CB.Location = new System.Drawing.Point(301, 18);
             this.PartyName_CB.Name = "PartyName_CB";
             this.PartyName_CB.Size = new System.Drawing.Size(292, 26);
             this.PartyName_CB.TabIndex = 6;
@@ -1158,7 +1158,7 @@ namespace Mobility_Setup_Tool
             this.PMActivityType_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.PMActivityType_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.PMActivityType_CB.FormattingEnabled = true;
-            this.PMActivityType_CB.Location = new System.Drawing.Point(291, 19);
+            this.PMActivityType_CB.Location = new System.Drawing.Point(291, 18);
             this.PMActivityType_CB.Name = "PMActivityType_CB";
             this.PMActivityType_CB.Size = new System.Drawing.Size(303, 26);
             this.PMActivityType_CB.TabIndex = 11;
@@ -1233,7 +1233,7 @@ namespace Mobility_Setup_Tool
             this.Priority_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.Priority_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.Priority_CB.FormattingEnabled = true;
-            this.Priority_CB.Location = new System.Drawing.Point(291, 214);
+            this.Priority_CB.Location = new System.Drawing.Point(291, 213);
             this.Priority_CB.Name = "Priority_CB";
             this.Priority_CB.Size = new System.Drawing.Size(303, 26);
             this.Priority_CB.TabIndex = 14;
@@ -1304,7 +1304,7 @@ namespace Mobility_Setup_Tool
             this.TemplateEquipmentList_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.TemplateEquipmentList_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.TemplateEquipmentList_CB.FormattingEnabled = true;
-            this.TemplateEquipmentList_CB.Location = new System.Drawing.Point(485, 63);
+            this.TemplateEquipmentList_CB.Location = new System.Drawing.Point(485, 62);
             this.TemplateEquipmentList_CB.Name = "TemplateEquipmentList_CB";
             this.TemplateEquipmentList_CB.Size = new System.Drawing.Size(477, 26);
             this.TemplateEquipmentList_CB.TabIndex = 3;
@@ -1317,7 +1317,7 @@ namespace Mobility_Setup_Tool
             this.TaskType_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.TaskType_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.TaskType_CB.FormattingEnabled = true;
-            this.TaskType_CB.Location = new System.Drawing.Point(485, 114);
+            this.TaskType_CB.Location = new System.Drawing.Point(485, 113);
             this.TaskType_CB.Name = "TaskType_CB";
             this.TaskType_CB.Size = new System.Drawing.Size(477, 26);
             this.TaskType_CB.TabIndex = 4;
@@ -1328,7 +1328,7 @@ namespace Mobility_Setup_Tool
             this.FunctionLoc_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.FunctionLoc_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.FunctionLoc_CB.FormattingEnabled = true;
-            this.FunctionLoc_CB.Location = new System.Drawing.Point(485, 166);
+            this.FunctionLoc_CB.Location = new System.Drawing.Point(485, 165);
             this.FunctionLoc_CB.Name = "FunctionLoc_CB";
             this.FunctionLoc_CB.Size = new System.Drawing.Size(477, 26);
             this.FunctionLoc_CB.TabIndex = 5;

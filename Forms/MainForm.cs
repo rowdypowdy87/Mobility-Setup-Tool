@@ -215,6 +215,13 @@ namespace Mobility_Setup_Tool
             return index;
         }
 
+        public int GetSelectedItems(dynamic control)
+        {
+            int items = 0;
+            control.Invoke((MethodInvoker)delegate { items = control.SelectedItems.Count; });
+            return items;
+        }
+
         public void SetStatusText(dynamic con, string val) { BeginInvoke((Action)(() => con.Text = val)); }
 
         delegate void SetControlValueCallback1(dynamic oControl, string propName, object propValue);
@@ -316,10 +323,17 @@ namespace Mobility_Setup_Tool
 
             if (Full)
             {
+                // Check something is selected
+                if (GetSelectedItems(Variations_LB) == 0)
+                {
+                    MsgBox_Error("Please select a notification to convert");
+                    return false;
+                }
+
                 // Check variations are loaded
                 if (GetItems(Variations_LB) <= 0)
                 {
-                    MsgBox_Error("Please load variations before continuing (enter serial number and double click the variations list box on the right)");
+                    MsgBox_Error("Please load notifications for this serial number before continuing");
                     return false;
                 }
 
@@ -564,7 +578,8 @@ namespace Mobility_Setup_Tool
             { 
                 if (SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW) == false)
                 {
-                    if (SingleSetup_BW.CancellationPending) {
+                    if (SingleSetup_BW.CancellationPending) 
+                    {
                         MsgBox_Normal("User cancelled");
                     }
                     return;
@@ -585,7 +600,7 @@ namespace Mobility_Setup_Tool
                 // Get long text
                 GetLongText LText = new GetLongText(this)
                 {
-                    LongText = LongText_TB.Text
+                    LongText = GetText(LongText_TB)
                 };
 
                 LText.ShowDialog();
