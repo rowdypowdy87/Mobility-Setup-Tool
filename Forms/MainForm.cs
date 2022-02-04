@@ -153,7 +153,7 @@ namespace Mobility_Setup_Tool
                 UserInput.Text                  = Title;
                 UserInput.ShowDialog();
 
-                ReturnValue = UserInput.Result;
+                ReturnValue = UserInput.Input.Text;
             };
             
             return ReturnValue;
@@ -801,8 +801,6 @@ namespace Mobility_Setup_Tool
             SapSession          = new AUTOSAP(this);
             //QuoteOutput         = new QuoteConsole(this);
             //QuoteOutput.Hide();
-
-            
 
             // Set defaults
             AppSettings.LoadSettings();

@@ -195,8 +195,6 @@ namespace Mobility_Setup_Tool
             {
                 e.Graphics.DrawRectangle(BorderPen, 0, 0, Width - 1, Height - 1);
             };
-        }
-
-        
+        }  
     }
 }

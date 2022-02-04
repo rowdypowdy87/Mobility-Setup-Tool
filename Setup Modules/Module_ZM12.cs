@@ -229,7 +229,7 @@ namespace Mobility_Setup_Tool
     LBL_FAIL_MODEL:
                         string Result = RefForm.GetInput("Model number is invalid please enter the correct number in the box below", InputInfo.ModelNumber, InputInfo.ModelNumber);
 
-                        if (Result == "")
+                        if (Result == "" || Result == null)
                         {
                             MsgBox_Error("Model number cannot be blank, please enter a model number");
                             goto LBL_FAIL_MODEL;
@@ -238,6 +238,21 @@ namespace Mobility_Setup_Tool
                         ChangeInfo.ModelNumber = Result;
                         OutputEq.ModelNumber   = Result;
                     } 
+                }
+                    else
+                {
+                    // Blank model number
+    LBL_FAIL_MODEL2:
+                    string Result2 = RefForm.GetInput("Model number is invalid please enter the correct number in the box below", InputInfo.ModelNumber, InputInfo.ModelNumber);
+
+                    if (Result2 == "" || Result2 == null)
+                    {
+                        MsgBox_Error("Model number cannot be blank, please enter a model number");
+                        goto LBL_FAIL_MODEL2;
+                    }
+
+                    ChangeInfo.ModelNumber  = Result2;
+                    OutputEq.ModelNumber    = Result2;
                 }
 
                 // Compare information found

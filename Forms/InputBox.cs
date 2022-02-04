@@ -7,7 +7,6 @@ namespace Mobility_Setup_Tool
     public partial class InputBox : Form
     {
         MainForm RefForm;
-        public string Result {get; set;}
 
         public InputBox(MainForm r)
         {
@@ -17,7 +16,6 @@ namespace Mobility_Setup_Tool
 
         private void OkayButton_Click(object sender, EventArgs e)
         {
-            Result = Input.Text;
             Close();
         }
 

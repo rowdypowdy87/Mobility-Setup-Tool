@@ -29,19 +29,21 @@ namespace Mobility_Setup_Tool.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.TitleBar_PNL = new System.Windows.Forms.Panel();
             this.UGLLogo_PB = new System.Windows.Forms.PictureBox();
             this.Title_LBL = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.ActualStatus_LBL = new System.Windows.Forms.Label();
             this.CurrentVersion_LBL = new System.Windows.Forms.Label();
             this.LatestVersion_LBL = new System.Windows.Forms.Label();
             this.Status_LBL = new System.Windows.Forms.Label();
             this.ActualCurrentVer_LBL = new System.Windows.Forms.Label();
             this.ActualLastestVer_LBL = new System.Windows.Forms.Label();
             this.CloseApp_BTN = new System.Windows.Forms.Button();
+            this.ActualStatus_LBL = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.MainUGLLogo_PB = new System.Windows.Forms.PictureBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.TitleBar_PNL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UGLLogo_PB)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -86,19 +88,22 @@ namespace Mobility_Setup_Tool.Forms
             this.Title_LBL.TabIndex = 5;
             this.Title_LBL.Text = "Mobility Setup and Planning Tool - Updater";
             this.Title_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Title_LBL.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseDown);
+            this.Title_LBL.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseMove);
+            this.Title_LBL.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseUp);
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
-            this.tableLayoutPanel1.Controls.Add(this.ActualStatus_LBL, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.CurrentVersion_LBL, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.LatestVersion_LBL, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.Status_LBL, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.ActualCurrentVer_LBL, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.ActualLastestVer_LBL, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.CloseApp_BTN, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.ActualStatus_LBL, 1, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -109,20 +114,6 @@ namespace Mobility_Setup_Tool.Forms
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.Size = new System.Drawing.Size(763, 183);
             this.tableLayoutPanel1.TabIndex = 7;
-            // 
-            // ActualStatus_LBL
-            // 
-            this.ActualStatus_LBL.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ActualStatus_LBL.AutoSize = true;
-            this.ActualStatus_LBL.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ActualStatus_LBL.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ActualStatus_LBL.Location = new System.Drawing.Point(155, 80);
-            this.ActualStatus_LBL.Name = "ActualStatus_LBL";
-            this.ActualStatus_LBL.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this.ActualStatus_LBL.Size = new System.Drawing.Size(56, 40);
-            this.ActualStatus_LBL.TabIndex = 2;
-            this.ActualStatus_LBL.Text = "Testing";
-            this.ActualStatus_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // CurrentVersion_LBL
             // 
@@ -202,6 +193,16 @@ namespace Mobility_Setup_Tool.Forms
             this.CloseApp_BTN.UseVisualStyleBackColor = true;
             this.CloseApp_BTN.Click += new System.EventHandler(this.CloseApp_BTN_Click);
             // 
+            // ActualStatus_LBL
+            // 
+            this.ActualStatus_LBL.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ActualStatus_LBL.AutoSize = true;
+            this.ActualStatus_LBL.Location = new System.Drawing.Point(155, 90);
+            this.ActualStatus_LBL.Name = "ActualStatus_LBL";
+            this.ActualStatus_LBL.Size = new System.Drawing.Size(147, 20);
+            this.ActualStatus_LBL.TabIndex = 2;
+            this.ActualStatus_LBL.Text = "Preparing for update";
+            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
@@ -226,6 +227,11 @@ namespace Mobility_Setup_Tool.Forms
             this.MainUGLLogo_PB.TabIndex = 11;
             this.MainUGLLogo_PB.TabStop = false;
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 10000;
+            // 
             // Updater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -238,10 +244,10 @@ namespace Mobility_Setup_Tool.Forms
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Updater";
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Updater";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.Updater_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Updater_Paint);
             this.TitleBar_PNL.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.UGLLogo_PB)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -262,10 +268,11 @@ namespace Mobility_Setup_Tool.Forms
         private System.Windows.Forms.Label LatestVersion_LBL;
         private System.Windows.Forms.Label Status_LBL;
         private System.Windows.Forms.Button CloseApp_BTN;
-        public System.Windows.Forms.Label ActualStatus_LBL;
         public System.Windows.Forms.Label ActualCurrentVer_LBL;
         public System.Windows.Forms.Label ActualLastestVer_LBL;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox MainUGLLogo_PB;
+        private System.Windows.Forms.Timer timer1;
+        public System.Windows.Forms.Label ActualStatus_LBL;
     }
 }

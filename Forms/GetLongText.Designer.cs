@@ -122,7 +122,6 @@ namespace Mobility_Setup_Tool.Forms
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.TopMost = true;
             this.Load += new System.EventHandler(this.GetLongText_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.GetLongText_Paint);
             this.TitleBar_PNL.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.UGLLogo_PB)).EndInit();
             this.ResumeLayout(false);

@@ -41,17 +41,22 @@ namespace Mobility_Setup_Tool
     {
         public SAP_DEFAULTS     Defaults            = new SAP_DEFAULTS();
         public APP_DEFAULTS     ADefaults           = new APP_DEFAULTS();
-        public string           AppData             = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\[UGL]Mobility Setup and Planning Tool";
+        
         public const string     VersionNumber       = "1.0";
         public Theme            ThemeController;
         public MainForm         Reference;
 
+        public string AppData 
+        {
+            get { return $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\[UGL]Mobility Setup and Planning Tool"; }
+        }
 
         // Creation method
-        public Settings(Theme Ref, MainForm Ref2) { 
+        public Settings(Theme Ref, MainForm Ref2) 
+        { 
             ThemeController = Ref; 
             Reference = Ref2;
-            }
+        }
 
         [Category("Application Defaults")]
         [Description("Default functional location")]
@@ -234,7 +239,7 @@ namespace Mobility_Setup_Tool
         }
 
         // Download data files from sharepoint
-        public void DownloadFromSharepoint(string Link, string SavePath)
+        public bool DownloadFromSharepoint(string Link, string SavePath)
         {
             FileStream SaveData;
             byte[] Data;
@@ -252,13 +257,15 @@ namespace Mobility_Setup_Tool
                 catch
                 {
                     MsgBoxs.MsgBox_Error($"Could not download file {Link} please check your connection");
-                    return;
+                    return false;
                 }
 
                 // Save to local DB
                 SaveData = new FileStream(SavePath, FileMode.Create);
                 SaveData.Write(Data);
                 SaveData.Close();
+
+                return true;
             }
         }
 

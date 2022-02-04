@@ -36,18 +36,28 @@ namespace Mobility_Setup_Tool.Forms
             Location = new Point((RefForm.Location.X + RefForm.Width / 2) - Width / 2, (RefForm.Location.Y + RefForm.Height / 2) - Height / 2);
         }
 
-
-        private void GetLongText_Paint(object sender, PaintEventArgs e)
+        // Override paint event on the main form
+        protected override void OnPaint(PaintEventArgs e)
         {
-            using (Pen BorderPen = new Pen(RefForm.ThemeController.GetBordercolor(), 2.0f))
-            {
-                e.Graphics.DrawRectangle(BorderPen, 0, 0, Width - 1, Height - 1);
-                e.Graphics.DrawRectangle(BorderPen, 
-                                         LongText_RTB.Location.X-1,
-                                         LongText_RTB.Location.Y-1,
-                                         LongText_RTB.Width+2,
-                                         LongText_RTB.Height+2);
-            };
+            DoubleBuffered = true;
+            ResizeRedraw = true;
+
+            // Do form painting first
+            base.OnPaint(e);
+
+            // Variables
+            Pen         BorderPen       = new Pen(RefForm.ThemeController.GetBordercolor(), 1.0f);
+            Graphics    FormGFX         = e.Graphics;
+            Rectangle   FormBorder;
+
+            // Get rect
+            FormBorder = new Rectangle(ClientRectangle.X,
+                                       ClientRectangle.Y,
+                                       ClientRectangle.Width - 1,
+                                       ClientRectangle.Height - 1);
+
+            // Draw rectangles
+            FormGFX.DrawRectangle(BorderPen, FormBorder);
         }
 
         // Titlebar mouse move event 
