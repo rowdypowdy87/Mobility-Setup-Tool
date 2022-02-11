@@ -48,7 +48,7 @@ namespace Mobility_Setup_Tool
             this.StorLoc = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.SpecialStock = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Filter_LBL = new System.Windows.Forms.Label();
-            this.Filter_CB = new System.Windows.Forms.ComboBox();
+            this.Filter_CB = new RComboBox();
             this.Cancel_BTN = new System.Windows.Forms.Button();
             this.Continue_BTN = new System.Windows.Forms.Button();
             this.MainUGLLogo_PB = new System.Windows.Forms.PictureBox();

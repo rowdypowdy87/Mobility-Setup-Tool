@@ -20,7 +20,8 @@ namespace Mobility_Setup_Tool
             InitializeComponent();
         }
 
-        private void TitleBar_MouseMove(object sender, MouseEventArgs e) {
+        private void TitleBar_MouseMove(object sender, MouseEventArgs e) 
+         {
             if (isTopPanelDragged) {
                 Point newPoint = TitleBar_PNL.PointToScreen(new Point(e.X, e.Y));
                 newPoint.Offset(offset);
@@ -128,6 +129,10 @@ namespace Mobility_Setup_Tool
             TitleBar_PNL.BackColor    = RefForm.ThemeController.GetBordercolor();
             Border_PNL.ForeColor      = RefForm.ThemeController.GetBordercolor();
             CloseButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
+
+            RefForm.ThemeController.AddControls(TitleBar_PNL, THEME_TYPE.Border);
+            RefForm.ThemeController.AddControls(CloseButton_LBL, THEME_TYPE.Border);
+            RefForm.ThemeController.AddControls(BackColor, THEME_TYPE.Back);
 
             // Manually centre the form to MainForm
             Location = new Point((RefForm.Location.X + RefForm.Width / 2) - Width / 2, (RefForm.Location.Y + RefForm.Height / 2) - Height / 2);

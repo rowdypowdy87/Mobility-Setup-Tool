@@ -44,7 +44,7 @@ namespace Mobility_Setup_Tool
             ExcelDataTables ExcelManager = new ExcelDataTables();
             DataTable       LoadTable;
             int             i;
-
+            
             // Open sheet
             LoadTable = ExcelManager.ConvertExcelToDataTable(Reference.AppSettings.Defaults.InputsPath, 0);
 
@@ -229,7 +229,8 @@ namespace Mobility_Setup_Tool
 
             for (i = 0; i < LoadTable.Rows.Count; i++)
             {
-                QuoteInformation ToAdd = new QuoteInformation  {
+                QuoteInformation ToAdd = new QuoteInformation  
+                {
                     Equipment           = LoadTable.Rows[i][0] != null ? LoadTable.Rows[i][0].ToString() : "",
                     QuoteTemplate       = LoadTable.Rows[i][1] != null ? LoadTable.Rows[i][1].ToString() : "",
                     PartsTemplate       = LoadTable.Rows[i][2] != null ? LoadTable.Rows[i][2].ToString() : "",

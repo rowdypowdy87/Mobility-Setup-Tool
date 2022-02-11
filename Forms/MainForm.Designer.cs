@@ -40,11 +40,13 @@ namespace Mobility_Setup_Tool
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.File_MN = new System.Windows.Forms.ToolStripMenuItem();
             this.AppSettings_MN = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.FileMenu_SPR = new System.Windows.Forms.ToolStripSeparator();
             this.Exit_MN = new System.Windows.Forms.ToolStripMenuItem();
             this.Control_MN = new System.Windows.Forms.ToolStripMenuItem();
             this.StopAuto_MN = new System.Windows.Forms.ToolStripMenuItem();
-            this.resyncDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ResyncData_MNI = new System.Windows.Forms.ToolStripMenuItem();
+            this.View_MN = new System.Windows.Forms.ToolStripMenuItem();
+            this.QOutputWindow_MN = new System.Windows.Forms.ToolStripMenuItem();
             this.Help_MN = new System.Windows.Forms.ToolStripMenuItem();
             this.documentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,7 +59,7 @@ namespace Mobility_Setup_Tool
             this.SingleSetup_BW = new System.ComponentModel.BackgroundWorker();
             this.CheckSAP_TM = new System.Windows.Forms.Timer(this.components);
             this.RaiseVariation_TP = new System.Windows.Forms.TabPage();
-            this.VarInfoLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.VarInfoLayout_PNL = new System.Windows.Forms.TableLayoutPanel();
             this.VarInfo_GB = new System.Windows.Forms.GroupBox();
             this.RightSide_TBL = new System.Windows.Forms.TableLayoutPanel();
             this.LongText_TB = new System.Windows.Forms.RichTextBox();
@@ -69,31 +71,31 @@ namespace Mobility_Setup_Tool
             this.VariationTable_TPN = new System.Windows.Forms.TableLayoutPanel();
             this.VarSOEndDate_DP = new System.Windows.Forms.DateTimePicker();
             this.VarSOStartDate_DP = new System.Windows.Forms.DateTimePicker();
-            this.label1 = new System.Windows.Forms.Label();
+            this.VPlannedFinDate_LBL = new System.Windows.Forms.Label();
             this.VarSOStartDate_LBL = new System.Windows.Forms.Label();
             this.VarExternalReference_LBL = new System.Windows.Forms.Label();
-            this.VarSOPriority_CB = new System.Windows.Forms.ComboBox();
+            this.VarSOPriority_CB = new Mobility_Setup_Tool.RComboBox();
             this.VarSOPriority_LBL = new System.Windows.Forms.Label();
             this.VarPMActivityType_LBL = new System.Windows.Forms.Label();
-            this.VarPMActivityType_CB = new System.Windows.Forms.ComboBox();
+            this.VarPMActivityType_CB = new Mobility_Setup_Tool.RComboBox();
             this.VarExternalReference_TB = new System.Windows.Forms.TextBox();
             this.VarCheckEntryList_BTN = new System.Windows.Forms.Button();
             this.VarRaiseServiceOrder_BTN = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.EqInfo_GRB = new System.Windows.Forms.GroupBox();
             this.EqInfo_TBL = new System.Windows.Forms.TableLayoutPanel();
-            this.VarTaskType_CB = new System.Windows.Forms.ComboBox();
+            this.VarTaskType_CB = new Mobility_Setup_Tool.RComboBox();
             this.VarSerialNumber_LBL = new System.Windows.Forms.Label();
             this.VarTaskType_LBL = new System.Windows.Forms.Label();
             this.VarTemplate_LBL = new System.Windows.Forms.Label();
-            this.VarTemplate_CB = new System.Windows.Forms.ComboBox();
+            this.VarTemplate_CB = new Mobility_Setup_Tool.RComboBox();
             this.VarSerialNumber_TB = new System.Windows.Forms.TextBox();
             this.DataTabs_TC = new System.Windows.Forms.TabControl();
             this.InitialSetup_TP = new System.Windows.Forms.TabPage();
             this.MainLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.NotificationInput_GRB = new System.Windows.Forms.GroupBox();
             this.NotificationLayout = new System.Windows.Forms.TableLayoutPanel();
             this.SoldToParty_LBL = new System.Windows.Forms.Label();
-            this.PartyName_CB = new System.Windows.Forms.ComboBox();
+            this.PartyName_CB = new Mobility_Setup_Tool.RComboBox();
             this.PurchaseOrder_TB = new System.Windows.Forms.TextBox();
             this.PurchaseOrder_LBL = new System.Windows.Forms.Label();
             this.PurchaseOrderDate_DP = new System.Windows.Forms.DateTimePicker();
@@ -102,24 +104,24 @@ namespace Mobility_Setup_Tool
             this.label3 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.ServiceOrderInfoLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.ServOrderInput_GRB = new System.Windows.Forms.GroupBox();
+            this.ServiceOrderInfo_LYT = new System.Windows.Forms.TableLayoutPanel();
             this.ActivityType_LBL = new System.Windows.Forms.Label();
-            this.PMActivityType_CB = new System.Windows.Forms.ComboBox();
+            this.PMActivityType_CB = new Mobility_Setup_Tool.RComboBox();
             this.ExternalReference_TB = new System.Windows.Forms.TextBox();
             this.BasicStartDate_LBL = new System.Windows.Forms.Label();
             this.BasicStartDate_DP = new System.Windows.Forms.DateTimePicker();
             this.BasicEndDate_LBL = new System.Windows.Forms.Label();
             this.Priority_LBL = new System.Windows.Forms.Label();
             this.ExternalRef_LBL = new System.Windows.Forms.Label();
-            this.Priority_CB = new System.Windows.Forms.ComboBox();
+            this.Priority_CB = new Mobility_Setup_Tool.RComboBox();
             this.BasicEndDate_DP = new System.Windows.Forms.DateTimePicker();
             this.EquipmentInfo_GB = new System.Windows.Forms.GroupBox();
             this.EquipmentInfo_Layout = new System.Windows.Forms.TableLayoutPanel();
             this.EquipmentSerial_TB = new System.Windows.Forms.TextBox();
-            this.TemplateEquipmentList_CB = new System.Windows.Forms.ComboBox();
-            this.TaskType_CB = new System.Windows.Forms.ComboBox();
-            this.FunctionLoc_CB = new System.Windows.Forms.ComboBox();
+            this.TemplateEquipmentList_CB = new Mobility_Setup_Tool.RComboBox();
+            this.TaskType_CB = new Mobility_Setup_Tool.RComboBox();
+            this.FunctionLoc_CB = new Mobility_Setup_Tool.RComboBox();
             this.SerialNumber_LBL = new System.Windows.Forms.Label();
             this.TemplateEquipment_LBL = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -128,30 +130,45 @@ namespace Mobility_Setup_Tool
             this.SetupEquipment_BTN = new System.Windows.Forms.Button();
             this.RiaseServiceOrder_BTN = new System.Windows.Forms.Button();
             this.QuoteOrder_TP = new System.Windows.Forms.TabPage();
+            this.QuoteLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.QuoteNotiListBox = new System.Windows.Forms.ListBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.QuoteServiceOrder_TB = new System.Windows.Forms.TextBox();
+            this.QuoteNumberTB = new System.Windows.Forms.TextBox();
+            this.QuoteTemplate_CB = new Mobility_Setup_Tool.RComboBox();
+            this.QuoteServiceOrder_BTN = new System.Windows.Forms.Button();
+            this.LoadNotification_BTN = new System.Windows.Forms.Button();
+            this.QuoteOutput_LV = new System.Windows.Forms.ListView();
+            this.ItemType_CH = new System.Windows.Forms.ColumnHeader();
+            this.TxtForQuote_CH = new System.Windows.Forms.ColumnHeader();
+            this.Price = new System.Windows.Forms.ColumnHeader();
+            this.Notification = new System.Windows.Forms.ColumnHeader();
             this.General_TT = new System.Windows.Forms.ToolTip(this.components);
             this.OutputInfo_TPL = new System.Windows.Forms.TableLayoutPanel();
             this.CELNumber_LBL = new System.Windows.Forms.Label();
             this.EqNumber_LBL = new System.Windows.Forms.Label();
             this.OutputInfo_GB = new System.Windows.Forms.GroupBox();
             this.Output_PNL = new System.Windows.Forms.Panel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.QOutputInfo_GRB = new System.Windows.Forms.GroupBox();
             this.QuoteOutput_PNL = new System.Windows.Forms.TableLayoutPanel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
+            this.QServiceOrder_TB = new System.Windows.Forms.TextBox();
+            this.QPurchaseOrder_LBL = new System.Windows.Forms.Label();
+            this.QNumOfVars_LBL = new System.Windows.Forms.Label();
+            this.QMaterialPrice_LBL = new System.Windows.Forms.Label();
+            this.QOverhaulPrice_LBL = new System.Windows.Forms.Label();
+            this.QVariationPrice_LBL = new System.Windows.Forms.Label();
+            this.QTotalPrice_LBL = new System.Windows.Forms.Label();
+            this.QEquipmentNum_TB = new System.Windows.Forms.TextBox();
+            this.QPurchaseOrder_TB = new System.Windows.Forms.TextBox();
+            this.QNumOfVars_TB = new System.Windows.Forms.TextBox();
+            this.QMaterialPrice_TB = new System.Windows.Forms.TextBox();
+            this.QStandardPrice_TB = new System.Windows.Forms.TextBox();
+            this.QVarLabourPrice_TB = new System.Windows.Forms.TextBox();
+            this.QTotalPrice_TB = new System.Windows.Forms.TextBox();
+            this.QEqNum_LBL = new System.Windows.Forms.Label();
+            this.QServOrderDesc_LBL = new System.Windows.Forms.Label();
             this.OutputOrder_PNL = new System.Windows.Forms.TableLayoutPanel();
             this.EquipmentOutput_TB = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -169,35 +186,37 @@ namespace Mobility_Setup_Tool
             this.SOOutput_TB = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.EqDesc_LBL = new System.Windows.Forms.Label();
-            this.MainTablePanelLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.MainFormLayout_PNL = new System.Windows.Forms.TableLayoutPanel();
             this.TitleBar_PNL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UGLLogo_PB)).BeginInit();
             this.MainMenu.SuspendLayout();
             this.MainStatus_SB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainUGLLogo_PB)).BeginInit();
             this.RaiseVariation_TP.SuspendLayout();
-            this.VarInfoLayout.SuspendLayout();
+            this.VarInfoLayout_PNL.SuspendLayout();
             this.VarInfo_GB.SuspendLayout();
             this.RightSide_TBL.SuspendLayout();
             this.VarOrderInfo_LBL.SuspendLayout();
             this.VariationTable_TPN.SuspendLayout();
-            this.groupBox4.SuspendLayout();
+            this.EqInfo_GRB.SuspendLayout();
             this.EqInfo_TBL.SuspendLayout();
             this.DataTabs_TC.SuspendLayout();
             this.InitialSetup_TP.SuspendLayout();
             this.MainLayout.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.NotificationInput_GRB.SuspendLayout();
             this.NotificationLayout.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.ServiceOrderInfoLayout.SuspendLayout();
+            this.ServOrderInput_GRB.SuspendLayout();
+            this.ServiceOrderInfo_LYT.SuspendLayout();
             this.EquipmentInfo_GB.SuspendLayout();
             this.EquipmentInfo_Layout.SuspendLayout();
+            this.QuoteOrder_TP.SuspendLayout();
+            this.QuoteLayout.SuspendLayout();
             this.OutputInfo_TPL.SuspendLayout();
             this.Output_PNL.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.QOutputInfo_GRB.SuspendLayout();
             this.QuoteOutput_PNL.SuspendLayout();
             this.OutputOrder_PNL.SuspendLayout();
-            this.MainTablePanelLayout.SuspendLayout();
+            this.MainFormLayout_PNL.SuspendLayout();
             this.SuspendLayout();
             // 
             // TitleBar_PNL
@@ -312,6 +331,7 @@ namespace Mobility_Setup_Tool
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.File_MN,
             this.Control_MN,
+            this.View_MN,
             this.Help_MN});
             this.MainMenu.Location = new System.Drawing.Point(1, 37);
             this.MainMenu.Margin = new System.Windows.Forms.Padding(1, 0, 0, 1);
@@ -325,7 +345,7 @@ namespace Mobility_Setup_Tool
             this.File_MN.BackColor = System.Drawing.Color.LightGray;
             this.File_MN.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AppSettings_MN,
-            this.toolStripSeparator1,
+            this.FileMenu_SPR,
             this.Exit_MN});
             this.File_MN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.File_MN.Name = "File_MN";
@@ -339,10 +359,10 @@ namespace Mobility_Setup_Tool
             this.AppSettings_MN.Text = "Application Settings";
             this.AppSettings_MN.Click += new System.EventHandler(this.FileOptions_Click);
             // 
-            // toolStripSeparator1
+            // FileMenu_SPR
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(202, 6);
+            this.FileMenu_SPR.Name = "FileMenu_SPR";
+            this.FileMenu_SPR.Size = new System.Drawing.Size(202, 6);
             // 
             // Exit_MN
             // 
@@ -357,7 +377,7 @@ namespace Mobility_Setup_Tool
             // 
             this.Control_MN.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StopAuto_MN,
-            this.resyncDataToolStripMenuItem});
+            this.ResyncData_MNI});
             this.Control_MN.ForeColor = System.Drawing.Color.Black;
             this.Control_MN.Name = "Control_MN";
             this.Control_MN.Size = new System.Drawing.Size(65, 24);
@@ -370,12 +390,29 @@ namespace Mobility_Setup_Tool
             this.StopAuto_MN.Text = "Stop Automation [ESC]";
             this.StopAuto_MN.Click += new System.EventHandler(this.StopAuto_MN_Click);
             // 
-            // resyncDataToolStripMenuItem
+            // ResyncData_MNI
             // 
-            this.resyncDataToolStripMenuItem.Name = "resyncDataToolStripMenuItem";
-            this.resyncDataToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
-            this.resyncDataToolStripMenuItem.Text = "Reset Setings";
-            this.resyncDataToolStripMenuItem.Click += new System.EventHandler(this.ResyncDataToolStripMenuItem_Click);
+            this.ResyncData_MNI.Name = "ResyncData_MNI";
+            this.ResyncData_MNI.Size = new System.Drawing.Size(222, 26);
+            this.ResyncData_MNI.Text = "Reset Setings";
+            this.ResyncData_MNI.Click += new System.EventHandler(this.ResyncDataToolStripMenuItem_Click);
+            // 
+            // View_MN
+            // 
+            this.View_MN.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.QOutputWindow_MN});
+            this.View_MN.ForeColor = System.Drawing.Color.Black;
+            this.View_MN.Name = "View_MN";
+            this.View_MN.Size = new System.Drawing.Size(49, 24);
+            this.View_MN.Text = "View";
+            // 
+            // QOutputWindow_MN
+            // 
+            this.QOutputWindow_MN.CheckOnClick = true;
+            this.QOutputWindow_MN.Name = "QOutputWindow_MN";
+            this.QOutputWindow_MN.Size = new System.Drawing.Size(221, 26);
+            this.QOutputWindow_MN.Text = "Quote Output Window";
+            this.QOutputWindow_MN.Click += new System.EventHandler(this.QOutputWindow_MN_Click);
             // 
             // Help_MN
             // 
@@ -465,14 +502,16 @@ namespace Mobility_Setup_Tool
             // 
             // MainUGLLogo_PB
             // 
-            this.MainUGLLogo_PB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.MainUGLLogo_PB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.MainUGLLogo_PB.BackColor = System.Drawing.Color.Transparent;
             this.MainUGLLogo_PB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.MainUGLLogo_PB.ErrorImage = null;
             this.MainUGLLogo_PB.Image = global::Mobility_Setup_Tool.Properties.Resources.LOGOWHITE;
-            this.MainUGLLogo_PB.Location = new System.Drawing.Point(927, 3);
+            this.MainUGLLogo_PB.Location = new System.Drawing.Point(994, 8);
+            this.MainUGLLogo_PB.Margin = new System.Windows.Forms.Padding(3, 3, 30, 3);
             this.MainUGLLogo_PB.Name = "MainUGLLogo_PB";
-            this.MainUGLLogo_PB.Size = new System.Drawing.Size(349, 78);
+            this.MainUGLLogo_PB.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
+            this.MainUGLLogo_PB.Size = new System.Drawing.Size(255, 73);
             this.MainUGLLogo_PB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.MainUGLLogo_PB.TabIndex = 9;
             this.MainUGLLogo_PB.TabStop = false;
@@ -492,7 +531,7 @@ namespace Mobility_Setup_Tool
             // RaiseVariation_TP
             // 
             this.RaiseVariation_TP.BackColor = System.Drawing.Color.White;
-            this.RaiseVariation_TP.Controls.Add(this.VarInfoLayout);
+            this.RaiseVariation_TP.Controls.Add(this.VarInfoLayout_PNL);
             this.RaiseVariation_TP.ForeColor = System.Drawing.Color.Black;
             this.RaiseVariation_TP.Location = new System.Drawing.Point(4, 27);
             this.RaiseVariation_TP.Name = "RaiseVariation_TP";
@@ -501,26 +540,26 @@ namespace Mobility_Setup_Tool
             this.RaiseVariation_TP.TabIndex = 2;
             this.RaiseVariation_TP.Text = "Raise Order From Notification";
             // 
-            // VarInfoLayout
+            // VarInfoLayout_PNL
             // 
-            this.VarInfoLayout.ColumnCount = 2;
-            this.VarInfoLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.VarInfoLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.VarInfoLayout.Controls.Add(this.VarInfo_GB, 1, 0);
-            this.VarInfoLayout.Controls.Add(this.VarOrderInfo_LBL, 0, 1);
-            this.VarInfoLayout.Controls.Add(this.VarCheckEntryList_BTN, 0, 2);
-            this.VarInfoLayout.Controls.Add(this.VarRaiseServiceOrder_BTN, 1, 2);
-            this.VarInfoLayout.Controls.Add(this.groupBox4, 0, 0);
-            this.VarInfoLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.VarInfoLayout.Location = new System.Drawing.Point(4, 5);
-            this.VarInfoLayout.Name = "VarInfoLayout";
-            this.VarInfoLayout.RowCount = 3;
-            this.VarInfoLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 237F));
-            this.VarInfoLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 89.25319F));
-            this.VarInfoLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.74681F));
-            this.VarInfoLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.VarInfoLayout.Size = new System.Drawing.Size(1223, 648);
-            this.VarInfoLayout.TabIndex = 10;
+            this.VarInfoLayout_PNL.ColumnCount = 2;
+            this.VarInfoLayout_PNL.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.VarInfoLayout_PNL.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.VarInfoLayout_PNL.Controls.Add(this.VarInfo_GB, 1, 0);
+            this.VarInfoLayout_PNL.Controls.Add(this.VarOrderInfo_LBL, 0, 1);
+            this.VarInfoLayout_PNL.Controls.Add(this.VarCheckEntryList_BTN, 0, 2);
+            this.VarInfoLayout_PNL.Controls.Add(this.VarRaiseServiceOrder_BTN, 1, 2);
+            this.VarInfoLayout_PNL.Controls.Add(this.EqInfo_GRB, 0, 0);
+            this.VarInfoLayout_PNL.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.VarInfoLayout_PNL.Location = new System.Drawing.Point(4, 5);
+            this.VarInfoLayout_PNL.Name = "VarInfoLayout_PNL";
+            this.VarInfoLayout_PNL.RowCount = 3;
+            this.VarInfoLayout_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 237F));
+            this.VarInfoLayout_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 89.25319F));
+            this.VarInfoLayout_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.74681F));
+            this.VarInfoLayout_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.VarInfoLayout_PNL.Size = new System.Drawing.Size(1223, 648);
+            this.VarInfoLayout_PNL.TabIndex = 10;
             // 
             // VarInfo_GB
             // 
@@ -529,7 +568,7 @@ namespace Mobility_Setup_Tool
             this.VarInfo_GB.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.VarInfo_GB.Location = new System.Drawing.Point(614, 3);
             this.VarInfo_GB.Name = "VarInfo_GB";
-            this.VarInfoLayout.SetRowSpan(this.VarInfo_GB, 2);
+            this.VarInfoLayout_PNL.SetRowSpan(this.VarInfo_GB, 2);
             this.VarInfo_GB.Size = new System.Drawing.Size(606, 597);
             this.VarInfo_GB.TabIndex = 0;
             this.VarInfo_GB.TabStop = false;
@@ -635,7 +674,7 @@ namespace Mobility_Setup_Tool
             this.VariationTable_TPN.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 62.41379F));
             this.VariationTable_TPN.Controls.Add(this.VarSOEndDate_DP, 1, 2);
             this.VariationTable_TPN.Controls.Add(this.VarSOStartDate_DP, 1, 1);
-            this.VariationTable_TPN.Controls.Add(this.label1, 0, 2);
+            this.VariationTable_TPN.Controls.Add(this.VPlannedFinDate_LBL, 0, 2);
             this.VariationTable_TPN.Controls.Add(this.VarSOStartDate_LBL, 0, 1);
             this.VariationTable_TPN.Controls.Add(this.VarExternalReference_LBL, 0, 4);
             this.VariationTable_TPN.Controls.Add(this.VarSOPriority_CB, 1, 3);
@@ -682,17 +721,17 @@ namespace Mobility_Setup_Tool
             this.VarSOStartDate_DP.TabIndex = 5;
             this.VarSOStartDate_DP.ValueChanged += new System.EventHandler(this.VarBasicStartDate_ValueChanged);
             // 
-            // label1
+            // VPlannedFinDate_LBL
             // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(73, 158);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(149, 18);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "PLANNED FINISH DATE:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.VPlannedFinDate_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.VPlannedFinDate_LBL.AutoSize = true;
+            this.VPlannedFinDate_LBL.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.VPlannedFinDate_LBL.Location = new System.Drawing.Point(73, 158);
+            this.VPlannedFinDate_LBL.Name = "VPlannedFinDate_LBL";
+            this.VPlannedFinDate_LBL.Size = new System.Drawing.Size(149, 18);
+            this.VPlannedFinDate_LBL.TabIndex = 0;
+            this.VPlannedFinDate_LBL.Text = "PLANNED FINISH DATE:";
+            this.VPlannedFinDate_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // VarSOStartDate_LBL
             // 
@@ -799,16 +838,16 @@ namespace Mobility_Setup_Tool
             this.VarRaiseServiceOrder_BTN.UseVisualStyleBackColor = true;
             this.VarRaiseServiceOrder_BTN.Click += new System.EventHandler(this.CreateVariationOrder_BTN_Click);
             // 
-            // groupBox4
+            // EqInfo_GRB
             // 
-            this.groupBox4.Controls.Add(this.EqInfo_TBL);
-            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(3, 3);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(605, 231);
-            this.groupBox4.TabIndex = 3;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Equipment Information";
+            this.EqInfo_GRB.Controls.Add(this.EqInfo_TBL);
+            this.EqInfo_GRB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.EqInfo_GRB.Location = new System.Drawing.Point(3, 3);
+            this.EqInfo_GRB.Name = "EqInfo_GRB";
+            this.EqInfo_GRB.Size = new System.Drawing.Size(605, 231);
+            this.EqInfo_GRB.TabIndex = 3;
+            this.EqInfo_GRB.TabStop = false;
+            this.EqInfo_GRB.Text = "Equipment Information";
             // 
             // EqInfo_TBL
             // 
@@ -933,8 +972,8 @@ namespace Mobility_Setup_Tool
             this.MainLayout.ColumnCount = 2;
             this.MainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.MainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.MainLayout.Controls.Add(this.groupBox2, 0, 2);
-            this.MainLayout.Controls.Add(this.groupBox3, 1, 2);
+            this.MainLayout.Controls.Add(this.NotificationInput_GRB, 0, 2);
+            this.MainLayout.Controls.Add(this.ServOrderInput_GRB, 1, 2);
             this.MainLayout.Controls.Add(this.EquipmentInfo_GB, 0, 0);
             this.MainLayout.Controls.Add(this.SetupEquipment_BTN, 0, 1);
             this.MainLayout.Controls.Add(this.RiaseServiceOrder_BTN, 1, 1);
@@ -948,19 +987,19 @@ namespace Mobility_Setup_Tool
             this.MainLayout.Size = new System.Drawing.Size(1225, 652);
             this.MainLayout.TabIndex = 10;
             // 
-            // groupBox2
+            // NotificationInput_GRB
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.NotificationInput_GRB.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.NotificationLayout);
-            this.groupBox2.Location = new System.Drawing.Point(5, 296);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(602, 353);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Notification Input";
+            this.NotificationInput_GRB.Controls.Add(this.NotificationLayout);
+            this.NotificationInput_GRB.Location = new System.Drawing.Point(5, 296);
+            this.NotificationInput_GRB.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.NotificationInput_GRB.Name = "NotificationInput_GRB";
+            this.NotificationInput_GRB.Size = new System.Drawing.Size(602, 353);
+            this.NotificationInput_GRB.TabIndex = 1;
+            this.NotificationInput_GRB.TabStop = false;
+            this.NotificationInput_GRB.Text = "Notification Input";
             // 
             // NotificationLayout
             // 
@@ -1006,7 +1045,7 @@ namespace Mobility_Setup_Tool
             this.PartyName_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.PartyName_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.PartyName_CB.FormattingEnabled = true;
-            this.PartyName_CB.Location = new System.Drawing.Point(301, 18);
+            this.PartyName_CB.Location = new System.Drawing.Point(301, 19);
             this.PartyName_CB.Name = "PartyName_CB";
             this.PartyName_CB.Size = new System.Drawing.Size(292, 26);
             this.PartyName_CB.TabIndex = 6;
@@ -1099,47 +1138,47 @@ namespace Mobility_Setup_Tool
             this.label7.TabIndex = 3;
             this.label7.Text = "REQUIRED END DATE:";
             // 
-            // groupBox3
+            // ServOrderInput_GRB
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.ServOrderInput_GRB.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.ServiceOrderInfoLayout);
-            this.groupBox3.Location = new System.Drawing.Point(617, 296);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(603, 353);
-            this.groupBox3.TabIndex = 2;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Service Order Input";
+            this.ServOrderInput_GRB.Controls.Add(this.ServiceOrderInfo_LYT);
+            this.ServOrderInput_GRB.Location = new System.Drawing.Point(617, 296);
+            this.ServOrderInput_GRB.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.ServOrderInput_GRB.Name = "ServOrderInput_GRB";
+            this.ServOrderInput_GRB.Size = new System.Drawing.Size(603, 353);
+            this.ServOrderInput_GRB.TabIndex = 2;
+            this.ServOrderInput_GRB.TabStop = false;
+            this.ServOrderInput_GRB.Text = "Service Order Input";
             // 
-            // ServiceOrderInfoLayout
+            // ServiceOrderInfo_LYT
             // 
-            this.ServiceOrderInfoLayout.ColumnCount = 2;
-            this.ServiceOrderInfoLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 48.24841F));
-            this.ServiceOrderInfoLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 51.75159F));
-            this.ServiceOrderInfoLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.ServiceOrderInfoLayout.Controls.Add(this.ActivityType_LBL, 0, 0);
-            this.ServiceOrderInfoLayout.Controls.Add(this.PMActivityType_CB, 1, 0);
-            this.ServiceOrderInfoLayout.Controls.Add(this.ExternalReference_TB, 1, 4);
-            this.ServiceOrderInfoLayout.Controls.Add(this.BasicStartDate_LBL, 0, 1);
-            this.ServiceOrderInfoLayout.Controls.Add(this.BasicStartDate_DP, 1, 1);
-            this.ServiceOrderInfoLayout.Controls.Add(this.BasicEndDate_LBL, 0, 2);
-            this.ServiceOrderInfoLayout.Controls.Add(this.Priority_LBL, 0, 3);
-            this.ServiceOrderInfoLayout.Controls.Add(this.ExternalRef_LBL, 0, 4);
-            this.ServiceOrderInfoLayout.Controls.Add(this.Priority_CB, 1, 3);
-            this.ServiceOrderInfoLayout.Controls.Add(this.BasicEndDate_DP, 1, 2);
-            this.ServiceOrderInfoLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ServiceOrderInfoLayout.Location = new System.Drawing.Point(3, 22);
-            this.ServiceOrderInfoLayout.Name = "ServiceOrderInfoLayout";
-            this.ServiceOrderInfoLayout.RowCount = 5;
-            this.ServiceOrderInfoLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.ServiceOrderInfoLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.ServiceOrderInfoLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.ServiceOrderInfoLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.ServiceOrderInfoLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.ServiceOrderInfoLayout.Size = new System.Drawing.Size(597, 328);
-            this.ServiceOrderInfoLayout.TabIndex = 0;
+            this.ServiceOrderInfo_LYT.ColumnCount = 2;
+            this.ServiceOrderInfo_LYT.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 48.24841F));
+            this.ServiceOrderInfo_LYT.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 51.75159F));
+            this.ServiceOrderInfo_LYT.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ServiceOrderInfo_LYT.Controls.Add(this.ActivityType_LBL, 0, 0);
+            this.ServiceOrderInfo_LYT.Controls.Add(this.PMActivityType_CB, 1, 0);
+            this.ServiceOrderInfo_LYT.Controls.Add(this.ExternalReference_TB, 1, 4);
+            this.ServiceOrderInfo_LYT.Controls.Add(this.BasicStartDate_LBL, 0, 1);
+            this.ServiceOrderInfo_LYT.Controls.Add(this.BasicStartDate_DP, 1, 1);
+            this.ServiceOrderInfo_LYT.Controls.Add(this.BasicEndDate_LBL, 0, 2);
+            this.ServiceOrderInfo_LYT.Controls.Add(this.Priority_LBL, 0, 3);
+            this.ServiceOrderInfo_LYT.Controls.Add(this.ExternalRef_LBL, 0, 4);
+            this.ServiceOrderInfo_LYT.Controls.Add(this.Priority_CB, 1, 3);
+            this.ServiceOrderInfo_LYT.Controls.Add(this.BasicEndDate_DP, 1, 2);
+            this.ServiceOrderInfo_LYT.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ServiceOrderInfo_LYT.Location = new System.Drawing.Point(3, 22);
+            this.ServiceOrderInfo_LYT.Name = "ServiceOrderInfo_LYT";
+            this.ServiceOrderInfo_LYT.RowCount = 5;
+            this.ServiceOrderInfo_LYT.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.ServiceOrderInfo_LYT.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.ServiceOrderInfo_LYT.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.ServiceOrderInfo_LYT.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.ServiceOrderInfo_LYT.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.ServiceOrderInfo_LYT.Size = new System.Drawing.Size(597, 328);
+            this.ServiceOrderInfo_LYT.TabIndex = 0;
             // 
             // ActivityType_LBL
             // 
@@ -1158,7 +1197,7 @@ namespace Mobility_Setup_Tool
             this.PMActivityType_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.PMActivityType_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.PMActivityType_CB.FormattingEnabled = true;
-            this.PMActivityType_CB.Location = new System.Drawing.Point(291, 18);
+            this.PMActivityType_CB.Location = new System.Drawing.Point(291, 19);
             this.PMActivityType_CB.Name = "PMActivityType_CB";
             this.PMActivityType_CB.Size = new System.Drawing.Size(303, 26);
             this.PMActivityType_CB.TabIndex = 11;
@@ -1233,7 +1272,7 @@ namespace Mobility_Setup_Tool
             this.Priority_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.Priority_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.Priority_CB.FormattingEnabled = true;
-            this.Priority_CB.Location = new System.Drawing.Point(291, 213);
+            this.Priority_CB.Location = new System.Drawing.Point(291, 214);
             this.Priority_CB.Name = "Priority_CB";
             this.Priority_CB.Size = new System.Drawing.Size(303, 26);
             this.Priority_CB.TabIndex = 14;
@@ -1304,7 +1343,7 @@ namespace Mobility_Setup_Tool
             this.TemplateEquipmentList_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.TemplateEquipmentList_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.TemplateEquipmentList_CB.FormattingEnabled = true;
-            this.TemplateEquipmentList_CB.Location = new System.Drawing.Point(485, 62);
+            this.TemplateEquipmentList_CB.Location = new System.Drawing.Point(485, 63);
             this.TemplateEquipmentList_CB.Name = "TemplateEquipmentList_CB";
             this.TemplateEquipmentList_CB.Size = new System.Drawing.Size(477, 26);
             this.TemplateEquipmentList_CB.TabIndex = 3;
@@ -1317,7 +1356,7 @@ namespace Mobility_Setup_Tool
             this.TaskType_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.TaskType_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.TaskType_CB.FormattingEnabled = true;
-            this.TaskType_CB.Location = new System.Drawing.Point(485, 113);
+            this.TaskType_CB.Location = new System.Drawing.Point(485, 114);
             this.TaskType_CB.Name = "TaskType_CB";
             this.TaskType_CB.Size = new System.Drawing.Size(477, 26);
             this.TaskType_CB.TabIndex = 4;
@@ -1328,7 +1367,7 @@ namespace Mobility_Setup_Tool
             this.FunctionLoc_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.FunctionLoc_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.FunctionLoc_CB.FormattingEnabled = true;
-            this.FunctionLoc_CB.Location = new System.Drawing.Point(485, 165);
+            this.FunctionLoc_CB.Location = new System.Drawing.Point(485, 166);
             this.FunctionLoc_CB.Name = "FunctionLoc_CB";
             this.FunctionLoc_CB.Size = new System.Drawing.Size(477, 26);
             this.FunctionLoc_CB.TabIndex = 5;
@@ -1420,15 +1459,180 @@ namespace Mobility_Setup_Tool
             // 
             // QuoteOrder_TP
             // 
-            this.QuoteOrder_TP.BackColor = System.Drawing.Color.Transparent;
+            this.QuoteOrder_TP.BackColor = System.Drawing.Color.White;
+            this.QuoteOrder_TP.Controls.Add(this.QuoteLayout);
             this.QuoteOrder_TP.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.QuoteOrder_TP.ForeColor = System.Drawing.Color.Transparent;
+            this.QuoteOrder_TP.ForeColor = System.Drawing.Color.Black;
             this.QuoteOrder_TP.Location = new System.Drawing.Point(4, 27);
             this.QuoteOrder_TP.Name = "QuoteOrder_TP";
             this.QuoteOrder_TP.Padding = new System.Windows.Forms.Padding(3);
             this.QuoteOrder_TP.Size = new System.Drawing.Size(1231, 658);
             this.QuoteOrder_TP.TabIndex = 4;
             this.QuoteOrder_TP.Text = "Quote Order";
+            // 
+            // QuoteLayout
+            // 
+            this.QuoteLayout.ColumnCount = 3;
+            this.QuoteLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.QuoteLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.QuoteLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.QuoteLayout.Controls.Add(this.QuoteNotiListBox, 2, 0);
+            this.QuoteLayout.Controls.Add(this.label23, 0, 0);
+            this.QuoteLayout.Controls.Add(this.label24, 0, 1);
+            this.QuoteLayout.Controls.Add(this.label25, 0, 2);
+            this.QuoteLayout.Controls.Add(this.QuoteServiceOrder_TB, 1, 0);
+            this.QuoteLayout.Controls.Add(this.QuoteNumberTB, 1, 1);
+            this.QuoteLayout.Controls.Add(this.QuoteTemplate_CB, 1, 2);
+            this.QuoteLayout.Controls.Add(this.QuoteServiceOrder_BTN, 0, 3);
+            this.QuoteLayout.Controls.Add(this.LoadNotification_BTN, 2, 3);
+            this.QuoteLayout.Controls.Add(this.QuoteOutput_LV, 0, 4);
+            this.QuoteLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.QuoteLayout.Location = new System.Drawing.Point(3, 3);
+            this.QuoteLayout.Name = "QuoteLayout";
+            this.QuoteLayout.Padding = new System.Windows.Forms.Padding(1);
+            this.QuoteLayout.RowCount = 5;
+            this.QuoteLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 92F));
+            this.QuoteLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.QuoteLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.QuoteLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62F));
+            this.QuoteLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 292F));
+            this.QuoteLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.QuoteLayout.Size = new System.Drawing.Size(1225, 652);
+            this.QuoteLayout.TabIndex = 0;
+            // 
+            // QuoteNotiListBox
+            // 
+            this.QuoteNotiListBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.QuoteNotiListBox.FormattingEnabled = true;
+            this.QuoteNotiListBox.ItemHeight = 20;
+            this.QuoteNotiListBox.Location = new System.Drawing.Point(614, 4);
+            this.QuoteNotiListBox.Name = "QuoteNotiListBox";
+            this.QuoteLayout.SetRowSpan(this.QuoteNotiListBox, 3);
+            this.QuoteNotiListBox.Size = new System.Drawing.Size(607, 286);
+            this.QuoteNotiListBox.TabIndex = 1;
+            // 
+            // label23
+            // 
+            this.label23.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label23.AutoSize = true;
+            this.label23.BackColor = System.Drawing.Color.Transparent;
+            this.label23.ForeColor = System.Drawing.Color.Black;
+            this.label23.Location = new System.Drawing.Point(59, 37);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(183, 20);
+            this.label23.TabIndex = 2;
+            this.label23.Text = "SERVICE ORDER NUMBER:";
+            // 
+            // label24
+            // 
+            this.label24.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label24.AutoSize = true;
+            this.label24.BackColor = System.Drawing.Color.Transparent;
+            this.label24.ForeColor = System.Drawing.Color.Black;
+            this.label24.Location = new System.Drawing.Point(85, 133);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(157, 20);
+            this.label24.TabIndex = 2;
+            this.label24.Text = "QUOTATION NUMBER:";
+            // 
+            // label25
+            // 
+            this.label25.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label25.AutoSize = true;
+            this.label25.BackColor = System.Drawing.Color.Transparent;
+            this.label25.ForeColor = System.Drawing.Color.Black;
+            this.label25.Location = new System.Drawing.Point(76, 233);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(166, 20);
+            this.label25.TabIndex = 2;
+            this.label25.Text = "QUOTATION TEMPLATE:";
+            // 
+            // QuoteServiceOrder_TB
+            // 
+            this.QuoteServiceOrder_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.QuoteServiceOrder_TB.Location = new System.Drawing.Point(248, 33);
+            this.QuoteServiceOrder_TB.Name = "QuoteServiceOrder_TB";
+            this.QuoteServiceOrder_TB.Size = new System.Drawing.Size(360, 27);
+            this.QuoteServiceOrder_TB.TabIndex = 3;
+            // 
+            // QuoteNumberTB
+            // 
+            this.QuoteNumberTB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.QuoteNumberTB.Location = new System.Drawing.Point(248, 129);
+            this.QuoteNumberTB.Name = "QuoteNumberTB";
+            this.QuoteNumberTB.Size = new System.Drawing.Size(360, 27);
+            this.QuoteNumberTB.TabIndex = 3;
+            // 
+            // QuoteTemplate_CB
+            // 
+            this.QuoteTemplate_CB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.QuoteTemplate_CB.FormattingEnabled = true;
+            this.QuoteTemplate_CB.Location = new System.Drawing.Point(248, 229);
+            this.QuoteTemplate_CB.Name = "QuoteTemplate_CB";
+            this.QuoteTemplate_CB.Size = new System.Drawing.Size(360, 28);
+            this.QuoteTemplate_CB.TabIndex = 4;
+            // 
+            // QuoteServiceOrder_BTN
+            // 
+            this.QuoteServiceOrder_BTN.BackColor = System.Drawing.Color.Transparent;
+            this.QuoteLayout.SetColumnSpan(this.QuoteServiceOrder_BTN, 2);
+            this.QuoteServiceOrder_BTN.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.QuoteServiceOrder_BTN.Location = new System.Drawing.Point(4, 296);
+            this.QuoteServiceOrder_BTN.Name = "QuoteServiceOrder_BTN";
+            this.QuoteServiceOrder_BTN.Size = new System.Drawing.Size(604, 56);
+            this.QuoteServiceOrder_BTN.TabIndex = 6;
+            this.QuoteServiceOrder_BTN.Text = "Quote Service Order";
+            this.QuoteServiceOrder_BTN.UseVisualStyleBackColor = false;
+            // 
+            // LoadNotification_BTN
+            // 
+            this.LoadNotification_BTN.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoadNotification_BTN.Location = new System.Drawing.Point(614, 296);
+            this.LoadNotification_BTN.Name = "LoadNotification_BTN";
+            this.LoadNotification_BTN.Size = new System.Drawing.Size(607, 56);
+            this.LoadNotification_BTN.TabIndex = 7;
+            this.LoadNotification_BTN.Text = "Load Notifications";
+            this.LoadNotification_BTN.UseVisualStyleBackColor = true;
+            // 
+            // QuoteOutput_LV
+            // 
+            this.QuoteOutput_LV.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.QuoteOutput_LV.CheckBoxes = true;
+            this.QuoteOutput_LV.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.ItemType_CH,
+            this.TxtForQuote_CH,
+            this.Price,
+            this.Notification});
+            this.QuoteLayout.SetColumnSpan(this.QuoteOutput_LV, 3);
+            this.QuoteOutput_LV.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.QuoteOutput_LV.GridLines = true;
+            this.QuoteOutput_LV.HideSelection = false;
+            this.QuoteOutput_LV.Location = new System.Drawing.Point(4, 358);
+            this.QuoteOutput_LV.Name = "QuoteOutput_LV";
+            this.QuoteOutput_LV.Size = new System.Drawing.Size(1217, 290);
+            this.QuoteOutput_LV.TabIndex = 8;
+            this.QuoteOutput_LV.UseCompatibleStateImageBehavior = false;
+            this.QuoteOutput_LV.View = System.Windows.Forms.View.Details;
+            // 
+            // ItemType_CH
+            // 
+            this.ItemType_CH.Text = "Quote Item Type";
+            this.ItemType_CH.Width = 200;
+            // 
+            // TxtForQuote_CH
+            // 
+            this.TxtForQuote_CH.Text = "Text For Quote";
+            this.TxtForQuote_CH.Width = 300;
+            // 
+            // Price
+            // 
+            this.Price.Text = "Item Price";
+            this.Price.Width = 200;
+            // 
+            // Notification
+            // 
+            this.Notification.Text = "For Notification #";
+            this.Notification.Width = 200;
             // 
             // General_TT
             // 
@@ -1493,7 +1697,7 @@ namespace Mobility_Setup_Tool
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Output_PNL.BackColor = System.Drawing.Color.White;
-            this.Output_PNL.Controls.Add(this.groupBox1);
+            this.Output_PNL.Controls.Add(this.QOutputInfo_GRB);
             this.Output_PNL.ForeColor = System.Drawing.Color.Black;
             this.Output_PNL.Location = new System.Drawing.Point(20, 803);
             this.Output_PNL.Margin = new System.Windows.Forms.Padding(20, 10, 20, 10);
@@ -1501,20 +1705,20 @@ namespace Mobility_Setup_Tool
             this.Output_PNL.Size = new System.Drawing.Size(1239, 231);
             this.Output_PNL.TabIndex = 10;
             // 
-            // groupBox1
+            // QOutputInfo_GRB
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.QOutputInfo_GRB.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.QuoteOutput_PNL);
-            this.groupBox1.Controls.Add(this.OutputOrder_PNL);
-            this.groupBox1.Location = new System.Drawing.Point(7, 5);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(20, 10, 20, 10);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1224, 218);
-            this.groupBox1.TabIndex = 1;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Output Information";
+            this.QOutputInfo_GRB.Controls.Add(this.QuoteOutput_PNL);
+            this.QOutputInfo_GRB.Controls.Add(this.OutputOrder_PNL);
+            this.QOutputInfo_GRB.Location = new System.Drawing.Point(7, 5);
+            this.QOutputInfo_GRB.Margin = new System.Windows.Forms.Padding(20, 10, 20, 10);
+            this.QOutputInfo_GRB.Name = "QOutputInfo_GRB";
+            this.QOutputInfo_GRB.Size = new System.Drawing.Size(1224, 218);
+            this.QOutputInfo_GRB.TabIndex = 1;
+            this.QOutputInfo_GRB.TabStop = false;
+            this.QOutputInfo_GRB.Text = "Output Information";
             // 
             // QuoteOutput_PNL
             // 
@@ -1523,22 +1727,22 @@ namespace Mobility_Setup_Tool
             this.QuoteOutput_PNL.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.23659F));
             this.QuoteOutput_PNL.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24.44795F));
             this.QuoteOutput_PNL.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.55205F));
-            this.QuoteOutput_PNL.Controls.Add(this.textBox1, 1, 0);
-            this.QuoteOutput_PNL.Controls.Add(this.label9, 0, 2);
-            this.QuoteOutput_PNL.Controls.Add(this.label16, 0, 3);
-            this.QuoteOutput_PNL.Controls.Add(this.label17, 2, 0);
-            this.QuoteOutput_PNL.Controls.Add(this.label18, 2, 1);
-            this.QuoteOutput_PNL.Controls.Add(this.label19, 2, 2);
-            this.QuoteOutput_PNL.Controls.Add(this.label20, 2, 3);
-            this.QuoteOutput_PNL.Controls.Add(this.textBox2, 1, 1);
-            this.QuoteOutput_PNL.Controls.Add(this.textBox3, 1, 2);
-            this.QuoteOutput_PNL.Controls.Add(this.textBox4, 1, 3);
-            this.QuoteOutput_PNL.Controls.Add(this.textBox5, 3, 0);
-            this.QuoteOutput_PNL.Controls.Add(this.textBox6, 3, 1);
-            this.QuoteOutput_PNL.Controls.Add(this.textBox7, 3, 2);
-            this.QuoteOutput_PNL.Controls.Add(this.textBox8, 3, 3);
-            this.QuoteOutput_PNL.Controls.Add(this.label21, 0, 1);
-            this.QuoteOutput_PNL.Controls.Add(this.label22, 0, 0);
+            this.QuoteOutput_PNL.Controls.Add(this.QServiceOrder_TB, 1, 0);
+            this.QuoteOutput_PNL.Controls.Add(this.QPurchaseOrder_LBL, 0, 2);
+            this.QuoteOutput_PNL.Controls.Add(this.QNumOfVars_LBL, 0, 3);
+            this.QuoteOutput_PNL.Controls.Add(this.QMaterialPrice_LBL, 2, 0);
+            this.QuoteOutput_PNL.Controls.Add(this.QOverhaulPrice_LBL, 2, 1);
+            this.QuoteOutput_PNL.Controls.Add(this.QVariationPrice_LBL, 2, 2);
+            this.QuoteOutput_PNL.Controls.Add(this.QTotalPrice_LBL, 2, 3);
+            this.QuoteOutput_PNL.Controls.Add(this.QEquipmentNum_TB, 1, 1);
+            this.QuoteOutput_PNL.Controls.Add(this.QPurchaseOrder_TB, 1, 2);
+            this.QuoteOutput_PNL.Controls.Add(this.QNumOfVars_TB, 1, 3);
+            this.QuoteOutput_PNL.Controls.Add(this.QMaterialPrice_TB, 3, 0);
+            this.QuoteOutput_PNL.Controls.Add(this.QStandardPrice_TB, 3, 1);
+            this.QuoteOutput_PNL.Controls.Add(this.QVarLabourPrice_TB, 3, 2);
+            this.QuoteOutput_PNL.Controls.Add(this.QTotalPrice_TB, 3, 3);
+            this.QuoteOutput_PNL.Controls.Add(this.QEqNum_LBL, 0, 1);
+            this.QuoteOutput_PNL.Controls.Add(this.QServOrderDesc_LBL, 0, 0);
             this.QuoteOutput_PNL.Dock = System.Windows.Forms.DockStyle.Fill;
             this.QuoteOutput_PNL.Location = new System.Drawing.Point(3, 21);
             this.QuoteOutput_PNL.Name = "QuoteOutput_PNL";
@@ -1551,205 +1755,205 @@ namespace Mobility_Setup_Tool
             this.QuoteOutput_PNL.TabIndex = 1;
             this.QuoteOutput_PNL.Visible = false;
             // 
-            // textBox1
+            // QServiceOrder_TB
             // 
-            this.textBox1.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBox1.BackColor = System.Drawing.SystemColors.Info;
-            this.textBox1.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.textBox1.Location = new System.Drawing.Point(304, 10);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textBox1.Size = new System.Drawing.Size(300, 28);
-            this.textBox1.TabIndex = 1;
-            this.textBox1.TabStop = false;
-            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.QServiceOrder_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.QServiceOrder_TB.BackColor = System.Drawing.SystemColors.Info;
+            this.QServiceOrder_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.QServiceOrder_TB.Location = new System.Drawing.Point(304, 10);
+            this.QServiceOrder_TB.Name = "QServiceOrder_TB";
+            this.QServiceOrder_TB.ReadOnly = true;
+            this.QServiceOrder_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.QServiceOrder_TB.Size = new System.Drawing.Size(300, 28);
+            this.QServiceOrder_TB.TabIndex = 1;
+            this.QServiceOrder_TB.TabStop = false;
+            this.QServiceOrder_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label9
+            // QPurchaseOrder_LBL
             // 
-            this.label9.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label9.AutoSize = true;
-            this.label9.ForeColor = System.Drawing.Color.Black;
-            this.label9.Location = new System.Drawing.Point(178, 111);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(120, 17);
-            this.label9.TabIndex = 3;
-            this.label9.Text = "PURCHASE ORDER:";
+            this.QPurchaseOrder_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.QPurchaseOrder_LBL.AutoSize = true;
+            this.QPurchaseOrder_LBL.ForeColor = System.Drawing.Color.Black;
+            this.QPurchaseOrder_LBL.Location = new System.Drawing.Point(178, 111);
+            this.QPurchaseOrder_LBL.Name = "QPurchaseOrder_LBL";
+            this.QPurchaseOrder_LBL.Size = new System.Drawing.Size(120, 17);
+            this.QPurchaseOrder_LBL.TabIndex = 3;
+            this.QPurchaseOrder_LBL.Text = "PURCHASE ORDER:";
             // 
-            // label16
+            // QNumOfVars_LBL
             // 
-            this.label16.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label16.AutoSize = true;
-            this.label16.ForeColor = System.Drawing.Color.Black;
-            this.label16.Location = new System.Drawing.Point(140, 160);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(158, 17);
-            this.label16.TabIndex = 3;
-            this.label16.Text = "NUMBER OF VARIATIONS:";
+            this.QNumOfVars_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.QNumOfVars_LBL.AutoSize = true;
+            this.QNumOfVars_LBL.ForeColor = System.Drawing.Color.Black;
+            this.QNumOfVars_LBL.Location = new System.Drawing.Point(140, 160);
+            this.QNumOfVars_LBL.Name = "QNumOfVars_LBL";
+            this.QNumOfVars_LBL.Size = new System.Drawing.Size(158, 17);
+            this.QNumOfVars_LBL.TabIndex = 3;
+            this.QNumOfVars_LBL.Text = "NUMBER OF VARIATIONS:";
             // 
-            // label17
+            // QMaterialPrice_LBL
             // 
-            this.label17.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label17.AutoSize = true;
-            this.label17.ForeColor = System.Drawing.Color.Black;
-            this.label17.Location = new System.Drawing.Point(796, 15);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(106, 17);
-            this.label17.TabIndex = 3;
-            this.label17.Text = "MATERIAL PRICE:";
+            this.QMaterialPrice_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.QMaterialPrice_LBL.AutoSize = true;
+            this.QMaterialPrice_LBL.ForeColor = System.Drawing.Color.Black;
+            this.QMaterialPrice_LBL.Location = new System.Drawing.Point(796, 15);
+            this.QMaterialPrice_LBL.Name = "QMaterialPrice_LBL";
+            this.QMaterialPrice_LBL.Size = new System.Drawing.Size(106, 17);
+            this.QMaterialPrice_LBL.TabIndex = 3;
+            this.QMaterialPrice_LBL.Text = "MATERIAL PRICE:";
             // 
-            // label18
+            // QOverhaulPrice_LBL
             // 
-            this.label18.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label18.AutoSize = true;
-            this.label18.ForeColor = System.Drawing.Color.Black;
-            this.label18.Location = new System.Drawing.Point(720, 63);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(182, 17);
-            this.label18.TabIndex = 3;
-            this.label18.Text = "STANDARD OVERHAUL PRICE:";
+            this.QOverhaulPrice_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.QOverhaulPrice_LBL.AutoSize = true;
+            this.QOverhaulPrice_LBL.ForeColor = System.Drawing.Color.Black;
+            this.QOverhaulPrice_LBL.Location = new System.Drawing.Point(720, 63);
+            this.QOverhaulPrice_LBL.Name = "QOverhaulPrice_LBL";
+            this.QOverhaulPrice_LBL.Size = new System.Drawing.Size(182, 17);
+            this.QOverhaulPrice_LBL.TabIndex = 3;
+            this.QOverhaulPrice_LBL.Text = "STANDARD OVERHAUL PRICE:";
             // 
-            // label19
+            // QVariationPrice_LBL
             // 
-            this.label19.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label19.AutoSize = true;
-            this.label19.ForeColor = System.Drawing.Color.Black;
-            this.label19.Location = new System.Drawing.Point(739, 111);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(163, 17);
-            this.label19.TabIndex = 3;
-            this.label19.Text = "VARIATION LABOUR PRICE:";
+            this.QVariationPrice_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.QVariationPrice_LBL.AutoSize = true;
+            this.QVariationPrice_LBL.ForeColor = System.Drawing.Color.Black;
+            this.QVariationPrice_LBL.Location = new System.Drawing.Point(739, 111);
+            this.QVariationPrice_LBL.Name = "QVariationPrice_LBL";
+            this.QVariationPrice_LBL.Size = new System.Drawing.Size(163, 17);
+            this.QVariationPrice_LBL.TabIndex = 3;
+            this.QVariationPrice_LBL.Text = "VARIATION LABOUR PRICE:";
             // 
-            // label20
+            // QTotalPrice_LBL
             // 
-            this.label20.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label20.AutoSize = true;
-            this.label20.ForeColor = System.Drawing.Color.Black;
-            this.label20.Location = new System.Drawing.Point(819, 160);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(83, 17);
-            this.label20.TabIndex = 3;
-            this.label20.Text = "TOTAL PRICE:";
+            this.QTotalPrice_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.QTotalPrice_LBL.AutoSize = true;
+            this.QTotalPrice_LBL.ForeColor = System.Drawing.Color.Black;
+            this.QTotalPrice_LBL.Location = new System.Drawing.Point(819, 160);
+            this.QTotalPrice_LBL.Name = "QTotalPrice_LBL";
+            this.QTotalPrice_LBL.Size = new System.Drawing.Size(83, 17);
+            this.QTotalPrice_LBL.TabIndex = 3;
+            this.QTotalPrice_LBL.Text = "TOTAL PRICE:";
             // 
-            // textBox2
+            // QEquipmentNum_TB
             // 
-            this.textBox2.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBox2.BackColor = System.Drawing.SystemColors.Info;
-            this.textBox2.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.textBox2.Location = new System.Drawing.Point(304, 58);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textBox2.Size = new System.Drawing.Size(300, 28);
-            this.textBox2.TabIndex = 1;
-            this.textBox2.TabStop = false;
-            this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.QEquipmentNum_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.QEquipmentNum_TB.BackColor = System.Drawing.SystemColors.Info;
+            this.QEquipmentNum_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.QEquipmentNum_TB.Location = new System.Drawing.Point(304, 58);
+            this.QEquipmentNum_TB.Name = "QEquipmentNum_TB";
+            this.QEquipmentNum_TB.ReadOnly = true;
+            this.QEquipmentNum_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.QEquipmentNum_TB.Size = new System.Drawing.Size(300, 28);
+            this.QEquipmentNum_TB.TabIndex = 1;
+            this.QEquipmentNum_TB.TabStop = false;
+            this.QEquipmentNum_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox3
+            // QPurchaseOrder_TB
             // 
-            this.textBox3.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBox3.BackColor = System.Drawing.SystemColors.Info;
-            this.textBox3.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.textBox3.Location = new System.Drawing.Point(304, 106);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textBox3.Size = new System.Drawing.Size(300, 28);
-            this.textBox3.TabIndex = 1;
-            this.textBox3.TabStop = false;
-            this.textBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.QPurchaseOrder_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.QPurchaseOrder_TB.BackColor = System.Drawing.SystemColors.Info;
+            this.QPurchaseOrder_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.QPurchaseOrder_TB.Location = new System.Drawing.Point(304, 106);
+            this.QPurchaseOrder_TB.Name = "QPurchaseOrder_TB";
+            this.QPurchaseOrder_TB.ReadOnly = true;
+            this.QPurchaseOrder_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.QPurchaseOrder_TB.Size = new System.Drawing.Size(300, 28);
+            this.QPurchaseOrder_TB.TabIndex = 1;
+            this.QPurchaseOrder_TB.TabStop = false;
+            this.QPurchaseOrder_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox4
+            // QNumOfVars_TB
             // 
-            this.textBox4.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBox4.BackColor = System.Drawing.SystemColors.Info;
-            this.textBox4.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.textBox4.Location = new System.Drawing.Point(304, 155);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.ReadOnly = true;
-            this.textBox4.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textBox4.Size = new System.Drawing.Size(300, 28);
-            this.textBox4.TabIndex = 1;
-            this.textBox4.TabStop = false;
-            this.textBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.QNumOfVars_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.QNumOfVars_TB.BackColor = System.Drawing.SystemColors.Info;
+            this.QNumOfVars_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.QNumOfVars_TB.Location = new System.Drawing.Point(304, 155);
+            this.QNumOfVars_TB.Name = "QNumOfVars_TB";
+            this.QNumOfVars_TB.ReadOnly = true;
+            this.QNumOfVars_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.QNumOfVars_TB.Size = new System.Drawing.Size(300, 28);
+            this.QNumOfVars_TB.TabIndex = 1;
+            this.QNumOfVars_TB.TabStop = false;
+            this.QNumOfVars_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox5
+            // QMaterialPrice_TB
             // 
-            this.textBox5.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBox5.BackColor = System.Drawing.SystemColors.Info;
-            this.textBox5.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.textBox5.Location = new System.Drawing.Point(908, 10);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.ReadOnly = true;
-            this.textBox5.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textBox5.Size = new System.Drawing.Size(305, 28);
-            this.textBox5.TabIndex = 1;
-            this.textBox5.TabStop = false;
-            this.textBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.QMaterialPrice_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.QMaterialPrice_TB.BackColor = System.Drawing.SystemColors.Info;
+            this.QMaterialPrice_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.QMaterialPrice_TB.Location = new System.Drawing.Point(908, 10);
+            this.QMaterialPrice_TB.Name = "QMaterialPrice_TB";
+            this.QMaterialPrice_TB.ReadOnly = true;
+            this.QMaterialPrice_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.QMaterialPrice_TB.Size = new System.Drawing.Size(305, 28);
+            this.QMaterialPrice_TB.TabIndex = 1;
+            this.QMaterialPrice_TB.TabStop = false;
+            this.QMaterialPrice_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox6
+            // QStandardPrice_TB
             // 
-            this.textBox6.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBox6.BackColor = System.Drawing.SystemColors.Info;
-            this.textBox6.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.textBox6.Location = new System.Drawing.Point(908, 58);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.ReadOnly = true;
-            this.textBox6.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textBox6.Size = new System.Drawing.Size(305, 28);
-            this.textBox6.TabIndex = 1;
-            this.textBox6.TabStop = false;
-            this.textBox6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.QStandardPrice_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.QStandardPrice_TB.BackColor = System.Drawing.SystemColors.Info;
+            this.QStandardPrice_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.QStandardPrice_TB.Location = new System.Drawing.Point(908, 58);
+            this.QStandardPrice_TB.Name = "QStandardPrice_TB";
+            this.QStandardPrice_TB.ReadOnly = true;
+            this.QStandardPrice_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.QStandardPrice_TB.Size = new System.Drawing.Size(305, 28);
+            this.QStandardPrice_TB.TabIndex = 1;
+            this.QStandardPrice_TB.TabStop = false;
+            this.QStandardPrice_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox7
+            // QVarLabourPrice_TB
             // 
-            this.textBox7.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBox7.BackColor = System.Drawing.SystemColors.Info;
-            this.textBox7.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.textBox7.Location = new System.Drawing.Point(908, 106);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.ReadOnly = true;
-            this.textBox7.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textBox7.Size = new System.Drawing.Size(305, 28);
-            this.textBox7.TabIndex = 1;
-            this.textBox7.TabStop = false;
-            this.textBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.QVarLabourPrice_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.QVarLabourPrice_TB.BackColor = System.Drawing.SystemColors.Info;
+            this.QVarLabourPrice_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.QVarLabourPrice_TB.Location = new System.Drawing.Point(908, 106);
+            this.QVarLabourPrice_TB.Name = "QVarLabourPrice_TB";
+            this.QVarLabourPrice_TB.ReadOnly = true;
+            this.QVarLabourPrice_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.QVarLabourPrice_TB.Size = new System.Drawing.Size(305, 28);
+            this.QVarLabourPrice_TB.TabIndex = 1;
+            this.QVarLabourPrice_TB.TabStop = false;
+            this.QVarLabourPrice_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox8
+            // QTotalPrice_TB
             // 
-            this.textBox8.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBox8.BackColor = System.Drawing.SystemColors.Info;
-            this.textBox8.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.textBox8.Location = new System.Drawing.Point(908, 155);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.ReadOnly = true;
-            this.textBox8.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textBox8.Size = new System.Drawing.Size(305, 28);
-            this.textBox8.TabIndex = 1;
-            this.textBox8.TabStop = false;
-            this.textBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.QTotalPrice_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.QTotalPrice_TB.BackColor = System.Drawing.SystemColors.Info;
+            this.QTotalPrice_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.QTotalPrice_TB.Location = new System.Drawing.Point(908, 155);
+            this.QTotalPrice_TB.Name = "QTotalPrice_TB";
+            this.QTotalPrice_TB.ReadOnly = true;
+            this.QTotalPrice_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.QTotalPrice_TB.Size = new System.Drawing.Size(305, 28);
+            this.QTotalPrice_TB.TabIndex = 1;
+            this.QTotalPrice_TB.TabStop = false;
+            this.QTotalPrice_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label21
+            // QEqNum_LBL
             // 
-            this.label21.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label21.AutoSize = true;
-            this.label21.ForeColor = System.Drawing.Color.Black;
-            this.label21.Location = new System.Drawing.Point(158, 63);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(140, 17);
-            this.label21.TabIndex = 3;
-            this.label21.Text = "EQUIPMENT NUMBER:";
+            this.QEqNum_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.QEqNum_LBL.AutoSize = true;
+            this.QEqNum_LBL.ForeColor = System.Drawing.Color.Black;
+            this.QEqNum_LBL.Location = new System.Drawing.Point(158, 63);
+            this.QEqNum_LBL.Name = "QEqNum_LBL";
+            this.QEqNum_LBL.Size = new System.Drawing.Size(140, 17);
+            this.QEqNum_LBL.TabIndex = 3;
+            this.QEqNum_LBL.Text = "EQUIPMENT NUMBER:";
             // 
-            // label22
+            // QServOrderDesc_LBL
             // 
-            this.label22.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label22.AutoSize = true;
-            this.label22.ForeColor = System.Drawing.Color.Black;
-            this.label22.Location = new System.Drawing.Point(110, 15);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(188, 17);
-            this.label22.TabIndex = 3;
-            this.label22.Text = "SERVICE ORDER DESCRIPTION:";
+            this.QServOrderDesc_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.QServOrderDesc_LBL.AutoSize = true;
+            this.QServOrderDesc_LBL.ForeColor = System.Drawing.Color.Black;
+            this.QServOrderDesc_LBL.Location = new System.Drawing.Point(110, 15);
+            this.QServOrderDesc_LBL.Name = "QServOrderDesc_LBL";
+            this.QServOrderDesc_LBL.Size = new System.Drawing.Size(188, 17);
+            this.QServOrderDesc_LBL.TabIndex = 3;
+            this.QServOrderDesc_LBL.Text = "SERVICE ORDER DESCRIPTION:";
             // 
             // OutputOrder_PNL
             // 
@@ -1985,26 +2189,26 @@ namespace Mobility_Setup_Tool
             this.EqDesc_LBL.TabIndex = 3;
             this.EqDesc_LBL.Text = "EQUIPMENT DESCRIPTION:";
             // 
-            // MainTablePanelLayout
+            // MainFormLayout_PNL
             // 
-            this.MainTablePanelLayout.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.MainFormLayout_PNL.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.MainTablePanelLayout.BackColor = System.Drawing.Color.Transparent;
-            this.MainTablePanelLayout.ColumnCount = 1;
-            this.MainTablePanelLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.MainTablePanelLayout.Controls.Add(this.Output_PNL, 0, 2);
-            this.MainTablePanelLayout.Controls.Add(this.DataTabs_TC, 0, 1);
-            this.MainTablePanelLayout.Controls.Add(this.MainUGLLogo_PB, 0, 0);
-            this.MainTablePanelLayout.Location = new System.Drawing.Point(0, 68);
-            this.MainTablePanelLayout.Margin = new System.Windows.Forms.Padding(1, 30, 30, 1);
-            this.MainTablePanelLayout.Name = "MainTablePanelLayout";
-            this.MainTablePanelLayout.RowCount = 3;
-            this.MainTablePanelLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.59269F));
-            this.MainTablePanelLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 89.40731F));
-            this.MainTablePanelLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 250F));
-            this.MainTablePanelLayout.Size = new System.Drawing.Size(1279, 1044);
-            this.MainTablePanelLayout.TabIndex = 11;
+            this.MainFormLayout_PNL.BackColor = System.Drawing.Color.Transparent;
+            this.MainFormLayout_PNL.ColumnCount = 1;
+            this.MainFormLayout_PNL.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.MainFormLayout_PNL.Controls.Add(this.Output_PNL, 0, 2);
+            this.MainFormLayout_PNL.Controls.Add(this.DataTabs_TC, 0, 1);
+            this.MainFormLayout_PNL.Controls.Add(this.MainUGLLogo_PB, 0, 0);
+            this.MainFormLayout_PNL.Location = new System.Drawing.Point(0, 68);
+            this.MainFormLayout_PNL.Margin = new System.Windows.Forms.Padding(1, 30, 30, 1);
+            this.MainFormLayout_PNL.Name = "MainFormLayout_PNL";
+            this.MainFormLayout_PNL.RowCount = 3;
+            this.MainFormLayout_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.59269F));
+            this.MainFormLayout_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 89.40731F));
+            this.MainFormLayout_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 250F));
+            this.MainFormLayout_PNL.Size = new System.Drawing.Size(1279, 1044);
+            this.MainFormLayout_PNL.TabIndex = 11;
             // 
             // MainForm
             // 
@@ -2013,7 +2217,7 @@ namespace Mobility_Setup_Tool
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(1280, 1146);
-            this.Controls.Add(this.MainTablePanelLayout);
+            this.Controls.Add(this.MainFormLayout_PNL);
             this.Controls.Add(this.MainStatus_SB);
             this.Controls.Add(this.TitleBar_PNL);
             this.Controls.Add(this.MainMenu);
@@ -2027,7 +2231,7 @@ namespace Mobility_Setup_Tool
             this.Location = new System.Drawing.Point(10, 10);
             this.MainMenuStrip = this.MainMenu;
             this.MaximumSize = new System.Drawing.Size(8750, 9444);
-            this.MinimumSize = new System.Drawing.Size(1280, 945);
+            this.MinimumSize = new System.Drawing.Size(1024, 768);
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(1);
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -2043,37 +2247,40 @@ namespace Mobility_Setup_Tool
             this.MainStatus_SB.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainUGLLogo_PB)).EndInit();
             this.RaiseVariation_TP.ResumeLayout(false);
-            this.VarInfoLayout.ResumeLayout(false);
+            this.VarInfoLayout_PNL.ResumeLayout(false);
             this.VarInfo_GB.ResumeLayout(false);
             this.RightSide_TBL.ResumeLayout(false);
             this.RightSide_TBL.PerformLayout();
             this.VarOrderInfo_LBL.ResumeLayout(false);
             this.VariationTable_TPN.ResumeLayout(false);
             this.VariationTable_TPN.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
+            this.EqInfo_GRB.ResumeLayout(false);
             this.EqInfo_TBL.ResumeLayout(false);
             this.EqInfo_TBL.PerformLayout();
             this.DataTabs_TC.ResumeLayout(false);
             this.InitialSetup_TP.ResumeLayout(false);
             this.MainLayout.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
+            this.NotificationInput_GRB.ResumeLayout(false);
             this.NotificationLayout.ResumeLayout(false);
             this.NotificationLayout.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.ServiceOrderInfoLayout.ResumeLayout(false);
-            this.ServiceOrderInfoLayout.PerformLayout();
+            this.ServOrderInput_GRB.ResumeLayout(false);
+            this.ServiceOrderInfo_LYT.ResumeLayout(false);
+            this.ServiceOrderInfo_LYT.PerformLayout();
             this.EquipmentInfo_GB.ResumeLayout(false);
             this.EquipmentInfo_Layout.ResumeLayout(false);
             this.EquipmentInfo_Layout.PerformLayout();
+            this.QuoteOrder_TP.ResumeLayout(false);
+            this.QuoteLayout.ResumeLayout(false);
+            this.QuoteLayout.PerformLayout();
             this.OutputInfo_TPL.ResumeLayout(false);
             this.OutputInfo_TPL.PerformLayout();
             this.Output_PNL.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
+            this.QOutputInfo_GRB.ResumeLayout(false);
             this.QuoteOutput_PNL.ResumeLayout(false);
             this.QuoteOutput_PNL.PerformLayout();
             this.OutputOrder_PNL.ResumeLayout(false);
             this.OutputOrder_PNL.PerformLayout();
-            this.MainTablePanelLayout.ResumeLayout(false);
+            this.MainFormLayout_PNL.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2085,7 +2292,7 @@ namespace Mobility_Setup_Tool
         private System.Windows.Forms.ToolStripMenuItem Exit_MN;
         private System.Windows.Forms.PictureBox UGLLogo_PB;
         private System.Windows.Forms.ToolStripMenuItem AppSettings_MN;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator FileMenu_SPR;
         private System.Windows.Forms.PictureBox MainUGLLogo_PB;
         private System.Windows.Forms.ToolStripMenuItem Control_MN;
         private System.Windows.Forms.ToolStripMenuItem StopAuto_MN;
@@ -2112,7 +2319,7 @@ namespace Mobility_Setup_Tool
         private System.Windows.Forms.Label VarTaskType_LBL;
         private System.Windows.Forms.DateTimePicker VarSOEndDate_DP;
         private System.Windows.Forms.DateTimePicker VarSOStartDate_DP;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label VPlannedFinDate_LBL;
         private System.Windows.Forms.Label VarSOStartDate_LBL;
         private System.Windows.Forms.Label VarExternalReference_LBL;
         private System.Windows.Forms.Label VarSOPriority_LBL;
@@ -2123,16 +2330,12 @@ namespace Mobility_Setup_Tool
         private System.Windows.Forms.Label LongText_LBL;
         private System.Windows.Forms.ListBox Variations_LB;
         private System.Windows.Forms.TabControl DataTabs_TC;
-        public System.Windows.Forms.ComboBox VarTemplate_CB;
-        public System.Windows.Forms.ComboBox VarTaskType_CB;
-        public System.Windows.Forms.ComboBox VarSOPriority_CB;
-        public System.Windows.Forms.ComboBox VarPMActivityType_CB;
-        private System.Windows.Forms.ToolStripMenuItem resyncDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ResyncData_MNI;
         public System.Windows.Forms.ToolTip General_TT;
         private System.Windows.Forms.TabPage InitialSetup_TP;
         private System.Windows.Forms.TableLayoutPanel MainLayout;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox NotificationInput_GRB;
+        private System.Windows.Forms.GroupBox ServOrderInput_GRB;
         private System.Windows.Forms.TableLayoutPanel OutputInfo_TPL;
         private System.Windows.Forms.Label CELNumber_LBL;
         private System.Windows.Forms.Label EqNumber_LBL;
@@ -2146,11 +2349,7 @@ namespace Mobility_Setup_Tool
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         public System.Windows.Forms.TextBox EquipmentSerial_TB;
-        public System.Windows.Forms.ComboBox TemplateEquipmentList_CB;
-        public System.Windows.Forms.ComboBox FunctionLoc_CB;
-        public System.Windows.Forms.ComboBox TaskType_CB;
         private System.Windows.Forms.TableLayoutPanel NotificationLayout;
-        public System.Windows.Forms.ComboBox PartyName_CB;
         private System.Windows.Forms.Label SoldToParty_LBL;
         public System.Windows.Forms.TextBox PurchaseOrder_TB;
         private System.Windows.Forms.Label PurchaseOrder_LBL;
@@ -2160,27 +2359,25 @@ namespace Mobility_Setup_Tool
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TableLayoutPanel ServiceOrderInfoLayout;
+        private System.Windows.Forms.TableLayoutPanel ServiceOrderInfo_LYT;
         private System.Windows.Forms.Label ActivityType_LBL;
         private System.Windows.Forms.Label BasicStartDate_LBL;
         private System.Windows.Forms.Label BasicEndDate_LBL;
         private System.Windows.Forms.Label Priority_LBL;
         private System.Windows.Forms.Label ExternalRef_LBL;
         private System.Windows.Forms.CheckBox WarrantyClaim_CHB;
-        public System.Windows.Forms.ComboBox PMActivityType_CB;
         public System.Windows.Forms.TextBox ExternalReference_TB;
         public System.Windows.Forms.DateTimePicker BasicStartDate_DP;
-        public System.Windows.Forms.ComboBox Priority_CB;
         public System.Windows.Forms.DateTimePicker BasicEndDate_DP;
-        private System.Windows.Forms.TableLayoutPanel VarInfoLayout;
+        private System.Windows.Forms.TableLayoutPanel VarInfoLayout_PNL;
         private System.Windows.Forms.TableLayoutPanel RightSide_TBL;
         private System.Windows.Forms.Button VarCheckEntryList_BTN;
         private System.Windows.Forms.Button VarRaiseServiceOrder_BTN;
         private System.Windows.Forms.Button LoadVariation_BTN;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox EqInfo_GRB;
         private System.Windows.Forms.TableLayoutPanel EqInfo_TBL;
         private System.Windows.Forms.Panel Output_PNL;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox QOutputInfo_GRB;
         private System.Windows.Forms.TableLayoutPanel OutputOrder_PNL;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label EqDesc_LBL;
@@ -2198,26 +2395,53 @@ namespace Mobility_Setup_Tool
         public System.Windows.Forms.TextBox WBSOutput_TB;
         public System.Windows.Forms.TextBox NotificationOutput_TB;
         public System.Windows.Forms.TextBox SOOutput_TB;
-        private System.Windows.Forms.TableLayoutPanel MainTablePanelLayout;
+        private System.Windows.Forms.TableLayoutPanel MainFormLayout_PNL;
         public System.Windows.Forms.TextBox VarExternalReference_TB;
         public System.Windows.Forms.TabPage QuoteOrder_TP;
         private System.Windows.Forms.TableLayoutPanel QuoteOutput_PNL;
-        public System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label20;
-        public System.Windows.Forms.TextBox textBox2;
-        public System.Windows.Forms.TextBox textBox3;
-        public System.Windows.Forms.TextBox textBox4;
-        public System.Windows.Forms.TextBox textBox5;
-        public System.Windows.Forms.TextBox textBox6;
-        public System.Windows.Forms.TextBox textBox7;
-        public System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Label label22;
+        public System.Windows.Forms.TextBox QServiceOrder_TB;
+        private System.Windows.Forms.Label QPurchaseOrder_LBL;
+        private System.Windows.Forms.Label QNumOfVars_LBL;
+        private System.Windows.Forms.Label QMaterialPrice_LBL;
+        private System.Windows.Forms.Label QOverhaulPrice_LBL;
+        private System.Windows.Forms.Label QVariationPrice_LBL;
+        private System.Windows.Forms.Label QTotalPrice_LBL;
+        public System.Windows.Forms.TextBox QEquipmentNum_TB;
+        public System.Windows.Forms.TextBox QPurchaseOrder_TB;
+        public System.Windows.Forms.TextBox QNumOfVars_TB;
+        public System.Windows.Forms.TextBox QMaterialPrice_TB;
+        public System.Windows.Forms.TextBox QStandardPrice_TB;
+        public System.Windows.Forms.TextBox QVarLabourPrice_TB;
+        public System.Windows.Forms.TextBox QTotalPrice_TB;
+        private System.Windows.Forms.Label QEqNum_LBL;
+        private System.Windows.Forms.Label QServOrderDesc_LBL;
+        private System.Windows.Forms.TableLayoutPanel QuoteLayout;
+        public System.Windows.Forms.ListBox QuoteNotiListBox;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.TextBox QuoteServiceOrder_TB;
+        private System.Windows.Forms.TextBox QuoteNumberTB;
+        private System.Windows.Forms.Button QuoteServiceOrder_BTN;
+        private System.Windows.Forms.Button LoadNotification_BTN;
+        private System.Windows.Forms.ListView QuoteOutput_LV;
+        private System.Windows.Forms.ColumnHeader ItemType_CH;
+        private System.Windows.Forms.ColumnHeader TxtForQuote_CH;
+        private System.Windows.Forms.ColumnHeader Price;
+        private System.Windows.Forms.ColumnHeader Notification;
+        public System.Windows.Forms.ToolStripMenuItem View_MN;
+        public System.Windows.Forms.ToolStripMenuItem QOutputWindow_MN;
+        public RComboBox VarTemplate_CB;
+        public RComboBox VarTaskType_CB;
+        public RComboBox VarSOPriority_CB;
+        public RComboBox VarPMActivityType_CB;
+        public RComboBox TemplateEquipmentList_CB;
+        public RComboBox FunctionLoc_CB;
+        public RComboBox TaskType_CB;
+        public RComboBox PartyName_CB;
+        public RComboBox PMActivityType_CB;
+        public RComboBox Priority_CB;
+        private RComboBox QuoteTemplate_CB;
     }
 }
 

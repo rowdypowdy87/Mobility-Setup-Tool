@@ -63,7 +63,7 @@ namespace Mobility_Setup_Tool
 
         // Controllers
         private Module_ZM12 SetupModule;
-        public QuoteConsole QuoteOutput;
+        public QuoteOutput  Quoter;
         public Version      VersionController;
         public Theme        ThemeController = new Theme();
         public Databases    DatabaseController;
@@ -78,64 +78,125 @@ namespace Mobility_Setup_Tool
         public List<SAP_VARS> Variations          = new List<SAP_VARS>();
 
         // Creation method
-        public MainForm() {
+        public MainForm() 
+        {
             InitializeComponent();
-
-
             isTopPanelDragged = false;
         }
 
-        // Control form output texts
-        public string Output_EQDesc {
+#region OUTPUTS
+
+        public string Output_EQDesc 
+        {
             set { SetText(DescriptionOutput_TB, value); }
             get { return GetText(DescriptionOutput_TB); }
         }
 
-        public string Output_EQNum {
+        public string Output_EQNum 
+        {
             set { SetText(EquipmentOutput_TB, value); }
             get { return GetText(EquipmentOutput_TB); }
         }
 
-        public string Output_SetupMod {
+        public string Output_SetupMod 
+        {
             set { SetText(SetupModOutput_TB, value); }
             get { return GetText(SetupModOutput_TB); }
         }
 
-        public string Output_CELNum {
+        public string Output_CELNum 
+        {
             set { SetText(CELNumberOutput_TB, value); }
             get { return GetText(CELNumberOutput_TB); }
         }
 
-        public string Output_WorkCenter {
+        public string Output_WorkCenter
+        {
             set { SetText(WorkCenterOutput_TB, value); }
             get { return GetText(WorkCenterOutput_TB); }
         }
 
-        public string Output_WBS {
+        public string Output_WBS 
+        {
             set { SetText(WBSOutput_TB, value); }
             get { return GetText(WBSOutput_TB); }
         }
 
-        public string Output_Notification {
+        public string Output_Notification 
+        {
             set { SetText(NotificationOutput_TB, value); }
             get { return GetText(NotificationOutput_TB); }
         }
 
-        public string Output_ServiceOrder {
+        public string Output_ServiceOrder 
+        {
             set { SetText(SOOutput_TB, value); }
             get { return GetText(SOOutput_TB); }
         }
+
+        // Quoting output
+        public string QOutput_ServiceOrderDesc
+        {
+            set { SetText(QServiceOrder_TB, value); }
+            get { return GetText(QServiceOrder_TB); }
+        }
+
+        public string QOutput_EQNum
+        {
+            set { SetText(QEquipmentNum_TB, value); }
+            get { return GetText(QEquipmentNum_TB); }
+        }
+
+        public string QOutput_PurchaseOrder
+        {
+            set { SetText(QPurchaseOrder_TB, value); }
+            get { return GetText(QPurchaseOrder_TB); }
+        }
+
+        public string QOutput_NoOfVars
+        {
+            set { SetText(QNumOfVars_TB, value); }
+            get { return GetText(QNumOfVars_TB); }
+        }
+
+        public string QOutput_MaterialPrice
+        {
+            set { SetText(QMaterialPrice_TB, value); }
+            get { return GetText(QMaterialPrice_TB); }
+        }
+
+        public string QOutput_StandardPrice
+        {
+            set { SetText(QStandardPrice_TB, value); }
+            get { return GetText(QStandardPrice_TB); }
+        }
+
+        public string QOutput_VariationPrice
+        {
+            set { SetText(QVarLabourPrice_TB, value); }
+            get { return GetText(QVarLabourPrice_TB); }
+        }
+
+        public string QOutput_TotalPrice
+        {
+            set { SetText(QTotalPrice_TB, value); }
+            get { return GetText(QTotalPrice_TB); }
+        }
+
+        #endregion
 
         public DateTime GetBasicStartDate 
         {
             get { return GetDateTime(BasicStartDate_DP); }
         }
 
-        public DateTime GetEndStartDate {
+        public DateTime GetEndStartDate 
+        {
             get { return GetDateTime(BasicEndDate_DP); }
         }
 
-        public string StatusInfo {
+        public string StatusInfo 
+        {
             set { SetStatusProgress(StatusInfo_LBL, "text" ,value); }
         }
 
@@ -319,7 +380,6 @@ namespace Mobility_Setup_Tool
                 MsgBox_Error("Please select a task to use");
                 return false;
             }
-
 
             if (Full)
             {
@@ -799,8 +859,6 @@ namespace Mobility_Setup_Tool
             AppSettings         = new Settings(ThemeController, this);
             DatabaseController  = new Databases(this);
             SapSession          = new AUTOSAP(this);
-            //QuoteOutput         = new QuoteConsole(this);
-            //QuoteOutput.Hide();
 
             // Set defaults
             AppSettings.LoadSettings();
@@ -816,11 +874,11 @@ namespace Mobility_Setup_Tool
             VarExternalReference_TB.Text    = AppSettings.ADefaults.ExternalReference;
 
             // Theme settings
-            ThemeController.AddControls(CloseButton_LBL, "border");
-            ThemeController.AddControls(MinimizeButton_LBL, "border");
-            ThemeController.AddControls(MaximizeButton_LBL, "border");
-            ThemeController.AddControls(this, "background");
-            ThemeController.AddControls(TitleBar_PNL, "border");
+            ThemeController.AddControls(TitleBar_PNL,       THEME_TYPE.Border);
+            ThemeController.AddControls(MinimizeButton_LBL, THEME_TYPE.Border);
+            ThemeController.AddControls(MaximizeButton_LBL, THEME_TYPE.Border);
+            ThemeController.AddControls(CloseButton_LBL,    THEME_TYPE.Border);
+            ThemeController.AddControls(this,               THEME_TYPE.Back);
 
             // Set to a default
             ThemeController.SetThemeColor(Color.FromArgb(35, 71, 92), Color.FromArgb(85, 155, 189));
@@ -831,6 +889,11 @@ namespace Mobility_Setup_Tool
 
             // Load databases
             DatabaseController.Load();
+
+            // Quote console
+            Quoter = new QuoteOutput(this);
+
+            Quoter.Hide();
 
             // Hide progress bar
             SetStatusProgress(Progress_PB, "visible", false);
@@ -1143,218 +1206,7 @@ namespace Mobility_Setup_Tool
 
         }
 
-        // Close button label mouse enter event 
-        public virtual void CloseButton_LBL_MouseEnter(object sender, EventArgs e) 
-        {
-            General_TT.SetToolTip((Label)sender, "Close");
-            CloseButton_LBL.BackColor = ThemeController.GetBackcolor(); 
-        }
 
-        // Close button label mouse leave event 
-        public virtual void CloseButton_LBL_MouseLeave(object sender, EventArgs e) 
-        { 
-            CloseButton_LBL.BackColor = ThemeController.GetBordercolor(); 
-        }
-
-        // Close button label mouse down 
-        public virtual void CloseButton_LBL_MouseDown(object sender, MouseEventArgs e) 
-        {
-            if (e.Button == MouseButtons.Left) Close();
-        }
-
-        // Minimize button label mouse down event 
-        public virtual void MiniButton_LBL_MouseDown(object sender, MouseEventArgs e) 
-        {
-            if (e.Button == MouseButtons.Left)  WindowState = FormWindowState.Minimized;
-        }
-
-        // Minimize button label mouse enter event 
-        private void MiniButton_LBL_MouseEnter(object sender, EventArgs e) 
-        {
-            General_TT.SetToolTip((Label)sender, "Minimize");
-            MinimizeButton_LBL.BackColor = ThemeController.GetBackcolor(); 
-        }
-
-        // Minimize button label mouse leave event 
-        public virtual void MiniButton_LBL_MouseLeave(object sender, EventArgs e) 
-        { 
-            MinimizeButton_LBL.BackColor = ThemeController.GetBordercolor(); 
-        }
-
-        // Maximize button mouse enter event 
-        public virtual void MaxButton_LBL_MouseEnter(object sender, EventArgs e) 
-        {
-            General_TT.SetToolTip((Label)sender, "Maximize");
-            MaximizeButton_LBL.BackColor = ThemeController.GetBackcolor();
-        }
-
-
-        // Maximize button label mouse leave event 
-        public virtual void MaxButton_LBL_MouseLeave(object sender, EventArgs e) 
-        { 
-            MaximizeButton_LBL.BackColor = ThemeController.GetBordercolor();
-        }
-
-        // Override paint event on the main form
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            DoubleBuffered = true;
-            ResizeRedraw = true;
-
-            // Do form painting first
-            base.OnPaint(e);
-
-            // Variables
-            Pen       BorderPen  = new Pen(ThemeController.GetBordercolor(), 1.0f);
-            Brush     Fill       = BorderPen.Brush;
-            Graphics  FormGFX    = e.Graphics;
-            Rectangle FormBorder,
-                      OutputBorder,
-                      TabsBorder;
-
-            // Get rect
-            FormBorder   = new Rectangle(ClientRectangle.X,
-                                         ClientRectangle.Y, 
-                                         ClientRectangle.Width - 1, 
-                                         ClientRectangle.Height - 1);
-
-            OutputBorder = new Rectangle(Output_PNL.Location.X - 1,
-                                         Output_PNL.Location.Y + 67,
-                                         Output_PNL.Width + 1,
-                                         Output_PNL.Height + 1);
-            
-            TabsBorder   = new Rectangle(DataTabs_TC.Location.X - 1,
-                                         DataTabs_TC.Location.Y + 92,
-                                         DataTabs_TC.Width + 1,
-                                         DataTabs_TC.Height - 24);
-
-            // Draw rectangles
-            FormGFX.DrawRectangle(BorderPen, TabsBorder);
-            FormGFX.FillRectangle(Fill, TabsBorder);
-            FormGFX.DrawRectangle(BorderPen, OutputBorder);
-            FormGFX.FillRectangle(Fill, OutputBorder);
-            FormGFX.DrawRectangle(BorderPen, FormBorder);
-        }
-
-        // Title movements
-        public virtual void Title_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (isTopPanelDragged)
-            {
-                Point newPoint = TitleBar_PNL.PointToScreen(new Point(e.X, e.Y));
-                newPoint.Offset(offset);
-                Location = newPoint;
-
-            }
-        }
-
-        // Move window
-        public virtual void Title_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                isTopPanelDragged        = true;
-                Point pointStartPosition = PointToScreen(new Point(e.X, e.Y));
-
-                offset = new Point
-                {
-                    X = Location.X - pointStartPosition.X,
-                    Y = Location.Y - pointStartPosition.Y
-                };
-            }
-            else
-            {
-                isTopPanelDragged = false;
-            }
-            if (e.Clicks == 2)
-            {
-                isTopPanelDragged = false;
-                //_MaxButton_Click(sender, e);
-            }
-        }
-
-        public virtual void Title_MouseUp(object sender, MouseEventArgs e)
-        {
-            isTopPanelDragged = false;
-        }
-
-        // Maximize button label mouse down event 
-        public virtual void MaxButton_LBL_MouseDown(object sender, MouseEventArgs e) 
-        {
-            if (e.Button == MouseButtons.Left) 
-            {
-                if (WindowState == FormWindowState.Maximized) 
-                {
-                    WindowState = FormWindowState.Normal;
-                    MaximizeButton_LBL.Image = ((Image)(Properties.Resources.ResourceManager.GetObject("MS")));
-                } else 
-                {
-                    WindowState = FormWindowState.Maximized;
-                    MaximizeButton_LBL.Image = ((Image)(Properties.Resources.ResourceManager.GetObject("MF")));
-                }
-            }
-        }
-
-        // Title bar double click event 
-        public virtual void TitleBar_DoubleClick(object sender, EventArgs e) 
-        {
-            if (WindowState == FormWindowState.Maximized) 
-            {
-                WindowState = FormWindowState.Normal;
-                MaximizeButton_LBL.Image = ((Image)(Properties.Resources.ResourceManager.GetObject("MS")));
-            } 
-            else 
-            {
-                WindowState = FormWindowState.Maximized;
-                MaximizeButton_LBL.Image = ((Image)(Properties.Resources.ResourceManager.GetObject("MF")));
-            }
-        }
-
-        // Titlebar mouse move event 
-        public virtual void TitleBar_MouseMove(object sender, MouseEventArgs e) 
-        {
-            if (isTopPanelDragged) 
-            {
-                Point newPoint = TitleBar_PNL.PointToScreen(new Point(e.X, e.Y));
-                newPoint.Offset(offset);
-                Location = newPoint;
-            }
-        }
-
-        // Titlebar mouse down event 
-        public virtual void TitleBar_MouseDown(object sender, MouseEventArgs e) 
-        {
-            if (e.Button == MouseButtons.Left) 
-            {
-                isTopPanelDragged = true;
-                Point pointStartPosition = this.PointToScreen(new Point(e.X, e.Y));
-                offset = new Point();
-                offset.X = this.Location.X - pointStartPosition.X;
-                offset.Y = this.Location.Y - pointStartPosition.Y;
-            } 
-            else 
-            {
-                isTopPanelDragged = false;
-            }
-
-            // Double click to drag
-            if (e.Clicks == 2) 
-            {
-                if (WindowState == FormWindowState.Maximized) 
-                {
-                    WindowState = FormWindowState.Normal;
-                }
-                else 
-                { 
-                    WindowState = FormWindowState.Maximized;
-                }
-
-                isTopPanelDragged = false;
-            }
-        }
-
-        // Titlebar mouse down event 
-        public virtual  void TitleBar_MouseUp(object sender, MouseEventArgs e) { isTopPanelDragged = false; }
 
         // Exit menu button click event 
         private void Exit_MN_Click(object sender, EventArgs e) { Close(); }
@@ -1662,12 +1514,14 @@ namespace Mobility_Setup_Tool
             {
                 QuoteOutput_PNL.Visible = true;
                 OutputOrder_PNL.Visible = false;
+                Quoter.Show();
             }
             // Orders tabs
                 else
             {
                 QuoteOutput_PNL.Visible = false;
                 OutputOrder_PNL.Visible = true;
+                Quoter.Hide();
             }
         }
 
@@ -1686,6 +1540,259 @@ namespace Mobility_Setup_Tool
             {
                 MsgBox_Warning("You cannot enter a date greater than the planned end date!");
                 VarSOStartDate_DP.Value = DateTime.Today.AddDays(-1.0);
+            }
+        }
+
+        #region WINDOW THEME EVENTS
+
+        // Close button label mouse enter event 
+        public virtual void CloseButton_LBL_MouseEnter(object sender, EventArgs e)
+        {
+            General_TT.SetToolTip((Label)sender, "Close");
+            CloseButton_LBL.BackColor = ThemeController.GetBackcolor();
+        }
+
+        // Close button label mouse leave event 
+        public virtual void CloseButton_LBL_MouseLeave(object sender, EventArgs e)
+        {
+            CloseButton_LBL.BackColor = ThemeController.GetBordercolor();
+        }
+
+        // Close button label mouse down 
+        public virtual void CloseButton_LBL_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left) Close();
+        }
+
+        // Minimize button label mouse down event 
+        public virtual void MiniButton_LBL_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left) WindowState = FormWindowState.Minimized;
+        }
+
+        // Minimize button label mouse enter event 
+        private void MiniButton_LBL_MouseEnter(object sender, EventArgs e)
+        {
+            General_TT.SetToolTip((Label)sender, "Minimize");
+            MinimizeButton_LBL.BackColor = ThemeController.GetBackcolor();
+        }
+
+        // Minimize button label mouse leave event 
+        public virtual void MiniButton_LBL_MouseLeave(object sender, EventArgs e)
+        {
+            MinimizeButton_LBL.BackColor = ThemeController.GetBordercolor();
+        }
+
+        // Maximize button mouse enter event 
+        public virtual void MaxButton_LBL_MouseEnter(object sender, EventArgs e)
+        {
+            General_TT.SetToolTip((Label)sender, "Maximize");
+            MaximizeButton_LBL.BackColor = ThemeController.GetBackcolor();
+        }
+
+
+        // Maximize button label mouse leave event 
+        public virtual void MaxButton_LBL_MouseLeave(object sender, EventArgs e)
+        {
+            MaximizeButton_LBL.BackColor = ThemeController.GetBordercolor();
+        }
+
+        // Override paint event on the main form
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            DoubleBuffered = true;
+            ResizeRedraw = true;
+
+            // Do form painting first
+            base.OnPaint(e);
+
+            // Variables
+            Pen BorderPen = new Pen(ThemeController.GetBordercolor(), 1.0f);
+            Brush Fill = BorderPen.Brush;
+            Graphics FormGFX = e.Graphics;
+            Rectangle FormBorder,
+                      OutputBorder,
+                      TabsBorder;
+
+            // Get rect
+            FormBorder = new Rectangle(ClientRectangle.X,
+                                         ClientRectangle.Y,
+                                         ClientRectangle.Width - 1,
+                                         ClientRectangle.Height - 1);
+
+            OutputBorder = new Rectangle(Output_PNL.Location.X - 1,
+                                         Output_PNL.Location.Y + 67,
+                                         Output_PNL.Width + 1,
+                                         Output_PNL.Height + 1);
+
+            TabsBorder = new Rectangle(DataTabs_TC.Location.X - 1,
+                                       DataTabs_TC.Location.Y + 92,
+                                       DataTabs_TC.Width + 1,
+                                       DataTabs_TC.Height - 24);
+
+            
+
+            // Draw rectangles
+            FormGFX.DrawRectangle(BorderPen, TabsBorder);
+            FormGFX.FillRectangle(Fill, TabsBorder);
+            FormGFX.DrawRectangle(BorderPen, OutputBorder);
+            FormGFX.FillRectangle(Fill, OutputBorder);
+            FormGFX.DrawRectangle(BorderPen, FormBorder);
+        }
+
+        // Title movements
+        public virtual void Title_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isTopPanelDragged)
+            {
+                Point newPoint = TitleBar_PNL.PointToScreen(new Point(e.X, e.Y));
+                newPoint.Offset(offset);
+                Location = newPoint;
+
+            }
+        }
+
+        // Move window
+        public virtual void Title_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isTopPanelDragged = true;
+                Point pointStartPosition = PointToScreen(new Point(e.X, e.Y));
+
+                offset = new Point
+                {
+                    X = Location.X - pointStartPosition.X,
+                    Y = Location.Y - pointStartPosition.Y
+                };
+            }
+            else
+            {
+                isTopPanelDragged = false;
+            }
+            if (e.Clicks == 2)
+            {
+                isTopPanelDragged = false;
+                //_MaxButton_Click(sender, e);
+            }
+        }
+
+        public virtual void Title_MouseUp(object sender, MouseEventArgs e)
+        {
+            isTopPanelDragged = false;
+        }
+
+        // Maximize button label mouse down event 
+        public virtual void MaxButton_LBL_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (WindowState == FormWindowState.Maximized)
+                {
+                    WindowState = FormWindowState.Normal;
+                    MaximizeButton_LBL.Image = ((Image)(Properties.Resources.ResourceManager.GetObject("MS")));
+                }
+                else
+                {
+                    WindowState = FormWindowState.Maximized;
+                    MaximizeButton_LBL.Image = ((Image)(Properties.Resources.ResourceManager.GetObject("MF")));
+                }
+            }
+        }
+
+        // Title bar double click event 
+        public virtual void TitleBar_DoubleClick(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Maximized)
+            {
+                WindowState = FormWindowState.Normal;
+                MaximizeButton_LBL.Image = ((Image)(Properties.Resources.ResourceManager.GetObject("MS")));
+            }
+            else
+            {
+                WindowState = FormWindowState.Maximized;
+                MaximizeButton_LBL.Image = ((Image)(Properties.Resources.ResourceManager.GetObject("MF")));
+            }
+        }
+
+        // Titlebar mouse move event 
+        public virtual void TitleBar_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isTopPanelDragged)
+            {
+                Point newPoint = TitleBar_PNL.PointToScreen(new Point(e.X, e.Y));
+                newPoint.Offset(offset);
+                Location = newPoint;
+            }
+        }
+
+        // Titlebar mouse down event 
+        public virtual void TitleBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isTopPanelDragged        = true;
+                Point pointStartPosition = PointToScreen(new Point(e.X, e.Y));
+
+                // Get rid of maximize when dragging from max state
+                if (WindowState == FormWindowState.Maximized) {
+                    WindowState = FormWindowState.Normal;
+                }
+
+                offset = new Point
+                {
+                    X = this.Location.X - pointStartPosition.X,
+                    Y = this.Location.Y - pointStartPosition.Y
+                };
+            }
+            else
+            {
+                isTopPanelDragged = false;
+            }
+
+            // Double click to drag
+            if (e.Clicks == 2)
+            {
+                if (WindowState == FormWindowState.Maximized)
+                {
+                    WindowState = FormWindowState.Normal;
+                }
+                else
+                {
+                    WindowState = FormWindowState.Maximized;
+                }
+
+                isTopPanelDragged = false;
+            }
+        }
+
+        // Titlebar mouse down event 
+        public virtual void TitleBar_MouseUp(object sender, MouseEventArgs e) 
+        {
+            Point Position = PointToScreen(new Point(e.X, e.Y));
+
+            // Maximize if you drop at top of screen
+            if (Position.Y < 30)
+            {
+                WindowState = FormWindowState.Maximized;
+            }
+
+            isTopPanelDragged = false; 
+            
+        }
+
+        #endregion
+
+        private void QOutputWindow_MN_Click(object sender, EventArgs e)
+        {
+            if (Quoter.Visible)
+            {
+                Quoter.Visible = false;
+
+            }
+                else
+            {
+                Quoter.Visible = true;
             }
         }
     }

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Mobility_Setup_Tool
@@ -13,9 +9,9 @@ namespace Mobility_Setup_Tool
         public MainForm RefForm;
 
         // Window movement globals
-        public bool isTopPanelDragged;
-        public Point offset;
-        public bool DidNotUpdate = false;
+        public bool     isTopPanelDragged;
+        public Point    offset;
+        public bool     DidNotUpdate = false;
 
         public InitialSetup(MainForm r)
         {
@@ -28,7 +24,6 @@ namespace Mobility_Setup_Tool
             //BackColor = RefForm.ThemeController.GetBackcolor();
             //TitleBar_PNL.BackColor = RefForm.ThemeController.GetBordercolor();
         }
-
 
         private void InitialSetup_Paint(object sender, PaintEventArgs e)
         {
@@ -55,10 +50,12 @@ namespace Mobility_Setup_Tool
             if (e.Button == MouseButtons.Left)
             {
                 isTopPanelDragged = true;
-                Point pointStartPosition = this.PointToScreen(new Point(e.X, e.Y));
-                offset = new Point();
-                offset.X = this.Location.X - pointStartPosition.X;
-                offset.Y = this.Location.Y - pointStartPosition.Y;
+                Point pointStartPosition = PointToScreen(new Point(e.X, e.Y));
+                offset = new Point
+                {
+                    X = Location.X - pointStartPosition.X,
+                    Y = Location.Y - pointStartPosition.Y
+                };
             }
             else
             {
@@ -72,7 +69,12 @@ namespace Mobility_Setup_Tool
 
         private void ContinueBTN_Click(object sender, EventArgs e)
         {
+            if(PlantNumberCB.Text == "")
+            {
+                MsgBoxs.MsgBox_Error("Plant number is a mandatory field, please select a plant");
+                return;
+            }
             Close();
         }
-    }
+    }   
 }

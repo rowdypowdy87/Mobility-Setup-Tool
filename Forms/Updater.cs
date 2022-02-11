@@ -2,9 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Net;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Mobility_Setup_Tool.Forms
@@ -41,15 +39,15 @@ namespace Mobility_Setup_Tool.Forms
         protected override void OnPaint(PaintEventArgs e)
         {
             DoubleBuffered = true;
-            ResizeRedraw = true;
+            ResizeRedraw   = true;
 
             // Do form painting first
             base.OnPaint(e);
 
             // Variables
-            Pen BorderPen = new Pen(Color.Black, 1.0f);
-            Graphics FormGFX = e.Graphics;
-            Rectangle FormBorder;
+            Pen         BorderPen   = new Pen(Color.Black, 1.0f);
+            Graphics    FormGFX     = e.Graphics;
+            Rectangle   FormBorder;
 
             // Get rect
             FormBorder = new Rectangle(ClientRectangle.X,
@@ -89,7 +87,6 @@ namespace Mobility_Setup_Tool.Forms
             {
                 isTopPanelDragged = false;
             }
-            if (e.Clicks == 2) isTopPanelDragged = false;
         }
 
         public void UpdateApplication()
@@ -129,7 +126,7 @@ namespace Mobility_Setup_Tool.Forms
             };
 
             MsgBoxs.MsgBox_Normal("The application will now update, please follow the instructions of the installer and run the Mobilty Setup Tool again once you are done. Thank you");
-            Application.Exit();
+            Environment.Exit(0);
         }
 
         // Titlebar mouse down event 

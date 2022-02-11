@@ -28,6 +28,9 @@ namespace Mobility_Setup_Tool.Forms
             TitleBar.BackColor  = RefForm.ThemeController.GetBordercolor();
             BackColor           = RefForm.ThemeController.GetBackcolor();
 
+            RefForm.ThemeController.AddControls(TitleBar, THEME_TYPE.Border);
+            RefForm.ThemeController.AddControls(BackColor, THEME_TYPE.Back);
+
             // Manually centre the form to MainForm
             Location = new Point((RefForm.Location.X + RefForm.Width / 2) - Width / 2, (RefForm.Location.Y + RefForm.Height / 2) - Height / 2);
         }

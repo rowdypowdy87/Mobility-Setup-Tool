@@ -69,6 +69,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Forms\TEMPLATE_FORM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\QuoteOutput.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\VersionHistory.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,6 +89,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Forms\QuoteOutput - Copy.resx">
+      <DependentUpon>QuoteOutput.resx</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

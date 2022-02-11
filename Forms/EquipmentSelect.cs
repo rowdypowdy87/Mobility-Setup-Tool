@@ -34,6 +34,12 @@ namespace Mobility_Setup_Tool
             MiniButton_LBL.BackColor        = RefForm.ThemeController.GetBordercolor();
             MaxiButton_LBL.BackColor        = RefForm.ThemeController.GetBordercolor();
             CloseButton_LBL.BackColor       = RefForm.ThemeController.GetBordercolor();
+
+            RefForm.ThemeController.AddControls(TitleBar_PNL, THEME_TYPE.Border);
+            RefForm.ThemeController.AddControls(MiniButton_LBL, THEME_TYPE.Border);
+            RefForm.ThemeController.AddControls(MaxiButton_LBL, THEME_TYPE.Border);
+            RefForm.ThemeController.AddControls(CloseButton_LBL, THEME_TYPE.Border);
+            RefForm.ThemeController.AddControls(BackColor, THEME_TYPE.Back);
         }
 
 

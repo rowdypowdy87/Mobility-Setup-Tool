@@ -6,29 +6,37 @@ using System.Windows.Forms;
 
 namespace Mobility_Setup_Tool
 {
+    public enum THEME_TYPE
+    {
+        Back = 0,
+        Border = 1
+    };
+
     public class Theme
     {
         private List<dynamic> Controls = new List<dynamic>();
-        private List<string> Type = new List<string>();
+        private List<THEME_TYPE> Type = new List<THEME_TYPE>();
         public static Color BorderColor, BackgroundColor;
         public string AppData = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\[UGL]Mobility Setup and Planning Tool";
 
-        public Color ThemeBorderColor {
+        public Color ThemeBorderColor 
+        {
             get { return BorderColor; }
             set { BorderColor = value; }
         }
 
-        public Color ThemeBackgroundColor {
+        public Color ThemeBackgroundColor 
+            {
             get { return BackgroundColor; }
             set { BackgroundColor = value; }
         }
 
-        public void SetColor(dynamic control, Color val)
+        public void SetColor(Control control, Color val)
         {
-            control.Invoke((MethodInvoker)delegate { control.BackColor = val; });
+            control.BackColor = val;
         }
 
-        public void AddControls(dynamic AddControl, string AddType)
+        public void AddControls(dynamic AddControl, THEME_TYPE AddType)
         {
             Controls.Add(AddControl);
             Type.Add(AddType);
@@ -77,13 +85,13 @@ namespace Mobility_Setup_Tool
         {
             for (int i = 0; i < Controls.Count; i++)
             {
-                if (Type[i] == "background")
+                if (Type[i] == THEME_TYPE.Back)
                 {
-                    SetColor(Controls[i], BackgroundColor);
+                    SetColor((Control)Controls[i], BackgroundColor);
                 }
                 else
                 {
-                    SetColor(Controls[i], BorderColor);
+                    SetColor((Control)Controls[i], BorderColor);
                 }
             }
         }

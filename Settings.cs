@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Net;
 using Mobility_Setup_Tool.Forms;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Mobility_Setup_Tool
 {
@@ -310,7 +311,7 @@ namespace Mobility_Setup_Tool
                 if (UpdaterDiag.DidNotUpdate)
                 {
                     MsgBoxs.MsgBox_Warning("You must update the application to continue using it.");
-                    Application.Exit();
+                    Environment.Exit(0);
                 }
             }
 
@@ -327,13 +328,22 @@ namespace Mobility_Setup_Tool
                 }
             }
 
+            // Close file
+            MasterData.Close();
+
             if (!FoundPlant)
             {
                 MsgBoxs.MsgBox_Error($"Cannot find database links for plant {Defaults.Plant}");
-                Application.Exit();
-            }
 
-            MasterData.Close();
+                // Give app time to close the file before clearing it
+                Thread.Sleep(1000);
+
+                // Delete corrupted settings
+                ResetSettings();
+
+                // Close application
+                Environment.Exit(0);
+            }
 
             // Download master databases for this plant
             DownloadFromSharepoint(SP_Inputs, Defaults.InputsPath);
@@ -381,13 +391,13 @@ namespace Mobility_Setup_Tool
                 InitialData.ShowDialog();
 
                 // Set settings
-                Defaults.Distribution       = InitialData.DistriChannelCB.Text;
-                Defaults.Division           = InitialData.DivisionCB.Text;
+                Defaults.Distribution       = GetPrefix(InitialData.DistriChannelCB.Text)   != "" ? GetPrefix(InitialData.DistriChannelCB.Text) : "02";
+                Defaults.Division           = GetPrefix(InitialData.DivisionCB.Text)        != "" ? GetPrefix(InitialData.DivisionCB.Text)      : "21";
                 Defaults.Effect             = "5";
-                Defaults.Location           = InitialData.LocationCB.Text;
-                Defaults.Organization       = InitialData.OrganizatonCB.Text;
-                Defaults.PlannerGroup       = InitialData.PlannerGroupCB.Text;
-                Defaults.Plant              = InitialData.PlantNumberCB.Text;
+                Defaults.Location           = GetPrefix(InitialData.LocationCB.Text)        != "" ? GetPrefix(InitialData.LocationCB.Text)      : "WA-BAS";
+                Defaults.Organization       = GetPrefix(InitialData.OrganizatonCB.Text)     != "" ? GetPrefix(InitialData.OrganizatonCB.Text)   : "1000";
+                Defaults.PlannerGroup       = GetPrefix(InitialData.PlannerGroupCB.Text)    != "" ? GetPrefix(InitialData.PlannerGroupCB.Text)  : "B01";
+                Defaults.Plant              = GetPrefix(InitialData.PlantNumberCB.Text)     != "" ? GetPrefix(InitialData.PlantNumberCB.Text)   : "1002";
                 Defaults.WarrantyMonthLimit = "12";
                 Defaults.InputsPath         = $"{AppData}\\{Defaults.Plant}_GeneralInputs.xlsx";
                 Defaults.CELPath            = $"{AppData}\\{Defaults.Plant}_CollectiveEntryLists.xlsm";
@@ -406,18 +416,40 @@ namespace Mobility_Setup_Tool
             }
         }
 
+        public string GetPrefix(string input)
+        {
+            return input[0..input.IndexOf(" ")];
+        }
+
         // Delete appsettings file
         public void ResetSettings()
         {
-            try { 
+            try 
+            { 
                 File.Delete($"{AppData}\\APPSETTINGS"); 
-            } catch {  }
+            } catch (Exception e) 
+            {
+                MsgBoxs.MsgBox_Error(e.Message.ToString());
+            }
 
-            try { File.Delete($"{AppData}\\THEME"); } catch {  }
-            try { File.Delete($"{AppData}\\MST_DataLinks"); } catch {  }
-            try { File.Delete(Defaults.CELPath); } catch {  }
-            try { File.Delete(Defaults.InputsPath); } catch {  }
-            try { File.Delete(Defaults.QuotePath); } catch {  }
+            try
+            {
+                File.Delete($"{AppData}\\THEME");
+            }
+            catch (Exception e)
+            {
+                MsgBoxs.MsgBox_Error(e.Message.ToString());
+            }
+
+            try
+            {
+                File.Delete($"{AppData}\\MST_DataLinks");
+            }
+            catch (Exception e)
+            {
+                MsgBoxs.MsgBox_Error(e.Message.ToString());
+            }
+
         }
 
         // Save settings to file

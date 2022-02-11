@@ -35,7 +35,7 @@ namespace Mobility_Setup_Tool.Forms
             this.LBTitle = new System.Windows.Forms.Label();
             this.CloseButton = new System.Windows.Forms.PictureBox();
             this.MenuPanel = new System.Windows.Forms.Panel();
-            this.Modules_CMB = new System.Windows.Forms.ComboBox();
+            this.Modules_CMB = new RComboBox();
             this.Continue_BTN = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.TitleBar.SuspendLayout();

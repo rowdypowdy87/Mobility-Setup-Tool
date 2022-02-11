@@ -3,38 +3,42 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
+using static Mobility_Setup_Tool.MsgBoxs;
 
 namespace Mobility_Setup_Tool
 {
-    public partial class QuoteConsole : Form
+    public partial class QuoteOutput : Form
     {
         public MainForm RefForm;
 
         // Window movement globals
-        public bool isTopPanelDragged;
+        public bool  isTopPanelDragged;
         public Point offset;
-        
-        
 
-        public QuoteConsole(MainForm r)
+        public QuoteOutput(MainForm r)
         {
             RefForm = r;
             InitializeComponent();
         }
 
-        private void QuoteConsole_Load(object sender, EventArgs e)
+        private void QuoteOutput_Load(object sender, EventArgs e)
         {
-            Border_PNL.ForeColor            = RefForm.ThemeController.GetBordercolor();
-            Border_PNL.BackColor            = RefForm.ThemeController.GetBackcolor();
-            TitleBar_PNL.BackColor          = RefForm.ThemeController.GetBordercolor();
-            MinimizeButton_LBL.BackColor    = RefForm.ThemeController.GetBordercolor();
-            MaximizeButton_LBL.BackColor    = RefForm.ThemeController.GetBordercolor();
-            CloseButton_LBL.BackColor       = RefForm.ThemeController.GetBordercolor();
+            BackColor                    = RefForm.ThemeController.GetBackcolor();
+            TitleBar_PNL.BackColor       = RefForm.ThemeController.GetBordercolor();
+            MinimizeButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
+            MaximizeButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
+            CloseButton_LBL.BackColor    = RefForm.ThemeController.GetBordercolor();
+
+            RefForm.ThemeController.AddControls(TitleBar_PNL,       THEME_TYPE.Border);
+            RefForm.ThemeController.AddControls(MinimizeButton_LBL, THEME_TYPE.Border);
+            RefForm.ThemeController.AddControls(MaximizeButton_LBL, THEME_TYPE.Border);
+            RefForm.ThemeController.AddControls(CloseButton_LBL,    THEME_TYPE.Border);
+            RefForm.ThemeController.AddControls(this,               THEME_TYPE.Back);
         }
 
-     
+#region WINDOW THEME CONTROLS
+
         // Close button label mouse enter event 
         private void CloseButton_LBL_MouseEnter(object sender, EventArgs e) { CloseButton_LBL.BackColor = RefForm.ThemeController.GetBackcolor(); }
 
@@ -65,21 +69,10 @@ namespace Mobility_Setup_Tool
         // Maximize button label mouse leave event 
         private void MaxButton_LBL_MouseLeave(object sender, EventArgs e) { MaximizeButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor(); }
 
-        // Main form paint event 
-        private void MainForm_Paint(object sender, PaintEventArgs e)
-        {
-            DoubleBuffered = true;
-            ResizeRedraw = true;
-
-            using (Pen BorderPen = new Pen(RefForm.ThemeController.GetBordercolor(), 1.0f))
-            {
-                e.Graphics.DrawRectangle(BorderPen, 0, 0, Width - 1, Height - 1);
-            };
-        }
-
+        // Handle resizing
         protected override void WndProc(ref Message m)
         {
-            const int RESIZE_HANDLE_SIZE = 10;
+            const int RESIZE_HANDLE_SIZE = 12;
 
             switch (m.Msg)
             {
@@ -121,6 +114,39 @@ namespace Mobility_Setup_Tool
                     return;
             }
             base.WndProc(ref m);
+        }
+
+        // Override paint event on the main form
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            DoubleBuffered = true;
+            ResizeRedraw   = true;
+
+            // Do form painting first
+            base.OnPaint(e);
+
+            // Variables
+            Pen         BorderPen   = new Pen(RefForm.ThemeController.GetBordercolor(), 1.0f);
+            Brush       Fill        = BorderPen.Brush;
+            Graphics    FormGFX     = e.Graphics;
+            Rectangle   FormBorder, PanelBorder;
+
+            // Get rect
+            FormBorder = new Rectangle(ClientRectangle.X,
+                                       ClientRectangle.Y,
+                                       ClientRectangle.Width - 1,
+                                       ClientRectangle.Height - 1);
+
+            PanelBorder = new Rectangle(QuoteOutput_LayoutPanel.Location.X - 1,
+                                        QuoteOutput_LayoutPanel.Location.Y - 1,
+                                        QuoteOutput_LayoutPanel.Width + 2,
+                                        QuoteOutput_LayoutPanel.Height + 2);
+
+
+            // Draw rectangles
+            FormGFX.DrawRectangle(BorderPen, FormBorder);
+            FormGFX.DrawRectangle(BorderPen, PanelBorder);
+            FormGFX.FillRectangle(Fill,      PanelBorder);
         }
 
         // Title bar double click event 
@@ -188,5 +214,11 @@ namespace Mobility_Setup_Tool
             }
         }
 
+        #endregion
+
+        private void QOutput_VisibleChanged(object sender, EventArgs e)
+        {
+            RefForm.QOutputWindow_MN.Checked = Visible;
+        }
     }
 }
