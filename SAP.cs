@@ -173,7 +173,10 @@ namespace Mobility_Setup_Tool
                 }
 
                 // Get SAP session
-                SapSession = (GuiSession)SapConnection.Children.ElementAt(0);
+                try {
+                    SapSession = (GuiSession)SapConnection.Children.ElementAt(0);
+                } catch
+                { }
 
                 // Verify the sesssion
                 if (SapSession == null)
@@ -830,7 +833,7 @@ namespace Mobility_Setup_Tool
                 switch (GetSessionInfo().ScreenNumber)
                 {
                     case 1000:
-                        return "";
+                        return "No equipment found";
 
                     case 500:
 

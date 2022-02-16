@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using static Mobility_Setup_Tool.MsgBoxs;
 using Mobility_Setup_Tool.Forms;
+using System.Threading;
 
 public enum SETUP_MODULE: int
 {
@@ -54,12 +55,10 @@ namespace Mobility_Setup_Tool
     public partial class MainForm : Form
     {
         // Window movement globals
-        public bool isTopPanelDragged;
-        public Point offset;
-        
-        
-        public RESIZE_MODE Mode = RESIZE_MODE.NONE;
-        public bool Resizing = false;
+        public bool         isTopPanelDragged;
+        public Point        offset;
+        public RESIZE_MODE  Mode = RESIZE_MODE.NONE;
+        public bool         Resizing = false;
 
         // Controllers
         private Module_ZM12 SetupModule;
@@ -72,69 +71,72 @@ namespace Mobility_Setup_Tool
         public AUTOSAP      SapSession;
 
         // Settings
-        public static bool   IsRunning            = false;
-        public static bool   RunFullSetup         = false;
-        public SETUP_TYPE    SetupType            = SETUP_TYPE.SINGLE;
-        public List<SAP_VARS> Variations          = new List<SAP_VARS>();
+        public static bool IsRunning = false;
+        public static bool RunFullSetup = false;
+        public SETUP_TYPE SetupType = SETUP_TYPE.SINGLE;
+        public List<SAP_VARS> Variations = new List<SAP_VARS>();
 
         // Creation method
-        public MainForm() 
+        public MainForm()
         {
             InitializeComponent();
             isTopPanelDragged = false;
         }
 
-#region OUTPUTS
+#region OUTPUTS / INPUT VARIABLES
 
-        public string Output_EQDesc 
+        /*
+         * Provide access to input & output controls on the MainForm
+         */
+
+        public string Output_EQDesc
         {
-            set { SetText(DescriptionOutput_TB, value); }
-            get { return GetText(DescriptionOutput_TB); }
+            set { SetText(OutputEqDesc_TB, value); }
+            get { return GetText(OutputEqDesc_TB); }
         }
 
-        public string Output_EQNum 
+        public string Output_EQNum
         {
-            set { SetText(EquipmentOutput_TB, value); }
-            get { return GetText(EquipmentOutput_TB); }
+            set { SetText(OutputEqNum_TB, value); }
+            get { return GetText(OutputEqNum_TB); }
         }
 
-        public string Output_SetupMod 
+        public string Output_SetupMod
         {
-            set { SetText(SetupModOutput_TB, value); }
-            get { return GetText(SetupModOutput_TB); }
+            set { SetText(OutputSetupModule_TB, value); }
+            get { return GetText(OutputSetupModule_TB); }
         }
 
-        public string Output_CELNum 
+        public string Output_CELNum
         {
-            set { SetText(CELNumberOutput_TB, value); }
-            get { return GetText(CELNumberOutput_TB); }
+            set { SetText(OutputEntryList_TB, value); }
+            get { return GetText(OutputEntryList_TB); }
         }
 
         public string Output_WorkCenter
         {
-            set { SetText(WorkCenterOutput_TB, value); }
-            get { return GetText(WorkCenterOutput_TB); }
+            set { SetText(OutputWorkCentre_TB, value); }
+            get { return GetText(OutputWorkCentre_TB); }
         }
 
-        public string Output_WBS 
+        public string Output_WBS
         {
-            set { SetText(WBSOutput_TB, value); }
-            get { return GetText(WBSOutput_TB); }
+            set { SetText(OutputWBS_TB, value); }
+            get { return GetText(OutputWBS_TB); }
         }
 
-        public string Output_Notification 
+        public string Output_Notification
         {
-            set { SetText(NotificationOutput_TB, value); }
-            get { return GetText(NotificationOutput_TB); }
+            set { SetText(OutputNotification_TB, value); }
+            get { return GetText(OutputNotification_TB); }
         }
 
-        public string Output_ServiceOrder 
+        public string Output_ServiceOrder
         {
-            set { SetText(SOOutput_TB, value); }
-            get { return GetText(SOOutput_TB); }
+            set { SetText(OutputServOrd_TB, value); }
+            get { return GetText(OutputServOrd_TB); }
         }
 
-        // Quoting output
         public string QOutput_ServiceOrderDesc
         {
             set { SetText(QServiceOrder_TB, value); }
@@ -183,24 +185,70 @@ namespace Mobility_Setup_Tool
             get { return GetText(QTotalPrice_TB); }
         }
 
-        #endregion
-
-        public DateTime GetBasicStartDate 
+        public DateTime GetBasicStartDate
         {
             get { return GetDateTime(BasicStartDate_DP); }
         }
 
-        public DateTime GetEndStartDate 
+        public DateTime GetEndStartDate
         {
             get { return GetDateTime(BasicEndDate_DP); }
         }
 
-        public string StatusInfo 
+        public string StatusInfo
         {
-            set { SetStatusProgress(StatusInfo_LBL, "text" ,value); }
+            set { SetStatusProgress(StatusInfo_LBL, "text", value); }
         }
 
-        #region METHODS
+#endregion
+
+#region METHODS
+
+        // Parts picker 
+        public List<SAPComponent> GetParts(string PartTemplate)
+        {
+            // Get parts list tab from database 
+            string Tab = DatabaseController.GetQuotingPartsTab_ByName(PartTemplate);
+
+            PartsSelector Parts = new PartsSelector(this);
+
+            if (Tab != "")
+            {
+                // Load info 
+                ExcelDataTables ExcelManager = new ExcelDataTables();
+                QuoteTable = ExcelManager.ConvertExcelToDataTable_Name(AppSettings.Defaults.QuotePath, Tab);
+
+                // Could not find tab 
+                if (QuoteTable == null) MsgBox_Error("Error opening Quoting Database, please restart application &/or computer");
+
+                // Load filters 
+                Parts.LoadFilters(QuoteTable);
+
+                // Clear list 
+                Parts.Parts_DGV.Rows.Clear();
+
+                // Add to list 
+                for (int i = 1; i < QuoteTable.Rows.Count; i++)
+                {
+                    Parts.Parts_DGV.Rows.Add();
+
+                    Parts.Parts_DGV[1, i - 1].Value = QuoteTable.Rows[i][0].ToString();
+                    Parts.Parts_DGV[2, i - 1].Value = QuoteTable.Rows[i][3].ToString();
+                    Parts.Parts_DGV[3, i - 1].Value = QuoteTable.Rows[i][1].ToString();
+
+                }
+            }
+            else
+            {
+                //MsgBox_Error($"Cannot find quoting variations for {QuoteTemplate_CB.Text}");
+                return null;
+            }
+
+            Parts.ShowDialog();
+
+            return Parts.GetSelectedComponents();
+
+        }
 
         // Get input from user
         public string GetInput(string Info, string Title, string Default)
@@ -209,47 +257,55 @@ namespace Mobility_Setup_Tool
 
             using (InputBox UserInput = new InputBox(this))
             {
-                UserInput.TBInformation.Text    = Info;
-                UserInput.Input.Text            = Default;
-                UserInput.Text                  = Title;
+                UserInput.TBInformation.Text = Info;
+                UserInput.Input.Text = Default;
+                UserInput.Text = Title;
                 UserInput.ShowDialog();
 
                 ReturnValue = UserInput.Input.Text;
             };
-            
+
             return ReturnValue;
         }
 
-        public bool SetStatus(string Text, int Progress) {
+        // Set status on status bar and update progress bar (if required, 0 to hide progress bar)
+        public bool SetStatus(string Text, int Progress)
+        {
 
-            if (Text == ""){
+            if (Text == "")
+            {
                 SetStatusProgress(Progress_PB, "visible", false);
                 SetStatusText(StatusText_LBL, "");
             }
 
-            if (!Text.Contains("cancel") || Text != "") {
+            if (!Text.Contains("cancel") || Text != "")
+            {
 
                 SetStatusText(StatusText_LBL, Text);
-                if (Progress > 0) {
+                if (Progress > 0)
+                {
                     SetStatusProgress(Progress_PB, "visible", true);
                     SetStatusProgress(Progress_PB, "value", Progress);
                 }
-                else {
+                else
+                {
                     SetStatusProgress(Progress_PB, "visible", false);
                 }
             }
 
-            if (InvokeRequired) {
+            if (InvokeRequired)
+            {
                 Invoke((MethodInvoker)delegate { Update(); });
             }
-            else {
+            else
+            {
                 this.Update();
             }
             return true;
         }
 
         // Cross threading methods for controls
-        public string GetText(dynamic control) 
+        public string GetText(dynamic control)
         {
             string strFolderName = "";
             control.Invoke((MethodInvoker)delegate { strFolderName = control.Text; });
@@ -270,7 +326,8 @@ namespace Mobility_Setup_Tool
             return index;
         }
 
-        public int GetCBIndex(dynamic control) {
+        public int GetCBIndex(dynamic control)
+        {
             int index = 0;
             control.Invoke((MethodInvoker)delegate { index = control.SelectedIndex; });
             return index;
@@ -286,7 +343,8 @@ namespace Mobility_Setup_Tool
         public void SetStatusText(dynamic con, string val) { BeginInvoke((Action)(() => con.Text = val)); }
 
         delegate void SetControlValueCallback1(dynamic oControl, string propName, object propValue);
-        private void SetStatusProgress(dynamic oControl, string propName, object propValue) {
+        private void SetStatusProgress(dynamic oControl, string propName, object propValue)
+        {
             if (oControl.GetCurrentParent().InvokeRequired)
             {
                 SetControlValueCallback1 d = new SetControlValueCallback1(SetStatusProgress);
@@ -307,15 +365,18 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        public void SetText(dynamic control, string val) {
+        public void SetText(dynamic control, string val)
+        {
             control.Invoke((MethodInvoker)delegate { control.Text = val; });
         }
 
-        public void SetValue(dynamic control, int val) {
+        public void SetValue(dynamic control, int val)
+        {
             control.Invoke((MethodInvoker)delegate { control.Value = val; });
         }
 
-        public int GetValue(dynamic control) {
+        public int GetValue(dynamic control)
+        {
             int value = 0;
 
             control.Invoke((MethodInvoker)delegate { value = control.Value; });
@@ -325,17 +386,17 @@ namespace Mobility_Setup_Tool
 
         public SETUP_MODULE GetModuleNumber(string input, MobilityTask Task)
         {
-            if(Task.Name != "")
-            { 
+            if (Task.Name != "")
+            {
                 return input switch
                 {
-                    "OT_STANDARD_ZM12"  => SETUP_MODULE.OT_STANDARD_ZM12,
-                    "OT_NRCCO_ZM03"     => SETUP_MODULE.OT_NRCCO_ZM03,
-                    "OT_STANDARD_ZM25"  => SETUP_MODULE.OT_STANDARD_ZM25,
-                    _                   => SETUP_MODULE.UKNOWN,
+                    "OT_STANDARD_ZM12" => SETUP_MODULE.OT_STANDARD_ZM12,
+                    "OT_NRCCO_ZM03" => SETUP_MODULE.OT_NRCCO_ZM03,
+                    "OT_STANDARD_ZM25" => SETUP_MODULE.OT_STANDARD_ZM25,
+                    _ => SETUP_MODULE.UKNOWN,
                 };
             }
-                else
+            else
             {
                 SelectModule Window = new SelectModule(this);
 
@@ -351,7 +412,7 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        public DateTime GetDateTime(DateTimePicker control) 
+        public DateTime GetDateTime(DateTimePicker control)
         {
             DateTime getValue = DateTime.Now;
 
@@ -363,7 +424,7 @@ namespace Mobility_Setup_Tool
         // Check for variation blank fields
         private bool CheckBlankFields_Var(bool Full)
         {
-            if(GetText(VarSerialNumber_TB) == "")
+            if (GetText(VarSerialNumber_TB) == "")
             {
                 MsgBox_Error("Serial number field cannot be blank");
                 return false;
@@ -533,7 +594,7 @@ namespace Mobility_Setup_Tool
             // Verify you want to create warranty service order
             if (WarrantyClaim_CHB.Checked && RunFullSetup)
             {
-                if(MsgBox_Question($"Warranty Claim has been selected {Environment.NewLine}Are you sure you want to create a Warranty Claim Service Order?") == DialogResult.No)
+                if (MsgBox_Question($"Warranty Claim has been selected {Environment.NewLine}Are you sure you want to create a Warranty Claim Service Order?") == DialogResult.No)
                 {
                     return false;
                 }
@@ -564,129 +625,14 @@ namespace Mobility_Setup_Tool
         }
 
         // Variation setup
-        private void VarSetup(MobilityTask              SelectedTask, 
-                              MobilityServiceOrder      OrderInfo,
-                              MobilityEquipment         SelectedEquipment, 
-                              string                    NotificationNumber, 
-                              List<SAPComponent>        Components)
+        private void VarSetup(MobilityTask SelectedTask,
+                              MobilityServiceOrder OrderInfo,
+                              MobilityEquipment SelectedEquipment,
+                              string NotificationNumber,
+                              List<SAPComponent> Components)
         {
             // Check fields are filled
             switch (GetModuleNumber(SelectedTask.Module, SelectedTask))
-            {
-                // Standard setup
-                case SETUP_MODULE.OT_STANDARD_ZM12:
-
-                    Output_SetupMod = "OT_STANDARD_ZM12";
-                    SetupModule     = new Module_ZM12();
-                    SetupModule.SetMainForm(this);
-
-                    break;
-
-                // Standard setup
-                case SETUP_MODULE.OT_STANDARD_ZM25:
-
-                    Output_SetupMod = "OT_STANDARD_ZM25";
-                    SetupModule     = new Module_ZM25();
-                    SetupModule.SetMainForm(this);
-
-                    break;
-
-                // NR CCO
-                case SETUP_MODULE.OT_NRCCO_ZM03:
-
-                    Output_SetupMod = "OT_NRCCO_ZM03";
-                    SetupModule     = new Module_NRENGINECCO();
-                    SetupModule.SetMainForm(this);
-
-                    break;
-
-                case SETUP_MODULE.UKNOWN:
-                    MsgBox_Error($"Setup module for task {SelectedTask.Name} is uknown please verify database entry for this task and ensure the correct setup module is entered");
-                    break;
-
-            }
-
-            // Equipment setup
-            if (SelectedEquipment.UpdateToTemplate)
-            {
-                if(!SetupModule.InitialEquipmentCheck(SelectedEquipment.TemplateNumber,
-                                                      SelectedEquipment.SerialNumber.ToUpper(),
-                                                      SelectedEquipment.ZAWA,
-                                                      SelectedEquipment.FunctionLoc,
-                                                      SingleSetup_BW,
-                                                  ref SelectedEquipment))
-                {
-                    MsgBox_Error("Initial equipment check has failed");
-                }
-            }
-            else
-            {
-                MsgBox_Normal("This equipment type is flagged as DO NOT UPDATE TO TEMPLATE, no changes will be made to the equipment.");
-            }
-
-            // Check measurements
-            if (SetupModule.CheckMeasurementPoints(SelectedTask, SingleSetup_BW) == false)
-            {
-                if (SingleSetup_BW.CancellationPending) {
-                    MsgBox_Normal("User cancelled");
-                }
-                return;
-            }
-
-            // Create CEL
-            if (SelectedTask.CEL != "NONE" && SelectedTask.CEL != "NON-STANDARD VARIATION" && SelectedTask.CEL != null)
-            { 
-                if (SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW) == false)
-                {
-                    if (SingleSetup_BW.CancellationPending) 
-                    {
-                        MsgBox_Normal("User cancelled");
-                    }
-                    return;
-                }
-            }
-                else
-            {
-                // Only if we are doing equipment check, stop here is no CEL is required
-                if(!RunFullSetup)
-                { 
-                    MsgBox_Normal("There is no template CEL for this tasklist, equipment check complete!");
-                    return;
-                }
-            }
-
-            if(RunFullSetup)
-            {
-                // Get long text
-                GetLongText LText = new GetLongText(this)
-                {
-                    LongText = GetText(LongText_TB)
-                };
-
-                LText.ShowDialog();
-
-                SelectedTask.LongText = LText.LongText;
-
-                // Check notification and create service order
-                if (SetupModule.CreateServiceOrderFromNotification(SelectedTask, SelectedEquipment, OrderInfo, Components, NotificationNumber, SingleSetup_BW) == false)
-                {
-                    if (SingleSetup_BW.CancellationPending) {
-                        MsgBox_Normal("User cancelled");
-                    }
-                    return;
-                }
-            }
-            else
-            {
-                MsgBox_Normal("Equipment setup completed successfully!");
-            }
-        }
-
-        // Initial overhaul setup
-        private void Setup(MobilityTask SelectedTask, MobilityServiceOrder OrderInfo, MobilityEquipment SelectedEquipment, List<SAPComponent> Components)
-        {
-            // Check fields are filled
-            switch (GetModuleNumber(SelectedTask.Module, SelectedTask)) 
             {
                 // Standard setup
                 case SETUP_MODULE.OT_STANDARD_ZM12:
@@ -706,7 +652,124 @@ namespace Mobility_Setup_Tool
 
                     break;
 
-                 // NR CCO
+                // NR CCO
+                case SETUP_MODULE.OT_NRCCO_ZM03:
+
+                    Output_SetupMod = "OT_NRCCO_ZM03";
+                    SetupModule = new Module_NRENGINECCO();
+                    SetupModule.SetMainForm(this);
+
+                    break;
+
+                case SETUP_MODULE.UKNOWN:
+                    MsgBox_Error($"Setup module for task {SelectedTask.Name} is uknown please verify database entry for this task and ensure the correct setup module is entered");
+                    break;
+
+            }
+
+            // Equipment setup
+            if (SelectedEquipment.UpdateToTemplate)
+            {
+                if (!SetupModule.InitialEquipmentCheck(SelectedEquipment.TemplateNumber,
+                                                      SelectedEquipment.SerialNumber.ToUpper(),
+                                                      SelectedEquipment.ZAWA,
+                                                      SelectedEquipment.FunctionLoc,
+                                                      SingleSetup_BW,
+                                                  ref SelectedEquipment))
+                {
+                    MsgBox_Error("Initial equipment check has failed");
+                }
+            }
+            else
+            {
+                MsgBox_Normal("This equipment type is flagged as DO NOT UPDATE TO TEMPLATE, no changes will be made to the equipment.");
+            }
+
+            // Check measurements
+            if (SetupModule.CheckMeasurementPoints(SelectedTask, SingleSetup_BW) == false)
+            {
+                if (SingleSetup_BW.CancellationPending)
+                {
+                    MsgBox_Normal("User cancelled");
+                }
+                return;
+            }
+
+            // Create CEL
+            if (SelectedTask.CEL != "NONE" && SelectedTask.CEL != "NON-STANDARD VARIATION" && SelectedTask.CEL != null)
+            {
+                if (SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW) == false)
+                {
+                    if (SingleSetup_BW.CancellationPending)
+                    {
+                        MsgBox_Normal("User cancelled");
+                    }
+                    return;
+                }
+            }
+            else
+            {
+                // Only if we are doing equipment check, stop here is no CEL is required
+                if (!RunFullSetup)
+                {
+                    MsgBox_Normal("There is no template CEL for this tasklist, equipment check complete!");
+                    return;
+                }
+            }
+
+            if (RunFullSetup)
+            {
+                // Get long text
+                GetLongText LText = new GetLongText(this)
+                {
+                    LongText = GetText(LongText_TB)
+                };
+
+                LText.ShowDialog();
+
+                SelectedTask.LongText = LText.LongText;
+
+                // Check notification and create service order
+                if (SetupModule.CreateServiceOrderFromNotification(SelectedTask, SelectedEquipment, OrderInfo, Components, NotificationNumber, SingleSetup_BW) == false)
+                {
+                    if (SingleSetup_BW.CancellationPending)
+                    {
+                        MsgBox_Normal("User cancelled");
+                    }
+                    return;
+                }
+            }
+            else
+            {
+                MsgBox_Normal("Equipment setup completed successfully!");
+            }
+        }
+
+        // Initial overhaul setup
+        private void Setup(MobilityTask SelectedTask, MobilityServiceOrder OrderInfo, MobilityEquipment SelectedEquipment, List<SAPComponent> Components)
+        {
+            // Check fields are filled
+            switch (GetModuleNumber(SelectedTask.Module, SelectedTask))
+            {
+                // Standard setup
+                case SETUP_MODULE.OT_STANDARD_ZM12:
+
+                    Output_SetupMod = "OT_STANDARD_ZM12";
+                    SetupModule = new Module_ZM12();
+                    SetupModule.SetMainForm(this);
+
+                    break;
+
+                // Standard setup
+                case SETUP_MODULE.OT_STANDARD_ZM25:
+
+                    Output_SetupMod = "OT_STANDARD_ZM25";
+                    SetupModule = new Module_ZM25();
+                    SetupModule.SetMainForm(this);
+
+                    break;
+
+                // NR CCO
                 case SETUP_MODULE.OT_NRCCO_ZM03:
 
                     Output_SetupMod = "OT_NRCCO_ZM03";
@@ -730,73 +793,74 @@ namespace Mobility_Setup_Tool
                                                        SelectedEquipment.ZAWA,
                                                        SelectedEquipment.FunctionLoc,
                                                        SingleSetup_BW,
-                                                   ref SelectedEquipment)) 
+                                                   ref SelectedEquipment))
                 {
                     MsgBox_Error("Initial equipment check has failed");
                 }
-            } 
-            else 
+            }
+            else
             {
                 MsgBox_Normal("This equipment type is flagged as DO NOT UPDATE TO TEMPLATE, no changes will be made to the equipment.");
             }
 
             // Check measurements
-            if (SetupModule.CheckMeasurementPoints(SelectedTask, SingleSetup_BW) == false) 
+            if (SetupModule.CheckMeasurementPoints(SelectedTask, SingleSetup_BW) == false)
             {
                 if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
                 return;
             }
 
             // Create CEL
-            if (SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW) == false) 
+            if (SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW) == false)
             {
                 if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
                 return;
             }
 
             // Do service order setup
-            if (RunFullSetup == true) 
+            if (RunFullSetup == true)
             {
                 // Get long text
                 GetLongText LText = new GetLongText(this);
-                
+
                 LText.LongText = SelectedTask.LongText;
                 LText.ShowDialog();
 
                 SelectedTask.LongText = LText.LongText;
 
                 // Check service order can be setup
-                if (!SetupModule.InitialServiceCheck(SelectedTask, SelectedEquipment.EquipmentNumber, SingleSetup_BW)) 
+                if (!SetupModule.InitialServiceCheck(SelectedTask, SelectedEquipment.EquipmentNumber, SingleSetup_BW))
                 {
                     if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
                     return;
                 }
 
                 // Create notification
-                if (!SetupModule.CreateNotification(SelectedTask, SelectedEquipment, OrderInfo, SingleSetup_BW)) 
+                if (!SetupModule.CreateNotification(SelectedTask, SelectedEquipment, OrderInfo, SingleSetup_BW))
                 {
                     if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
                     return;
                 }
 
                 // Create service order
-                if (!SetupModule.CreateServiceOrder(SelectedTask, SelectedEquipment, OrderInfo, Components, SingleSetup_BW)) 
+                if (!SetupModule.CreateServiceOrder(SelectedTask, SelectedEquipment, OrderInfo, Components, SingleSetup_BW))
                 {
                     if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
                     return;
                 }
 
-            } 
-            else 
+            }
+            else
             {
                 MsgBox_Normal("Equipment setup completed successfully!");
             }
         }
 
-        #endregion
+#endregion
 
-        #region FORM & CONTROL EVENTS
+#region FORM & CONTROL EVENTS
 
+        // Hand form resizing (borderless)
         protected override void WndProc(ref Message m)
         {
             const int RESIZE_HANDLE_SIZE = 12;
@@ -853,32 +917,23 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        private void MainForm_Load(object sender, EventArgs e) 
+        private void MainForm_Load(object sender, EventArgs e)
         {
             // Create controller instances
-            AppSettings         = new Settings(ThemeController, this);
-            DatabaseController  = new Databases(this);
-            SapSession          = new AUTOSAP(this);
+            AppSettings             = new Settings(ThemeController, this);
+            DatabaseController      = new Databases(this);
+            SapSession              = new AUTOSAP(this);
 
             // Set defaults
             AppSettings.LoadSettings();
 
-            // Set field defaults
-            FunctionLoc_CB.Text             = AppSettings.ADefaults.FunctionLocation;
-            PartyName_CB.Text               = AppSettings.ADefaults.SoldToParty;
-            PMActivityType_CB.Text          = AppSettings.ADefaults.PmActivityType;
-            Priority_CB.Text                = AppSettings.ADefaults.Priority;
-            ExternalReference_TB.Text       = AppSettings.ADefaults.ExternalReference;
-            VarPMActivityType_CB.Text       = AppSettings.ADefaults.PmActivityType;
-            VarSOPriority_CB.Text           = AppSettings.ADefaults.Priority;
-            VarExternalReference_TB.Text    = AppSettings.ADefaults.ExternalReference;
-
             // Theme settings
-            ThemeController.AddControls(TitleBar_PNL,       THEME_TYPE.Border);
+            ThemeController.AddControls(TitleBar_PNL, THEME_TYPE.Border);
             ThemeController.AddControls(MinimizeButton_LBL, THEME_TYPE.Border);
             ThemeController.AddControls(MaximizeButton_LBL, THEME_TYPE.Border);
-            ThemeController.AddControls(CloseButton_LBL,    THEME_TYPE.Border);
-            ThemeController.AddControls(this,               THEME_TYPE.Back);
+            ThemeController.AddControls(CloseButton_LBL, THEME_TYPE.Border);
+            ThemeController.AddControls(this, THEME_TYPE.Back);
+            ThemeController.AddControls(DataTabs_TC, THEME_TYPE.Back);
 
             // Set to a default
             ThemeController.SetThemeColor(Color.FromArgb(35, 71, 92), Color.FromArgb(85, 155, 189));
@@ -890,9 +945,20 @@ namespace Mobility_Setup_Tool
             // Load databases
             DatabaseController.Load();
 
+            // Set field defaults
+            FunctionLoc_CB.Text             = AppSettings.ADefaults.FunctionLocation;
+            PartyName_CB.Text               = AppSettings.ADefaults.SoldToParty;
+            PMActivityType_CB.Text          = AppSettings.ADefaults.PmActivityType;
+            Priority_CB.Text                = AppSettings.ADefaults.Priority;
+            VarPMActivityType_CB.Text       = AppSettings.ADefaults.PmActivityType;
+            VarSOPriority_CB.Text           = AppSettings.ADefaults.Priority;
+            ExternalReference_TB.Text       = AppSettings.ADefaults.ExternalReference;
+            VarExternalReference_TB.Text    = AppSettings.ADefaults.ExternalReference;
+
+            ActivityType_LBL.Focus();
+
             // Quote console
             Quoter = new QuoteOutput(this);
-
             Quoter.Hide();
 
             // Hide progress bar
@@ -901,7 +967,7 @@ namespace Mobility_Setup_Tool
         }
 
         // Equipment list combobox text changed event 
-        private void TemplateEquipmentList_CB_TextChanged(object sender, EventArgs e) 
+        private void TemplateEquipmentList_CB_TextChanged(object sender, EventArgs e)
         {
             // If there is text in the field
             if (TemplateEquipmentList_CB.Text != "")
@@ -912,7 +978,7 @@ namespace Mobility_Setup_Tool
                 List<MobilityTask> LeadTasks = DatabaseController.GetTasks(true);
 
                 // Search for matching equipment name in task data table and add to task list combo
-                for (int Row = 0; Row < LeadTasks.Count(); Row++) 
+                for (int Row = 0; Row < LeadTasks.Count(); Row++)
                 {
                     if (LeadTasks[Row].Equipment1 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
                     if (LeadTasks[Row].Equipment2 == TemplateEquipmentList_CB.Text) TaskType_CB.Items.Add(LeadTasks[Row].Name);
@@ -929,7 +995,7 @@ namespace Mobility_Setup_Tool
         }
 
         // Equipment serial numbert text changed event 
-        private void EquipmentSerial_TB_TextChanged(object sender, EventArgs e) 
+        private void EquipmentSerial_TB_TextChanged(object sender, EventArgs e)
         {
             string SerialCheck = EquipmentSerial_TB.Text;
 
@@ -937,7 +1003,7 @@ namespace Mobility_Setup_Tool
         }
 
         // Options menu click event 
-        private void FileOptions_Click(object sender, EventArgs e) 
+        private void FileOptions_Click(object sender, EventArgs e)
         {
             AppSettings Settings = new AppSettings(this);
             Settings.ShowInTaskbar = false;
@@ -946,15 +1012,15 @@ namespace Mobility_Setup_Tool
 
         // Setup equipment button click event 
         private void SetupEquipment_BTN_Click(object sender, EventArgs e)
-        { 
-            if (!IsRunning) 
+        {
+            if (!IsRunning)
             {
                 RunFullSetup = false;
                 IsRunning = true;
                 SetupType = SETUP_TYPE.SINGLE;
                 SingleSetup_BW.RunWorkerAsync();
-            } 
-                else 
+            }
+            else
             {
                 MsgBox_Error("Tool is already running in the background, please stop the tool to re-run");
             }
@@ -995,44 +1061,44 @@ namespace Mobility_Setup_Tool
         // Raise service order button click event 
         private void RaiseServiceOrder_BT_Click(object sender, EventArgs e)
         {
-            if (!IsRunning) 
+            if (!IsRunning)
             {
                 RunFullSetup = true;
                 IsRunning = true;
                 SetupType = SETUP_TYPE.SINGLE;
                 SingleSetup_BW.RunWorkerAsync();
-            } 
-                else  
+            }
+            else
             {
                 MsgBox_Error("Tool is already running in the background, please stop the tool to re-run");
             }
         }
 
         // Stop macro menu button click event 
-        private void StopAuto_MN_Click(object sender, EventArgs e) 
+        private void StopAuto_MN_Click(object sender, EventArgs e)
         {
             IsRunning = false;
-            SingleSetup_BW.CancelAsync(); 
+            SingleSetup_BW.CancelAsync();
         }
 
         // Background worker DoWork event 
         private void SingleSetup_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            MobilityEquipment    InputEq    = new MobilityEquipment();
+            MobilityEquipment InputEq       = new MobilityEquipment();
             MobilityServiceOrder InputSO    = new MobilityServiceOrder();
-            MobilityTask         InputTask  = new MobilityTask();
+            MobilityTask InputTask          = new MobilityTask();
 
             // Reset outputs
-            Output_CELNum           = "";
-            Output_EQDesc           = "";
-            Output_EQNum            = "";
-            Output_Notification     = "";
-            Output_ServiceOrder     = "";
-            Output_SetupMod         = "";
-            Output_WBS              = "";
-            Output_WorkCenter       = "";
+            Output_CELNum       = "";
+            Output_EQDesc       = "";
+            Output_EQNum        = "";
+            Output_Notification = "";
+            Output_ServiceOrder = "";
+            Output_SetupMod     = "";
+            Output_WBS          = "";
+            Output_WorkCenter   = "";
 
-            switch (SetupType) 
+            switch (SetupType)
             {
                 case SETUP_TYPE.SINGLE:
 
@@ -1040,43 +1106,43 @@ namespace Mobility_Setup_Tool
                     if (CheckBlankFields_Single(ref InputSO))
                     {
                         // Get task info
-                        InputTask                   = DatabaseController.GetTask_ByName(GetText(TaskType_CB), true);
-                        InputTask.WarrantyClaim     = GetChecked(WarrantyClaim_CHB);
+                        InputTask                       = DatabaseController.GetTask_ByName(GetText(TaskType_CB), true);
+                        InputTask.WarrantyClaim         = GetChecked(WarrantyClaim_CHB);
 
                         // Get input equipment info
-                        InputEq.TemplateNumber      = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).EquipmentNumber;
-                        InputEq.TemplateName        = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).Description;
-                        InputEq.UpdateToTemplate    = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).UpdateToTemplate;
-                        InputEq.ZDI1                = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).ZDI1;
-                        InputEq.ZAWA                = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).ZAWA;
-                        InputEq.FunctionLoc         = GetText(FunctionLoc_CB);
-                        InputEq.SerialNumber        = GetText(EquipmentSerial_TB);
+                        InputEq.TemplateNumber          = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).EquipmentNumber;
+                        InputEq.TemplateName            = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).Description;
+                        InputEq.UpdateToTemplate        = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).UpdateToTemplate;
+                        InputEq.ZDI1                    = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).ZDI1;
+                        InputEq.ZAWA                    = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).ZAWA;
+                        InputEq.FunctionLoc             = DatabaseController.GetFunc_ByName(GetText(FunctionLoc_CB));
+                        InputEq.SerialNumber            = GetText(EquipmentSerial_TB);
 
                         // Get input service order info
-                        InputSO.ActualStartDate     = RequiredStartDate_DP.Value.ToShortDateString().Replace("/", ".");
-                        InputSO.ActualEndDate       = RequiredStartDate_DP.Value.ToShortDateString().Replace("/", ".");
-                        InputSO.PurchaseOrderDate   = PurchaseOrderDate_DP.Value.ToShortDateString().Replace("/", ".");
-                        InputSO.BasicStartDate      = BasicStartDate_DP.Value.ToShortDateString().Replace("/", ".");
-                        InputSO.BasicEndDate        = BasicEndDate_DP.Value.ToShortDateString().Replace("/", ".");
-                        InputSO.CustomerName        = GetText(PartyName_CB);
-                        InputSO.PurchaseOrder       = GetText(PurchaseOrder_TB);
-                        InputSO.ActivityType        = GetText(PMActivityType_CB);
-                        InputSO.Priority            = GetText(Priority_CB);
-                        InputSO.ExternalReference   = GetText(ExternalReference_TB);
-                     
-                        Output_WBS                  = InputTask.WBS;
-                        Output_WorkCenter           = InputTask.Workcentre;
+                        InputSO.ActualStartDate         = RequiredStartDate_DP.Value.ToShortDateString().Replace("/", ".");
+                        InputSO.ActualEndDate           = RequiredStartDate_DP.Value.ToShortDateString().Replace("/", ".");
+                        InputSO.PurchaseOrderDate       = PurchaseOrderDate_DP.Value.ToShortDateString().Replace("/", ".");
+                        InputSO.BasicStartDate          = BasicStartDate_DP.Value.ToShortDateString().Replace("/", ".");
+                        InputSO.BasicEndDate            = BasicEndDate_DP.Value.ToShortDateString().Replace("/", ".");
+                        InputSO.CustomerName            = GetText(PartyName_CB);
+                        InputSO.PurchaseOrder           = GetText(PurchaseOrder_TB);
+                        InputSO.ActivityType            = GetText(PMActivityType_CB);
+                        InputSO.Priority                = GetText(Priority_CB);
+                        InputSO.ExternalReference       = GetText(ExternalReference_TB);
 
-                        if (RunFullSetup == true) 
+                        Output_WBS = InputTask.WBS;
+                        Output_WorkCenter = InputTask.Workcentre;
+
+                        if (RunFullSetup == true)
                         {
-                            INPUT_FIELD Sales       = DatabaseController.GetSalesData_ByWorkCenter(InputTask.Workcentre);
+                            INPUT_FIELD Sales = DatabaseController.GetSalesData_ByWorkCenter(InputTask.Workcentre);
 
                             InputSO.SalesGroup      = Sales.Name;
                             InputSO.SalesOffice     = Sales.Number;
                             InputSO.SoldToParty     = DatabaseController.GetCustomer_ByName(InputSO.CustomerName).Number;
                             InputSO.ActivityType    = DatabaseController.GetActivity_ByName(InputSO.ActivityType).Number;
 
-                            if(InputSO.SalesGroup == "" || InputSO.SalesOffice == "" || InputSO.SoldToParty == "" || InputSO.ActivityType == "")
+                            if (InputSO.SalesGroup == "" || InputSO.SalesOffice == "" || InputSO.SoldToParty == "" || InputSO.ActivityType == "")
                             {
                                 MsgBox_Error("Error finding service order data");
                                 return;
@@ -1084,9 +1150,9 @@ namespace Mobility_Setup_Tool
                         }
 
                         // Verify data and run setup
-                        if (VerifyInputs(ref InputEq, ref InputSO)) 
-                        { 
-                            Setup(InputTask, InputSO, InputEq, null);    
+                        if (VerifyInputs(ref InputEq, ref InputSO))
+                        {
+                            Setup(InputTask, InputSO, InputEq, null);
                         }
                     }
 
@@ -1094,37 +1160,37 @@ namespace Mobility_Setup_Tool
 
                 case SETUP_TYPE.VAR:
 
-                    if(CheckBlankFields_Var(RunFullSetup))
+                    if (CheckBlankFields_Var(RunFullSetup))
                     {
                         // Get task info
-                        InputTask                   = DatabaseController.GetTask_ByName(GetText(VarTaskType_CB),false);
-                        InputTask.WarrantyClaim     = false;
+                        InputTask                       = DatabaseController.GetTask_ByName(GetText(VarTaskType_CB), false);
+                        InputTask.WarrantyClaim         = false;
 
                         // Get input equipment info
-                        InputEq.TemplateNumber      = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).EquipmentNumber;
-                        InputEq.TemplateName        = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).Description;
-                        InputEq.UpdateToTemplate    = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).UpdateToTemplate;
-                        InputEq.ZDI1                = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).ZDI1;
-                        InputEq.ZAWA                = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).ZAWA;
-                        InputEq.SerialNumber        = GetText(VarSerialNumber_TB);
+                        InputEq.TemplateNumber          = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).EquipmentNumber;
+                        InputEq.TemplateName            = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).Description;
+                        InputEq.UpdateToTemplate        = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).UpdateToTemplate;
+                        InputEq.ZDI1                    = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).ZDI1;
+                        InputEq.ZAWA                    = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).ZAWA;
+                        InputEq.SerialNumber            = GetText(VarSerialNumber_TB);
 
                         // Get input service order info
-                        InputSO.BasicStartDate      = VarSOStartDate_DP.Value.ToShortDateString().Replace("/", ".");
-                        InputSO.BasicEndDate        = VarSOEndDate_DP.Value.ToShortDateString().Replace("/", ".");
-                        InputSO.ActivityType        = GetText(VarPMActivityType_CB);
-                        InputSO.Priority            = GetText(VarSOPriority_CB);
-                        InputSO.ExternalReference   = GetText(VarExternalReference_TB);
+                        InputSO.BasicStartDate          = VarSOStartDate_DP.Value.ToShortDateString().Replace("/", ".");
+                        InputSO.BasicEndDate            = VarSOEndDate_DP.Value.ToShortDateString().Replace("/", ".");
+                        InputSO.ActivityType            = GetText(VarPMActivityType_CB);
+                        InputSO.Priority                = GetText(VarSOPriority_CB);
+                        InputSO.ExternalReference       = GetText(VarExternalReference_TB);
 
                         // Sales data
                         if (RunFullSetup == true)
                         {
                             INPUT_FIELD Sales = DatabaseController.GetSalesData_ByWorkCenter(InputTask.Workcentre);
 
-                            InputSO.SalesGroup      = Sales.Name;
-                            InputSO.SalesOffice     = Sales.Number;
-                            InputSO.ActivityType    = DatabaseController.GetActivity_ByName(InputSO.ActivityType).Number;
+                            InputSO.SalesGroup = Sales.Name;
+                            InputSO.SalesOffice = Sales.Number;
+                            InputSO.ActivityType = DatabaseController.GetActivity_ByName(InputSO.ActivityType).Number;
 
-                            if (InputSO.SalesGroup == "" || InputSO.SalesOffice == ""  || InputSO.ActivityType == "")
+                            if (InputSO.SalesGroup == "" || InputSO.SalesOffice == "" || InputSO.ActivityType == "")
                             {
                                 MsgBox_Error("Error finding service order data");
                                 return;
@@ -1137,8 +1203,8 @@ namespace Mobility_Setup_Tool
                             List<SAPComponent> Components = null;
 
                             if (InputTask.Group == "")
-                            { 
-                                if (MsgBox_Question("Do you want to add components to this variation?") == DialogResult.Yes) 
+                            {
+                                if (MsgBox_Question("Do you want to add components to this variation?") == DialogResult.Yes)
                                 {
                                     Components = GetParts(GetText(VarTaskType_CB));
                                 }
@@ -1146,7 +1212,7 @@ namespace Mobility_Setup_Tool
 
                             VarSetup(InputTask, InputSO, InputEq, Variations[GetCBIndex(Variations_LB)].Number, Components);
                         }
-                            else
+                        else
                         {
                             VarSetup(InputTask, InputSO, InputEq, "", null);
                         }
@@ -1160,84 +1226,41 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        // Parts picker 
-        public List<SAPComponent> GetParts(string PartTemplate)
-        {
-            // Get parts list tab from database 
-            string Tab = DatabaseController.GetQuotingPartsTab_ByName(PartTemplate);
-
-            PartsSelector Parts = new PartsSelector(this);
-
-            if (Tab != "")
-            {
-                // Load info 
-                ExcelDataTables ExcelManager = new ExcelDataTables();
-                QuoteTable                   = ExcelManager.ConvertExcelToDataTable_Name(AppSettings.Defaults.QuotePath, Tab);
-
-                // Could not find tab 
-                if (QuoteTable == null) MsgBox_Error("Error opening Quoting Database, please restart application &/or computer");
-
-                // Load filters 
-                Parts.LoadFilters(QuoteTable);
-
-                // Clear list 
-                Parts.Parts_DGV.Rows.Clear();
-
-                // Add to list 
-                for (int i = 1; i < QuoteTable.Rows.Count; i++)
-                {
-                    Parts.Parts_DGV.Rows.Add();
-
-                    Parts.Parts_DGV[1, i - 1].Value = QuoteTable.Rows[i][0].ToString();
-                    Parts.Parts_DGV[2, i - 1].Value = QuoteTable.Rows[i][3].ToString();
-                    Parts.Parts_DGV[3, i - 1].Value = QuoteTable.Rows[i][1].ToString();
-                    
-                }
-            }
-            else
-            {
-                //MsgBox_Error($"Cannot find quoting variations for {QuoteTemplate_CB.Text}");
-                return null;
-            }
-
-            Parts.ShowDialog();
-
-            return Parts.GetSelectedComponents();
-
+        // Exit menu button click event 
+        private void Exit_MN_Click(object sender, EventArgs e) 
+        { 
+            Close(); 
         }
 
-
-
-        // Exit menu button click event 
-        private void Exit_MN_Click(object sender, EventArgs e) { Close(); }
-
         // Main form key down event 
-        private void MainForm_KeyDown(object sender, KeyEventArgs e) 
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Escape && IsRunning) {
+            if (e.KeyCode == Keys.Escape && IsRunning)
+            {
                 SingleSetup_BW.CancelAsync();
                 SetStatus("Cancelling..", 0);
             }
         }
 
         // Background work completed event 
-        private void SingleSetup_Completed(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) 
+        private void SingleSetup_Completed(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             IsRunning = false;
             SetStatus("", 0);
         }
 
         // SAP verify timer Tick event 
-        private void CheckSAP_Tick(object sender, EventArgs e) 
+        private void CheckSAP_Tick(object sender, EventArgs e)
         {
             // Only if tool is currently idling
-            if (!IsRunning) 
-            { 
-                if (SapSession.GetSession()) 
+            if (!IsRunning)
+            {
+                if (SapSession.GetSession())
                 {
                     StatusInfo_LBL.Text = "SAP Connected";
                     StatusInfo_LBL.ForeColor = Color.DarkGreen;
-                } else 
+                }
+                else
                 {
                     StatusInfo_LBL.Text = "SAP Disconnected";
                     StatusInfo_LBL.ForeColor = Color.DarkRed;
@@ -1246,9 +1269,9 @@ namespace Mobility_Setup_Tool
         }
 
         // Variations list box selection changed event 
-        private void Variations_LB_SelectionIndexChanged(object sender, EventArgs e) 
+        private void Variations_LB_SelectionIndexChanged(object sender, EventArgs e)
         {
-            if (Variations_LB.SelectedIndex > -1) 
+            if (Variations_LB.SelectedIndex > -1)
             {
                 LongText_LBL.Text = $"LONG TEXT - {Variations[Variations_LB.SelectedIndex].Number}";
                 LongText_TB.Text = Variations[Variations_LB.SelectedIndex].LongText;
@@ -1262,7 +1285,7 @@ namespace Mobility_Setup_Tool
             VarTaskType_CB.Items.Clear();
 
             // Search for matching equipment name in task data table and add to task list combo
-            for (int Row = 0; Row < DatabaseController.GetTasks(false).Count(); Row++) 
+            for (int Row = 0; Row < DatabaseController.GetTasks(false).Count(); Row++)
             {
                 if (DatabaseController.GetTasks(false)[Row].Equipment1 == VarTemplate_CB.Text) VarTaskType_CB.Items.Add(DatabaseController.GetTasks(false)[Row].Name);
                 if (DatabaseController.GetTasks(false)[Row].Equipment2 == VarTemplate_CB.Text) VarTaskType_CB.Items.Add(DatabaseController.GetTasks(false)[Row].Name);
@@ -1279,16 +1302,10 @@ namespace Mobility_Setup_Tool
             VarTaskType_CB.Items.Add("NON-STANDARD VARIATION");
         }
 
-        #endregion
-
         private void ResyncDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AppSettings.ResetSettings();
-            AppSettings.GetSharepointData();
-            AppSettings.LoadSettings();
-            DatabaseController.Load();
-
-            MsgBox_Normal("Reset settings, re-sync data completed");
+            SingleSetup_BW.Dispose();
+            AppSettings.ResetSettings(true);
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1300,15 +1317,15 @@ namespace Mobility_Setup_Tool
 
         private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         // Clear task type if template equipent is empty
         private void TemplateEquipment_CB_KeyPress(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
-                if(((ComboBox)sender).Text == "")
+                if (((ComboBox)sender).Text == "")
                 {
                     TaskType_CB.Items.Clear();
                 }
@@ -1372,21 +1389,21 @@ namespace Mobility_Setup_Tool
         {
             Point TBLoc = LongText_TB.Location;
 
-            using (Pen BorderPen = new Pen(Color.FromArgb(130,135,144), 1.0f))
+            using (Pen BorderPen = new Pen(Color.FromArgb(130, 135, 144), 1.0f))
             {
-                e.Graphics.DrawRectangle(BorderPen, 
-                                         TBLoc.X - 1, 
+                e.Graphics.DrawRectangle(BorderPen,
+                                         TBLoc.X - 1,
                                          TBLoc.Y - 1,
-                                         LongText_TB.Width + 2, 
+                                         LongText_TB.Width + 2,
                                          LongText_TB.Height + 2);
             };
         }
 
         private void LoadVariation_BTN_Click(object sender, EventArgs e)
         {
-            string          EqNumber, SerialNumber;
-            ExcelDataTables TableManager            = new ExcelDataTables();
-            SerialNumber                            = GetText(VarSerialNumber_TB);
+            string EqNumber, SerialNumber;
+            ExcelDataTables TableManager = new ExcelDataTables();
+            SerialNumber = GetText(VarSerialNumber_TB);
 
             if (SerialNumber != "" && !SerialNumber.Contains(" "))
             {
@@ -1448,8 +1465,8 @@ namespace Mobility_Setup_Tool
 
                                 // Filename popup
                                 Popup = (GuiModalWindow)SapSession.GetFormById("wnd[1]");
-                                ((GuiCTextField)Popup.FindByName("DY_PATH", "GuiCTextField")).Text          = Environment.GetEnvironmentVariable("TEMP");
-                                ((GuiCTextField)Popup.FindByName("DY_FILENAME", "GuiCTextField")).Text      = $"IW58DUMP{EqNumber}.txt";
+                                ((GuiCTextField)Popup.FindByName("DY_PATH", "GuiCTextField")).Text = Environment.GetEnvironmentVariable("TEMP");
+                                ((GuiCTextField)Popup.FindByName("DY_FILENAME", "GuiCTextField")).Text = $"IW58DUMP{EqNumber}.txt";
                                 ((GuiButton)Popup.FindById("tbar[0]/btn[11]")).Press();
 
                                 // Add to list
@@ -1460,7 +1477,7 @@ namespace Mobility_Setup_Tool
                                     SAP_VARS _madd = new SAP_VARS
                                     {
                                         Description = VariationList.Rows[i]["Description"].ToString(),
-                                        Number      = VariationList.Rows[i]["Notification"].ToString()
+                                        Number = VariationList.Rows[i]["Notification"].ToString()
                                     };
 
                                     SapSession.StartTransaction("IW52");
@@ -1512,12 +1529,15 @@ namespace Mobility_Setup_Tool
             // Quote tab
             if (e.TabPageIndex > 1)
             {
-                QuoteOutput_PNL.Visible = true;
+                DataTabs_TC.SelectedTab = RaiseVariation_TP;
+                /*QuoteOutput_PNL.Visible = true;
                 OutputOrder_PNL.Visible = false;
-                Quoter.Show();
+                Quoter.Show();*/
+
+                MsgBox_Normal("Quote section to be released in future updates");
             }
             // Orders tabs
-                else
+            else
             {
                 QuoteOutput_PNL.Visible = false;
                 OutputOrder_PNL.Visible = true;
@@ -1630,7 +1650,7 @@ namespace Mobility_Setup_Tool
                                        DataTabs_TC.Width + 1,
                                        DataTabs_TC.Height - 24);
 
-            
+
 
             // Draw rectangles
             FormGFX.DrawRectangle(BorderPen, TabsBorder);
@@ -1638,48 +1658,6 @@ namespace Mobility_Setup_Tool
             FormGFX.DrawRectangle(BorderPen, OutputBorder);
             FormGFX.FillRectangle(Fill, OutputBorder);
             FormGFX.DrawRectangle(BorderPen, FormBorder);
-        }
-
-        // Title movements
-        public virtual void Title_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (isTopPanelDragged)
-            {
-                Point newPoint = TitleBar_PNL.PointToScreen(new Point(e.X, e.Y));
-                newPoint.Offset(offset);
-                Location = newPoint;
-
-            }
-        }
-
-        // Move window
-        public virtual void Title_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                isTopPanelDragged = true;
-                Point pointStartPosition = PointToScreen(new Point(e.X, e.Y));
-
-                offset = new Point
-                {
-                    X = Location.X - pointStartPosition.X,
-                    Y = Location.Y - pointStartPosition.Y
-                };
-            }
-            else
-            {
-                isTopPanelDragged = false;
-            }
-            if (e.Clicks == 2)
-            {
-                isTopPanelDragged = false;
-                //_MaxButton_Click(sender, e);
-            }
-        }
-
-        public virtual void Title_MouseUp(object sender, MouseEventArgs e)
-        {
-            isTopPanelDragged = false;
         }
 
         // Maximize button label mouse down event 
@@ -1731,18 +1709,19 @@ namespace Mobility_Setup_Tool
         {
             if (e.Button == MouseButtons.Left)
             {
-                isTopPanelDragged        = true;
+                isTopPanelDragged = true;
                 Point pointStartPosition = PointToScreen(new Point(e.X, e.Y));
 
                 // Get rid of maximize when dragging from max state
-                if (WindowState == FormWindowState.Maximized) {
+                if (WindowState == FormWindowState.Maximized)
+                {
                     WindowState = FormWindowState.Normal;
                 }
 
                 offset = new Point
                 {
-                    X = this.Location.X - pointStartPosition.X,
-                    Y = this.Location.Y - pointStartPosition.Y
+                    X = Location.X - pointStartPosition.X,
+                    Y = Location.Y - pointStartPosition.Y
                 };
             }
             else
@@ -1767,9 +1746,9 @@ namespace Mobility_Setup_Tool
         }
 
         // Titlebar mouse down event 
-        public virtual void TitleBar_MouseUp(object sender, MouseEventArgs e) 
+        public virtual void TitleBar_MouseUp(object sender, MouseEventArgs e)
         {
-            Point Position = PointToScreen(new Point(e.X, e.Y));
+            Point Position = TitleBar_PNL.PointToCurrentScreen(new Point(e.X, e.Y));
 
             // Maximize if you drop at top of screen
             if (Position.Y < 30)
@@ -1777,8 +1756,7 @@ namespace Mobility_Setup_Tool
                 WindowState = FormWindowState.Maximized;
             }
 
-            isTopPanelDragged = false; 
-            
+            isTopPanelDragged = false;
         }
 
         #endregion
@@ -1790,10 +1768,24 @@ namespace Mobility_Setup_Tool
                 Quoter.Visible = false;
 
             }
-                else
+            else
             {
                 Quoter.Visible = true;
             }
+        }
+    }
+
+#endregion
+
+    // Returns the position of the point in screen coordinates of that control instead
+    // of the main-screen coordinates
+    static class ControlExtensions
+    {
+        public static Point PointToCurrentScreen(this Control self, Point location)
+        {
+            var screenBounds = Screen.FromControl(self).Bounds;
+            var globalCoordinates = self.PointToScreen(location);
+            return new Point(globalCoordinates.X - screenBounds.X, globalCoordinates.Y - screenBounds.Y);
         }
     }
 }

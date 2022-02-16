@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Mobility_Setup_Tool
 {
@@ -11,11 +12,14 @@ namespace Mobility_Setup_Tool
         // Window movement globals
         private bool  isTopPanelDragged;
         private Point offset;
+        public  string CurPlant;
 
         public AppSettings(MainForm r) 
         {
             RefForm = r;
             InitializeComponent();
+
+            CurPlant = RefForm.AppSettings.Plant;
         }
 
         // Move window
@@ -120,6 +124,16 @@ namespace Mobility_Setup_Tool
             RefForm.VarPMActivityType_CB.Text           = RefForm.AppSettings.ADefaults.PmActivityType;
             RefForm.VarSOPriority_CB.Text               = RefForm.AppSettings.ADefaults.Priority;
             RefForm.VarExternalReference_TB.Text        = RefForm.AppSettings.ADefaults.ExternalReference;
+
+            // Plants have changed
+            if(RefForm.AppSettings.Plant != CurPlant)
+            {
+                if(MsgBoxs.MsgBox_Question("The Plant has been changed. A restart is required before these changes will take effect. Do you want to restart now?") == DialogResult.Yes)
+                {
+                    Process.Start(Application.ExecutablePath);
+                    Environment.Exit(0);
+                }
+            }
 
             // Close form after applying settings
             Close();

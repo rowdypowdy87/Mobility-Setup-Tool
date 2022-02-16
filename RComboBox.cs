@@ -33,6 +33,9 @@ namespace Mobility_Setup_Tool
                 //MsgBoxs.MsgBox_Error("You cannot enter free text into this field");
                 Text = "";
             }
+
+            Select(0, 0);
         }
+
     }
 }

@@ -63,7 +63,7 @@ namespace Mobility_Setup_Tool
             this.VarInfo_GB = new System.Windows.Forms.GroupBox();
             this.RightSide_TBL = new System.Windows.Forms.TableLayoutPanel();
             this.LongText_TB = new System.Windows.Forms.RichTextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.VNotDesc_LBL = new System.Windows.Forms.Label();
             this.LongText_LBL = new System.Windows.Forms.Label();
             this.LoadVariation_BTN = new System.Windows.Forms.Button();
             this.Variations_LB = new System.Windows.Forms.ListBox();
@@ -101,9 +101,9 @@ namespace Mobility_Setup_Tool
             this.PurchaseOrderDate_DP = new System.Windows.Forms.DateTimePicker();
             this.RequiredStartDate_DP = new System.Windows.Forms.DateTimePicker();
             this.RequiredEndDate_DP = new System.Windows.Forms.DateTimePicker();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
+            this.PurchOrderDate_LBL = new System.Windows.Forms.Label();
+            this.ReqStartDate_LBL = new System.Windows.Forms.Label();
+            this.ReqEndDate_LBL = new System.Windows.Forms.Label();
             this.ServOrderInput_GRB = new System.Windows.Forms.GroupBox();
             this.ServiceOrderInfo_LYT = new System.Windows.Forms.TableLayoutPanel();
             this.ActivityType_LBL = new System.Windows.Forms.Label();
@@ -124,17 +124,17 @@ namespace Mobility_Setup_Tool
             this.FunctionLoc_CB = new Mobility_Setup_Tool.RComboBox();
             this.SerialNumber_LBL = new System.Windows.Forms.Label();
             this.TemplateEquipment_LBL = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.TaskType_LBL = new System.Windows.Forms.Label();
+            this.FuncLoc_LBL = new System.Windows.Forms.Label();
             this.WarrantyClaim_CHB = new System.Windows.Forms.CheckBox();
             this.SetupEquipment_BTN = new System.Windows.Forms.Button();
             this.RiaseServiceOrder_BTN = new System.Windows.Forms.Button();
             this.QuoteOrder_TP = new System.Windows.Forms.TabPage();
             this.QuoteLayout = new System.Windows.Forms.TableLayoutPanel();
             this.QuoteNotiListBox = new System.Windows.Forms.ListBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
+            this.QServOrderNum_LBL = new System.Windows.Forms.Label();
+            this.QQuoteNumber_LBL = new System.Windows.Forms.Label();
+            this.QQuoteTemplate_LBL = new System.Windows.Forms.Label();
             this.QuoteServiceOrder_TB = new System.Windows.Forms.TextBox();
             this.QuoteNumberTB = new System.Windows.Forms.TextBox();
             this.QuoteTemplate_CB = new Mobility_Setup_Tool.RComboBox();
@@ -167,25 +167,25 @@ namespace Mobility_Setup_Tool
             this.QStandardPrice_TB = new System.Windows.Forms.TextBox();
             this.QVarLabourPrice_TB = new System.Windows.Forms.TextBox();
             this.QTotalPrice_TB = new System.Windows.Forms.TextBox();
-            this.QEqNum_LBL = new System.Windows.Forms.Label();
             this.QServOrderDesc_LBL = new System.Windows.Forms.Label();
+            this.QEqNum_LBL = new System.Windows.Forms.Label();
             this.OutputOrder_PNL = new System.Windows.Forms.TableLayoutPanel();
-            this.EquipmentOutput_TB = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.DescriptionOutput_TB = new System.Windows.Forms.TextBox();
-            this.SetupModOutput_TB = new System.Windows.Forms.TextBox();
-            this.CELNumberOutput_TB = new System.Windows.Forms.TextBox();
-            this.WorkCenterOutput_TB = new System.Windows.Forms.TextBox();
-            this.WBSOutput_TB = new System.Windows.Forms.TextBox();
-            this.NotificationOutput_TB = new System.Windows.Forms.TextBox();
-            this.SOOutput_TB = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.EqDesc_LBL = new System.Windows.Forms.Label();
+            this.OutputEqDesc_TB = new System.Windows.Forms.TextBox();
+            this.OutputSetupModule_LBL = new System.Windows.Forms.Label();
+            this.OutputEntryList_LBL = new System.Windows.Forms.Label();
+            this.OutputWorkCentre_LBL = new System.Windows.Forms.Label();
+            this.OutputWSB_LBL = new System.Windows.Forms.Label();
+            this.OutputNotNumber_LBL = new System.Windows.Forms.Label();
+            this.OutputServOrd_LBL = new System.Windows.Forms.Label();
+            this.OutputEqNum_TB = new System.Windows.Forms.TextBox();
+            this.OutputSetupModule_TB = new System.Windows.Forms.TextBox();
+            this.OutputEntryList_TB = new System.Windows.Forms.TextBox();
+            this.OutputWorkCentre_TB = new System.Windows.Forms.TextBox();
+            this.OutputWBS_TB = new System.Windows.Forms.TextBox();
+            this.OutputNotification_TB = new System.Windows.Forms.TextBox();
+            this.OutputServOrd_TB = new System.Windows.Forms.TextBox();
+            this.OEqNum_LBL = new System.Windows.Forms.Label();
+            this.OutputEqDesc_LBL = new System.Windows.Forms.Label();
             this.MainFormLayout_PNL = new System.Windows.Forms.TableLayoutPanel();
             this.TitleBar_PNL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UGLLogo_PB)).BeginInit();
@@ -232,7 +232,7 @@ namespace Mobility_Setup_Tool
             this.TitleBar_PNL.Font = new System.Drawing.Font("Calibri", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.TitleBar_PNL.Location = new System.Drawing.Point(1, 1);
             this.TitleBar_PNL.Name = "TitleBar_PNL";
-            this.TitleBar_PNL.Size = new System.Drawing.Size(1278, 37);
+            this.TitleBar_PNL.Size = new System.Drawing.Size(1156, 37);
             this.TitleBar_PNL.TabIndex = 3;
             this.TitleBar_PNL.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseDown);
             this.TitleBar_PNL.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseMove);
@@ -246,7 +246,7 @@ namespace Mobility_Setup_Tool
             this.MinimizeButton_LBL.Font = new System.Drawing.Font("BankGothic Md BT", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MinimizeButton_LBL.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.MinimizeButton_LBL.Image = ((System.Drawing.Image)(resources.GetObject("MinimizeButton_LBL.Image")));
-            this.MinimizeButton_LBL.Location = new System.Drawing.Point(1173, 0);
+            this.MinimizeButton_LBL.Location = new System.Drawing.Point(1051, 0);
             this.MinimizeButton_LBL.Margin = new System.Windows.Forms.Padding(0);
             this.MinimizeButton_LBL.Name = "MinimizeButton_LBL";
             this.MinimizeButton_LBL.Size = new System.Drawing.Size(35, 37);
@@ -264,7 +264,7 @@ namespace Mobility_Setup_Tool
             this.MaximizeButton_LBL.Font = new System.Drawing.Font("BankGothic Md BT", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MaximizeButton_LBL.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.MaximizeButton_LBL.Image = global::Mobility_Setup_Tool.Properties.Resources.MS;
-            this.MaximizeButton_LBL.Location = new System.Drawing.Point(1208, 0);
+            this.MaximizeButton_LBL.Location = new System.Drawing.Point(1086, 0);
             this.MaximizeButton_LBL.Margin = new System.Windows.Forms.Padding(0);
             this.MaximizeButton_LBL.Name = "MaximizeButton_LBL";
             this.MaximizeButton_LBL.Size = new System.Drawing.Size(35, 37);
@@ -282,7 +282,7 @@ namespace Mobility_Setup_Tool
             this.CloseButton_LBL.Font = new System.Drawing.Font("BankGothic Md BT", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.CloseButton_LBL.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.CloseButton_LBL.Image = ((System.Drawing.Image)(resources.GetObject("CloseButton_LBL.Image")));
-            this.CloseButton_LBL.Location = new System.Drawing.Point(1243, 0);
+            this.CloseButton_LBL.Location = new System.Drawing.Point(1121, 0);
             this.CloseButton_LBL.Margin = new System.Windows.Forms.Padding(0);
             this.CloseButton_LBL.Name = "CloseButton_LBL";
             this.CloseButton_LBL.Size = new System.Drawing.Size(35, 37);
@@ -314,9 +314,9 @@ namespace Mobility_Setup_Tool
             this.Title_LBL.TabIndex = 5;
             this.Title_LBL.Text = "Mobility Setup and Planning Tool";
             this.Title_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Title_LBL.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Title_MouseDown);
-            this.Title_LBL.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Title_MouseMove);
-            this.Title_LBL.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Title_MouseUp);
+            this.Title_LBL.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseDown);
+            this.Title_LBL.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseMove);
+            this.Title_LBL.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseUp);
             // 
             // MainMenu
             // 
@@ -337,7 +337,7 @@ namespace Mobility_Setup_Tool
             this.MainMenu.Margin = new System.Windows.Forms.Padding(1, 0, 0, 1);
             this.MainMenu.Name = "MainMenu";
             this.MainMenu.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.MainMenu.Size = new System.Drawing.Size(1278, 28);
+            this.MainMenu.Size = new System.Drawing.Size(1156, 28);
             this.MainMenu.TabIndex = 4;
             // 
             // File_MN
@@ -401,6 +401,7 @@ namespace Mobility_Setup_Tool
             // 
             this.View_MN.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.QOutputWindow_MN});
+            this.View_MN.Enabled = false;
             this.View_MN.ForeColor = System.Drawing.Color.Black;
             this.View_MN.Name = "View_MN";
             this.View_MN.Size = new System.Drawing.Size(49, 24);
@@ -460,11 +461,11 @@ namespace Mobility_Setup_Tool
             this.Progress_PB,
             this.StatusText_LBL,
             this.StatusInfo_LBL});
-            this.MainStatus_SB.Location = new System.Drawing.Point(1, 1120);
+            this.MainStatus_SB.Location = new System.Drawing.Point(1, 958);
             this.MainStatus_SB.Margin = new System.Windows.Forms.Padding(4, 5, 4, 7);
             this.MainStatus_SB.Name = "MainStatus_SB";
             this.MainStatus_SB.Padding = new System.Windows.Forms.Padding(1, 0, 12, 0);
-            this.MainStatus_SB.Size = new System.Drawing.Size(1278, 25);
+            this.MainStatus_SB.Size = new System.Drawing.Size(1156, 25);
             this.MainStatus_SB.SizingGrip = false;
             this.MainStatus_SB.TabIndex = 7;
             this.MainStatus_SB.Text = "StatusBar";
@@ -496,7 +497,7 @@ namespace Mobility_Setup_Tool
             this.StatusInfo_LBL.ForeColor = System.Drawing.Color.Black;
             this.StatusInfo_LBL.Margin = new System.Windows.Forms.Padding(10, 4, 0, 2);
             this.StatusInfo_LBL.Name = "StatusInfo_LBL";
-            this.StatusInfo_LBL.Size = new System.Drawing.Size(1150, 19);
+            this.StatusInfo_LBL.Size = new System.Drawing.Size(1028, 19);
             this.StatusInfo_LBL.Spring = true;
             this.StatusInfo_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -507,11 +508,11 @@ namespace Mobility_Setup_Tool
             this.MainUGLLogo_PB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.MainUGLLogo_PB.ErrorImage = null;
             this.MainUGLLogo_PB.Image = global::Mobility_Setup_Tool.Properties.Resources.LOGOWHITE;
-            this.MainUGLLogo_PB.Location = new System.Drawing.Point(994, 8);
+            this.MainUGLLogo_PB.Location = new System.Drawing.Point(872, 3);
             this.MainUGLLogo_PB.Margin = new System.Windows.Forms.Padding(3, 3, 30, 3);
             this.MainUGLLogo_PB.Name = "MainUGLLogo_PB";
             this.MainUGLLogo_PB.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
-            this.MainUGLLogo_PB.Size = new System.Drawing.Size(255, 73);
+            this.MainUGLLogo_PB.Size = new System.Drawing.Size(255, 61);
             this.MainUGLLogo_PB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.MainUGLLogo_PB.TabIndex = 9;
             this.MainUGLLogo_PB.TabStop = false;
@@ -525,7 +526,7 @@ namespace Mobility_Setup_Tool
             // CheckSAP_TM
             // 
             this.CheckSAP_TM.Enabled = true;
-            this.CheckSAP_TM.Interval = 60000;
+            this.CheckSAP_TM.Interval = 10000;
             this.CheckSAP_TM.Tick += new System.EventHandler(this.CheckSAP_Tick);
             // 
             // RaiseVariation_TP
@@ -536,7 +537,7 @@ namespace Mobility_Setup_Tool
             this.RaiseVariation_TP.Location = new System.Drawing.Point(4, 27);
             this.RaiseVariation_TP.Name = "RaiseVariation_TP";
             this.RaiseVariation_TP.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.RaiseVariation_TP.Size = new System.Drawing.Size(1231, 658);
+            this.RaiseVariation_TP.Size = new System.Drawing.Size(1109, 515);
             this.RaiseVariation_TP.TabIndex = 2;
             this.RaiseVariation_TP.Text = "Raise Order From Notification";
             // 
@@ -558,7 +559,7 @@ namespace Mobility_Setup_Tool
             this.VarInfoLayout_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 89.25319F));
             this.VarInfoLayout_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.74681F));
             this.VarInfoLayout_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.VarInfoLayout_PNL.Size = new System.Drawing.Size(1223, 648);
+            this.VarInfoLayout_PNL.Size = new System.Drawing.Size(1101, 505);
             this.VarInfoLayout_PNL.TabIndex = 10;
             // 
             // VarInfo_GB
@@ -566,10 +567,10 @@ namespace Mobility_Setup_Tool
             this.VarInfo_GB.Controls.Add(this.RightSide_TBL);
             this.VarInfo_GB.Dock = System.Windows.Forms.DockStyle.Fill;
             this.VarInfo_GB.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.VarInfo_GB.Location = new System.Drawing.Point(614, 3);
+            this.VarInfo_GB.Location = new System.Drawing.Point(553, 3);
             this.VarInfo_GB.Name = "VarInfo_GB";
             this.VarInfoLayout_PNL.SetRowSpan(this.VarInfo_GB, 2);
-            this.VarInfo_GB.Size = new System.Drawing.Size(606, 597);
+            this.VarInfo_GB.Size = new System.Drawing.Size(545, 470);
             this.VarInfo_GB.TabIndex = 0;
             this.VarInfo_GB.TabStop = false;
             this.VarInfo_GB.Text = "Variation Information";
@@ -579,7 +580,7 @@ namespace Mobility_Setup_Tool
             this.RightSide_TBL.ColumnCount = 1;
             this.RightSide_TBL.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.RightSide_TBL.Controls.Add(this.LongText_TB, 0, 3);
-            this.RightSide_TBL.Controls.Add(this.label2, 0, 0);
+            this.RightSide_TBL.Controls.Add(this.VNotDesc_LBL, 0, 0);
             this.RightSide_TBL.Controls.Add(this.LongText_LBL, 0, 2);
             this.RightSide_TBL.Controls.Add(this.LoadVariation_BTN, 0, 2);
             this.RightSide_TBL.Controls.Add(this.Variations_LB, 0, 1);
@@ -593,7 +594,7 @@ namespace Mobility_Setup_Tool
             this.RightSide_TBL.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.RightSide_TBL.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.RightSide_TBL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.RightSide_TBL.Size = new System.Drawing.Size(600, 572);
+            this.RightSide_TBL.Size = new System.Drawing.Size(539, 445);
             this.RightSide_TBL.TabIndex = 11;
             this.RightSide_TBL.Paint += new System.Windows.Forms.PaintEventHandler(this.RightSide_TBL_Paint);
             // 
@@ -605,27 +606,27 @@ namespace Mobility_Setup_Tool
             this.LongText_TB.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.LongText_TB.Location = new System.Drawing.Point(3, 310);
             this.LongText_TB.Name = "LongText_TB";
-            this.LongText_TB.Size = new System.Drawing.Size(594, 259);
+            this.LongText_TB.Size = new System.Drawing.Size(533, 259);
             this.LongText_TB.TabIndex = 11;
             this.LongText_TB.Text = "";
             // 
-            // label2
+            // VNotDesc_LBL
             // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(209, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(182, 18);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "NOTIFICATION DESCRIPTION";
+            this.VNotDesc_LBL.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.VNotDesc_LBL.AutoSize = true;
+            this.VNotDesc_LBL.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.VNotDesc_LBL.Location = new System.Drawing.Point(178, 0);
+            this.VNotDesc_LBL.Name = "VNotDesc_LBL";
+            this.VNotDesc_LBL.Size = new System.Drawing.Size(182, 18);
+            this.VNotDesc_LBL.TabIndex = 3;
+            this.VNotDesc_LBL.Text = "NOTIFICATION DESCRIPTION";
             // 
             // LongText_LBL
             // 
             this.LongText_LBL.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.LongText_LBL.AutoSize = true;
             this.LongText_LBL.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LongText_LBL.Location = new System.Drawing.Point(216, 289);
+            this.LongText_LBL.Location = new System.Drawing.Point(186, 289);
             this.LongText_LBL.Name = "LongText_LBL";
             this.LongText_LBL.Size = new System.Drawing.Size(167, 18);
             this.LongText_LBL.TabIndex = 2;
@@ -637,7 +638,7 @@ namespace Mobility_Setup_Tool
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LoadVariation_BTN.Location = new System.Drawing.Point(3, 247);
             this.LoadVariation_BTN.Name = "LoadVariation_BTN";
-            this.LoadVariation_BTN.Size = new System.Drawing.Size(594, 39);
+            this.LoadVariation_BTN.Size = new System.Drawing.Size(533, 39);
             this.LoadVariation_BTN.TabIndex = 12;
             this.LoadVariation_BTN.Text = "Load Variations";
             this.LoadVariation_BTN.UseVisualStyleBackColor = true;
@@ -651,7 +652,7 @@ namespace Mobility_Setup_Tool
             this.Variations_LB.ItemHeight = 18;
             this.Variations_LB.Location = new System.Drawing.Point(3, 21);
             this.Variations_LB.Name = "Variations_LB";
-            this.Variations_LB.Size = new System.Drawing.Size(594, 220);
+            this.Variations_LB.Size = new System.Drawing.Size(533, 220);
             this.Variations_LB.TabIndex = 10;
             this.Variations_LB.SelectedIndexChanged += new System.EventHandler(this.Variations_LB_SelectionIndexChanged);
             // 
@@ -662,7 +663,7 @@ namespace Mobility_Setup_Tool
             this.VarOrderInfo_LBL.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.VarOrderInfo_LBL.Location = new System.Drawing.Point(3, 240);
             this.VarOrderInfo_LBL.Name = "VarOrderInfo_LBL";
-            this.VarOrderInfo_LBL.Size = new System.Drawing.Size(605, 360);
+            this.VarOrderInfo_LBL.Size = new System.Drawing.Size(544, 233);
             this.VarOrderInfo_LBL.TabIndex = 1;
             this.VarOrderInfo_LBL.TabStop = false;
             this.VarOrderInfo_LBL.Text = "Variation Order Information";
@@ -692,7 +693,7 @@ namespace Mobility_Setup_Tool
             this.VariationTable_TPN.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.VariationTable_TPN.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.VariationTable_TPN.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.VariationTable_TPN.Size = new System.Drawing.Size(599, 335);
+            this.VariationTable_TPN.Size = new System.Drawing.Size(538, 208);
             this.VariationTable_TPN.TabIndex = 0;
             // 
             // VarSOEndDate_DP
@@ -702,9 +703,9 @@ namespace Mobility_Setup_Tool
             this.VarSOEndDate_DP.CustomFormat = "dd.MM.yyyy";
             this.VarSOEndDate_DP.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.VarSOEndDate_DP.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.VarSOEndDate_DP.Location = new System.Drawing.Point(228, 154);
+            this.VarSOEndDate_DP.Location = new System.Drawing.Point(205, 89);
             this.VarSOEndDate_DP.Name = "VarSOEndDate_DP";
-            this.VarSOEndDate_DP.Size = new System.Drawing.Size(368, 26);
+            this.VarSOEndDate_DP.Size = new System.Drawing.Size(330, 26);
             this.VarSOEndDate_DP.TabIndex = 6;
             this.VarSOEndDate_DP.ValueChanged += new System.EventHandler(this.VarBasicEndDate_ValueChanged);
             // 
@@ -715,9 +716,9 @@ namespace Mobility_Setup_Tool
             this.VarSOStartDate_DP.CustomFormat = "dd.MM.yyyy";
             this.VarSOStartDate_DP.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.VarSOStartDate_DP.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.VarSOStartDate_DP.Location = new System.Drawing.Point(228, 87);
+            this.VarSOStartDate_DP.Location = new System.Drawing.Point(205, 48);
             this.VarSOStartDate_DP.Name = "VarSOStartDate_DP";
-            this.VarSOStartDate_DP.Size = new System.Drawing.Size(368, 26);
+            this.VarSOStartDate_DP.Size = new System.Drawing.Size(330, 26);
             this.VarSOStartDate_DP.TabIndex = 5;
             this.VarSOStartDate_DP.ValueChanged += new System.EventHandler(this.VarBasicStartDate_ValueChanged);
             // 
@@ -726,7 +727,7 @@ namespace Mobility_Setup_Tool
             this.VPlannedFinDate_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.VPlannedFinDate_LBL.AutoSize = true;
             this.VPlannedFinDate_LBL.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.VPlannedFinDate_LBL.Location = new System.Drawing.Point(73, 158);
+            this.VPlannedFinDate_LBL.Location = new System.Drawing.Point(50, 93);
             this.VPlannedFinDate_LBL.Name = "VPlannedFinDate_LBL";
             this.VPlannedFinDate_LBL.Size = new System.Drawing.Size(149, 18);
             this.VPlannedFinDate_LBL.TabIndex = 0;
@@ -738,7 +739,7 @@ namespace Mobility_Setup_Tool
             this.VarSOStartDate_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.VarSOStartDate_LBL.AutoSize = true;
             this.VarSOStartDate_LBL.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.VarSOStartDate_LBL.Location = new System.Drawing.Point(77, 91);
+            this.VarSOStartDate_LBL.Location = new System.Drawing.Point(54, 52);
             this.VarSOStartDate_LBL.Name = "VarSOStartDate_LBL";
             this.VarSOStartDate_LBL.Size = new System.Drawing.Size(145, 18);
             this.VarSOStartDate_LBL.TabIndex = 0;
@@ -750,7 +751,7 @@ namespace Mobility_Setup_Tool
             this.VarExternalReference_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.VarExternalReference_LBL.AutoSize = true;
             this.VarExternalReference_LBL.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.VarExternalReference_LBL.Location = new System.Drawing.Point(76, 292);
+            this.VarExternalReference_LBL.Location = new System.Drawing.Point(53, 177);
             this.VarExternalReference_LBL.Name = "VarExternalReference_LBL";
             this.VarExternalReference_LBL.Size = new System.Drawing.Size(146, 18);
             this.VarExternalReference_LBL.TabIndex = 0;
@@ -764,9 +765,9 @@ namespace Mobility_Setup_Tool
             this.VarSOPriority_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.VarSOPriority_CB.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.VarSOPriority_CB.FormattingEnabled = true;
-            this.VarSOPriority_CB.Location = new System.Drawing.Point(228, 221);
+            this.VarSOPriority_CB.Location = new System.Drawing.Point(205, 130);
             this.VarSOPriority_CB.Name = "VarSOPriority_CB";
-            this.VarSOPriority_CB.Size = new System.Drawing.Size(368, 26);
+            this.VarSOPriority_CB.Size = new System.Drawing.Size(330, 26);
             this.VarSOPriority_CB.TabIndex = 7;
             // 
             // VarSOPriority_LBL
@@ -774,7 +775,7 @@ namespace Mobility_Setup_Tool
             this.VarSOPriority_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.VarSOPriority_LBL.AutoSize = true;
             this.VarSOPriority_LBL.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.VarSOPriority_LBL.Location = new System.Drawing.Point(155, 225);
+            this.VarSOPriority_LBL.Location = new System.Drawing.Point(132, 134);
             this.VarSOPriority_LBL.Name = "VarSOPriority_LBL";
             this.VarSOPriority_LBL.Size = new System.Drawing.Size(67, 18);
             this.VarSOPriority_LBL.TabIndex = 0;
@@ -786,7 +787,7 @@ namespace Mobility_Setup_Tool
             this.VarPMActivityType_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.VarPMActivityType_LBL.AutoSize = true;
             this.VarPMActivityType_LBL.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.VarPMActivityType_LBL.Location = new System.Drawing.Point(100, 24);
+            this.VarPMActivityType_LBL.Location = new System.Drawing.Point(77, 11);
             this.VarPMActivityType_LBL.Name = "VarPMActivityType_LBL";
             this.VarPMActivityType_LBL.Size = new System.Drawing.Size(122, 18);
             this.VarPMActivityType_LBL.TabIndex = 0;
@@ -800,9 +801,9 @@ namespace Mobility_Setup_Tool
             this.VarPMActivityType_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.VarPMActivityType_CB.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.VarPMActivityType_CB.FormattingEnabled = true;
-            this.VarPMActivityType_CB.Location = new System.Drawing.Point(228, 20);
+            this.VarPMActivityType_CB.Location = new System.Drawing.Point(205, 7);
             this.VarPMActivityType_CB.Name = "VarPMActivityType_CB";
-            this.VarPMActivityType_CB.Size = new System.Drawing.Size(368, 26);
+            this.VarPMActivityType_CB.Size = new System.Drawing.Size(330, 26);
             this.VarPMActivityType_CB.TabIndex = 4;
             // 
             // VarExternalReference_TB
@@ -811,17 +812,17 @@ namespace Mobility_Setup_Tool
             this.VarExternalReference_TB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.VarExternalReference_TB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.VarExternalReference_TB.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.VarExternalReference_TB.Location = new System.Drawing.Point(228, 288);
+            this.VarExternalReference_TB.Location = new System.Drawing.Point(205, 173);
             this.VarExternalReference_TB.Name = "VarExternalReference_TB";
-            this.VarExternalReference_TB.Size = new System.Drawing.Size(368, 26);
+            this.VarExternalReference_TB.Size = new System.Drawing.Size(330, 26);
             this.VarExternalReference_TB.TabIndex = 8;
             // 
             // VarCheckEntryList_BTN
             // 
             this.VarCheckEntryList_BTN.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.VarCheckEntryList_BTN.Location = new System.Drawing.Point(3, 606);
+            this.VarCheckEntryList_BTN.Location = new System.Drawing.Point(3, 479);
             this.VarCheckEntryList_BTN.Name = "VarCheckEntryList_BTN";
-            this.VarCheckEntryList_BTN.Size = new System.Drawing.Size(605, 39);
+            this.VarCheckEntryList_BTN.Size = new System.Drawing.Size(544, 23);
             this.VarCheckEntryList_BTN.TabIndex = 2;
             this.VarCheckEntryList_BTN.Text = "Check Equipment Entry List";
             this.VarCheckEntryList_BTN.UseVisualStyleBackColor = true;
@@ -830,9 +831,9 @@ namespace Mobility_Setup_Tool
             // VarRaiseServiceOrder_BTN
             // 
             this.VarRaiseServiceOrder_BTN.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.VarRaiseServiceOrder_BTN.Location = new System.Drawing.Point(614, 606);
+            this.VarRaiseServiceOrder_BTN.Location = new System.Drawing.Point(553, 479);
             this.VarRaiseServiceOrder_BTN.Name = "VarRaiseServiceOrder_BTN";
-            this.VarRaiseServiceOrder_BTN.Size = new System.Drawing.Size(606, 39);
+            this.VarRaiseServiceOrder_BTN.Size = new System.Drawing.Size(545, 23);
             this.VarRaiseServiceOrder_BTN.TabIndex = 2;
             this.VarRaiseServiceOrder_BTN.Text = "Raise Variation Service Order";
             this.VarRaiseServiceOrder_BTN.UseVisualStyleBackColor = true;
@@ -844,7 +845,7 @@ namespace Mobility_Setup_Tool
             this.EqInfo_GRB.Dock = System.Windows.Forms.DockStyle.Fill;
             this.EqInfo_GRB.Location = new System.Drawing.Point(3, 3);
             this.EqInfo_GRB.Name = "EqInfo_GRB";
-            this.EqInfo_GRB.Size = new System.Drawing.Size(605, 231);
+            this.EqInfo_GRB.Size = new System.Drawing.Size(544, 231);
             this.EqInfo_GRB.TabIndex = 3;
             this.EqInfo_GRB.TabStop = false;
             this.EqInfo_GRB.Text = "Equipment Information";
@@ -867,7 +868,7 @@ namespace Mobility_Setup_Tool
             this.EqInfo_TBL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.EqInfo_TBL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.EqInfo_TBL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.EqInfo_TBL.Size = new System.Drawing.Size(599, 206);
+            this.EqInfo_TBL.Size = new System.Drawing.Size(538, 206);
             this.EqInfo_TBL.TabIndex = 0;
             // 
             // VarTaskType_CB
@@ -877,9 +878,9 @@ namespace Mobility_Setup_Tool
             this.VarTaskType_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.VarTaskType_CB.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.VarTaskType_CB.FormattingEnabled = true;
-            this.VarTaskType_CB.Location = new System.Drawing.Point(223, 158);
+            this.VarTaskType_CB.Location = new System.Drawing.Point(201, 158);
             this.VarTaskType_CB.Name = "VarTaskType_CB";
-            this.VarTaskType_CB.Size = new System.Drawing.Size(368, 26);
+            this.VarTaskType_CB.Size = new System.Drawing.Size(334, 26);
             this.VarTaskType_CB.TabIndex = 3;
             // 
             // VarSerialNumber_LBL
@@ -887,7 +888,7 @@ namespace Mobility_Setup_Tool
             this.VarSerialNumber_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.VarSerialNumber_LBL.AutoSize = true;
             this.VarSerialNumber_LBL.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.VarSerialNumber_LBL.Location = new System.Drawing.Point(107, 25);
+            this.VarSerialNumber_LBL.Location = new System.Drawing.Point(85, 25);
             this.VarSerialNumber_LBL.Name = "VarSerialNumber_LBL";
             this.VarSerialNumber_LBL.Size = new System.Drawing.Size(110, 18);
             this.VarSerialNumber_LBL.TabIndex = 0;
@@ -899,7 +900,7 @@ namespace Mobility_Setup_Tool
             this.VarTaskType_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.VarTaskType_LBL.AutoSize = true;
             this.VarTaskType_LBL.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.VarTaskType_LBL.Location = new System.Drawing.Point(59, 162);
+            this.VarTaskType_LBL.Location = new System.Drawing.Point(37, 162);
             this.VarTaskType_LBL.Name = "VarTaskType_LBL";
             this.VarTaskType_LBL.Size = new System.Drawing.Size(158, 18);
             this.VarTaskType_LBL.TabIndex = 0;
@@ -911,9 +912,9 @@ namespace Mobility_Setup_Tool
             this.VarTemplate_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.VarTemplate_LBL.AutoSize = true;
             this.VarTemplate_LBL.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.VarTemplate_LBL.Location = new System.Drawing.Point(22, 93);
+            this.VarTemplate_LBL.Location = new System.Drawing.Point(80, 84);
             this.VarTemplate_LBL.Name = "VarTemplate_LBL";
-            this.VarTemplate_LBL.Size = new System.Drawing.Size(195, 18);
+            this.VarTemplate_LBL.Size = new System.Drawing.Size(115, 36);
             this.VarTemplate_LBL.TabIndex = 0;
             this.VarTemplate_LBL.Text = "SELECT TEMPLATE EQUIPMENT:";
             this.VarTemplate_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -925,9 +926,9 @@ namespace Mobility_Setup_Tool
             this.VarTemplate_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.VarTemplate_CB.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.VarTemplate_CB.FormattingEnabled = true;
-            this.VarTemplate_CB.Location = new System.Drawing.Point(223, 89);
+            this.VarTemplate_CB.Location = new System.Drawing.Point(201, 89);
             this.VarTemplate_CB.Name = "VarTemplate_CB";
-            this.VarTemplate_CB.Size = new System.Drawing.Size(368, 26);
+            this.VarTemplate_CB.Size = new System.Drawing.Size(334, 26);
             this.VarTemplate_CB.TabIndex = 2;
             this.VarTemplate_CB.TextChanged += new System.EventHandler(this.VarTemplate_CB_TextChanged);
             // 
@@ -935,9 +936,9 @@ namespace Mobility_Setup_Tool
             // 
             this.VarSerialNumber_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.VarSerialNumber_TB.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.VarSerialNumber_TB.Location = new System.Drawing.Point(223, 21);
+            this.VarSerialNumber_TB.Location = new System.Drawing.Point(201, 21);
             this.VarSerialNumber_TB.Name = "VarSerialNumber_TB";
-            this.VarSerialNumber_TB.Size = new System.Drawing.Size(368, 26);
+            this.VarSerialNumber_TB.Size = new System.Drawing.Size(334, 26);
             this.VarSerialNumber_TB.TabIndex = 1;
             // 
             // DataTabs_TC
@@ -948,11 +949,11 @@ namespace Mobility_Setup_Tool
             this.DataTabs_TC.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataTabs_TC.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.DataTabs_TC.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.DataTabs_TC.Location = new System.Drawing.Point(20, 94);
+            this.DataTabs_TC.Location = new System.Drawing.Point(20, 77);
             this.DataTabs_TC.Margin = new System.Windows.Forms.Padding(20, 10, 20, 10);
             this.DataTabs_TC.Name = "DataTabs_TC";
             this.DataTabs_TC.SelectedIndex = 0;
-            this.DataTabs_TC.Size = new System.Drawing.Size(1239, 689);
+            this.DataTabs_TC.Size = new System.Drawing.Size(1117, 546);
             this.DataTabs_TC.TabIndex = 8;
             this.DataTabs_TC.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.DataTabs_TC_Selecting);
             // 
@@ -962,7 +963,7 @@ namespace Mobility_Setup_Tool
             this.InitialSetup_TP.Location = new System.Drawing.Point(4, 27);
             this.InitialSetup_TP.Name = "InitialSetup_TP";
             this.InitialSetup_TP.Padding = new System.Windows.Forms.Padding(3);
-            this.InitialSetup_TP.Size = new System.Drawing.Size(1231, 658);
+            this.InitialSetup_TP.Size = new System.Drawing.Size(1109, 515);
             this.InitialSetup_TP.TabIndex = 3;
             this.InitialSetup_TP.Text = "Raise Lead Order";
             this.InitialSetup_TP.UseVisualStyleBackColor = true;
@@ -984,7 +985,7 @@ namespace Mobility_Setup_Tool
             this.MainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.23745F));
             this.MainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.941591F));
             this.MainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 37.96576F));
-            this.MainLayout.Size = new System.Drawing.Size(1225, 652);
+            this.MainLayout.Size = new System.Drawing.Size(1103, 509);
             this.MainLayout.TabIndex = 10;
             // 
             // NotificationInput_GRB
@@ -993,10 +994,10 @@ namespace Mobility_Setup_Tool
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.NotificationInput_GRB.Controls.Add(this.NotificationLayout);
-            this.NotificationInput_GRB.Location = new System.Drawing.Point(5, 296);
+            this.NotificationInput_GRB.Location = new System.Drawing.Point(5, 231);
             this.NotificationInput_GRB.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.NotificationInput_GRB.Name = "NotificationInput_GRB";
-            this.NotificationInput_GRB.Size = new System.Drawing.Size(602, 353);
+            this.NotificationInput_GRB.Size = new System.Drawing.Size(541, 275);
             this.NotificationInput_GRB.TabIndex = 1;
             this.NotificationInput_GRB.TabStop = false;
             this.NotificationInput_GRB.Text = "Notification Input";
@@ -1013,9 +1014,9 @@ namespace Mobility_Setup_Tool
             this.NotificationLayout.Controls.Add(this.PurchaseOrderDate_DP, 1, 2);
             this.NotificationLayout.Controls.Add(this.RequiredStartDate_DP, 1, 3);
             this.NotificationLayout.Controls.Add(this.RequiredEndDate_DP, 1, 4);
-            this.NotificationLayout.Controls.Add(this.label3, 0, 2);
-            this.NotificationLayout.Controls.Add(this.label6, 0, 3);
-            this.NotificationLayout.Controls.Add(this.label7, 0, 4);
+            this.NotificationLayout.Controls.Add(this.PurchOrderDate_LBL, 0, 2);
+            this.NotificationLayout.Controls.Add(this.ReqStartDate_LBL, 0, 3);
+            this.NotificationLayout.Controls.Add(this.ReqEndDate_LBL, 0, 4);
             this.NotificationLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.NotificationLayout.Location = new System.Drawing.Point(3, 22);
             this.NotificationLayout.Name = "NotificationLayout";
@@ -1025,7 +1026,7 @@ namespace Mobility_Setup_Tool
             this.NotificationLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.NotificationLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.NotificationLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.NotificationLayout.Size = new System.Drawing.Size(596, 328);
+            this.NotificationLayout.Size = new System.Drawing.Size(535, 250);
             this.NotificationLayout.TabIndex = 0;
             // 
             // SoldToParty_LBL
@@ -1033,7 +1034,7 @@ namespace Mobility_Setup_Tool
             this.SoldToParty_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.SoldToParty_LBL.AutoSize = true;
             this.SoldToParty_LBL.ForeColor = System.Drawing.Color.Black;
-            this.SoldToParty_LBL.Location = new System.Drawing.Point(191, 23);
+            this.SoldToParty_LBL.Location = new System.Drawing.Point(160, 16);
             this.SoldToParty_LBL.Name = "SoldToParty_LBL";
             this.SoldToParty_LBL.Size = new System.Drawing.Size(104, 18);
             this.SoldToParty_LBL.TabIndex = 3;
@@ -1045,17 +1046,17 @@ namespace Mobility_Setup_Tool
             this.PartyName_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.PartyName_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.PartyName_CB.FormattingEnabled = true;
-            this.PartyName_CB.Location = new System.Drawing.Point(301, 19);
+            this.PartyName_CB.Location = new System.Drawing.Point(270, 11);
             this.PartyName_CB.Name = "PartyName_CB";
-            this.PartyName_CB.Size = new System.Drawing.Size(292, 26);
+            this.PartyName_CB.Size = new System.Drawing.Size(262, 26);
             this.PartyName_CB.TabIndex = 6;
             // 
             // PurchaseOrder_TB
             // 
             this.PurchaseOrder_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.PurchaseOrder_TB.Location = new System.Drawing.Point(301, 84);
+            this.PurchaseOrder_TB.Location = new System.Drawing.Point(270, 62);
             this.PurchaseOrder_TB.Name = "PurchaseOrder_TB";
-            this.PurchaseOrder_TB.Size = new System.Drawing.Size(292, 26);
+            this.PurchaseOrder_TB.Size = new System.Drawing.Size(262, 26);
             this.PurchaseOrder_TB.TabIndex = 7;
             // 
             // PurchaseOrder_LBL
@@ -1063,7 +1064,7 @@ namespace Mobility_Setup_Tool
             this.PurchaseOrder_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.PurchaseOrder_LBL.AutoSize = true;
             this.PurchaseOrder_LBL.ForeColor = System.Drawing.Color.Black;
-            this.PurchaseOrder_LBL.Location = new System.Drawing.Point(173, 88);
+            this.PurchaseOrder_LBL.Location = new System.Drawing.Point(142, 66);
             this.PurchaseOrder_LBL.Name = "PurchaseOrder_LBL";
             this.PurchaseOrder_LBL.Size = new System.Drawing.Size(122, 18);
             this.PurchaseOrder_LBL.TabIndex = 3;
@@ -1074,9 +1075,9 @@ namespace Mobility_Setup_Tool
             this.PurchaseOrderDate_DP.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.PurchaseOrderDate_DP.CustomFormat = "dd.MM.yyyy";
             this.PurchaseOrderDate_DP.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.PurchaseOrderDate_DP.Location = new System.Drawing.Point(301, 149);
+            this.PurchaseOrderDate_DP.Location = new System.Drawing.Point(270, 112);
             this.PurchaseOrderDate_DP.Name = "PurchaseOrderDate_DP";
-            this.PurchaseOrderDate_DP.Size = new System.Drawing.Size(292, 26);
+            this.PurchaseOrderDate_DP.Size = new System.Drawing.Size(262, 26);
             this.PurchaseOrderDate_DP.TabIndex = 8;
             this.PurchaseOrderDate_DP.Value = new System.DateTime(2022, 1, 25, 0, 0, 0, 0);
             this.PurchaseOrderDate_DP.ValueChanged += new System.EventHandler(this.PODate_ValueChanged);
@@ -1086,9 +1087,9 @@ namespace Mobility_Setup_Tool
             this.RequiredStartDate_DP.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.RequiredStartDate_DP.CustomFormat = "dd.MM.yyyy";
             this.RequiredStartDate_DP.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.RequiredStartDate_DP.Location = new System.Drawing.Point(301, 214);
+            this.RequiredStartDate_DP.Location = new System.Drawing.Point(270, 162);
             this.RequiredStartDate_DP.Name = "RequiredStartDate_DP";
-            this.RequiredStartDate_DP.Size = new System.Drawing.Size(292, 26);
+            this.RequiredStartDate_DP.Size = new System.Drawing.Size(262, 26);
             this.RequiredStartDate_DP.TabIndex = 9;
             this.RequiredStartDate_DP.Value = new System.DateTime(2022, 1, 25, 0, 0, 0, 0);
             this.RequiredStartDate_DP.ValueChanged += new System.EventHandler(this.ReqStartDate_ValueChanged);
@@ -1098,45 +1099,45 @@ namespace Mobility_Setup_Tool
             this.RequiredEndDate_DP.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.RequiredEndDate_DP.CustomFormat = "dd.MM.yyyy";
             this.RequiredEndDate_DP.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.RequiredEndDate_DP.Location = new System.Drawing.Point(301, 281);
+            this.RequiredEndDate_DP.Location = new System.Drawing.Point(270, 212);
             this.RequiredEndDate_DP.Name = "RequiredEndDate_DP";
-            this.RequiredEndDate_DP.Size = new System.Drawing.Size(292, 26);
+            this.RequiredEndDate_DP.Size = new System.Drawing.Size(262, 26);
             this.RequiredEndDate_DP.TabIndex = 10;
             this.RequiredEndDate_DP.Value = new System.DateTime(2022, 3, 6, 0, 0, 0, 0);
             this.RequiredEndDate_DP.ValueChanged += new System.EventHandler(this.ReqEndDate_ValueChanged);
             // 
-            // label3
+            // PurchOrderDate_LBL
             // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(139, 153);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(156, 18);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "PURCHASE ORDER DATE:";
+            this.PurchOrderDate_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.PurchOrderDate_LBL.AutoSize = true;
+            this.PurchOrderDate_LBL.ForeColor = System.Drawing.Color.Black;
+            this.PurchOrderDate_LBL.Location = new System.Drawing.Point(108, 116);
+            this.PurchOrderDate_LBL.Name = "PurchOrderDate_LBL";
+            this.PurchOrderDate_LBL.Size = new System.Drawing.Size(156, 18);
+            this.PurchOrderDate_LBL.TabIndex = 3;
+            this.PurchOrderDate_LBL.Text = "PURCHASE ORDER DATE:";
             // 
-            // label6
+            // ReqStartDate_LBL
             // 
-            this.label6.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label6.AutoSize = true;
-            this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(147, 218);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(148, 18);
-            this.label6.TabIndex = 3;
-            this.label6.Text = "REQUIRED START DATE:";
+            this.ReqStartDate_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.ReqStartDate_LBL.AutoSize = true;
+            this.ReqStartDate_LBL.ForeColor = System.Drawing.Color.Black;
+            this.ReqStartDate_LBL.Location = new System.Drawing.Point(116, 166);
+            this.ReqStartDate_LBL.Name = "ReqStartDate_LBL";
+            this.ReqStartDate_LBL.Size = new System.Drawing.Size(148, 18);
+            this.ReqStartDate_LBL.TabIndex = 3;
+            this.ReqStartDate_LBL.Text = "REQUIRED START DATE:";
             // 
-            // label7
+            // ReqEndDate_LBL
             // 
-            this.label7.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label7.AutoSize = true;
-            this.label7.ForeColor = System.Drawing.Color.Black;
-            this.label7.Location = new System.Drawing.Point(158, 285);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(137, 18);
-            this.label7.TabIndex = 3;
-            this.label7.Text = "REQUIRED END DATE:";
+            this.ReqEndDate_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.ReqEndDate_LBL.AutoSize = true;
+            this.ReqEndDate_LBL.ForeColor = System.Drawing.Color.Black;
+            this.ReqEndDate_LBL.Location = new System.Drawing.Point(127, 216);
+            this.ReqEndDate_LBL.Name = "ReqEndDate_LBL";
+            this.ReqEndDate_LBL.Size = new System.Drawing.Size(137, 18);
+            this.ReqEndDate_LBL.TabIndex = 3;
+            this.ReqEndDate_LBL.Text = "REQUIRED END DATE:";
             // 
             // ServOrderInput_GRB
             // 
@@ -1144,10 +1145,10 @@ namespace Mobility_Setup_Tool
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ServOrderInput_GRB.Controls.Add(this.ServiceOrderInfo_LYT);
-            this.ServOrderInput_GRB.Location = new System.Drawing.Point(617, 296);
+            this.ServOrderInput_GRB.Location = new System.Drawing.Point(556, 231);
             this.ServOrderInput_GRB.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.ServOrderInput_GRB.Name = "ServOrderInput_GRB";
-            this.ServOrderInput_GRB.Size = new System.Drawing.Size(603, 353);
+            this.ServOrderInput_GRB.Size = new System.Drawing.Size(542, 275);
             this.ServOrderInput_GRB.TabIndex = 2;
             this.ServOrderInput_GRB.TabStop = false;
             this.ServOrderInput_GRB.Text = "Service Order Input";
@@ -1177,7 +1178,7 @@ namespace Mobility_Setup_Tool
             this.ServiceOrderInfo_LYT.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.ServiceOrderInfo_LYT.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.ServiceOrderInfo_LYT.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.ServiceOrderInfo_LYT.Size = new System.Drawing.Size(597, 328);
+            this.ServiceOrderInfo_LYT.Size = new System.Drawing.Size(536, 250);
             this.ServiceOrderInfo_LYT.TabIndex = 0;
             // 
             // ActivityType_LBL
@@ -1185,7 +1186,7 @@ namespace Mobility_Setup_Tool
             this.ActivityType_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.ActivityType_LBL.AutoSize = true;
             this.ActivityType_LBL.ForeColor = System.Drawing.Color.Black;
-            this.ActivityType_LBL.Location = new System.Drawing.Point(163, 23);
+            this.ActivityType_LBL.Location = new System.Drawing.Point(133, 16);
             this.ActivityType_LBL.Name = "ActivityType_LBL";
             this.ActivityType_LBL.Size = new System.Drawing.Size(122, 18);
             this.ActivityType_LBL.TabIndex = 3;
@@ -1197,17 +1198,17 @@ namespace Mobility_Setup_Tool
             this.PMActivityType_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.PMActivityType_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.PMActivityType_CB.FormattingEnabled = true;
-            this.PMActivityType_CB.Location = new System.Drawing.Point(291, 19);
+            this.PMActivityType_CB.Location = new System.Drawing.Point(261, 11);
             this.PMActivityType_CB.Name = "PMActivityType_CB";
-            this.PMActivityType_CB.Size = new System.Drawing.Size(303, 26);
+            this.PMActivityType_CB.Size = new System.Drawing.Size(272, 26);
             this.PMActivityType_CB.TabIndex = 11;
             // 
             // ExternalReference_TB
             // 
             this.ExternalReference_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ExternalReference_TB.Location = new System.Drawing.Point(291, 281);
+            this.ExternalReference_TB.Location = new System.Drawing.Point(261, 212);
             this.ExternalReference_TB.Name = "ExternalReference_TB";
-            this.ExternalReference_TB.Size = new System.Drawing.Size(303, 26);
+            this.ExternalReference_TB.Size = new System.Drawing.Size(272, 26);
             this.ExternalReference_TB.TabIndex = 15;
             // 
             // BasicStartDate_LBL
@@ -1215,7 +1216,7 @@ namespace Mobility_Setup_Tool
             this.BasicStartDate_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.BasicStartDate_LBL.AutoSize = true;
             this.BasicStartDate_LBL.ForeColor = System.Drawing.Color.Black;
-            this.BasicStartDate_LBL.Location = new System.Drawing.Point(140, 88);
+            this.BasicStartDate_LBL.Location = new System.Drawing.Point(110, 66);
             this.BasicStartDate_LBL.Name = "BasicStartDate_LBL";
             this.BasicStartDate_LBL.Size = new System.Drawing.Size(145, 18);
             this.BasicStartDate_LBL.TabIndex = 3;
@@ -1226,9 +1227,9 @@ namespace Mobility_Setup_Tool
             this.BasicStartDate_DP.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.BasicStartDate_DP.CustomFormat = "dd.MM.yyyy";
             this.BasicStartDate_DP.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.BasicStartDate_DP.Location = new System.Drawing.Point(291, 84);
+            this.BasicStartDate_DP.Location = new System.Drawing.Point(261, 62);
             this.BasicStartDate_DP.Name = "BasicStartDate_DP";
-            this.BasicStartDate_DP.Size = new System.Drawing.Size(303, 26);
+            this.BasicStartDate_DP.Size = new System.Drawing.Size(272, 26);
             this.BasicStartDate_DP.TabIndex = 12;
             this.BasicStartDate_DP.Value = new System.DateTime(2022, 1, 25, 0, 0, 0, 0);
             this.BasicStartDate_DP.ValueChanged += new System.EventHandler(this.BasicStartDate_ValueChanged);
@@ -1238,7 +1239,7 @@ namespace Mobility_Setup_Tool
             this.BasicEndDate_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.BasicEndDate_LBL.AutoSize = true;
             this.BasicEndDate_LBL.ForeColor = System.Drawing.Color.Black;
-            this.BasicEndDate_LBL.Location = new System.Drawing.Point(151, 153);
+            this.BasicEndDate_LBL.Location = new System.Drawing.Point(121, 116);
             this.BasicEndDate_LBL.Name = "BasicEndDate_LBL";
             this.BasicEndDate_LBL.Size = new System.Drawing.Size(134, 18);
             this.BasicEndDate_LBL.TabIndex = 3;
@@ -1249,7 +1250,7 @@ namespace Mobility_Setup_Tool
             this.Priority_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.Priority_LBL.AutoSize = true;
             this.Priority_LBL.ForeColor = System.Drawing.Color.Black;
-            this.Priority_LBL.Location = new System.Drawing.Point(218, 218);
+            this.Priority_LBL.Location = new System.Drawing.Point(188, 166);
             this.Priority_LBL.Name = "Priority_LBL";
             this.Priority_LBL.Size = new System.Drawing.Size(67, 18);
             this.Priority_LBL.TabIndex = 3;
@@ -1260,7 +1261,7 @@ namespace Mobility_Setup_Tool
             this.ExternalRef_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.ExternalRef_LBL.AutoSize = true;
             this.ExternalRef_LBL.ForeColor = System.Drawing.Color.Black;
-            this.ExternalRef_LBL.Location = new System.Drawing.Point(139, 285);
+            this.ExternalRef_LBL.Location = new System.Drawing.Point(109, 216);
             this.ExternalRef_LBL.Name = "ExternalRef_LBL";
             this.ExternalRef_LBL.Size = new System.Drawing.Size(146, 18);
             this.ExternalRef_LBL.TabIndex = 3;
@@ -1272,9 +1273,9 @@ namespace Mobility_Setup_Tool
             this.Priority_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.Priority_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.Priority_CB.FormattingEnabled = true;
-            this.Priority_CB.Location = new System.Drawing.Point(291, 214);
+            this.Priority_CB.Location = new System.Drawing.Point(261, 161);
             this.Priority_CB.Name = "Priority_CB";
-            this.Priority_CB.Size = new System.Drawing.Size(303, 26);
+            this.Priority_CB.Size = new System.Drawing.Size(272, 26);
             this.Priority_CB.TabIndex = 14;
             // 
             // BasicEndDate_DP
@@ -1282,9 +1283,9 @@ namespace Mobility_Setup_Tool
             this.BasicEndDate_DP.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.BasicEndDate_DP.CustomFormat = "dd.MM.yyyy";
             this.BasicEndDate_DP.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.BasicEndDate_DP.Location = new System.Drawing.Point(291, 149);
+            this.BasicEndDate_DP.Location = new System.Drawing.Point(261, 112);
             this.BasicEndDate_DP.Name = "BasicEndDate_DP";
-            this.BasicEndDate_DP.Size = new System.Drawing.Size(303, 26);
+            this.BasicEndDate_DP.Size = new System.Drawing.Size(272, 26);
             this.BasicEndDate_DP.TabIndex = 13;
             this.BasicEndDate_DP.Value = new System.DateTime(2022, 3, 6, 0, 0, 0, 0);
             this.BasicEndDate_DP.ValueChanged += new System.EventHandler(this.BasicEndDate_ValueChanged);
@@ -1297,7 +1298,7 @@ namespace Mobility_Setup_Tool
             this.EquipmentInfo_GB.Location = new System.Drawing.Point(5, 3);
             this.EquipmentInfo_GB.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.EquipmentInfo_GB.Name = "EquipmentInfo_GB";
-            this.EquipmentInfo_GB.Size = new System.Drawing.Size(1215, 231);
+            this.EquipmentInfo_GB.Size = new System.Drawing.Size(1093, 179);
             this.EquipmentInfo_GB.TabIndex = 5;
             this.EquipmentInfo_GB.TabStop = false;
             this.EquipmentInfo_GB.Text = "Equipment Information";
@@ -1305,8 +1306,8 @@ namespace Mobility_Setup_Tool
             // EquipmentInfo_Layout
             // 
             this.EquipmentInfo_Layout.ColumnCount = 4;
-            this.EquipmentInfo_Layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.EquipmentInfo_Layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.EquipmentInfo_Layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 23.40778F));
+            this.EquipmentInfo_Layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.45988F));
             this.EquipmentInfo_Layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.EquipmentInfo_Layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.EquipmentInfo_Layout.Controls.Add(this.EquipmentSerial_TB, 2, 0);
@@ -1315,8 +1316,8 @@ namespace Mobility_Setup_Tool
             this.EquipmentInfo_Layout.Controls.Add(this.FunctionLoc_CB, 2, 3);
             this.EquipmentInfo_Layout.Controls.Add(this.SerialNumber_LBL, 1, 0);
             this.EquipmentInfo_Layout.Controls.Add(this.TemplateEquipment_LBL, 1, 1);
-            this.EquipmentInfo_Layout.Controls.Add(this.label4, 1, 2);
-            this.EquipmentInfo_Layout.Controls.Add(this.label5, 1, 3);
+            this.EquipmentInfo_Layout.Controls.Add(this.TaskType_LBL, 1, 2);
+            this.EquipmentInfo_Layout.Controls.Add(this.FuncLoc_LBL, 1, 3);
             this.EquipmentInfo_Layout.Controls.Add(this.WarrantyClaim_CHB, 0, 0);
             this.EquipmentInfo_Layout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.EquipmentInfo_Layout.Location = new System.Drawing.Point(3, 22);
@@ -1326,15 +1327,15 @@ namespace Mobility_Setup_Tool
             this.EquipmentInfo_Layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.EquipmentInfo_Layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.EquipmentInfo_Layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.EquipmentInfo_Layout.Size = new System.Drawing.Size(1209, 206);
+            this.EquipmentInfo_Layout.Size = new System.Drawing.Size(1087, 154);
             this.EquipmentInfo_Layout.TabIndex = 0;
             // 
             // EquipmentSerial_TB
             // 
             this.EquipmentSerial_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.EquipmentSerial_TB.Location = new System.Drawing.Point(485, 12);
+            this.EquipmentSerial_TB.Location = new System.Drawing.Point(436, 6);
             this.EquipmentSerial_TB.Name = "EquipmentSerial_TB";
-            this.EquipmentSerial_TB.Size = new System.Drawing.Size(477, 26);
+            this.EquipmentSerial_TB.Size = new System.Drawing.Size(429, 26);
             this.EquipmentSerial_TB.TabIndex = 2;
             // 
             // TemplateEquipmentList_CB
@@ -1343,9 +1344,9 @@ namespace Mobility_Setup_Tool
             this.TemplateEquipmentList_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.TemplateEquipmentList_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.TemplateEquipmentList_CB.FormattingEnabled = true;
-            this.TemplateEquipmentList_CB.Location = new System.Drawing.Point(485, 63);
+            this.TemplateEquipmentList_CB.Location = new System.Drawing.Point(436, 43);
             this.TemplateEquipmentList_CB.Name = "TemplateEquipmentList_CB";
-            this.TemplateEquipmentList_CB.Size = new System.Drawing.Size(477, 26);
+            this.TemplateEquipmentList_CB.Size = new System.Drawing.Size(429, 26);
             this.TemplateEquipmentList_CB.TabIndex = 3;
             this.TemplateEquipmentList_CB.TextChanged += new System.EventHandler(this.TemplateEquipmentList_CB_TextChanged);
             this.TemplateEquipmentList_CB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TemplateEquipment_CB_KeyPress);
@@ -1356,9 +1357,9 @@ namespace Mobility_Setup_Tool
             this.TaskType_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.TaskType_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.TaskType_CB.FormattingEnabled = true;
-            this.TaskType_CB.Location = new System.Drawing.Point(485, 114);
+            this.TaskType_CB.Location = new System.Drawing.Point(436, 81);
             this.TaskType_CB.Name = "TaskType_CB";
-            this.TaskType_CB.Size = new System.Drawing.Size(477, 26);
+            this.TaskType_CB.Size = new System.Drawing.Size(429, 26);
             this.TaskType_CB.TabIndex = 4;
             // 
             // FunctionLoc_CB
@@ -1367,9 +1368,9 @@ namespace Mobility_Setup_Tool
             this.FunctionLoc_CB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.FunctionLoc_CB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.FunctionLoc_CB.FormattingEnabled = true;
-            this.FunctionLoc_CB.Location = new System.Drawing.Point(485, 166);
+            this.FunctionLoc_CB.Location = new System.Drawing.Point(436, 120);
             this.FunctionLoc_CB.Name = "FunctionLoc_CB";
-            this.FunctionLoc_CB.Size = new System.Drawing.Size(477, 26);
+            this.FunctionLoc_CB.Size = new System.Drawing.Size(429, 26);
             this.FunctionLoc_CB.TabIndex = 5;
             // 
             // SerialNumber_LBL
@@ -1377,7 +1378,7 @@ namespace Mobility_Setup_Tool
             this.SerialNumber_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.SerialNumber_LBL.AutoSize = true;
             this.SerialNumber_LBL.ForeColor = System.Drawing.Color.Black;
-            this.SerialNumber_LBL.Location = new System.Drawing.Point(369, 16);
+            this.SerialNumber_LBL.Location = new System.Drawing.Point(320, 10);
             this.SerialNumber_LBL.Name = "SerialNumber_LBL";
             this.SerialNumber_LBL.Size = new System.Drawing.Size(110, 18);
             this.SerialNumber_LBL.TabIndex = 0;
@@ -1388,33 +1389,33 @@ namespace Mobility_Setup_Tool
             this.TemplateEquipment_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.TemplateEquipment_LBL.AutoSize = true;
             this.TemplateEquipment_LBL.ForeColor = System.Drawing.Color.Black;
-            this.TemplateEquipment_LBL.Location = new System.Drawing.Point(329, 67);
+            this.TemplateEquipment_LBL.Location = new System.Drawing.Point(280, 48);
             this.TemplateEquipment_LBL.Name = "TemplateEquipment_LBL";
             this.TemplateEquipment_LBL.Size = new System.Drawing.Size(150, 18);
             this.TemplateEquipment_LBL.TabIndex = 0;
             this.TemplateEquipment_LBL.Text = "TEMPLATE EQUIPMENT:";
             // 
-            // label4
+            // TaskType_LBL
             // 
-            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label4.AutoSize = true;
-            this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(360, 118);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(119, 18);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "SELECT TASK TYPE:";
+            this.TaskType_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.TaskType_LBL.AutoSize = true;
+            this.TaskType_LBL.ForeColor = System.Drawing.Color.Black;
+            this.TaskType_LBL.Location = new System.Drawing.Point(311, 86);
+            this.TaskType_LBL.Name = "TaskType_LBL";
+            this.TaskType_LBL.Size = new System.Drawing.Size(119, 18);
+            this.TaskType_LBL.TabIndex = 0;
+            this.TaskType_LBL.Text = "SELECT TASK TYPE:";
             // 
-            // label5
+            // FuncLoc_LBL
             // 
-            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label5.AutoSize = true;
-            this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(336, 170);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(143, 18);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "FUNCTION LOCATION:";
+            this.FuncLoc_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.FuncLoc_LBL.AutoSize = true;
+            this.FuncLoc_LBL.ForeColor = System.Drawing.Color.Black;
+            this.FuncLoc_LBL.Location = new System.Drawing.Point(272, 125);
+            this.FuncLoc_LBL.Name = "FuncLoc_LBL";
+            this.FuncLoc_LBL.Size = new System.Drawing.Size(158, 18);
+            this.FuncLoc_LBL.TabIndex = 0;
+            this.FuncLoc_LBL.Text = "FUNCTIONAL LOCATION:";
             // 
             // WarrantyClaim_CHB
             // 
@@ -1422,7 +1423,7 @@ namespace Mobility_Setup_Tool
             this.WarrantyClaim_CHB.ForeColor = System.Drawing.Color.Black;
             this.WarrantyClaim_CHB.Location = new System.Drawing.Point(3, 3);
             this.WarrantyClaim_CHB.Name = "WarrantyClaim_CHB";
-            this.WarrantyClaim_CHB.Size = new System.Drawing.Size(235, 22);
+            this.WarrantyClaim_CHB.Size = new System.Drawing.Size(248, 22);
             this.WarrantyClaim_CHB.TabIndex = 1;
             this.WarrantyClaim_CHB.Text = "Create Warranty Claim Service Order";
             this.WarrantyClaim_CHB.UseVisualStyleBackColor = true;
@@ -1434,9 +1435,9 @@ namespace Mobility_Setup_Tool
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SetupEquipment_BTN.BackColor = System.Drawing.Color.Gainsboro;
             this.SetupEquipment_BTN.ForeColor = System.Drawing.Color.Black;
-            this.SetupEquipment_BTN.Location = new System.Drawing.Point(3, 240);
+            this.SetupEquipment_BTN.Location = new System.Drawing.Point(3, 188);
             this.SetupEquipment_BTN.Name = "SetupEquipment_BTN";
-            this.SetupEquipment_BTN.Size = new System.Drawing.Size(606, 50);
+            this.SetupEquipment_BTN.Size = new System.Drawing.Size(545, 37);
             this.SetupEquipment_BTN.TabIndex = 16;
             this.SetupEquipment_BTN.Text = "Setup Equipment";
             this.SetupEquipment_BTN.UseVisualStyleBackColor = false;
@@ -1449,9 +1450,9 @@ namespace Mobility_Setup_Tool
             | System.Windows.Forms.AnchorStyles.Right)));
             this.RiaseServiceOrder_BTN.BackColor = System.Drawing.Color.Gainsboro;
             this.RiaseServiceOrder_BTN.ForeColor = System.Drawing.Color.Black;
-            this.RiaseServiceOrder_BTN.Location = new System.Drawing.Point(615, 240);
+            this.RiaseServiceOrder_BTN.Location = new System.Drawing.Point(554, 188);
             this.RiaseServiceOrder_BTN.Name = "RiaseServiceOrder_BTN";
-            this.RiaseServiceOrder_BTN.Size = new System.Drawing.Size(607, 50);
+            this.RiaseServiceOrder_BTN.Size = new System.Drawing.Size(546, 37);
             this.RiaseServiceOrder_BTN.TabIndex = 17;
             this.RiaseServiceOrder_BTN.Text = "Raise Service Order";
             this.RiaseServiceOrder_BTN.UseVisualStyleBackColor = false;
@@ -1466,7 +1467,7 @@ namespace Mobility_Setup_Tool
             this.QuoteOrder_TP.Location = new System.Drawing.Point(4, 27);
             this.QuoteOrder_TP.Name = "QuoteOrder_TP";
             this.QuoteOrder_TP.Padding = new System.Windows.Forms.Padding(3);
-            this.QuoteOrder_TP.Size = new System.Drawing.Size(1231, 658);
+            this.QuoteOrder_TP.Size = new System.Drawing.Size(1109, 515);
             this.QuoteOrder_TP.TabIndex = 4;
             this.QuoteOrder_TP.Text = "Quote Order";
             // 
@@ -1477,9 +1478,9 @@ namespace Mobility_Setup_Tool
             this.QuoteLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.QuoteLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.QuoteLayout.Controls.Add(this.QuoteNotiListBox, 2, 0);
-            this.QuoteLayout.Controls.Add(this.label23, 0, 0);
-            this.QuoteLayout.Controls.Add(this.label24, 0, 1);
-            this.QuoteLayout.Controls.Add(this.label25, 0, 2);
+            this.QuoteLayout.Controls.Add(this.QServOrderNum_LBL, 0, 0);
+            this.QuoteLayout.Controls.Add(this.QQuoteNumber_LBL, 0, 1);
+            this.QuoteLayout.Controls.Add(this.QQuoteTemplate_LBL, 0, 2);
             this.QuoteLayout.Controls.Add(this.QuoteServiceOrder_TB, 1, 0);
             this.QuoteLayout.Controls.Add(this.QuoteNumberTB, 1, 1);
             this.QuoteLayout.Controls.Add(this.QuoteTemplate_CB, 1, 2);
@@ -1497,7 +1498,7 @@ namespace Mobility_Setup_Tool
             this.QuoteLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62F));
             this.QuoteLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 292F));
             this.QuoteLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.QuoteLayout.Size = new System.Drawing.Size(1225, 652);
+            this.QuoteLayout.Size = new System.Drawing.Size(1103, 509);
             this.QuoteLayout.TabIndex = 0;
             // 
             // QuoteNotiListBox
@@ -1505,71 +1506,71 @@ namespace Mobility_Setup_Tool
             this.QuoteNotiListBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.QuoteNotiListBox.FormattingEnabled = true;
             this.QuoteNotiListBox.ItemHeight = 20;
-            this.QuoteNotiListBox.Location = new System.Drawing.Point(614, 4);
+            this.QuoteNotiListBox.Location = new System.Drawing.Point(554, 4);
             this.QuoteNotiListBox.Name = "QuoteNotiListBox";
             this.QuoteLayout.SetRowSpan(this.QuoteNotiListBox, 3);
-            this.QuoteNotiListBox.Size = new System.Drawing.Size(607, 286);
+            this.QuoteNotiListBox.Size = new System.Drawing.Size(545, 286);
             this.QuoteNotiListBox.TabIndex = 1;
             // 
-            // label23
+            // QServOrderNum_LBL
             // 
-            this.label23.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label23.AutoSize = true;
-            this.label23.BackColor = System.Drawing.Color.Transparent;
-            this.label23.ForeColor = System.Drawing.Color.Black;
-            this.label23.Location = new System.Drawing.Point(59, 37);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(183, 20);
-            this.label23.TabIndex = 2;
-            this.label23.Text = "SERVICE ORDER NUMBER:";
+            this.QServOrderNum_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.QServOrderNum_LBL.AutoSize = true;
+            this.QServOrderNum_LBL.BackColor = System.Drawing.Color.Transparent;
+            this.QServOrderNum_LBL.ForeColor = System.Drawing.Color.Black;
+            this.QServOrderNum_LBL.Location = new System.Drawing.Point(35, 37);
+            this.QServOrderNum_LBL.Name = "QServOrderNum_LBL";
+            this.QServOrderNum_LBL.Size = new System.Drawing.Size(183, 20);
+            this.QServOrderNum_LBL.TabIndex = 2;
+            this.QServOrderNum_LBL.Text = "SERVICE ORDER NUMBER:";
             // 
-            // label24
+            // QQuoteNumber_LBL
             // 
-            this.label24.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label24.AutoSize = true;
-            this.label24.BackColor = System.Drawing.Color.Transparent;
-            this.label24.ForeColor = System.Drawing.Color.Black;
-            this.label24.Location = new System.Drawing.Point(85, 133);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(157, 20);
-            this.label24.TabIndex = 2;
-            this.label24.Text = "QUOTATION NUMBER:";
+            this.QQuoteNumber_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.QQuoteNumber_LBL.AutoSize = true;
+            this.QQuoteNumber_LBL.BackColor = System.Drawing.Color.Transparent;
+            this.QQuoteNumber_LBL.ForeColor = System.Drawing.Color.Black;
+            this.QQuoteNumber_LBL.Location = new System.Drawing.Point(61, 133);
+            this.QQuoteNumber_LBL.Name = "QQuoteNumber_LBL";
+            this.QQuoteNumber_LBL.Size = new System.Drawing.Size(157, 20);
+            this.QQuoteNumber_LBL.TabIndex = 2;
+            this.QQuoteNumber_LBL.Text = "QUOTATION NUMBER:";
             // 
-            // label25
+            // QQuoteTemplate_LBL
             // 
-            this.label25.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label25.AutoSize = true;
-            this.label25.BackColor = System.Drawing.Color.Transparent;
-            this.label25.ForeColor = System.Drawing.Color.Black;
-            this.label25.Location = new System.Drawing.Point(76, 233);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(166, 20);
-            this.label25.TabIndex = 2;
-            this.label25.Text = "QUOTATION TEMPLATE:";
+            this.QQuoteTemplate_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.QQuoteTemplate_LBL.AutoSize = true;
+            this.QQuoteTemplate_LBL.BackColor = System.Drawing.Color.Transparent;
+            this.QQuoteTemplate_LBL.ForeColor = System.Drawing.Color.Black;
+            this.QQuoteTemplate_LBL.Location = new System.Drawing.Point(52, 233);
+            this.QQuoteTemplate_LBL.Name = "QQuoteTemplate_LBL";
+            this.QQuoteTemplate_LBL.Size = new System.Drawing.Size(166, 20);
+            this.QQuoteTemplate_LBL.TabIndex = 2;
+            this.QQuoteTemplate_LBL.Text = "QUOTATION TEMPLATE:";
             // 
             // QuoteServiceOrder_TB
             // 
             this.QuoteServiceOrder_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.QuoteServiceOrder_TB.Location = new System.Drawing.Point(248, 33);
+            this.QuoteServiceOrder_TB.Location = new System.Drawing.Point(224, 33);
             this.QuoteServiceOrder_TB.Name = "QuoteServiceOrder_TB";
-            this.QuoteServiceOrder_TB.Size = new System.Drawing.Size(360, 27);
+            this.QuoteServiceOrder_TB.Size = new System.Drawing.Size(324, 27);
             this.QuoteServiceOrder_TB.TabIndex = 3;
             // 
             // QuoteNumberTB
             // 
             this.QuoteNumberTB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.QuoteNumberTB.Location = new System.Drawing.Point(248, 129);
+            this.QuoteNumberTB.Location = new System.Drawing.Point(224, 129);
             this.QuoteNumberTB.Name = "QuoteNumberTB";
-            this.QuoteNumberTB.Size = new System.Drawing.Size(360, 27);
+            this.QuoteNumberTB.Size = new System.Drawing.Size(324, 27);
             this.QuoteNumberTB.TabIndex = 3;
             // 
             // QuoteTemplate_CB
             // 
             this.QuoteTemplate_CB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.QuoteTemplate_CB.FormattingEnabled = true;
-            this.QuoteTemplate_CB.Location = new System.Drawing.Point(248, 229);
+            this.QuoteTemplate_CB.Location = new System.Drawing.Point(224, 229);
             this.QuoteTemplate_CB.Name = "QuoteTemplate_CB";
-            this.QuoteTemplate_CB.Size = new System.Drawing.Size(360, 28);
+            this.QuoteTemplate_CB.Size = new System.Drawing.Size(324, 28);
             this.QuoteTemplate_CB.TabIndex = 4;
             // 
             // QuoteServiceOrder_BTN
@@ -1579,7 +1580,7 @@ namespace Mobility_Setup_Tool
             this.QuoteServiceOrder_BTN.Dock = System.Windows.Forms.DockStyle.Fill;
             this.QuoteServiceOrder_BTN.Location = new System.Drawing.Point(4, 296);
             this.QuoteServiceOrder_BTN.Name = "QuoteServiceOrder_BTN";
-            this.QuoteServiceOrder_BTN.Size = new System.Drawing.Size(604, 56);
+            this.QuoteServiceOrder_BTN.Size = new System.Drawing.Size(544, 56);
             this.QuoteServiceOrder_BTN.TabIndex = 6;
             this.QuoteServiceOrder_BTN.Text = "Quote Service Order";
             this.QuoteServiceOrder_BTN.UseVisualStyleBackColor = false;
@@ -1587,9 +1588,9 @@ namespace Mobility_Setup_Tool
             // LoadNotification_BTN
             // 
             this.LoadNotification_BTN.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoadNotification_BTN.Location = new System.Drawing.Point(614, 296);
+            this.LoadNotification_BTN.Location = new System.Drawing.Point(554, 296);
             this.LoadNotification_BTN.Name = "LoadNotification_BTN";
-            this.LoadNotification_BTN.Size = new System.Drawing.Size(607, 56);
+            this.LoadNotification_BTN.Size = new System.Drawing.Size(545, 56);
             this.LoadNotification_BTN.TabIndex = 7;
             this.LoadNotification_BTN.Text = "Load Notifications";
             this.LoadNotification_BTN.UseVisualStyleBackColor = true;
@@ -1609,7 +1610,7 @@ namespace Mobility_Setup_Tool
             this.QuoteOutput_LV.HideSelection = false;
             this.QuoteOutput_LV.Location = new System.Drawing.Point(4, 358);
             this.QuoteOutput_LV.Name = "QuoteOutput_LV";
-            this.QuoteOutput_LV.Size = new System.Drawing.Size(1217, 290);
+            this.QuoteOutput_LV.Size = new System.Drawing.Size(1095, 286);
             this.QuoteOutput_LV.TabIndex = 8;
             this.QuoteOutput_LV.UseCompatibleStateImageBehavior = false;
             this.QuoteOutput_LV.View = System.Windows.Forms.View.Details;
@@ -1699,10 +1700,10 @@ namespace Mobility_Setup_Tool
             this.Output_PNL.BackColor = System.Drawing.Color.White;
             this.Output_PNL.Controls.Add(this.QOutputInfo_GRB);
             this.Output_PNL.ForeColor = System.Drawing.Color.Black;
-            this.Output_PNL.Location = new System.Drawing.Point(20, 803);
+            this.Output_PNL.Location = new System.Drawing.Point(20, 643);
             this.Output_PNL.Margin = new System.Windows.Forms.Padding(20, 10, 20, 10);
             this.Output_PNL.Name = "Output_PNL";
-            this.Output_PNL.Size = new System.Drawing.Size(1239, 231);
+            this.Output_PNL.Size = new System.Drawing.Size(1117, 231);
             this.Output_PNL.TabIndex = 10;
             // 
             // QOutputInfo_GRB
@@ -1715,13 +1716,16 @@ namespace Mobility_Setup_Tool
             this.QOutputInfo_GRB.Location = new System.Drawing.Point(7, 5);
             this.QOutputInfo_GRB.Margin = new System.Windows.Forms.Padding(20, 10, 20, 10);
             this.QOutputInfo_GRB.Name = "QOutputInfo_GRB";
-            this.QOutputInfo_GRB.Size = new System.Drawing.Size(1224, 218);
+            this.QOutputInfo_GRB.Size = new System.Drawing.Size(1100, 216);
             this.QOutputInfo_GRB.TabIndex = 1;
             this.QOutputInfo_GRB.TabStop = false;
             this.QOutputInfo_GRB.Text = "Output Information";
             // 
             // QuoteOutput_PNL
             // 
+            this.QuoteOutput_PNL.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.QuoteOutput_PNL.ColumnCount = 4;
             this.QuoteOutput_PNL.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24.76341F));
             this.QuoteOutput_PNL.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.23659F));
@@ -1741,9 +1745,8 @@ namespace Mobility_Setup_Tool
             this.QuoteOutput_PNL.Controls.Add(this.QStandardPrice_TB, 3, 1);
             this.QuoteOutput_PNL.Controls.Add(this.QVarLabourPrice_TB, 3, 2);
             this.QuoteOutput_PNL.Controls.Add(this.QTotalPrice_TB, 3, 3);
-            this.QuoteOutput_PNL.Controls.Add(this.QEqNum_LBL, 0, 1);
             this.QuoteOutput_PNL.Controls.Add(this.QServOrderDesc_LBL, 0, 0);
-            this.QuoteOutput_PNL.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.QuoteOutput_PNL.Controls.Add(this.QEqNum_LBL, 0, 1);
             this.QuoteOutput_PNL.Location = new System.Drawing.Point(3, 21);
             this.QuoteOutput_PNL.Name = "QuoteOutput_PNL";
             this.QuoteOutput_PNL.RowCount = 4;
@@ -1751,20 +1754,20 @@ namespace Mobility_Setup_Tool
             this.QuoteOutput_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.QuoteOutput_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.QuoteOutput_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.QuoteOutput_PNL.Size = new System.Drawing.Size(1218, 194);
+            this.QuoteOutput_PNL.Size = new System.Drawing.Size(1091, 192);
             this.QuoteOutput_PNL.TabIndex = 1;
             this.QuoteOutput_PNL.Visible = false;
             // 
             // QServiceOrder_TB
             // 
-            this.QServiceOrder_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.QServiceOrder_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.QServiceOrder_TB.BackColor = System.Drawing.SystemColors.Info;
             this.QServiceOrder_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.QServiceOrder_TB.Location = new System.Drawing.Point(304, 10);
+            this.QServiceOrder_TB.Location = new System.Drawing.Point(273, 10);
             this.QServiceOrder_TB.Name = "QServiceOrder_TB";
             this.QServiceOrder_TB.ReadOnly = true;
             this.QServiceOrder_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.QServiceOrder_TB.Size = new System.Drawing.Size(300, 28);
+            this.QServiceOrder_TB.Size = new System.Drawing.Size(269, 28);
             this.QServiceOrder_TB.TabIndex = 1;
             this.QServiceOrder_TB.TabStop = false;
             this.QServiceOrder_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1774,7 +1777,7 @@ namespace Mobility_Setup_Tool
             this.QPurchaseOrder_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.QPurchaseOrder_LBL.AutoSize = true;
             this.QPurchaseOrder_LBL.ForeColor = System.Drawing.Color.Black;
-            this.QPurchaseOrder_LBL.Location = new System.Drawing.Point(178, 111);
+            this.QPurchaseOrder_LBL.Location = new System.Drawing.Point(147, 111);
             this.QPurchaseOrder_LBL.Name = "QPurchaseOrder_LBL";
             this.QPurchaseOrder_LBL.Size = new System.Drawing.Size(120, 17);
             this.QPurchaseOrder_LBL.TabIndex = 3;
@@ -1785,7 +1788,7 @@ namespace Mobility_Setup_Tool
             this.QNumOfVars_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.QNumOfVars_LBL.AutoSize = true;
             this.QNumOfVars_LBL.ForeColor = System.Drawing.Color.Black;
-            this.QNumOfVars_LBL.Location = new System.Drawing.Point(140, 160);
+            this.QNumOfVars_LBL.Location = new System.Drawing.Point(109, 159);
             this.QNumOfVars_LBL.Name = "QNumOfVars_LBL";
             this.QNumOfVars_LBL.Size = new System.Drawing.Size(158, 17);
             this.QNumOfVars_LBL.TabIndex = 3;
@@ -1796,7 +1799,7 @@ namespace Mobility_Setup_Tool
             this.QMaterialPrice_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.QMaterialPrice_LBL.AutoSize = true;
             this.QMaterialPrice_LBL.ForeColor = System.Drawing.Color.Black;
-            this.QMaterialPrice_LBL.Location = new System.Drawing.Point(796, 15);
+            this.QMaterialPrice_LBL.Location = new System.Drawing.Point(702, 15);
             this.QMaterialPrice_LBL.Name = "QMaterialPrice_LBL";
             this.QMaterialPrice_LBL.Size = new System.Drawing.Size(106, 17);
             this.QMaterialPrice_LBL.TabIndex = 3;
@@ -1807,7 +1810,7 @@ namespace Mobility_Setup_Tool
             this.QOverhaulPrice_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.QOverhaulPrice_LBL.AutoSize = true;
             this.QOverhaulPrice_LBL.ForeColor = System.Drawing.Color.Black;
-            this.QOverhaulPrice_LBL.Location = new System.Drawing.Point(720, 63);
+            this.QOverhaulPrice_LBL.Location = new System.Drawing.Point(626, 63);
             this.QOverhaulPrice_LBL.Name = "QOverhaulPrice_LBL";
             this.QOverhaulPrice_LBL.Size = new System.Drawing.Size(182, 17);
             this.QOverhaulPrice_LBL.TabIndex = 3;
@@ -1818,7 +1821,7 @@ namespace Mobility_Setup_Tool
             this.QVariationPrice_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.QVariationPrice_LBL.AutoSize = true;
             this.QVariationPrice_LBL.ForeColor = System.Drawing.Color.Black;
-            this.QVariationPrice_LBL.Location = new System.Drawing.Point(739, 111);
+            this.QVariationPrice_LBL.Location = new System.Drawing.Point(645, 111);
             this.QVariationPrice_LBL.Name = "QVariationPrice_LBL";
             this.QVariationPrice_LBL.Size = new System.Drawing.Size(163, 17);
             this.QVariationPrice_LBL.TabIndex = 3;
@@ -1829,7 +1832,7 @@ namespace Mobility_Setup_Tool
             this.QTotalPrice_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.QTotalPrice_LBL.AutoSize = true;
             this.QTotalPrice_LBL.ForeColor = System.Drawing.Color.Black;
-            this.QTotalPrice_LBL.Location = new System.Drawing.Point(819, 160);
+            this.QTotalPrice_LBL.Location = new System.Drawing.Point(725, 159);
             this.QTotalPrice_LBL.Name = "QTotalPrice_LBL";
             this.QTotalPrice_LBL.Size = new System.Drawing.Size(83, 17);
             this.QTotalPrice_LBL.TabIndex = 3;
@@ -1837,123 +1840,123 @@ namespace Mobility_Setup_Tool
             // 
             // QEquipmentNum_TB
             // 
-            this.QEquipmentNum_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.QEquipmentNum_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.QEquipmentNum_TB.BackColor = System.Drawing.SystemColors.Info;
             this.QEquipmentNum_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.QEquipmentNum_TB.Location = new System.Drawing.Point(304, 58);
+            this.QEquipmentNum_TB.Location = new System.Drawing.Point(273, 58);
             this.QEquipmentNum_TB.Name = "QEquipmentNum_TB";
             this.QEquipmentNum_TB.ReadOnly = true;
             this.QEquipmentNum_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.QEquipmentNum_TB.Size = new System.Drawing.Size(300, 28);
+            this.QEquipmentNum_TB.Size = new System.Drawing.Size(269, 28);
             this.QEquipmentNum_TB.TabIndex = 1;
             this.QEquipmentNum_TB.TabStop = false;
             this.QEquipmentNum_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // QPurchaseOrder_TB
             // 
-            this.QPurchaseOrder_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.QPurchaseOrder_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.QPurchaseOrder_TB.BackColor = System.Drawing.SystemColors.Info;
             this.QPurchaseOrder_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.QPurchaseOrder_TB.Location = new System.Drawing.Point(304, 106);
+            this.QPurchaseOrder_TB.Location = new System.Drawing.Point(273, 106);
             this.QPurchaseOrder_TB.Name = "QPurchaseOrder_TB";
             this.QPurchaseOrder_TB.ReadOnly = true;
             this.QPurchaseOrder_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.QPurchaseOrder_TB.Size = new System.Drawing.Size(300, 28);
+            this.QPurchaseOrder_TB.Size = new System.Drawing.Size(269, 28);
             this.QPurchaseOrder_TB.TabIndex = 1;
             this.QPurchaseOrder_TB.TabStop = false;
             this.QPurchaseOrder_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // QNumOfVars_TB
             // 
-            this.QNumOfVars_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.QNumOfVars_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.QNumOfVars_TB.BackColor = System.Drawing.SystemColors.Info;
             this.QNumOfVars_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.QNumOfVars_TB.Location = new System.Drawing.Point(304, 155);
+            this.QNumOfVars_TB.Location = new System.Drawing.Point(273, 154);
             this.QNumOfVars_TB.Name = "QNumOfVars_TB";
             this.QNumOfVars_TB.ReadOnly = true;
             this.QNumOfVars_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.QNumOfVars_TB.Size = new System.Drawing.Size(300, 28);
+            this.QNumOfVars_TB.Size = new System.Drawing.Size(269, 28);
             this.QNumOfVars_TB.TabIndex = 1;
             this.QNumOfVars_TB.TabStop = false;
             this.QNumOfVars_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // QMaterialPrice_TB
             // 
-            this.QMaterialPrice_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.QMaterialPrice_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.QMaterialPrice_TB.BackColor = System.Drawing.SystemColors.Info;
             this.QMaterialPrice_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.QMaterialPrice_TB.Location = new System.Drawing.Point(908, 10);
+            this.QMaterialPrice_TB.Location = new System.Drawing.Point(814, 10);
             this.QMaterialPrice_TB.Name = "QMaterialPrice_TB";
             this.QMaterialPrice_TB.ReadOnly = true;
             this.QMaterialPrice_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.QMaterialPrice_TB.Size = new System.Drawing.Size(305, 28);
+            this.QMaterialPrice_TB.Size = new System.Drawing.Size(274, 28);
             this.QMaterialPrice_TB.TabIndex = 1;
             this.QMaterialPrice_TB.TabStop = false;
             this.QMaterialPrice_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // QStandardPrice_TB
             // 
-            this.QStandardPrice_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.QStandardPrice_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.QStandardPrice_TB.BackColor = System.Drawing.SystemColors.Info;
             this.QStandardPrice_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.QStandardPrice_TB.Location = new System.Drawing.Point(908, 58);
+            this.QStandardPrice_TB.Location = new System.Drawing.Point(814, 58);
             this.QStandardPrice_TB.Name = "QStandardPrice_TB";
             this.QStandardPrice_TB.ReadOnly = true;
             this.QStandardPrice_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.QStandardPrice_TB.Size = new System.Drawing.Size(305, 28);
+            this.QStandardPrice_TB.Size = new System.Drawing.Size(274, 28);
             this.QStandardPrice_TB.TabIndex = 1;
             this.QStandardPrice_TB.TabStop = false;
             this.QStandardPrice_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // QVarLabourPrice_TB
             // 
-            this.QVarLabourPrice_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.QVarLabourPrice_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.QVarLabourPrice_TB.BackColor = System.Drawing.SystemColors.Info;
             this.QVarLabourPrice_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.QVarLabourPrice_TB.Location = new System.Drawing.Point(908, 106);
+            this.QVarLabourPrice_TB.Location = new System.Drawing.Point(814, 106);
             this.QVarLabourPrice_TB.Name = "QVarLabourPrice_TB";
             this.QVarLabourPrice_TB.ReadOnly = true;
             this.QVarLabourPrice_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.QVarLabourPrice_TB.Size = new System.Drawing.Size(305, 28);
+            this.QVarLabourPrice_TB.Size = new System.Drawing.Size(274, 28);
             this.QVarLabourPrice_TB.TabIndex = 1;
             this.QVarLabourPrice_TB.TabStop = false;
             this.QVarLabourPrice_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // QTotalPrice_TB
             // 
-            this.QTotalPrice_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.QTotalPrice_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.QTotalPrice_TB.BackColor = System.Drawing.SystemColors.Info;
             this.QTotalPrice_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.QTotalPrice_TB.Location = new System.Drawing.Point(908, 155);
+            this.QTotalPrice_TB.Location = new System.Drawing.Point(814, 154);
             this.QTotalPrice_TB.Name = "QTotalPrice_TB";
             this.QTotalPrice_TB.ReadOnly = true;
             this.QTotalPrice_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.QTotalPrice_TB.Size = new System.Drawing.Size(305, 28);
+            this.QTotalPrice_TB.Size = new System.Drawing.Size(274, 28);
             this.QTotalPrice_TB.TabIndex = 1;
             this.QTotalPrice_TB.TabStop = false;
             this.QTotalPrice_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // QEqNum_LBL
-            // 
-            this.QEqNum_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.QEqNum_LBL.AutoSize = true;
-            this.QEqNum_LBL.ForeColor = System.Drawing.Color.Black;
-            this.QEqNum_LBL.Location = new System.Drawing.Point(158, 63);
-            this.QEqNum_LBL.Name = "QEqNum_LBL";
-            this.QEqNum_LBL.Size = new System.Drawing.Size(140, 17);
-            this.QEqNum_LBL.TabIndex = 3;
-            this.QEqNum_LBL.Text = "EQUIPMENT NUMBER:";
             // 
             // QServOrderDesc_LBL
             // 
             this.QServOrderDesc_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.QServOrderDesc_LBL.AutoSize = true;
             this.QServOrderDesc_LBL.ForeColor = System.Drawing.Color.Black;
-            this.QServOrderDesc_LBL.Location = new System.Drawing.Point(110, 15);
+            this.QServOrderDesc_LBL.Location = new System.Drawing.Point(79, 15);
             this.QServOrderDesc_LBL.Name = "QServOrderDesc_LBL";
             this.QServOrderDesc_LBL.Size = new System.Drawing.Size(188, 17);
             this.QServOrderDesc_LBL.TabIndex = 3;
             this.QServOrderDesc_LBL.Text = "SERVICE ORDER DESCRIPTION:";
+            // 
+            // QEqNum_LBL
+            // 
+            this.QEqNum_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.QEqNum_LBL.AutoSize = true;
+            this.QEqNum_LBL.ForeColor = System.Drawing.Color.Black;
+            this.QEqNum_LBL.Location = new System.Drawing.Point(127, 63);
+            this.QEqNum_LBL.Name = "QEqNum_LBL";
+            this.QEqNum_LBL.Size = new System.Drawing.Size(140, 17);
+            this.QEqNum_LBL.TabIndex = 3;
+            this.QEqNum_LBL.Text = "EQUIPMENT NUMBER:";
             // 
             // OutputOrder_PNL
             // 
@@ -1962,23 +1965,22 @@ namespace Mobility_Setup_Tool
             this.OutputOrder_PNL.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.23659F));
             this.OutputOrder_PNL.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24.44795F));
             this.OutputOrder_PNL.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.55205F));
-            this.OutputOrder_PNL.Controls.Add(this.EquipmentOutput_TB, 1, 0);
-            this.OutputOrder_PNL.Controls.Add(this.label10, 0, 2);
-            this.OutputOrder_PNL.Controls.Add(this.label11, 0, 3);
-            this.OutputOrder_PNL.Controls.Add(this.label12, 2, 0);
-            this.OutputOrder_PNL.Controls.Add(this.label13, 2, 1);
-            this.OutputOrder_PNL.Controls.Add(this.label14, 2, 2);
-            this.OutputOrder_PNL.Controls.Add(this.label15, 2, 3);
-            this.OutputOrder_PNL.Controls.Add(this.DescriptionOutput_TB, 1, 1);
-            this.OutputOrder_PNL.Controls.Add(this.SetupModOutput_TB, 1, 2);
-            this.OutputOrder_PNL.Controls.Add(this.CELNumberOutput_TB, 1, 3);
-            this.OutputOrder_PNL.Controls.Add(this.WorkCenterOutput_TB, 3, 0);
-            this.OutputOrder_PNL.Controls.Add(this.WBSOutput_TB, 3, 1);
-            this.OutputOrder_PNL.Controls.Add(this.NotificationOutput_TB, 3, 2);
-            this.OutputOrder_PNL.Controls.Add(this.SOOutput_TB, 3, 3);
-            this.OutputOrder_PNL.Controls.Add(this.label8, 0, 1);
-            this.OutputOrder_PNL.Controls.Add(this.EqDesc_LBL, 0, 0);
-            this.OutputOrder_PNL.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.OutputOrder_PNL.Controls.Add(this.OutputEqDesc_TB, 1, 0);
+            this.OutputOrder_PNL.Controls.Add(this.OutputSetupModule_LBL, 0, 2);
+            this.OutputOrder_PNL.Controls.Add(this.OutputEntryList_LBL, 0, 3);
+            this.OutputOrder_PNL.Controls.Add(this.OutputWorkCentre_LBL, 2, 0);
+            this.OutputOrder_PNL.Controls.Add(this.OutputWSB_LBL, 2, 1);
+            this.OutputOrder_PNL.Controls.Add(this.OutputNotNumber_LBL, 2, 2);
+            this.OutputOrder_PNL.Controls.Add(this.OutputServOrd_LBL, 2, 3);
+            this.OutputOrder_PNL.Controls.Add(this.OutputEqNum_TB, 1, 1);
+            this.OutputOrder_PNL.Controls.Add(this.OutputSetupModule_TB, 1, 2);
+            this.OutputOrder_PNL.Controls.Add(this.OutputEntryList_TB, 1, 3);
+            this.OutputOrder_PNL.Controls.Add(this.OutputWorkCentre_TB, 3, 0);
+            this.OutputOrder_PNL.Controls.Add(this.OutputWBS_TB, 3, 1);
+            this.OutputOrder_PNL.Controls.Add(this.OutputNotification_TB, 3, 2);
+            this.OutputOrder_PNL.Controls.Add(this.OutputServOrd_TB, 3, 3);
+            this.OutputOrder_PNL.Controls.Add(this.OEqNum_LBL, 0, 1);
+            this.OutputOrder_PNL.Controls.Add(this.OutputEqDesc_LBL, 0, 0);
             this.OutputOrder_PNL.Location = new System.Drawing.Point(3, 21);
             this.OutputOrder_PNL.Name = "OutputOrder_PNL";
             this.OutputOrder_PNL.RowCount = 4;
@@ -1986,208 +1988,208 @@ namespace Mobility_Setup_Tool
             this.OutputOrder_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.OutputOrder_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.OutputOrder_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.OutputOrder_PNL.Size = new System.Drawing.Size(1218, 194);
+            this.OutputOrder_PNL.Size = new System.Drawing.Size(1089, 192);
             this.OutputOrder_PNL.TabIndex = 0;
             // 
-            // EquipmentOutput_TB
+            // OutputEqDesc_TB
             // 
-            this.EquipmentOutput_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.EquipmentOutput_TB.BackColor = System.Drawing.SystemColors.Info;
-            this.EquipmentOutput_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.EquipmentOutput_TB.Location = new System.Drawing.Point(304, 10);
-            this.EquipmentOutput_TB.Name = "EquipmentOutput_TB";
-            this.EquipmentOutput_TB.ReadOnly = true;
-            this.EquipmentOutput_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.EquipmentOutput_TB.Size = new System.Drawing.Size(300, 28);
-            this.EquipmentOutput_TB.TabIndex = 1;
-            this.EquipmentOutput_TB.TabStop = false;
-            this.EquipmentOutput_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.OutputEqDesc_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.OutputEqDesc_TB.BackColor = System.Drawing.SystemColors.Info;
+            this.OutputEqDesc_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.OutputEqDesc_TB.Location = new System.Drawing.Point(272, 10);
+            this.OutputEqDesc_TB.Name = "OutputEqDesc_TB";
+            this.OutputEqDesc_TB.ReadOnly = true;
+            this.OutputEqDesc_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.OutputEqDesc_TB.Size = new System.Drawing.Size(268, 28);
+            this.OutputEqDesc_TB.TabIndex = 1;
+            this.OutputEqDesc_TB.TabStop = false;
+            this.OutputEqDesc_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label10
+            // OutputSetupModule_LBL
             // 
-            this.label10.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label10.AutoSize = true;
-            this.label10.ForeColor = System.Drawing.Color.Black;
-            this.label10.Location = new System.Drawing.Point(193, 111);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(105, 17);
-            this.label10.TabIndex = 3;
-            this.label10.Text = "SETUP MODULE:";
+            this.OutputSetupModule_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.OutputSetupModule_LBL.AutoSize = true;
+            this.OutputSetupModule_LBL.ForeColor = System.Drawing.Color.Black;
+            this.OutputSetupModule_LBL.Location = new System.Drawing.Point(161, 111);
+            this.OutputSetupModule_LBL.Name = "OutputSetupModule_LBL";
+            this.OutputSetupModule_LBL.Size = new System.Drawing.Size(105, 17);
+            this.OutputSetupModule_LBL.TabIndex = 3;
+            this.OutputSetupModule_LBL.Text = "SETUP MODULE:";
             // 
-            // label11
+            // OutputEntryList_LBL
             // 
-            this.label11.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label11.AutoSize = true;
-            this.label11.ForeColor = System.Drawing.Color.Black;
-            this.label11.Location = new System.Drawing.Point(164, 160);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(134, 17);
-            this.label11.TabIndex = 3;
-            this.label11.Text = "ENTRY LIST NUMBER:";
+            this.OutputEntryList_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.OutputEntryList_LBL.AutoSize = true;
+            this.OutputEntryList_LBL.ForeColor = System.Drawing.Color.Black;
+            this.OutputEntryList_LBL.Location = new System.Drawing.Point(132, 159);
+            this.OutputEntryList_LBL.Name = "OutputEntryList_LBL";
+            this.OutputEntryList_LBL.Size = new System.Drawing.Size(134, 17);
+            this.OutputEntryList_LBL.TabIndex = 3;
+            this.OutputEntryList_LBL.Text = "ENTRY LIST NUMBER:";
             // 
-            // label12
+            // OutputWorkCentre_LBL
             // 
-            this.label12.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label12.AutoSize = true;
-            this.label12.ForeColor = System.Drawing.Color.Black;
-            this.label12.Location = new System.Drawing.Point(802, 15);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(100, 17);
-            this.label12.TabIndex = 3;
-            this.label12.Text = "WORK CENTER:";
+            this.OutputWorkCentre_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.OutputWorkCentre_LBL.AutoSize = true;
+            this.OutputWorkCentre_LBL.ForeColor = System.Drawing.Color.Black;
+            this.OutputWorkCentre_LBL.Location = new System.Drawing.Point(706, 15);
+            this.OutputWorkCentre_LBL.Name = "OutputWorkCentre_LBL";
+            this.OutputWorkCentre_LBL.Size = new System.Drawing.Size(100, 17);
+            this.OutputWorkCentre_LBL.TabIndex = 3;
+            this.OutputWorkCentre_LBL.Text = "WORK CENTER:";
             // 
-            // label13
+            // OutputWSB_LBL
             // 
-            this.label13.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label13.AutoSize = true;
-            this.label13.ForeColor = System.Drawing.Color.Black;
-            this.label13.Location = new System.Drawing.Point(805, 63);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(97, 17);
-            this.label13.TabIndex = 3;
-            this.label13.Text = "WBS ELEMENT:";
+            this.OutputWSB_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.OutputWSB_LBL.AutoSize = true;
+            this.OutputWSB_LBL.ForeColor = System.Drawing.Color.Black;
+            this.OutputWSB_LBL.Location = new System.Drawing.Point(709, 63);
+            this.OutputWSB_LBL.Name = "OutputWSB_LBL";
+            this.OutputWSB_LBL.Size = new System.Drawing.Size(97, 17);
+            this.OutputWSB_LBL.TabIndex = 3;
+            this.OutputWSB_LBL.Text = "WBS ELEMENT:";
             // 
-            // label14
+            // OutputNotNumber_LBL
             // 
-            this.label14.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label14.AutoSize = true;
-            this.label14.ForeColor = System.Drawing.Color.Black;
-            this.label14.Location = new System.Drawing.Point(751, 111);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(151, 17);
-            this.label14.TabIndex = 3;
-            this.label14.Text = "NOTIFICATION NUMBER:";
+            this.OutputNotNumber_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.OutputNotNumber_LBL.AutoSize = true;
+            this.OutputNotNumber_LBL.ForeColor = System.Drawing.Color.Black;
+            this.OutputNotNumber_LBL.Location = new System.Drawing.Point(655, 111);
+            this.OutputNotNumber_LBL.Name = "OutputNotNumber_LBL";
+            this.OutputNotNumber_LBL.Size = new System.Drawing.Size(151, 17);
+            this.OutputNotNumber_LBL.TabIndex = 3;
+            this.OutputNotNumber_LBL.Text = "NOTIFICATION NUMBER:";
             // 
-            // label15
+            // OutputServOrd_LBL
             // 
-            this.label15.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label15.AutoSize = true;
-            this.label15.ForeColor = System.Drawing.Color.Black;
-            this.label15.Location = new System.Drawing.Point(740, 160);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(162, 17);
-            this.label15.TabIndex = 3;
-            this.label15.Text = "SERVICE ORDER NUMBER:";
+            this.OutputServOrd_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.OutputServOrd_LBL.AutoSize = true;
+            this.OutputServOrd_LBL.ForeColor = System.Drawing.Color.Black;
+            this.OutputServOrd_LBL.Location = new System.Drawing.Point(644, 159);
+            this.OutputServOrd_LBL.Name = "OutputServOrd_LBL";
+            this.OutputServOrd_LBL.Size = new System.Drawing.Size(162, 17);
+            this.OutputServOrd_LBL.TabIndex = 3;
+            this.OutputServOrd_LBL.Text = "SERVICE ORDER NUMBER:";
             // 
-            // DescriptionOutput_TB
+            // OutputEqNum_TB
             // 
-            this.DescriptionOutput_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DescriptionOutput_TB.BackColor = System.Drawing.SystemColors.Info;
-            this.DescriptionOutput_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.DescriptionOutput_TB.Location = new System.Drawing.Point(304, 58);
-            this.DescriptionOutput_TB.Name = "DescriptionOutput_TB";
-            this.DescriptionOutput_TB.ReadOnly = true;
-            this.DescriptionOutput_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.DescriptionOutput_TB.Size = new System.Drawing.Size(300, 28);
-            this.DescriptionOutput_TB.TabIndex = 1;
-            this.DescriptionOutput_TB.TabStop = false;
-            this.DescriptionOutput_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.OutputEqNum_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.OutputEqNum_TB.BackColor = System.Drawing.SystemColors.Info;
+            this.OutputEqNum_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.OutputEqNum_TB.Location = new System.Drawing.Point(272, 58);
+            this.OutputEqNum_TB.Name = "OutputEqNum_TB";
+            this.OutputEqNum_TB.ReadOnly = true;
+            this.OutputEqNum_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.OutputEqNum_TB.Size = new System.Drawing.Size(268, 28);
+            this.OutputEqNum_TB.TabIndex = 1;
+            this.OutputEqNum_TB.TabStop = false;
+            this.OutputEqNum_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // SetupModOutput_TB
+            // OutputSetupModule_TB
             // 
-            this.SetupModOutput_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.SetupModOutput_TB.BackColor = System.Drawing.SystemColors.Info;
-            this.SetupModOutput_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.SetupModOutput_TB.Location = new System.Drawing.Point(304, 106);
-            this.SetupModOutput_TB.Name = "SetupModOutput_TB";
-            this.SetupModOutput_TB.ReadOnly = true;
-            this.SetupModOutput_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.SetupModOutput_TB.Size = new System.Drawing.Size(300, 28);
-            this.SetupModOutput_TB.TabIndex = 1;
-            this.SetupModOutput_TB.TabStop = false;
-            this.SetupModOutput_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.OutputSetupModule_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.OutputSetupModule_TB.BackColor = System.Drawing.SystemColors.Info;
+            this.OutputSetupModule_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.OutputSetupModule_TB.Location = new System.Drawing.Point(272, 106);
+            this.OutputSetupModule_TB.Name = "OutputSetupModule_TB";
+            this.OutputSetupModule_TB.ReadOnly = true;
+            this.OutputSetupModule_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.OutputSetupModule_TB.Size = new System.Drawing.Size(268, 28);
+            this.OutputSetupModule_TB.TabIndex = 1;
+            this.OutputSetupModule_TB.TabStop = false;
+            this.OutputSetupModule_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // CELNumberOutput_TB
+            // OutputEntryList_TB
             // 
-            this.CELNumberOutput_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.CELNumberOutput_TB.BackColor = System.Drawing.SystemColors.Info;
-            this.CELNumberOutput_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.CELNumberOutput_TB.Location = new System.Drawing.Point(304, 155);
-            this.CELNumberOutput_TB.Name = "CELNumberOutput_TB";
-            this.CELNumberOutput_TB.ReadOnly = true;
-            this.CELNumberOutput_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.CELNumberOutput_TB.Size = new System.Drawing.Size(300, 28);
-            this.CELNumberOutput_TB.TabIndex = 1;
-            this.CELNumberOutput_TB.TabStop = false;
-            this.CELNumberOutput_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.OutputEntryList_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.OutputEntryList_TB.BackColor = System.Drawing.SystemColors.Info;
+            this.OutputEntryList_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.OutputEntryList_TB.Location = new System.Drawing.Point(272, 154);
+            this.OutputEntryList_TB.Name = "OutputEntryList_TB";
+            this.OutputEntryList_TB.ReadOnly = true;
+            this.OutputEntryList_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.OutputEntryList_TB.Size = new System.Drawing.Size(268, 28);
+            this.OutputEntryList_TB.TabIndex = 1;
+            this.OutputEntryList_TB.TabStop = false;
+            this.OutputEntryList_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // WorkCenterOutput_TB
+            // OutputWorkCentre_TB
             // 
-            this.WorkCenterOutput_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.WorkCenterOutput_TB.BackColor = System.Drawing.SystemColors.Info;
-            this.WorkCenterOutput_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.WorkCenterOutput_TB.Location = new System.Drawing.Point(908, 10);
-            this.WorkCenterOutput_TB.Name = "WorkCenterOutput_TB";
-            this.WorkCenterOutput_TB.ReadOnly = true;
-            this.WorkCenterOutput_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.WorkCenterOutput_TB.Size = new System.Drawing.Size(305, 28);
-            this.WorkCenterOutput_TB.TabIndex = 1;
-            this.WorkCenterOutput_TB.TabStop = false;
-            this.WorkCenterOutput_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.OutputWorkCentre_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.OutputWorkCentre_TB.BackColor = System.Drawing.SystemColors.Info;
+            this.OutputWorkCentre_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.OutputWorkCentre_TB.Location = new System.Drawing.Point(812, 10);
+            this.OutputWorkCentre_TB.Name = "OutputWorkCentre_TB";
+            this.OutputWorkCentre_TB.ReadOnly = true;
+            this.OutputWorkCentre_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.OutputWorkCentre_TB.Size = new System.Drawing.Size(274, 28);
+            this.OutputWorkCentre_TB.TabIndex = 1;
+            this.OutputWorkCentre_TB.TabStop = false;
+            this.OutputWorkCentre_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // WBSOutput_TB
+            // OutputWBS_TB
             // 
-            this.WBSOutput_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.WBSOutput_TB.BackColor = System.Drawing.SystemColors.Info;
-            this.WBSOutput_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.WBSOutput_TB.Location = new System.Drawing.Point(908, 58);
-            this.WBSOutput_TB.Name = "WBSOutput_TB";
-            this.WBSOutput_TB.ReadOnly = true;
-            this.WBSOutput_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.WBSOutput_TB.Size = new System.Drawing.Size(305, 28);
-            this.WBSOutput_TB.TabIndex = 1;
-            this.WBSOutput_TB.TabStop = false;
-            this.WBSOutput_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.OutputWBS_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.OutputWBS_TB.BackColor = System.Drawing.SystemColors.Info;
+            this.OutputWBS_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.OutputWBS_TB.Location = new System.Drawing.Point(812, 58);
+            this.OutputWBS_TB.Name = "OutputWBS_TB";
+            this.OutputWBS_TB.ReadOnly = true;
+            this.OutputWBS_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.OutputWBS_TB.Size = new System.Drawing.Size(274, 28);
+            this.OutputWBS_TB.TabIndex = 1;
+            this.OutputWBS_TB.TabStop = false;
+            this.OutputWBS_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // NotificationOutput_TB
+            // OutputNotification_TB
             // 
-            this.NotificationOutput_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.NotificationOutput_TB.BackColor = System.Drawing.SystemColors.Info;
-            this.NotificationOutput_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.NotificationOutput_TB.Location = new System.Drawing.Point(908, 106);
-            this.NotificationOutput_TB.Name = "NotificationOutput_TB";
-            this.NotificationOutput_TB.ReadOnly = true;
-            this.NotificationOutput_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.NotificationOutput_TB.Size = new System.Drawing.Size(305, 28);
-            this.NotificationOutput_TB.TabIndex = 1;
-            this.NotificationOutput_TB.TabStop = false;
-            this.NotificationOutput_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.OutputNotification_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.OutputNotification_TB.BackColor = System.Drawing.SystemColors.Info;
+            this.OutputNotification_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.OutputNotification_TB.Location = new System.Drawing.Point(812, 106);
+            this.OutputNotification_TB.Name = "OutputNotification_TB";
+            this.OutputNotification_TB.ReadOnly = true;
+            this.OutputNotification_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.OutputNotification_TB.Size = new System.Drawing.Size(274, 28);
+            this.OutputNotification_TB.TabIndex = 1;
+            this.OutputNotification_TB.TabStop = false;
+            this.OutputNotification_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // SOOutput_TB
+            // OutputServOrd_TB
             // 
-            this.SOOutput_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.SOOutput_TB.BackColor = System.Drawing.SystemColors.Info;
-            this.SOOutput_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.SOOutput_TB.Location = new System.Drawing.Point(908, 155);
-            this.SOOutput_TB.Name = "SOOutput_TB";
-            this.SOOutput_TB.ReadOnly = true;
-            this.SOOutput_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.SOOutput_TB.Size = new System.Drawing.Size(305, 28);
-            this.SOOutput_TB.TabIndex = 1;
-            this.SOOutput_TB.TabStop = false;
-            this.SOOutput_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.OutputServOrd_TB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.OutputServOrd_TB.BackColor = System.Drawing.SystemColors.Info;
+            this.OutputServOrd_TB.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.OutputServOrd_TB.Location = new System.Drawing.Point(812, 154);
+            this.OutputServOrd_TB.Name = "OutputServOrd_TB";
+            this.OutputServOrd_TB.ReadOnly = true;
+            this.OutputServOrd_TB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.OutputServOrd_TB.Size = new System.Drawing.Size(274, 28);
+            this.OutputServOrd_TB.TabIndex = 1;
+            this.OutputServOrd_TB.TabStop = false;
+            this.OutputServOrd_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label8
+            // OEqNum_LBL
             // 
-            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label8.AutoSize = true;
-            this.label8.ForeColor = System.Drawing.Color.Black;
-            this.label8.Location = new System.Drawing.Point(158, 63);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(140, 17);
-            this.label8.TabIndex = 3;
-            this.label8.Text = "EQUIPMENT NUMBER:";
+            this.OEqNum_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.OEqNum_LBL.AutoSize = true;
+            this.OEqNum_LBL.ForeColor = System.Drawing.Color.Black;
+            this.OEqNum_LBL.Location = new System.Drawing.Point(126, 63);
+            this.OEqNum_LBL.Name = "OEqNum_LBL";
+            this.OEqNum_LBL.Size = new System.Drawing.Size(140, 17);
+            this.OEqNum_LBL.TabIndex = 3;
+            this.OEqNum_LBL.Text = "EQUIPMENT NUMBER:";
             // 
-            // EqDesc_LBL
+            // OutputEqDesc_LBL
             // 
-            this.EqDesc_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.EqDesc_LBL.AutoSize = true;
-            this.EqDesc_LBL.ForeColor = System.Drawing.Color.Black;
-            this.EqDesc_LBL.Location = new System.Drawing.Point(132, 15);
-            this.EqDesc_LBL.Name = "EqDesc_LBL";
-            this.EqDesc_LBL.Size = new System.Drawing.Size(166, 17);
-            this.EqDesc_LBL.TabIndex = 3;
-            this.EqDesc_LBL.Text = "EQUIPMENT DESCRIPTION:";
+            this.OutputEqDesc_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.OutputEqDesc_LBL.AutoSize = true;
+            this.OutputEqDesc_LBL.ForeColor = System.Drawing.Color.Black;
+            this.OutputEqDesc_LBL.Location = new System.Drawing.Point(100, 15);
+            this.OutputEqDesc_LBL.Name = "OutputEqDesc_LBL";
+            this.OutputEqDesc_LBL.Size = new System.Drawing.Size(166, 17);
+            this.OutputEqDesc_LBL.TabIndex = 3;
+            this.OutputEqDesc_LBL.Text = "EQUIPMENT DESCRIPTION:";
             // 
             // MainFormLayout_PNL
             // 
@@ -2207,16 +2209,15 @@ namespace Mobility_Setup_Tool
             this.MainFormLayout_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.59269F));
             this.MainFormLayout_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 89.40731F));
             this.MainFormLayout_PNL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 250F));
-            this.MainFormLayout_PNL.Size = new System.Drawing.Size(1279, 1044);
+            this.MainFormLayout_PNL.Size = new System.Drawing.Size(1157, 884);
             this.MainFormLayout_PNL.TabIndex = 11;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.Gray;
-            this.ClientSize = new System.Drawing.Size(1280, 1146);
+            this.ClientSize = new System.Drawing.Size(1158, 984);
             this.Controls.Add(this.MainFormLayout_PNL);
             this.Controls.Add(this.MainStatus_SB);
             this.Controls.Add(this.TitleBar_PNL);
@@ -2236,6 +2237,7 @@ namespace Mobility_Setup_Tool
             this.Padding = new System.Windows.Forms.Padding(1);
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Mobility Setup Tool";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
@@ -2326,7 +2328,7 @@ namespace Mobility_Setup_Tool
         private System.Windows.Forms.Label VarPMActivityType_LBL;
         private System.Windows.Forms.GroupBox VarInfo_GB;
         private System.Windows.Forms.RichTextBox LongText_TB;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label VNotDesc_LBL;
         private System.Windows.Forms.Label LongText_LBL;
         private System.Windows.Forms.ListBox Variations_LB;
         private System.Windows.Forms.TabControl DataTabs_TC;
@@ -2346,8 +2348,6 @@ namespace Mobility_Setup_Tool
         private System.Windows.Forms.TableLayoutPanel EquipmentInfo_Layout;
         private System.Windows.Forms.Label SerialNumber_LBL;
         private System.Windows.Forms.Label TemplateEquipment_LBL;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
         public System.Windows.Forms.TextBox EquipmentSerial_TB;
         private System.Windows.Forms.TableLayoutPanel NotificationLayout;
         private System.Windows.Forms.Label SoldToParty_LBL;
@@ -2356,9 +2356,6 @@ namespace Mobility_Setup_Tool
         public System.Windows.Forms.DateTimePicker RequiredStartDate_DP;
         public System.Windows.Forms.DateTimePicker RequiredEndDate_DP;
         public System.Windows.Forms.DateTimePicker PurchaseOrderDate_DP;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TableLayoutPanel ServiceOrderInfo_LYT;
         private System.Windows.Forms.Label ActivityType_LBL;
         private System.Windows.Forms.Label BasicStartDate_LBL;
@@ -2379,22 +2376,15 @@ namespace Mobility_Setup_Tool
         private System.Windows.Forms.Panel Output_PNL;
         private System.Windows.Forms.GroupBox QOutputInfo_GRB;
         private System.Windows.Forms.TableLayoutPanel OutputOrder_PNL;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label EqDesc_LBL;
+        private System.Windows.Forms.Label OutputEqDesc_LBL;
         public System.Windows.Forms.TextBox EquipmentOutput_TB;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label15;
         public System.Windows.Forms.TextBox DescriptionOutput_TB;
-        public System.Windows.Forms.TextBox SetupModOutput_TB;
+        public System.Windows.Forms.TextBox OutputSetupModule_TB;
         public System.Windows.Forms.TextBox CELNumberOutput_TB;
-        public System.Windows.Forms.TextBox WorkCenterOutput_TB;
-        public System.Windows.Forms.TextBox WBSOutput_TB;
-        public System.Windows.Forms.TextBox NotificationOutput_TB;
-        public System.Windows.Forms.TextBox SOOutput_TB;
+        public System.Windows.Forms.TextBox OutputWorkCentre_TB;
+        public System.Windows.Forms.TextBox OutputWBS_TB;
+        public System.Windows.Forms.TextBox OutputNotification_TB;
+        public System.Windows.Forms.TextBox OutputServOrd_TB;
         private System.Windows.Forms.TableLayoutPanel MainFormLayout_PNL;
         public System.Windows.Forms.TextBox VarExternalReference_TB;
         public System.Windows.Forms.TabPage QuoteOrder_TP;
@@ -2417,9 +2407,6 @@ namespace Mobility_Setup_Tool
         private System.Windows.Forms.Label QServOrderDesc_LBL;
         private System.Windows.Forms.TableLayoutPanel QuoteLayout;
         public System.Windows.Forms.ListBox QuoteNotiListBox;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Label label25;
         private System.Windows.Forms.TextBox QuoteServiceOrder_TB;
         private System.Windows.Forms.TextBox QuoteNumberTB;
         private System.Windows.Forms.Button QuoteServiceOrder_BTN;
@@ -2442,6 +2429,24 @@ namespace Mobility_Setup_Tool
         public RComboBox PMActivityType_CB;
         public RComboBox Priority_CB;
         private RComboBox QuoteTemplate_CB;
+        private System.Windows.Forms.Label PurchOrderDate_LBL;
+        private System.Windows.Forms.Label ReqStartDate_LBL;
+        private System.Windows.Forms.Label ReqEndDate_LBL;
+        private System.Windows.Forms.Label TaskType_LBL;
+        private System.Windows.Forms.Label FuncLoc_LBL;
+        private System.Windows.Forms.Label QServOrderNum_LBL;
+        private System.Windows.Forms.Label QQuoteNumber_LBL;
+        private System.Windows.Forms.Label QQuoteTemplate_LBL;
+        public System.Windows.Forms.TextBox OutputEqDesc_TB;
+        private System.Windows.Forms.Label OutputSetupModule_LBL;
+        private System.Windows.Forms.Label OutputEntryList_LBL;
+        private System.Windows.Forms.Label OutputWorkCentre_LBL;
+        private System.Windows.Forms.Label OutputWSB_LBL;
+        private System.Windows.Forms.Label OutputNotNumber_LBL;
+        private System.Windows.Forms.Label OutputServOrd_LBL;
+        private System.Windows.Forms.Label OEqNum_LBL;
+        public System.Windows.Forms.TextBox OutputEqNum_TB;
+        public System.Windows.Forms.TextBox OutputEntryList_TB;
     }
 }
 

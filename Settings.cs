@@ -9,6 +9,7 @@ using System.Net;
 using Mobility_Setup_Tool.Forms;
 using System.Collections.Generic;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Mobility_Setup_Tool
 {
@@ -37,7 +38,7 @@ namespace Mobility_Setup_Tool
         public string ExternalReference { get; set; }
     }
 
-    [DefaultPropertyAttribute("Distribution")]
+    [DefaultProperty("Distribution")]
     public class Settings
     {
         public SAP_DEFAULTS     Defaults            = new SAP_DEFAULTS();
@@ -47,16 +48,17 @@ namespace Mobility_Setup_Tool
         public Theme            ThemeController;
         public MainForm         Reference;
 
-        public string AppData 
-        {
-            get { return $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\[UGL]Mobility Setup and Planning Tool"; }
-        }
-
         // Creation method
         public Settings(Theme Ref, MainForm Ref2) 
         { 
             ThemeController = Ref; 
             Reference = Ref2;
+        }
+
+        [Browsable(false)]
+        public string AppData
+        {
+            get { return $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\[UGL]Mobility Setup and Planning Tool"; }
         }
 
         [Category("Application Defaults")]
@@ -167,6 +169,7 @@ namespace Mobility_Setup_Tool
         [Category("SAP Defaults")]
         [Description("Number of months for which to check if a service order is a warranty or not")]
         [DisplayName("Warranty Limit (months)")]
+        [TypeConverter(typeof(WarrantySelector))]
         public string WarrantyMonthLimit {
             get { return Defaults.WarrantyMonthLimit; }
             set { Defaults.WarrantyMonthLimit = value ?? ""; }
@@ -207,6 +210,7 @@ namespace Mobility_Setup_Tool
                 return false;
             }
         }
+
         internal class MyColorEditor : UITypeEditor
         {
             public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
@@ -223,18 +227,37 @@ namespace Mobility_Setup_Tool
                 cd.AllowFullOpen        = true;
                 cd.AnyColor             = true;
                 cd.SolidColorOnly       = false;
+                int[] CustomClrs        = new int[16];
+                string FilePath         = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\[UGL]Mobility Setup and Planning Tool\\COLORS";
 
-                // Convert color to integer
-                static int ToInt(Color c)
+                // Get custom colors if they exist
+                if (File.Exists(FilePath))
                 {
-                    return c.R + c.G * 0x100 + c.B * 0x10000;
+                    using StreamReader ColorFile = new StreamReader(FilePath);
+                    int i = 0;
+
+                    while(!ColorFile.EndOfStream)
+                    {
+                        CustomClrs[i] = Convert.ToInt32(ColorFile.ReadLine());
+                        i++;
+                    }
+
+                    ColorFile.Close();
                 }
 
-                // Define nice custom colors for them :)
-                cd.CustomColors = new int[]{ToInt(Color.FromArgb(1,230,232,237)), ToInt(Color.FromArgb(1, 214, 220, 228)), ToInt(Color.FromArgb(1, 251, 229, 213)), ToInt(Color.FromArgb(1, 226, 239, 217)), ToInt(Color.FromArgb(1, 255, 242, 204)), ToInt(Color.FromArgb(1, 222, 235, 246)), ToInt(Color.FromArgb(1, 222, 235, 246)), ToInt(Color.FromArgb(1, 222, 235, 246)),
-                                            ToInt(Color.FromArgb(1,58,56,56)),    ToInt(Color.FromArgb(1, 50, 63, 79)),    ToInt(Color.FromArgb(1, 131, 60, 11)),   ToInt(Color.FromArgb(1, 55, 86, 35)),    ToInt(Color.FromArgb(1, 127, 96, 0)),    ToInt(Color.FromArgb(1, 30, 78, 121)),   ToInt(Color.FromArgb(1, 222, 235, 246)),  ToInt(Color.FromArgb(1, 222, 235, 246))};
-
+                cd.CustomColors = CustomClrs;
                 cd.ShowDialog();
+
+                // Save custom colors
+                using StreamWriter file = new StreamWriter(FilePath);
+
+                foreach(int cl in cd.CustomColors)
+                { 
+                    file.WriteLine(cl);
+                }
+
+                file.Close();
+
                 return cd.Color;
             }
         }
@@ -260,17 +283,20 @@ namespace Mobility_Setup_Tool
                     MsgBoxs.MsgBox_Error($"Could not download file {Link} please check your connection");
                     return false;
                 }
-
-                // Save to local DB
-                SaveData = new FileStream(SavePath, FileMode.Create);
-                SaveData.Write(Data);
-                SaveData.Close();
-
-                return true;
             }
+
+            // Try to write to a file and check if its not locked
+            //SaveData = FileLock.WaitForFile(SavePath, FileMode.Open, FileAccess.Write, FileShare.Write);
+            SaveData = new FileStream(SavePath, FileMode.Create, FileAccess.Write, FileShare.Read);
+            SaveData.Write(Data);
+            SaveData.Close();
+            SaveData.Dispose();
+
+            return true;
         }
 
         // Download inputs from sharepoint
+        // Check version number on sharepoint vs the application and if mismatch then download and run the update
         public void GetSharepointData()
         {
             string SP_Quote     = "", SP_Inputs = "", SP_CEL = "", Ver;
@@ -293,7 +319,7 @@ namespace Mobility_Setup_Tool
             if (Ver == "")
             {
                 MsgBoxs.MsgBox_Error("Could not retrieve version data");
-                Application.Exit();
+                Environment.Exit(0);
             }
 
             // Check version
@@ -339,10 +365,7 @@ namespace Mobility_Setup_Tool
                 Thread.Sleep(1000);
 
                 // Delete corrupted settings
-                ResetSettings();
-
-                // Close application
-                Environment.Exit(0);
+                ResetSettings(true);
             }
 
             // Download master databases for this plant
@@ -357,7 +380,7 @@ namespace Mobility_Setup_Tool
             if (File.Exists($"{AppData}\\APPSETTINGS"))
             { 
                 // Read appsettings
-                StreamReader SettingsFile = new StreamReader($"{AppData}\\APPSETTINGS");
+                StreamReader SettingsFile   = new StreamReader($"{AppData}\\APPSETTINGS");
                 Defaults.Distribution       = SettingsFile.ReadLine();
                 Defaults.Division           = SettingsFile.ReadLine();
                 Defaults.Effect             = SettingsFile.ReadLine();
@@ -416,40 +439,32 @@ namespace Mobility_Setup_Tool
             }
         }
 
+        // Retreives prefix from input strings (all characters to the first whitespace)
         public string GetPrefix(string input)
         {
             return input[0..input.IndexOf(" ")];
         }
 
-        // Delete appsettings file
-        public void ResetSettings()
+        // Delete settings files and restart the application
+        public void ResetSettings(bool ShowDiag)
         {
-            try 
-            { 
-                File.Delete($"{AppData}\\APPSETTINGS"); 
+            try  {
+                File.Delete($"{AppData}\\APPSETTINGS");
+                File.Delete($"{AppData}\\COLORS");
+                File.Delete($"{AppData}\\THEME");
+                File.Delete($"{AppData}\\MST_DataLinks");
+
             } catch (Exception e) 
             {
                 MsgBoxs.MsgBox_Error(e.Message.ToString());
             }
 
-            try
-            {
-                File.Delete($"{AppData}\\THEME");
+            if (ShowDiag) 
+            { 
+                MsgBoxs.MsgBox_Normal("Application will now restart to complete settings reset");
+                Process.Start(Application.ExecutablePath);
+                Environment.Exit(0);
             }
-            catch (Exception e)
-            {
-                MsgBoxs.MsgBox_Error(e.Message.ToString());
-            }
-
-            try
-            {
-                File.Delete($"{AppData}\\MST_DataLinks");
-            }
-            catch (Exception e)
-            {
-                MsgBoxs.MsgBox_Error(e.Message.ToString());
-            }
-
         }
 
         // Save settings to file
@@ -486,7 +501,7 @@ namespace Mobility_Setup_Tool
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             Settings     refMyObject    = context.Instance as Settings;
-            ComboBox     FLCB           = refMyObject.Reference.FunctionLoc_CB;
+            RComboBox     FLCB           = refMyObject.Reference.FunctionLoc_CB;
             List<string> list           = new List<string>();
             
             for(int i = 0; i < FLCB.Items.Count; i++)
@@ -506,7 +521,7 @@ namespace Mobility_Setup_Tool
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             Settings refMyObject = context.Instance as Settings;
-            ComboBox FLCB = refMyObject.Reference.PMActivityType_CB;
+            RComboBox FLCB = refMyObject.Reference.PMActivityType_CB;
             List<string> list = new List<string>();
 
             for (int i = 0; i < FLCB.Items.Count; i++)
@@ -526,7 +541,7 @@ namespace Mobility_Setup_Tool
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             Settings refMyObject = context.Instance as Settings;
-            ComboBox FLCB = refMyObject.Reference.Priority_CB;
+            RComboBox FLCB = refMyObject.Reference.Priority_CB;
             List<string> list = new List<string>();
 
             for (int i = 0; i < FLCB.Items.Count; i++)
@@ -546,13 +561,31 @@ namespace Mobility_Setup_Tool
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             Settings refMyObject = context.Instance as Settings;
-            ComboBox FLCB = refMyObject.Reference.PartyName_CB;
+            RComboBox FLCB = refMyObject.Reference.PartyName_CB;
             List<string> list = new List<string>();
 
             for (int i = 0; i < FLCB.Items.Count; i++)
             {
                 list.Add(FLCB.Items[i].ToString());
             }
+
+            return new StandardValuesCollection(list);
+        }
+    }
+
+    // Get sold to party type combobox from main screen and add it to the property grid
+    public class WarrantySelector : StringConverter
+    {
+        public override bool GetStandardValuesSupported(ITypeDescriptorContext context) { return true; }
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext context) { return true; }
+        public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+        {
+            List<string> list = new List<string>();
+
+            list.Add("6");
+            list.Add("12");
+            list.Add("18");
+            list.Add("24");
 
             return new StandardValuesCollection(list);
         }

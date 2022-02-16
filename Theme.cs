@@ -34,6 +34,7 @@ namespace Mobility_Setup_Tool
         public void SetColor(Control control, Color val)
         {
             control.BackColor = val;
+            control.Refresh();
         }
 
         public void AddControls(dynamic AddControl, THEME_TYPE AddType)
@@ -74,8 +75,8 @@ namespace Mobility_Setup_Tool
             {
                 using (StreamReader ThemeFile = new StreamReader($"{AppData}\\THEME"))
                 {
-                    BorderColor     = Color.FromArgb(System.Convert.ToInt32(ThemeFile.ReadLine()));
-                    BackgroundColor = Color.FromArgb(System.Convert.ToInt32(ThemeFile.ReadLine()));
+                    BorderColor     = Color.FromArgb(Convert.ToInt32(ThemeFile.ReadLine()));
+                    BackgroundColor = Color.FromArgb(Convert.ToInt32(ThemeFile.ReadLine()));
                     ThemeFile.Close();
                 };
             }

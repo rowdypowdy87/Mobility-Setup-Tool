@@ -35,7 +35,7 @@ namespace Mobility_Setup_Tool
         public List<QuoteInformation>   QuoteInfo       = new List<QuoteInformation>();
         public List<VersionInfo>        VersionHist     = new List<VersionInfo>();
         public List<VersionInfo>        AppVersHist     = new List<VersionInfo>();
-        
+        public List<INPUT_FIELD>        FuncLoc         = new List<INPUT_FIELD>();
 
         public Databases(MainForm Ref) { Reference = Ref; }
 
@@ -165,6 +165,15 @@ namespace Mobility_Setup_Tool
             for (i = 0; i < LoadTable.Rows.Count; i++)
             {
                 if (LoadTable.Rows[i]["FUNCTION LOC"].ToString() == "") break;
+
+                INPUT_FIELD Add = new INPUT_FIELD
+                {
+                    Name    = LoadTable.Rows[i]["FUNCTION LOC"].ToString(),
+                    Number  = LoadTable.Rows[i]["FUNC LOC"].ToString()
+                };
+
+                FuncLoc.Add(Add);
+
                 Reference.FunctionLoc_CB.Items.Add(LoadTable.Rows[i]["FUNCTION LOC"].ToString());
             }
 
@@ -392,6 +401,22 @@ namespace Mobility_Setup_Tool
             { if (id == PmActivitys[i].Number) ret = PmActivitys[i]; }
 
             return ret;
+        }
+
+        // Get activity structure by name 
+        public string GetFunc_ByName(string name)
+        {
+
+            for (int i = 0; i < PmActivitys.Count; i++)
+            { 
+                if (name == FuncLoc[i].Name) 
+                {
+                    return FuncLoc[i].Number; 
+                }
+            }
+
+            
+            return "";
         }
 
         // Get customer structure by name 

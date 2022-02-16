@@ -1257,11 +1257,8 @@ namespace Mobility_Setup_Tool
                 }
 
                 // Finalize order
-                if(!Finalize(TaskInfo, SOInfo, SetupEquipment))
-                {
-                    MsgBox_Error("Failed to created service order");
-                    return false;
-                }
+                Finalize(TaskInfo, SOInfo, SetupEquipment);
+                
             }
             else
             {
@@ -1278,10 +1275,13 @@ namespace Mobility_Setup_Tool
             if (Session.GetSession())
             {
                 Session.StartTransaction("IW32");
-                Session.SendVKey(0);
+                Session.ClearErrors(30, false);
 
                 // Verify order created
-                if (Session.GetSessionInfo().ScreenNumber != 3000) return false;
+                if (Session.GetSessionInfo().ScreenNumber != 3000)
+                {
+                    MsgBox_Error("Cannot find service order");
+                }
 
                 string Customer = InputSO.CustomerName.Replace(@"/", "");
                        Customer = InputSO.CustomerName.Replace(@"\", "");
@@ -1340,14 +1340,14 @@ namespace Mobility_Setup_Tool
                 }
                 else
                 {
-                    MsgBox_Error("Please ensure SAP is running");
+                    MsgBox_Normal("Service order created successfully, no file path set for this task type so no folder was created.");
                 }
             }
             else
             {
-                MsgBox_Normal("Service order created successfully, no file path set for this task type so no folder was created.");
+                MsgBox_Error("Please ensure SAP is running");
             }
-            
+
             return true;
         }
 
