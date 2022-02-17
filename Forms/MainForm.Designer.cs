@@ -310,7 +310,7 @@ namespace Mobility_Setup_Tool
             this.Title_LBL.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.Title_LBL.Location = new System.Drawing.Point(35, 0);
             this.Title_LBL.Name = "Title_LBL";
-            this.Title_LBL.Size = new System.Drawing.Size(280, 37);
+            this.Title_LBL.Size = new System.Drawing.Size(582, 37);
             this.Title_LBL.TabIndex = 5;
             this.Title_LBL.Text = "Mobility Setup and Planning Tool";
             this.Title_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -601,7 +601,6 @@ namespace Mobility_Setup_Tool
             // LongText_TB
             // 
             this.LongText_TB.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.LongText_TB.Cursor = System.Windows.Forms.Cursors.Default;
             this.LongText_TB.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LongText_TB.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.LongText_TB.Location = new System.Drawing.Point(3, 310);
@@ -1306,8 +1305,8 @@ namespace Mobility_Setup_Tool
             // EquipmentInfo_Layout
             // 
             this.EquipmentInfo_Layout.ColumnCount = 4;
-            this.EquipmentInfo_Layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 23.40778F));
-            this.EquipmentInfo_Layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.45988F));
+            this.EquipmentInfo_Layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24.56302F));
+            this.EquipmentInfo_Layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.27139F));
             this.EquipmentInfo_Layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.EquipmentInfo_Layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.EquipmentInfo_Layout.Controls.Add(this.EquipmentSerial_TB, 2, 0);
@@ -1423,7 +1422,7 @@ namespace Mobility_Setup_Tool
             this.WarrantyClaim_CHB.ForeColor = System.Drawing.Color.Black;
             this.WarrantyClaim_CHB.Location = new System.Drawing.Point(3, 3);
             this.WarrantyClaim_CHB.Name = "WarrantyClaim_CHB";
-            this.WarrantyClaim_CHB.Size = new System.Drawing.Size(248, 22);
+            this.WarrantyClaim_CHB.Size = new System.Drawing.Size(255, 22);
             this.WarrantyClaim_CHB.TabIndex = 1;
             this.WarrantyClaim_CHB.Text = "Create Warranty Claim Service Order";
             this.WarrantyClaim_CHB.UseVisualStyleBackColor = true;
@@ -2222,7 +2221,6 @@ namespace Mobility_Setup_Tool
             this.Controls.Add(this.MainStatus_SB);
             this.Controls.Add(this.TitleBar_PNL);
             this.Controls.Add(this.MainMenu);
-            this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.ForeColor = System.Drawing.Color.Transparent;
