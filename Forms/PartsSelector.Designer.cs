@@ -48,7 +48,7 @@ namespace Mobility_Setup_Tool
             this.StorLoc = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.SpecialStock = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Filter_LBL = new System.Windows.Forms.Label();
-            this.Filter_CB = new RComboBox();
+            this.Filter_CB = new Mobility_Setup_Tool.ExComboBox();
             this.Cancel_BTN = new System.Windows.Forms.Button();
             this.Continue_BTN = new System.Windows.Forms.Button();
             this.MainUGLLogo_PB = new System.Windows.Forms.PictureBox();
@@ -359,7 +359,7 @@ namespace Mobility_Setup_Tool
         private System.Windows.Forms.DataGridViewComboBoxColumn StorLoc;
         private System.Windows.Forms.DataGridViewTextBoxColumn SpecialStock;
         private System.Windows.Forms.Label Filter_LBL;
-        public System.Windows.Forms.ComboBox Filter_CB;
+        public Mobility_Setup_Tool.ExComboBox Filter_CB;
         private System.Windows.Forms.Button Cancel_BTN;
         private System.Windows.Forms.Button Continue_BTN;
         private System.Windows.Forms.PictureBox MainUGLLogo_PB;

@@ -53,11 +53,11 @@ namespace Mobility_Setup_Tool
             this.StoreLocation_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.StoreLocation_LBL.AutoSize = true;
             this.StoreLocation_LBL.Font = new System.Drawing.Font("Calibri", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.StoreLocation_LBL.Location = new System.Drawing.Point(61, 10);
+            this.StoreLocation_LBL.Location = new System.Drawing.Point(90, 10);
             this.StoreLocation_LBL.Name = "StoreLocation_LBL";
-            this.StoreLocation_LBL.Size = new System.Drawing.Size(133, 15);
+            this.StoreLocation_LBL.Size = new System.Drawing.Size(104, 15);
             this.StoreLocation_LBL.TabIndex = 0;
-            this.StoreLocation_LBL.Text = "ENTER STORE NUMBER:";
+            this.StoreLocation_LBL.Text = "STORE LOCATION:";
             // 
             // StoreLocation_TB
             // 
@@ -90,11 +90,11 @@ namespace Mobility_Setup_Tool
             this.SpecialStock_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.SpecialStock_LBL.AutoSize = true;
             this.SpecialStock_LBL.Font = new System.Drawing.Font("Calibri", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.SpecialStock_LBL.Location = new System.Drawing.Point(3, 45);
+            this.SpecialStock_LBL.Location = new System.Drawing.Point(40, 45);
             this.SpecialStock_LBL.Name = "SpecialStock_LBL";
-            this.SpecialStock_LBL.Size = new System.Drawing.Size(191, 15);
+            this.SpecialStock_LBL.Size = new System.Drawing.Size(154, 15);
             this.SpecialStock_LBL.TabIndex = 0;
-            this.SpecialStock_LBL.Text = "ENTER SPECIAL STOCK INDICATOR:";
+            this.SpecialStock_LBL.Text = "SPECIAL STOCK INDICATOR:";
             // 
             // SpecialStock_TB
             // 

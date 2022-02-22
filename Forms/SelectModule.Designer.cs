@@ -35,7 +35,7 @@ namespace Mobility_Setup_Tool.Forms
             this.LBTitle = new System.Windows.Forms.Label();
             this.CloseButton = new System.Windows.Forms.PictureBox();
             this.MenuPanel = new System.Windows.Forms.Panel();
-            this.Modules_CMB = new RComboBox();
+            this.Modules_CMB = new Mobility_Setup_Tool.ExComboBox();
             this.Continue_BTN = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.TitleBar.SuspendLayout();
@@ -157,7 +157,7 @@ namespace Mobility_Setup_Tool.Forms
         private System.Windows.Forms.PictureBox CloseButton;
         private System.Windows.Forms.Panel MenuPanel;
         private System.Windows.Forms.Button Continue_BTN;
-        public System.Windows.Forms.ComboBox Modules_CMB;
+        public Mobility_Setup_Tool.ExComboBox Modules_CMB;
         private System.Windows.Forms.Label label1;
     }
 }

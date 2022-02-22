@@ -81,6 +81,12 @@ namespace Mobility_Setup_Tool
         {
             InitializeComponent();
             isTopPanelDragged = false;
+
+            // Turn on dev mode
+            Dev_MN.Visible = Program.DeveloperMode;
+
+            DoubleBuffered = true;
+            SetStyle(ControlStyles.ResizeRedraw, true);
         }
 
 #region OUTPUTS / INPUT VARIABLES
@@ -265,11 +271,13 @@ namespace Mobility_Setup_Tool
                 ReturnValue = UserInput.Input.Text;
             };
 
+            
+
             return ReturnValue;
         }
 
         // Set status on status bar and update progress bar (if required, 0 to hide progress bar)
-        public bool SetStatus(string Text, int Progress)
+        public void SetStatus(string Text, int Progress)
         {
 
             if (Text == "")
@@ -299,9 +307,9 @@ namespace Mobility_Setup_Tool
             }
             else
             {
-                this.Update();
+                Update();
             }
-            return true;
+ 
         }
 
         // Cross threading methods for controls
@@ -422,7 +430,7 @@ namespace Mobility_Setup_Tool
         }
 
         // Check for variation blank fields
-        private bool CheckBlankFields_Var(bool Full)
+        private bool CheckBlankFields_Var()
         {
             if (GetText(VarSerialNumber_TB) == "")
             {
@@ -442,7 +450,7 @@ namespace Mobility_Setup_Tool
                 return false;
             }
 
-            if (Full)
+            if (RunFullSetup)
             {
                 // Check something is selected
                 if (GetSelectedItems(Variations_LB) == 0)
@@ -521,7 +529,6 @@ namespace Mobility_Setup_Tool
             // Only if running the whole tooling
             if (RunFullSetup == true)
             {
-
                 if (GetText(PartyName_CB) == "")
                 {
                     MsgBox_Error("Please select a SoldToParty");
@@ -556,40 +563,73 @@ namespace Mobility_Setup_Tool
             return true;
         }
 
+        // Verify fields in the variation tab
+        private bool VerifyInputs_Var(ref MobilityEquipment Eq, ref MobilityServiceOrder So)
+        {
+            if (!CheckBlankFields_Var()) return false;
+
+            if (RunFullSetup == true)
+            {
+                if (VarSOEndDate_DP.Value.CompareTo(VarSOStartDate_DP.Value) == -1)
+                {
+                    MsgBox_Warning("You cannot enter a date less than the planned start date!");
+                    //VarSOEndDate_DP.Value = DateTime.Today.AddDays(10.0);
+                    return false;
+                }
+
+                if (VarSOStartDate_DP.Value.CompareTo(VarSOEndDate_DP.Value) == 1)
+                {
+                    MsgBox_Warning("You cannot enter a date greater than the planned end date!");
+                    //VarSOStartDate_DP.Value = DateTime.Today.AddDays(-1.0);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Verify fields on front tab
         private bool VerifyInputs(ref MobilityEquipment Eq, ref MobilityServiceOrder So)
         {
-            /*if (RunFullSetup == true) Doing this error checking on the fly now/
+            if (!CheckBlankFields_Single(ref So)) return false;
+
+            if (RunFullSetup)
             {
-                if (RequiredStartDate_DP.Value < DateTime.Now.AddDays(-1))
+                if (PurchaseOrderDate_DP.Value.CompareTo(DateTime.Today) == 1)
                 {
-                    MsgBox_Error("The Required Start Date cannot be in the past. Please ensure the Required Start Date is the same as the current date or after.");
+                    MsgBox_Error("Purchase order date cannot be in the future");
+                    //PurchaseOrderDate_DP.Value = DateTime.Today.AddDays(-1.0);
+                    return false;
+                }
+   
+                if (BasicStartDate_DP.Value.CompareTo(BasicEndDate_DP.Value) == 1)
+                {
+                    MsgBox_Error("The planned start date cannot be after the planned end date");
+                    //BasicStartDate_DP.Value = DateTime.Today.AddDays(-1.0);
                     return false;
                 }
 
-                if (RequiredStartDate_DP.Value > RequiredStartDate_DP.Value)
+                if (BasicEndDate_DP.Value.CompareTo(BasicStartDate_DP.Value) == -1)
                 {
-                    MsgBox_Error("The Required Start Date cannot be greater the the Required End Date");
+                    MsgBox_Error("The planned end date cannot be before the planned start date");
+                    //BasicEndDate_DP.Value = DateTime.Today.AddDays(10.0);
                     return false;
                 }
 
-                if (BasicStartDate_DP.Value < DateTime.Now.AddDays(-1))
+                if (RequiredStartDate_DP.Value.CompareTo(RequiredEndDate_DP.Value) == 1)
                 {
-                    MsgBox_Error("The Basic Start Date cannot be in the past. Please ensure the Basic Start Date is the same as the current date or after.");
+                    MsgBox_Warning("Required start date cannot be greater than required end date");
+                    //RequiredStartDate_DP.Value = DateTime.Today;
                     return false;
                 }
 
-                if (BasicStartDate_DP.Value > BasicEndDate_DP.Value)
+                if (RequiredEndDate_DP.Value.CompareTo(RequiredStartDate_DP.Value) == -1)
                 {
-                    MsgBox_Error("The Basic Start Date cannot be greater the the Required End Date");
+                    MsgBox_Warning("Required end date cannot be less than required start date");
+                    //RequiredEndDate_DP.Value = DateTime.Today.AddDays(10.0);
                     return false;
                 }
-
-                if (PurchaseOrderDate_DP.Value > DateTime.Now)
-                {
-                    MsgBox_Error("The Purchase Order Date cannot be in the future.");
-                    return false;
-                }
-            }*/
+            }
 
             // Verify you want to create warranty service order
             if (WarrantyClaim_CHB.Checked && RunFullSetup)
@@ -625,11 +665,11 @@ namespace Mobility_Setup_Tool
         }
 
         // Variation setup
-        private void VarSetup(MobilityTask SelectedTask,
-                              MobilityServiceOrder OrderInfo,
-                              MobilityEquipment SelectedEquipment,
-                              string NotificationNumber,
-                              List<SAPComponent> Components)
+        private void VarSetup(MobilityTask          SelectedTask,
+                              MobilityServiceOrder  OrderInfo,
+                              MobilityEquipment     SelectedEquipment,
+                              string                NotificationNumber,
+                              List<SAPComponent>    Components)
         {
             // Check fields are filled
             switch (GetModuleNumber(SelectedTask.Module, SelectedTask))
@@ -663,7 +703,7 @@ namespace Mobility_Setup_Tool
 
                 case SETUP_MODULE.UKNOWN:
                     MsgBox_Error($"Setup module for task {SelectedTask.Name} is uknown please verify database entry for this task and ensure the correct setup module is entered");
-                    break;
+                    return;
 
             }
 
@@ -675,10 +715,7 @@ namespace Mobility_Setup_Tool
                                                       SelectedEquipment.ZAWA,
                                                       SelectedEquipment.FunctionLoc,
                                                       SingleSetup_BW,
-                                                  ref SelectedEquipment))
-                {
-                    MsgBox_Error("Initial equipment check has failed");
-                }
+                                                  ref SelectedEquipment)) return;
             }
             else
             {
@@ -686,26 +723,12 @@ namespace Mobility_Setup_Tool
             }
 
             // Check measurements
-            if (SetupModule.CheckMeasurementPoints(SelectedTask, SingleSetup_BW) == false)
-            {
-                if (SingleSetup_BW.CancellationPending)
-                {
-                    MsgBox_Normal("User cancelled");
-                }
-                return;
-            }
+            if (!SetupModule.CheckMeasurementPoints(SelectedTask, SingleSetup_BW)) return;
 
-            // Create CEL
+            // Create CEL if required
             if (SelectedTask.CEL != "NONE" && SelectedTask.CEL != "NON-STANDARD VARIATION" && SelectedTask.CEL != null)
             {
-                if (SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW) == false)
-                {
-                    if (SingleSetup_BW.CancellationPending)
-                    {
-                        MsgBox_Normal("User cancelled");
-                    }
-                    return;
-                }
+                if (!SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW)) return;
             }
             else
             {
@@ -717,6 +740,7 @@ namespace Mobility_Setup_Tool
                 }
             }
 
+            // Run full setup
             if (RunFullSetup)
             {
                 // Get long text
@@ -730,14 +754,7 @@ namespace Mobility_Setup_Tool
                 SelectedTask.LongText = LText.LongText;
 
                 // Check notification and create service order
-                if (SetupModule.CreateServiceOrderFromNotification(SelectedTask, SelectedEquipment, OrderInfo, Components, NotificationNumber, SingleSetup_BW) == false)
-                {
-                    if (SingleSetup_BW.CancellationPending)
-                    {
-                        MsgBox_Normal("User cancelled");
-                    }
-                    return;
-                }
+                if (!SetupModule.CreateServiceOrderFromNotification(SelectedTask, SelectedEquipment, OrderInfo, Components, NotificationNumber, SingleSetup_BW)) return;
             }
             else
             {
@@ -746,7 +763,10 @@ namespace Mobility_Setup_Tool
         }
 
         // Initial overhaul setup
-        private void Setup(MobilityTask SelectedTask, MobilityServiceOrder OrderInfo, MobilityEquipment SelectedEquipment, List<SAPComponent> Components)
+        private void Setup(MobilityTask         SelectedTask, 
+                           MobilityServiceOrder OrderInfo, 
+                           MobilityEquipment    SelectedEquipment, 
+                           List<SAPComponent>   Components)
         {
             // Check fields are filled
             switch (GetModuleNumber(SelectedTask.Module, SelectedTask))
@@ -781,22 +801,18 @@ namespace Mobility_Setup_Tool
 
                 case SETUP_MODULE.UKNOWN:
                     MsgBox_Error($"Setup module for task {SelectedTask.Name} is uknown please verify database entry for this task and ensure the correct setup module is entered");
-                    break;
-
+                    return;
             }
 
             // Equipment setup
             if (SelectedEquipment.UpdateToTemplate)
             {
-                if (!SetupModule.InitialEquipmentCheck(SelectedEquipment.TemplateNumber,
-                                                       SelectedEquipment.SerialNumber.ToUpper(),
-                                                       SelectedEquipment.ZAWA,
-                                                       SelectedEquipment.FunctionLoc,
-                                                       SingleSetup_BW,
-                                                   ref SelectedEquipment))
-                {
-                    MsgBox_Error("Initial equipment check has failed");
-                }
+               if (!SetupModule.InitialEquipmentCheck(SelectedEquipment.TemplateNumber,
+                                                      SelectedEquipment.SerialNumber.ToUpper(),
+                                                      SelectedEquipment.ZAWA,
+                                                      SelectedEquipment.FunctionLoc,
+                                                      SingleSetup_BW,
+                                                  ref SelectedEquipment)) return;
             }
             else
             {
@@ -804,50 +820,32 @@ namespace Mobility_Setup_Tool
             }
 
             // Check measurements
-            if (SetupModule.CheckMeasurementPoints(SelectedTask, SingleSetup_BW) == false)
-            {
-                if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
-                return;
-            }
+            if (!SetupModule.CheckMeasurementPoints(SelectedTask, SingleSetup_BW)) return;
 
             // Create CEL
-            if (SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW) == false)
-            {
-                if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
-                return;
-            }
+            if (!SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW)) return;
 
             // Do service order setup
             if (RunFullSetup == true)
             {
                 // Get long text
-                GetLongText LText = new GetLongText(this);
+                GetLongText LText = new GetLongText(this)
+                {
+                    LongText = SelectedTask.LongText,   
+                };
 
-                LText.LongText = SelectedTask.LongText;
                 LText.ShowDialog();
 
                 SelectedTask.LongText = LText.LongText;
 
                 // Check service order can be setup
-                if (!SetupModule.InitialServiceCheck(SelectedTask, SelectedEquipment.EquipmentNumber, SingleSetup_BW))
-                {
-                    if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
-                    return;
-                }
+                if (!SetupModule.InitialServiceCheck(SelectedTask, SelectedEquipment.EquipmentNumber, SingleSetup_BW)) return;
 
                 // Create notification
-                if (!SetupModule.CreateNotification(SelectedTask, SelectedEquipment, OrderInfo, SingleSetup_BW))
-                {
-                    if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
-                    return;
-                }
+                if (!SetupModule.CreateNotification(SelectedTask, SelectedEquipment, OrderInfo, SingleSetup_BW)) return;
 
                 // Create service order
-                if (!SetupModule.CreateServiceOrder(SelectedTask, SelectedEquipment, OrderInfo, Components, SingleSetup_BW))
-                {
-                    if (SingleSetup_BW.CancellationPending) MsgBox_Normal("User cancelled");
-                    return;
-                }
+                if (!SetupModule.CreateServiceOrder(SelectedTask, SelectedEquipment, OrderInfo, Components, SingleSetup_BW)) return;
 
             }
             else
@@ -863,7 +861,7 @@ namespace Mobility_Setup_Tool
         // Hand form resizing (borderless)
         protected override void WndProc(ref Message m)
         {
-            const int RESIZE_HANDLE_SIZE = 12;
+            const int RESIZE_HANDLE_SIZE = 15;
 
             switch (m.Msg)
             {
@@ -873,7 +871,8 @@ namespace Mobility_Setup_Tool
                     if ((int)m.Result == 0x01)
                     {
                         Point screenPoint = new Point(m.LParam.ToInt32());
-                        Point clientPoint = this.PointToClient(screenPoint);
+                        Point clientPoint = PointToClient(screenPoint);
+
                         if (clientPoint.Y <= RESIZE_HANDLE_SIZE)
                         {
                             if (clientPoint.X <= RESIZE_HANDLE_SIZE)
@@ -912,7 +911,7 @@ namespace Mobility_Setup_Tool
             get
             {
                 CreateParams cp = base.CreateParams;
-                cp.Style |= 0x20000; // <--- use 0x20000
+                cp.Style |= 0x02000000; // <--- use 0x20000
                 return cp;
             }
         }
@@ -1026,6 +1025,18 @@ namespace Mobility_Setup_Tool
             }
         }
 
+        private void ReqStartDate_ValueChanged(object sender, EventArgs e)
+        {
+            // Set the planned start date to the required start date
+            BasicStartDate_DP.Value = RequiredStartDate_DP.Value;
+        }
+
+        private void ReqEndDate_ValueChanged(object sender, EventArgs e)
+        {
+            // Set the planned start date to the required start date
+            BasicEndDate_DP.Value = RequiredEndDate_DP.Value;
+        }
+
         // Setup equipment button click event 
         private void VarSetupEquipment_BTN_Click(object sender, EventArgs e)
         {
@@ -1102,37 +1113,36 @@ namespace Mobility_Setup_Tool
             {
                 case SETUP_TYPE.SINGLE:
 
-                    // Check fro blank fields
-                    if (CheckBlankFields_Single(ref InputSO))
+                    // Get task info
+                    InputTask                       = DatabaseController.GetTask_ByName(GetText(TaskType_CB), true);
+                    InputTask.WarrantyClaim         = GetChecked(WarrantyClaim_CHB);
+
+                    // Get input equipment info
+                    InputEq.TemplateNumber          = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).EquipmentNumber;
+                    InputEq.TemplateName            = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).Description;
+                    InputEq.UpdateToTemplate        = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).UpdateToTemplate;
+                    InputEq.ZDI1                    = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).ZDI1;
+                    InputEq.ZAWA                    = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).ZAWA;
+                    InputEq.FunctionLoc             = DatabaseController.GetFunc_ByName(GetText(FunctionLoc_CB));
+                    InputEq.SerialNumber            = GetText(EquipmentSerial_TB);
+
+                    // Get input service order info
+                    InputSO.ActualStartDate         = RequiredStartDate_DP.Value.ToShortDateString().Replace("/", ".");
+                    InputSO.ActualEndDate           = RequiredStartDate_DP.Value.ToShortDateString().Replace("/", ".");
+                    InputSO.PurchaseOrderDate       = PurchaseOrderDate_DP.Value.ToShortDateString().Replace("/", ".");
+                    InputSO.BasicStartDate          = BasicStartDate_DP.Value.ToShortDateString().Replace("/", ".");
+                    InputSO.BasicEndDate            = BasicEndDate_DP.Value.ToShortDateString().Replace("/", ".");
+                    InputSO.CustomerName            = GetText(PartyName_CB);
+                    InputSO.PurchaseOrder           = GetText(PurchaseOrder_TB);
+                    InputSO.ActivityType            = GetText(PMActivityType_CB);
+                    InputSO.Priority                = GetText(Priority_CB);
+                    InputSO.ExternalReference       = GetText(ExternalReference_TB);
+
+                    Output_WBS                      = InputTask.WBS;
+                    Output_WorkCenter               = InputTask.Workcentre;
+
+                    if (VerifyInputs(ref InputEq, ref InputSO))
                     {
-                        // Get task info
-                        InputTask                       = DatabaseController.GetTask_ByName(GetText(TaskType_CB), true);
-                        InputTask.WarrantyClaim         = GetChecked(WarrantyClaim_CHB);
-
-                        // Get input equipment info
-                        InputEq.TemplateNumber          = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).EquipmentNumber;
-                        InputEq.TemplateName            = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).Description;
-                        InputEq.UpdateToTemplate        = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).UpdateToTemplate;
-                        InputEq.ZDI1                    = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).ZDI1;
-                        InputEq.ZAWA                    = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(TemplateEquipmentList_CB)).ZAWA;
-                        InputEq.FunctionLoc             = DatabaseController.GetFunc_ByName(GetText(FunctionLoc_CB));
-                        InputEq.SerialNumber            = GetText(EquipmentSerial_TB);
-
-                        // Get input service order info
-                        InputSO.ActualStartDate         = RequiredStartDate_DP.Value.ToShortDateString().Replace("/", ".");
-                        InputSO.ActualEndDate           = RequiredStartDate_DP.Value.ToShortDateString().Replace("/", ".");
-                        InputSO.PurchaseOrderDate       = PurchaseOrderDate_DP.Value.ToShortDateString().Replace("/", ".");
-                        InputSO.BasicStartDate          = BasicStartDate_DP.Value.ToShortDateString().Replace("/", ".");
-                        InputSO.BasicEndDate            = BasicEndDate_DP.Value.ToShortDateString().Replace("/", ".");
-                        InputSO.CustomerName            = GetText(PartyName_CB);
-                        InputSO.PurchaseOrder           = GetText(PurchaseOrder_TB);
-                        InputSO.ActivityType            = GetText(PMActivityType_CB);
-                        InputSO.Priority                = GetText(Priority_CB);
-                        InputSO.ExternalReference       = GetText(ExternalReference_TB);
-
-                        Output_WBS = InputTask.WBS;
-                        Output_WorkCenter = InputTask.Workcentre;
-
                         if (RunFullSetup == true)
                         {
                             INPUT_FIELD Sales = DatabaseController.GetSalesData_ByWorkCenter(InputTask.Workcentre);
@@ -1149,57 +1159,49 @@ namespace Mobility_Setup_Tool
                             }
                         }
 
-                        // Verify data and run setup
-                        if (VerifyInputs(ref InputEq, ref InputSO))
-                        {
-                            Setup(InputTask, InputSO, InputEq, null);
-                        }
+                        Setup(InputTask, InputSO, InputEq, null);
                     }
 
                     break;
 
                 case SETUP_TYPE.VAR:
+                    
+                    // Get task info
+                    InputTask                       = DatabaseController.GetTask_ByName(GetText(VarTaskType_CB), false);
+                    InputTask.WarrantyClaim         = false;
 
-                    if (CheckBlankFields_Var(RunFullSetup))
+                    // Get input equipment info
+                    InputEq.TemplateNumber          = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).EquipmentNumber;
+                    InputEq.TemplateName            = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).Description;
+                    InputEq.UpdateToTemplate        = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).UpdateToTemplate;
+                    InputEq.ZDI1                    = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).ZDI1;
+                    InputEq.ZAWA                    = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).ZAWA;
+                    InputEq.SerialNumber            = GetText(VarSerialNumber_TB);
+
+                    // Get input service order info
+                    InputSO.BasicStartDate          = VarSOStartDate_DP.Value.ToShortDateString().Replace("/", ".");
+                    InputSO.BasicEndDate            = VarSOEndDate_DP.Value.ToShortDateString().Replace("/", ".");
+                    InputSO.ActivityType            = GetText(VarPMActivityType_CB);
+                    InputSO.Priority                = GetText(VarSOPriority_CB);
+                    InputSO.ExternalReference       = GetText(VarExternalReference_TB);
+
+                    if (VerifyInputs_Var(ref InputEq, ref InputSO))
                     {
-                        // Get task info
-                        InputTask                       = DatabaseController.GetTask_ByName(GetText(VarTaskType_CB), false);
-                        InputTask.WarrantyClaim         = false;
 
-                        // Get input equipment info
-                        InputEq.TemplateNumber          = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).EquipmentNumber;
-                        InputEq.TemplateName            = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).Description;
-                        InputEq.UpdateToTemplate        = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).UpdateToTemplate;
-                        InputEq.ZDI1                    = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).ZDI1;
-                        InputEq.ZAWA                    = DatabaseController.GetTemplateEquipment_ByIndex(GetCBIndex(VarTemplate_CB)).ZAWA;
-                        InputEq.SerialNumber            = GetText(VarSerialNumber_TB);
-
-                        // Get input service order info
-                        InputSO.BasicStartDate          = VarSOStartDate_DP.Value.ToShortDateString().Replace("/", ".");
-                        InputSO.BasicEndDate            = VarSOEndDate_DP.Value.ToShortDateString().Replace("/", ".");
-                        InputSO.ActivityType            = GetText(VarPMActivityType_CB);
-                        InputSO.Priority                = GetText(VarSOPriority_CB);
-                        InputSO.ExternalReference       = GetText(VarExternalReference_TB);
-
-                        // Sales data
-                        if (RunFullSetup == true)
+                        if (RunFullSetup)
                         {
                             INPUT_FIELD Sales = DatabaseController.GetSalesData_ByWorkCenter(InputTask.Workcentre);
 
-                            InputSO.SalesGroup = Sales.Name;
-                            InputSO.SalesOffice = Sales.Number;
-                            InputSO.ActivityType = DatabaseController.GetActivity_ByName(InputSO.ActivityType).Number;
+                            InputSO.SalesGroup      = Sales.Name;
+                            InputSO.SalesOffice     = Sales.Number;
+                            InputSO.ActivityType    = DatabaseController.GetActivity_ByName(InputSO.ActivityType).Number;
 
                             if (InputSO.SalesGroup == "" || InputSO.SalesOffice == "" || InputSO.ActivityType == "")
                             {
                                 MsgBox_Error("Error finding service order data");
                                 return;
                             }
-                        }
 
-                        // Full setup
-                        if (RunFullSetup)
-                        {
                             List<SAPComponent> Components = null;
 
                             if (InputTask.Group == "")
@@ -1252,19 +1254,15 @@ namespace Mobility_Setup_Tool
         // SAP verify timer Tick event 
         private void CheckSAP_Tick(object sender, EventArgs e)
         {
-            // Only if tool is currently idling
-            if (!IsRunning)
+            if (SapSession.GetSession())
             {
-                if (SapSession.GetSession())
-                {
-                    StatusInfo_LBL.Text = "SAP Connected";
-                    StatusInfo_LBL.ForeColor = Color.DarkGreen;
-                }
-                else
-                {
-                    StatusInfo_LBL.Text = "SAP Disconnected";
-                    StatusInfo_LBL.ForeColor = Color.DarkRed;
-                }
+                StatusInfo_LBL.Text = "SAP Connected";
+                StatusInfo_LBL.ForeColor = Color.DarkGreen;
+            }
+            else
+            {
+                StatusInfo_LBL.Text = "SAP Disconnected";
+                StatusInfo_LBL.ForeColor = Color.DarkRed;
             }
         }
 
@@ -1332,58 +1330,6 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        private void PODate_ValueChanged(object sender, EventArgs e)
-        {
-            if (PurchaseOrderDate_DP.Value.CompareTo(DateTime.Today) == 1)
-            {
-                MsgBox_Warning("You cannot enter a date greater than the current date!");
-                PurchaseOrderDate_DP.Value = DateTime.Today.AddDays(-1.0);
-            }
-        }
-
-        private void BasicStartDate_ValueChanged(object sender, EventArgs e)
-        {
-            if (BasicStartDate_DP.Value.CompareTo(BasicEndDate_DP.Value) == 1)
-            {
-                MsgBox_Warning("You cannot enter a date greater than the planned end date!");
-                BasicStartDate_DP.Value = DateTime.Today.AddDays(-1.0);
-            }
-        }
-
-        private void BasicEndDate_ValueChanged(object sender, EventArgs e)
-        {
-            if (BasicEndDate_DP.Value.CompareTo(BasicStartDate_DP.Value) == -1)
-            {
-                MsgBox_Warning("You cannot enter a date less than the planned start date!");
-                BasicEndDate_DP.Value = DateTime.Today.AddDays(10.0);
-            }
-        }
-
-        private void ReqStartDate_ValueChanged(object sender, EventArgs e)
-        {
-            // Set the planned start date to the required start date
-            BasicStartDate_DP.Value = RequiredStartDate_DP.Value;
-
-            // Check
-            if (RequiredStartDate_DP.Value.CompareTo(RequiredEndDate_DP.Value) == 1)
-            {
-                MsgBox_Warning("Required start date cannot be greater than required end date");
-                RequiredStartDate_DP.Value = DateTime.Today;
-            }
-        }
-
-        private void ReqEndDate_ValueChanged(object sender, EventArgs e)
-        {
-            // Set the planned start date to the required start date
-            BasicEndDate_DP.Value = RequiredEndDate_DP.Value;
-
-            if (RequiredEndDate_DP.Value.CompareTo(RequiredStartDate_DP.Value) == -1)
-            {
-                MsgBox_Warning("Required end date cannot be less than required start date");
-                RequiredEndDate_DP.Value = DateTime.Today.AddDays(10.0);
-            }
-        }
-
         // Draw a box around the longtext RTB
         private void RightSide_TBL_Paint(object sender, PaintEventArgs e)
         {
@@ -1409,7 +1355,7 @@ namespace Mobility_Setup_Tool
             {
                 if (SapSession.GetSession())
                 {
-                    _ = SetStatus("Getting equipment details", 0);
+                    SetStatus("Getting equipment details", 0);
 
                     // Convert serial to equipment number
                     EqNumber = SapSession.EquipmentNumberFromSerial(SerialNumber);
@@ -1436,7 +1382,7 @@ namespace Mobility_Setup_Tool
 
                         SapSession.SendVKey(8);
 
-                        _ = SetStatus("Loading notifications", 0);
+                        SetStatus("Loading notifications", 0);
 
                         switch (SapSession.GetSessionInfo().ScreenNumber)
                         {
@@ -1454,7 +1400,7 @@ namespace Mobility_Setup_Tool
                                 Variations_LB.Items.Add(Variations[0].Description);
 
                                 MsgBox_Normal("Notification loaded");
-                                _ = SetStatus("", 0);
+                                SetStatus("", 0);
 
                                 break;
 
@@ -1494,12 +1440,12 @@ namespace Mobility_Setup_Tool
                                 VariationList.Dispose();
 
                                 MsgBox_Normal("Notifications loaded");
-                                _ = SetStatus("", 0);
+                                SetStatus("", 0);
                                 break;
 
                             default:
                                 MsgBox_Error("No unconverted notifications found");
-                                _ = SetStatus("", 0);
+                                SetStatus("", 0);
                                 break;
                         }
 
@@ -1507,19 +1453,19 @@ namespace Mobility_Setup_Tool
                     else
                     {
                         MsgBox_Error($"No equipment number found for serial {SerialNumber}");
-                        _ = SetStatus("", 0);
+                        SetStatus("", 0);
                     }
                 }
                 else
                 {
                     MsgBox_Error("Please ensure SAP is running");
-                    _ = SetStatus("", 0);
+                    SetStatus("", 0);
                 }
             }
             else
             {
                 MsgBox_Error("Please enter a serial number to get the variation list");
-                _ = SetStatus("", 0);
+                SetStatus("", 0);
             }
         }
 
@@ -1545,23 +1491,7 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        private void VarBasicEndDate_ValueChanged(object sender, EventArgs e)
-        {
-            if (VarSOEndDate_DP.Value.CompareTo(VarSOStartDate_DP.Value) == -1)
-            {
-                MsgBox_Warning("You cannot enter a date less than the planned start date!");
-                VarSOEndDate_DP.Value = DateTime.Today.AddDays(10.0);
-            }
-        }
-
-        private void VarBasicStartDate_ValueChanged(object sender, EventArgs e)
-        {
-            if (VarSOStartDate_DP.Value.CompareTo(VarSOEndDate_DP.Value) == 1)
-            {
-                MsgBox_Warning("You cannot enter a date greater than the planned end date!");
-                VarSOStartDate_DP.Value = DateTime.Today.AddDays(-1.0);
-            }
-        }
+        
 
         #region WINDOW THEME EVENTS
 
@@ -1617,22 +1547,30 @@ namespace Mobility_Setup_Tool
             MaximizeButton_LBL.BackColor = ThemeController.GetBordercolor();
         }
 
+        // Unselect combo boxed on re-layout event
+        private void MainForm_Layout(object sender, LayoutEventArgs e)
+        {
+            BeginInvoke(new Action(() => { FunctionLoc_CB.Select(0, 0); }));
+            BeginInvoke(new Action(() => { PartyName_CB.Select(0, 0); }));
+            BeginInvoke(new Action(() => { Priority_CB.Select(0, 0); }));
+            BeginInvoke(new Action(() => { PMActivityType_CB.Select(0, 0); }));
+            BeginInvoke(new Action(() => { VarPMActivityType_CB.Select(0, 0); }));
+            BeginInvoke(new Action(() => { VarSOPriority_CB.Select(0, 0); }));
+        }
+
         // Override paint event on the main form
         protected override void OnPaint(PaintEventArgs e)
         {
-            DoubleBuffered = true;
-            ResizeRedraw = true;
-
             // Do form painting first
             base.OnPaint(e);
 
             // Variables
-            Pen BorderPen = new Pen(ThemeController.GetBordercolor(), 1.0f);
-            Brush Fill = BorderPen.Brush;
-            Graphics FormGFX = e.Graphics;
-            Rectangle FormBorder,
-                      OutputBorder,
-                      TabsBorder;
+            Pen         BorderPen   = new Pen(ThemeController.GetBordercolor(), 1.0f);
+            Brush       Fill        = BorderPen.Brush;
+            Graphics    FormGFX     = e.Graphics;
+            Rectangle   FormBorder,
+                        OutputBorder,
+                        TabsBorder;
 
             // Get rect
             FormBorder = new Rectangle(ClientRectangle.X,

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace Mobility_Setup_Tool
 {
     public static class Helper
     {
         // Set index of a combo box from an input string
-        public static void SetIndexFromText(this RComboBox c, string Text)
+        public static void SetIndexFromText(this ComboBox c, string Text)
         {
             for (int i = 0; i < c.Items.Count; i++)
             {

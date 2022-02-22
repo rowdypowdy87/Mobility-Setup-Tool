@@ -22,8 +22,7 @@ namespace Mobility_Setup_Tool
             // Check for open session first
             if (Session.GetSession()) 
             {
-
-                _ = RefForm.SetStatus("Checking if equipment is a material serial", 0);
+                RefForm.SetStatus("Checking if equipment is a material serial", 0);
 
                 // Check if linked to material
                 if (!Session.CheckMaterialSerial(InputSerial, InputZawa)) 
@@ -31,7 +30,7 @@ namespace Mobility_Setup_Tool
                     return false;
                 }
 
-                _ = RefForm.SetStatus("Finding equipment number from input serial", 0);
+                RefForm.SetStatus("Finding equipment number from input serial", 0);
 
                 // Get equipment number
                 InputEquipment = Session.EquipmentNumberFromSerial(InputSerial);
@@ -42,6 +41,14 @@ namespace Mobility_Setup_Tool
                 OutputEq.ZAWA = InputZawa;
                 OutputEq.SerialNumber = InputSerial;
                 OutputEq.FunctionLoc = InputFuncLoc;
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
 
                 if (InputEquipment == "")
                 {
@@ -65,7 +72,15 @@ namespace Mobility_Setup_Tool
                     }
                 }
 
-                _ = RefForm.SetStatus("Getting template equipment information", 0);
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
+                RefForm.SetStatus("Getting template equipment information", 0);
 
                 // Get template equipment info
                 Session.StartTransaction("IE03");
@@ -103,9 +118,17 @@ namespace Mobility_Setup_Tool
                         break;
                 }
 
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
                 Session.EndTransaction();
 
-                _ = RefForm.SetStatus("Getting input equipment information", 0);
+                RefForm.SetStatus("Getting input equipment information", 0);
 
                 // Get input equipment info
                 Session.StartTransaction("IE03");
@@ -143,6 +166,14 @@ namespace Mobility_Setup_Tool
                         break;
                 }
 
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
                 Session.EndTransaction();
         
                 // Compare two structures
@@ -157,7 +188,15 @@ namespace Mobility_Setup_Tool
                 ChangeInfo.DistChan = "";
                 ChangeInfo.ZAWA = "";
 
-                _ = RefForm.SetStatus("Updating input equipment to template", 0);
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
+                RefForm.SetStatus("Updating input equipment to template", 0);
 
                 if (InputInfo.Description != TemplateInfo.Description && !InputInfo.Description.Contains("LOCO")) 
                 {
@@ -202,6 +241,14 @@ namespace Mobility_Setup_Tool
                     Matching = false;
                     ChangeInfo.ZAWA = TemplateInfo.ZAWA;
                     OutputEq.ZAWA = TemplateInfo.ZAWA;
+                }
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
                 }
 
                 // Do equipment change
@@ -260,6 +307,14 @@ namespace Mobility_Setup_Tool
                     Session.GetButton("btn[11]").Press();
                     Session.EndTransaction();
 
+                    // Check for cancel
+                    if (Parent.CancellationPending)
+                    {
+                        MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                        RefForm.SetStatus("User canceled", 0);
+                        return false;
+                    }
+
                 }
 
                 return true;
@@ -281,10 +336,18 @@ namespace Mobility_Setup_Tool
                 StartDate = RefForm.GetBasicStartDate.AddMonths(-Convert.ToInt32(RefForm.AppSettings.WarrantyMonthLimit));
                 EndDate = RefForm.GetBasicStartDate;
 
-                _ = RefForm.SetStatus($"Checking for previous work orders in the last {RefForm.AppSettings.WarrantyMonthLimit} months..", 0);
+                RefForm.SetStatus($"Checking for previous work orders in the last {RefForm.AppSettings.WarrantyMonthLimit} months..", 0);
 
                 Session.StartTransaction("IW73");
                 Session.SetVariant("/FSDS-25-32");
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
 
                 // Set status exclusions to nothign
                 Session.GetCheckBox("DY_OFN").Selected = true;
@@ -341,13 +404,21 @@ namespace Mobility_Setup_Tool
         {
             if (Session.GetSession())
             {
-                _ = RefForm.SetStatus("Creating notification", 0);
+                RefForm.SetStatus("Creating notification", 0);
 
                 Session.StartTransaction("IW51");
                 Session.GetCTextField("RIWO00-QMART").Text = "Z8";
                 Session.GetCTextField("RIWO00-QWRNUM").Text = "300424160";
 
                 Session.SendVKey(0);
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
 
                 string OutputDesc;
 
@@ -402,6 +473,14 @@ namespace Mobility_Setup_Tool
 
                 Session.ClearErrors(30, true);
 
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
                 Session.GetTab(@"10\TAB06").Select();
 
                 if (!SOInfo.CreateWithoutEq)
@@ -427,6 +506,14 @@ namespace Mobility_Setup_Tool
                         Session.ClearErrors(30, true);
                     }*/
 
+                }
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
                 }
 
                 Session.GetTextField("ILOA-EQFNR").Text = SOInfo.ExternalReference;
@@ -459,7 +546,7 @@ namespace Mobility_Setup_Tool
         {
             if (Session.GetSession())
             {
-                _ = RefForm.SetStatus("Creating service order", 0);
+                RefForm.SetStatus("Creating service order", 0);
 
                 Session.GetButton("*VIQMEL-AUFNR").Press();
 
@@ -479,6 +566,14 @@ namespace Mobility_Setup_Tool
                 Session.SendVKey(0);
                 Session.SendVKey(0);
 
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
                 Session.GetCTextField("CAUFVD-GSTRP").Text      = SOInfo.BasicStartDate;
 
                 Session.ClearErrors(30, true);
@@ -497,6 +592,14 @@ namespace Mobility_Setup_Tool
                 Session.GetCTextField("ILOA-STORT").Text        = RefForm.AppSettings.Location;
                 Session.GetCTextField("RILA0-ARBPL").Text       = TaskInfo.Workcentre;
                 Session.GetTextField("ILOA-EQFNR").Text         = SOInfo.ExternalReference;
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
 
                 Session.ClearErrors(30, true);
 
@@ -522,6 +625,14 @@ namespace Mobility_Setup_Tool
                     Session.GetTab("VGUE").Select();
                     GuiTableControl Operations = Session.GetTable("SAPLCOVGTCTRL_3010");
                     ((GuiTextField)Operations.FindById("txtAFVGD-ARBEI[10,0]")).Text = PlannedHours;
+                }
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
                 }
 
                 // Add components
@@ -576,6 +687,14 @@ namespace Mobility_Setup_Tool
                             CurRow = 1;
                         }
 
+                        // Check for cancel
+                        if (Parent.CancellationPending)
+                        {
+                            MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                            RefForm.SetStatus("User canceled", 0);
+                            return false;
+                        }
+
                         // Refresh connection to table 
                         ComponentTable      = Session.GetTable("SAPLCOMKTCTRL_3020");
                         ZAWA                = ComponentTable.FindAllByName("RESBD-MATNR", "GuiCTextField");
@@ -612,6 +731,14 @@ namespace Mobility_Setup_Tool
                     }
                 }
 
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
                 // Set settlement rule for warranty
                 if (TaskInfo.WarrantyClaim)
                 {
@@ -644,6 +771,14 @@ namespace Mobility_Setup_Tool
                     Session.GetButton("btn[11]").Press();
                 }
 
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
                 // Finalize order
                 if (!Finalize(TaskInfo, SOInfo, SetupEquipment))
                 {
@@ -666,7 +801,8 @@ namespace Mobility_Setup_Tool
             string Customer = "";
             string Dir = "";
 
-            if (TaskInfo.FolderPath != ""){
+            if (TaskInfo.FolderPath != "")
+            {
                 if (Session.GetSession())
                 {
                     Session.StartTransaction("IW32");

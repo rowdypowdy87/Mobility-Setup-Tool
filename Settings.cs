@@ -10,6 +10,7 @@ using Mobility_Setup_Tool.Forms;
 using System.Collections.Generic;
 using System.Threading;
 using System.Diagnostics;
+using System.Text;
 
 namespace Mobility_Setup_Tool
 {
@@ -43,7 +44,6 @@ namespace Mobility_Setup_Tool
     {
         public SAP_DEFAULTS     Defaults            = new SAP_DEFAULTS();
         public APP_DEFAULTS     ADefaults           = new APP_DEFAULTS();
-        
         public const string     VersionNumber       = "1.0";
         public Theme            ThemeController;
         public MainForm         Reference;
@@ -113,7 +113,8 @@ namespace Mobility_Setup_Tool
         [Category("SAP Defaults")]
         [Description("Distribution channel for SAP")]
         [DisplayName("Distribution Channel")]
-        public string Distribution {
+        public string Distribution 
+        {
             get { return Defaults.Distribution; }
             set { Defaults.Distribution = value ?? ""; }
         }
@@ -121,7 +122,8 @@ namespace Mobility_Setup_Tool
         [Category("SAP Defaults")]
         [Description("Division of company")]
         [DisplayName("Division")]
-        public string Division {
+        public string Division 
+        {
             get { return Defaults.Division; }
             set { Defaults.Division = value ?? ""; }
         }
@@ -129,7 +131,8 @@ namespace Mobility_Setup_Tool
         [Category("SAP Defaults")]
         [Description("Default notification effect")]
         [DisplayName("Effect")]
-        public string Effect {
+        public string Effect 
+        {
             get { return Defaults.Effect; }
             set { Defaults.Effect = value ?? ""; }
         }
@@ -137,7 +140,8 @@ namespace Mobility_Setup_Tool
         [Category("SAP Defaults")]
         [Description("Current site location")]
         [DisplayName("Location")]
-        public string Location {
+        public string Location
+        {
             get { return Defaults.Location; }
             set { Defaults.Location = value ?? ""; }
         }
@@ -145,7 +149,8 @@ namespace Mobility_Setup_Tool
         [Category("SAP Defaults")]
         [Description("Organization number")]
         [DisplayName("Organization")]
-        public string Organization {
+        public string Organization 
+        {
             get { return Defaults.Organization; }
             set { Defaults.Organization = value ?? ""; }
         }
@@ -153,7 +158,8 @@ namespace Mobility_Setup_Tool
         [Category("SAP Defaults")]
         [Description("Current site planner group number")]
         [DisplayName("Planner Group")]
-        public string PlannerGroup {
+        public string PlannerGroup 
+        {
             get { return Defaults.PlannerGroup; }
             set { Defaults.PlannerGroup = value ?? ""; }
         }
@@ -161,7 +167,8 @@ namespace Mobility_Setup_Tool
         [Category("SAP Defaults")]
         [Description("Current site plant number")] 
         [DisplayName("Plant")]
-        public string Plant {
+        public string Plant 
+        {
             get { return Defaults.Plant; }
             set { Defaults.Plant = value ?? ""; }
         }
@@ -170,7 +177,8 @@ namespace Mobility_Setup_Tool
         [Description("Number of months for which to check if a service order is a warranty or not")]
         [DisplayName("Warranty Limit (months)")]
         [TypeConverter(typeof(WarrantySelector))]
-        public string WarrantyMonthLimit {
+        public string WarrantyMonthLimit 
+        {
             get { return Defaults.WarrantyMonthLimit; }
             set { Defaults.WarrantyMonthLimit = value ?? ""; }
         }
@@ -180,7 +188,8 @@ namespace Mobility_Setup_Tool
         [DisplayName("Border Color")]
         [Editor(typeof(MyColorEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(MyTypeConverter))]
-        public Color BorderColor {
+        public Color BorderColor 
+        {
             get { return ThemeController.ThemeBorderColor; }
             set { ThemeController.ThemeBorderColor = value != null ? value : Color.Black; }
         }
@@ -188,7 +197,8 @@ namespace Mobility_Setup_Tool
         [Category("Theme Settings"), Description("Background color of forms"), DisplayName("Background Color")]
         [Editor(typeof(MyColorEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(MyTypeConverter))]
-        public Color BackgroundColor {
+        public Color BackgroundColor 
+        {
             get { return ThemeController.ThemeBackgroundColor; }
             set { ThemeController.ThemeBackgroundColor = value != null ? value : Color.LightGray; }
         }
@@ -197,12 +207,12 @@ namespace Mobility_Setup_Tool
         [Description("Server path index for current plant")]
         [DisplayName("Server Path")]
         [Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
-        public string ServerIndex {
+        public string ServerIndex 
+        {
             get { return Defaults.ServerIndex; } 
             set { Defaults.ServerIndex = value ?? ""; }
         }
 
-        
         internal class MyTypeConverter : ColorConverter
         {
             public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
@@ -461,10 +471,23 @@ namespace Mobility_Setup_Tool
 
             if (ShowDiag) 
             { 
-                MsgBoxs.MsgBox_Normal("Application will now restart to complete settings reset");
-                Process.Start(Application.ExecutablePath);
-                Environment.Exit(0);
+                MsgBoxs.MsgBox_Normal("Application will now restart to complete settings reset, please wait for application to re-open.");
+                //Process.Start(Application.ExecutablePath, "-r");
+                //Application.Restart();
+                //Thread.Sleep(1000);
+                //Environment.Exit(0);
+                Restart();
             }
+        }
+
+        // Restart application written by EatonZ
+        public void Restart()
+        {
+
+
+            Process.Start(new ProcessStartInfo(Application.ExecutablePath, "-r"));
+            Application.Exit();
+            
         }
 
         // Save settings to file
@@ -501,7 +524,7 @@ namespace Mobility_Setup_Tool
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             Settings     refMyObject    = context.Instance as Settings;
-            RComboBox     FLCB           = refMyObject.Reference.FunctionLoc_CB;
+            ComboBox     FLCB           = refMyObject.Reference.FunctionLoc_CB;
             List<string> list           = new List<string>();
             
             for(int i = 0; i < FLCB.Items.Count; i++)
@@ -521,7 +544,7 @@ namespace Mobility_Setup_Tool
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             Settings refMyObject = context.Instance as Settings;
-            RComboBox FLCB = refMyObject.Reference.PMActivityType_CB;
+            ComboBox FLCB = refMyObject.Reference.PMActivityType_CB;
             List<string> list = new List<string>();
 
             for (int i = 0; i < FLCB.Items.Count; i++)
@@ -541,7 +564,7 @@ namespace Mobility_Setup_Tool
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             Settings refMyObject = context.Instance as Settings;
-            RComboBox FLCB = refMyObject.Reference.Priority_CB;
+            ComboBox FLCB = refMyObject.Reference.Priority_CB;
             List<string> list = new List<string>();
 
             for (int i = 0; i < FLCB.Items.Count; i++)
@@ -561,7 +584,7 @@ namespace Mobility_Setup_Tool
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             Settings refMyObject = context.Instance as Settings;
-            RComboBox FLCB = refMyObject.Reference.PartyName_CB;
+            ComboBox FLCB = refMyObject.Reference.PartyName_CB;
             List<string> list = new List<string>();
 
             for (int i = 0; i < FLCB.Items.Count; i++)

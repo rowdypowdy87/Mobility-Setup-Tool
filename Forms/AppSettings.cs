@@ -130,8 +130,7 @@ namespace Mobility_Setup_Tool
             {
                 if(MsgBoxs.MsgBox_Question("The Plant has been changed. A restart is required before these changes will take effect. Do you want to restart now?") == DialogResult.Yes)
                 {
-                    Process.Start(Application.ExecutablePath);
-                    Environment.Exit(0);
+                    RefForm.AppSettings.Restart();
                 }
             }
 

@@ -19,7 +19,15 @@ namespace Mobility_Setup_Tool
         {
             if (Session.GetSession())
             {
-                _ = RefForm.SetStatus("Creating service order", 0);
+                RefForm.SetStatus("Creating service order", 0);
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
 
                 Session.GetButton("*VIQMEL-AUFNR").Press();
 
@@ -38,6 +46,14 @@ namespace Mobility_Setup_Tool
                 Session.SendVKey(0);
                 Session.SendVKey(0);
                 Session.SendVKey(0);
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
 
                 // Set ZDI1
                 if (TaskInfo.WarrantyClaim)
@@ -76,6 +92,14 @@ namespace Mobility_Setup_Tool
 
                 Session.ClearErrors(30, true);
 
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
                 // Add tasklist
                 if (TaskInfo.Group != "" || TaskInfo.CEL != "NON-STANDARD VARIATION")
                 {
@@ -103,6 +127,14 @@ namespace Mobility_Setup_Tool
                     ((GuiTextField)Operations.FindById("txtAFVGD-ARBEI[10,0]")).Text = PlannedHours;
                 }
 
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
+                }
+
                 // Set to B03
                 if (MsgBox_Question("Would you like to change the component's store location?") == DialogResult.Yes)
                 {
@@ -114,6 +146,14 @@ namespace Mobility_Setup_Tool
                     NewStoreDialog.ShowDialog();
 
                     Session.ChangeStore(NewStoreDialog.StoreLoc, NewStoreDialog.SpecStock, Parent);
+                }
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
                 }
 
                 // Set settlement rule for warranty
@@ -138,6 +178,14 @@ namespace Mobility_Setup_Tool
                 if (MsgBox_Question("Would you like to release this service order?") == DialogResult.Yes)
                 {
                     Session.GetButton("btn[25]").Press();
+                }
+
+                // Check for cancel
+                if (Parent.CancellationPending)
+                {
+                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
+                    RefForm.SetStatus("User canceled", 0);
+                    return false;
                 }
 
                 Session.GetButton("btn[11]").Press();

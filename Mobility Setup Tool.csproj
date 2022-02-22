@@ -15,7 +15,7 @@
     <Platforms>AnyCPU;x86;x64</Platforms>
     <ApplicationIcon>Resources\UGLICONWHITE.ico</ApplicationIcon>
     <Win32Resource />
-    <AssemblyName>Mobility Setup &amp; Planning Tool</AssemblyName>
+    <AssemblyName>MST</AssemblyName>
     <StartupObject>Mobility_Setup_Tool.Program</StartupObject>
     <Configurations>Debug</Configurations>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>

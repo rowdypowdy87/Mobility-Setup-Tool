@@ -84,15 +84,18 @@ namespace Mobility_Setup_Tool
 
         public void RefreshTheme()
         {
-            for (int i = 0; i < Controls.Count; i++)
-            {
-                if (Type[i] == THEME_TYPE.Back)
+            if(!Program.HighPerformanceMode)
+            { 
+                for (int i = 0; i < Controls.Count; i++)
                 {
-                    SetColor((Control)Controls[i], BackgroundColor);
-                }
-                else
-                {
-                    SetColor((Control)Controls[i], BorderColor);
+                    if (Type[i] == THEME_TYPE.Back)
+                    {
+                        SetColor((Control)Controls[i], BackgroundColor);
+                    }
+                    else
+                    {
+                        SetColor((Control)Controls[i], BorderColor);
+                    }
                 }
             }
         }

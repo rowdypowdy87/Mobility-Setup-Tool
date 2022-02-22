@@ -37,16 +37,16 @@ namespace Mobility_Setup_Tool
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.OrganizatonCB = new Mobility_Setup_Tool.RComboBox();
-            this.PlantNumberCB = new Mobility_Setup_Tool.RComboBox();
+            this.OrganizatonCB = new Mobility_Setup_Tool.ExComboBox();
+            this.PlantNumberCB = new Mobility_Setup_Tool.ExComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.DistriChannelCB = new Mobility_Setup_Tool.RComboBox();
-            this.LocationCB = new Mobility_Setup_Tool.RComboBox();
-            this.PlannerGroupCB = new Mobility_Setup_Tool.RComboBox();
-            this.DivisionCB = new Mobility_Setup_Tool.RComboBox();
+            this.DistriChannelCB = new Mobility_Setup_Tool.ExComboBox();
+            this.LocationCB = new Mobility_Setup_Tool.ExComboBox();
+            this.PlannerGroupCB = new Mobility_Setup_Tool.ExComboBox();
+            this.DivisionCB = new Mobility_Setup_Tool.ExComboBox();
             this.ContinueBTN = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.TitleBar_PNL.SuspendLayout();
@@ -176,6 +176,7 @@ namespace Mobility_Setup_Tool
             this.OrganizatonCB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.OrganizatonCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.OrganizatonCB.BackColor = System.Drawing.SystemColors.HighlightText;
+            this.OrganizatonCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.OrganizatonCB.FormattingEnabled = true;
             this.OrganizatonCB.Items.AddRange(new object[] {
             "0001 - Sales Org. 001",
@@ -247,6 +248,7 @@ namespace Mobility_Setup_Tool
             this.PlantNumberCB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.PlantNumberCB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.PlantNumberCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.PlantNumberCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.PlantNumberCB.FormattingEnabled = true;
             this.PlantNumberCB.Items.AddRange(new object[] {
             "100 - UGL Pty Limited",
@@ -396,6 +398,7 @@ namespace Mobility_Setup_Tool
             this.DistriChannelCB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.DistriChannelCB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.DistriChannelCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.DistriChannelCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.DistriChannelCB.FormattingEnabled = true;
             this.DistriChannelCB.Items.AddRange(new object[] {
             "02 - External",
@@ -410,6 +413,7 @@ namespace Mobility_Setup_Tool
             this.LocationCB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.LocationCB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.LocationCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.LocationCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.LocationCB.FormattingEnabled = true;
             this.LocationCB.Items.AddRange(new object[] {
             "NSW-ANT - ANTEINNE",
@@ -479,6 +483,7 @@ namespace Mobility_Setup_Tool
             this.PlannerGroupCB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.PlannerGroupCB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.PlannerGroupCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.PlannerGroupCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.PlannerGroupCB.FormattingEnabled = true;
             this.PlannerGroupCB.Items.AddRange(new object[] {
             "ARM - ARG Maintenance",
@@ -505,6 +510,7 @@ namespace Mobility_Setup_Tool
             this.DivisionCB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.DivisionCB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.DivisionCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.DivisionCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.DivisionCB.FormattingEnabled = true;
             this.DivisionCB.Items.AddRange(new object[] {
             "00 - Common",
@@ -559,6 +565,8 @@ namespace Mobility_Setup_Tool
             this.Controls.Add(this.TitleBar_PNL);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "InitialSetup";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "lnitialSetup";
             this.Load += new System.EventHandler(this.InitialSetup_Load);
@@ -590,11 +598,11 @@ namespace Mobility_Setup_Tool
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button ContinueBTN;
-        public RComboBox OrganizatonCB;
-        public RComboBox PlantNumberCB;
-        public RComboBox LocationCB;
-        public RComboBox DistriChannelCB;
-        public RComboBox DivisionCB;
-        public RComboBox PlannerGroupCB;
+        public Mobility_Setup_Tool.ExComboBox OrganizatonCB;
+        public Mobility_Setup_Tool.ExComboBox PlantNumberCB;
+        public Mobility_Setup_Tool.ExComboBox LocationCB;
+        public Mobility_Setup_Tool.ExComboBox DistriChannelCB;
+        public Mobility_Setup_Tool.ExComboBox DivisionCB;
+        public Mobility_Setup_Tool.ExComboBox PlannerGroupCB;
     }
 }

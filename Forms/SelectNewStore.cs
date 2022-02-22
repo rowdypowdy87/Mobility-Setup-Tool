@@ -21,11 +21,12 @@ namespace Mobility_Setup_Tool
         }
 
         private void TitleBar_MouseMove(object sender, MouseEventArgs e) 
-         {
-            if (isTopPanelDragged) {
+        {
+            if (isTopPanelDragged) 
+            {
                 Point newPoint = TitleBar_PNL.PointToScreen(new Point(e.X, e.Y));
                 newPoint.Offset(offset);
-                this.Location = newPoint;
+                Location = newPoint;
 
             }
         }
@@ -37,9 +38,11 @@ namespace Mobility_Setup_Tool
             {
                 isTopPanelDragged = true;
                 Point pointStartPosition = this.PointToScreen(new Point(e.X, e.Y));
-                offset = new Point();
-                offset.X = this.Location.X - pointStartPosition.X;
-                offset.Y = this.Location.Y - pointStartPosition.Y;
+                offset = new Point()
+                { 
+                    X = Location.X - pointStartPosition.X,
+                    Y = Location.Y - pointStartPosition.Y
+                };
             }
             else {
                 isTopPanelDragged = false;
@@ -153,7 +156,8 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        private void Cancel_BTN_Click(object sender, EventArgs e) {
+        private void Cancel_BTN_Click(object sender, EventArgs e) 
+        {
             RunChangeStore = false;
             Close();
         }

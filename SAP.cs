@@ -4,6 +4,7 @@ using SAPFEWSELib;
 using System.Windows.Forms;
 using SapROTWr;
 using System.Data;
+using System.Reflection;
 using static Mobility_Setup_Tool.MsgBoxs;
 using EXCEL = Microsoft.Office.Interop.Excel;
 using System.ComponentModel;
@@ -126,71 +127,82 @@ namespace Mobility_Setup_Tool
     public class AUTOSAP : IDisposable
     {
         // Internal class control objects
-        public static GuiSession       SapSession    { get; set; }
-        public static GuiMainWindow    SapWindow     { get; set; }
-        public static GuiApplication   SapApp        { get; set; }
-        public static GuiConnection    SapConnection { get; set; }
-        public static bool             SapConnected  { get; set; }
-        public MainForm RefForm;
-        private bool disposedValue;
+        public GuiSession       SapSession    { get; set; }
+        public GuiMainWindow    SapWindow     { get; set; }
+        public GuiApplication   SapApp        { get; set; }
+        public GuiConnection    SapConnection { get; set; }
+        public bool             SapConnected  { get; set; }
+        public MainForm         RefForm;
+        private bool            disposedValue;
 
-        public AUTOSAP(MainForm r) { RefForm = r; }
+        public AUTOSAP(MainForm r) 
+        {
+            RefForm = r; 
+        }
 
         // Find any open SAP session, return false if not open
         public bool GetSession()
         {
-            if(SapConnection == null)
-            { 
-                // Create new instance of ROT wrapper to attach to SAPGUI
-                CSapROTWrapper sapROT = new CSapROTWrapper();
+            GuiComponent Con     = null;
+            object       SapGui  = null;
 
-                // Attach to GUI
-                object sapGui = sapROT.GetROTEntry("SAPGUI");
+            // Create new instance of running object table wrapper
+            CSapROTWrapper SapROT = new CSapROTWrapper();
 
-                if (sapGui == null) return false;
-
-                // Find & attach to scripting engine
-                try
-                {
-                    SapApp = (sapGui.GetType().InvokeMember("GetScriptingEngine", System.Reflection.BindingFlags.InvokeMethod, null, sapGui, null) as GuiApplication);
-                } catch (Exception ex) {
-                    MsgBox_Error(ex.Message);
-                    return false;
-                }
-
-                // Find connection to scripting engine
-                for (int i = 0; i< SapApp.Children.Count; i++)
-                {
-                    SapConnection = (SapApp.Children.ElementAt(i) as GuiConnection);
-                }
-
-                // Verify the connection
-                if (SapConnection == null)
-                {
-                    SapConnected = false;
-                
-                    return false;
-                }
-
-                // Get SAP session
-                try {
-                    SapSession = (GuiSession)SapConnection.Children.ElementAt(0);
-                } catch
-                { }
-
-                // Verify the sesssion
-                if (SapSession == null)
-                {
-                    SapConnected = false;
-                    return false;
-                }
-
-                // Get SAP window
-                SapWindow = (GuiMainWindow)SapSession.Children.ElementAt(0);
-
-                // Success
-                SapConnected = true;
+            // Try find the SAPGUI object from the running object table
+            try {
+                SapGui = SapROT.GetROTEntry("SAPGUI");
+            } catch {
+                SapConnected = false;   
+                return false;   
             }
+
+            if (SapGui == null) return false;
+
+            // Find the scripting engine object from SAPGUI
+            try {
+                SapApp = SapGui.GetType().InvokeMember("GetScriptingEngine", BindingFlags.InvokeMethod, null, SapGui, null) as GuiApplication;
+            } catch {
+                SapConnected = false;  
+                return false;
+            }
+
+            // Find connection to scripting engine
+            for (int i = 0; i< SapApp.Children.Count; i++)
+            {
+                Con = SapApp.Children.ElementAt(i);
+
+                if(Con.Type == "GuiConnection")
+                {
+                    SapConnection = (GuiConnection)Con;
+                }
+            }
+
+            // Verify the connection
+            if (SapConnection == null)
+            {
+                SapConnected = false;
+                return false;
+            }
+
+            // Try to get SAP session
+            try { 
+                SapSession = (GuiSession)SapConnection.Children.ElementAt(0);
+            } catch  { 
+                SapConnected = false;
+                return false; 
+            }
+
+            // Try to get SAP window
+            try { 
+                SapWindow = (GuiMainWindow)SapSession.Children.ElementAt(0); 
+            } catch  { 
+                SapConnected = false; 
+                return false; 
+            }
+
+            // Success
+            SapConnected = true;
             return true;
         }
 
@@ -302,7 +314,8 @@ namespace Mobility_Setup_Tool
                         CurrentStock.Text   = NewSpecialStock;
 
                         // Revert if failed
-                        if (!ClearErrors(5, false)){
+                        if (!ClearErrors(5, false))
+                        {
                             // Re-connect to fields
                             ComponentTable          = ((GuiTableControl)SapWindow.FindByName("SAPLCOMKTCTRL_3020", "GuiTableControl"));
                             StoreLocations          = ComponentTable.FindAllByName("RESBD-LGORT", "GuiCTextField");
@@ -418,7 +431,6 @@ namespace Mobility_Setup_Tool
                 return null;
             }
             // SAP not connected return null
-            
         }
 
         // Get Button by ID

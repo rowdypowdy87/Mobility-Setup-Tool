@@ -114,6 +114,7 @@ namespace Mobility_Setup_Tool
             this.CancelBtn.TabIndex = 9;
             this.CancelBtn.Text = "CANCEL";
             this.CancelBtn.UseVisualStyleBackColor = true;
+            this.CancelBtn.Click += new System.EventHandler(this.CancelBtn_Click);
             // 
             // TBInformation
             // 
