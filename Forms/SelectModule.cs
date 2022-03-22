@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Mobility_Setup_Tool.Forms
@@ -20,19 +16,27 @@ namespace Mobility_Setup_Tool.Forms
 
         private void Continue_BTN_Click(object sender, EventArgs e)
         {
-            Close();
+            if (InvokeRequired)
+                Invoke(new EventHandler(Continue_BTN_Click));
+            else
+                Close();
         }
 
         private void Module_Load(object sender, EventArgs e)
         {
-            TitleBar.BackColor  = RefForm.ThemeController.GetBordercolor();
-            BackColor           = RefForm.ThemeController.GetBackcolor();
+            if (InvokeRequired)
+                Invoke(new AssemblyLoadEventHandler(Module_Load));
+            else
+            { 
+                TitleBar.BackColor = RefForm.ThemeController.GetBordercolor();
+                BackColor = RefForm.ThemeController.GetBackcolor();
 
-            RefForm.ThemeController.AddControls(TitleBar, THEME_TYPE.Border);
-            RefForm.ThemeController.AddControls(BackColor, THEME_TYPE.Back);
+                RefForm.ThemeController.AddControls(TitleBar, THEME_TYPE.Border);
+                RefForm.ThemeController.AddControls(BackColor, THEME_TYPE.Back);
 
-            // Manually centre the form to MainForm
-            Location = new Point((RefForm.Location.X + RefForm.Width / 2) - Width / 2, (RefForm.Location.Y + RefForm.Height / 2) - Height / 2);
+                // Manually centre the form to MainForm
+                Location = new Point((RefForm.Location.X + RefForm.Width / 2) - Width / 2, (RefForm.Location.Y + RefForm.Height / 2) - Height / 2);
+            }
         }
 
         // Override paint event on the main form

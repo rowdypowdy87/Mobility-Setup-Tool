@@ -31,7 +31,7 @@ namespace Mobility_Setup_Tool
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PartsSelector));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.TitleBar_PNL = new System.Windows.Forms.Panel();
             this.MinimizeButton_LBL = new System.Windows.Forms.Label();
             this.UGLLogo_PB = new System.Windows.Forms.PictureBox();
@@ -70,8 +70,9 @@ namespace Mobility_Setup_Tool
             this.TitleBar_PNL.Controls.Add(this.CloseButton_LBL);
             this.TitleBar_PNL.Controls.Add(this.Title_LBL);
             this.TitleBar_PNL.Location = new System.Drawing.Point(0, 0);
+            this.TitleBar_PNL.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TitleBar_PNL.Name = "TitleBar_PNL";
-            this.TitleBar_PNL.Size = new System.Drawing.Size(1280, 37);
+            this.TitleBar_PNL.Size = new System.Drawing.Size(1120, 35);
             this.TitleBar_PNL.TabIndex = 4;
             this.TitleBar_PNL.DoubleClick += new System.EventHandler(this.TitleBar_DoubleClick);
             this.TitleBar_PNL.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseDown);
@@ -86,10 +87,10 @@ namespace Mobility_Setup_Tool
             this.MinimizeButton_LBL.Font = new System.Drawing.Font("BankGothic Md BT", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MinimizeButton_LBL.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.MinimizeButton_LBL.Image = ((System.Drawing.Image)(resources.GetObject("MinimizeButton_LBL.Image")));
-            this.MinimizeButton_LBL.Location = new System.Drawing.Point(1175, 0);
+            this.MinimizeButton_LBL.Location = new System.Drawing.Point(1028, 0);
             this.MinimizeButton_LBL.Margin = new System.Windows.Forms.Padding(0);
             this.MinimizeButton_LBL.Name = "MinimizeButton_LBL";
-            this.MinimizeButton_LBL.Size = new System.Drawing.Size(35, 37);
+            this.MinimizeButton_LBL.Size = new System.Drawing.Size(31, 35);
             this.MinimizeButton_LBL.TabIndex = 8;
             this.MinimizeButton_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.MinimizeButton_LBL.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MiniButton_LBL_MouseDown);
@@ -101,7 +102,8 @@ namespace Mobility_Setup_Tool
             this.UGLLogo_PB.ErrorImage = null;
             this.UGLLogo_PB.Image = global::Mobility_Setup_Tool.Properties.Resources.Sprite11;
             this.UGLLogo_PB.InitialImage = null;
-            this.UGLLogo_PB.Location = new System.Drawing.Point(6, 6);
+            this.UGLLogo_PB.Location = new System.Drawing.Point(5, 5);
+            this.UGLLogo_PB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UGLLogo_PB.Name = "UGLLogo_PB";
             this.UGLLogo_PB.Size = new System.Drawing.Size(24, 24);
             this.UGLLogo_PB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -116,10 +118,10 @@ namespace Mobility_Setup_Tool
             this.MaximizeButton_LBL.Font = new System.Drawing.Font("BankGothic Md BT", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MaximizeButton_LBL.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.MaximizeButton_LBL.Image = global::Mobility_Setup_Tool.Properties.Resources.MS;
-            this.MaximizeButton_LBL.Location = new System.Drawing.Point(1210, 0);
+            this.MaximizeButton_LBL.Location = new System.Drawing.Point(1059, 0);
             this.MaximizeButton_LBL.Margin = new System.Windows.Forms.Padding(0);
             this.MaximizeButton_LBL.Name = "MaximizeButton_LBL";
-            this.MaximizeButton_LBL.Size = new System.Drawing.Size(35, 37);
+            this.MaximizeButton_LBL.Size = new System.Drawing.Size(31, 35);
             this.MaximizeButton_LBL.TabIndex = 9;
             this.MaximizeButton_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.MaximizeButton_LBL.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MaxButton_LBL_MouseDown);
@@ -134,10 +136,10 @@ namespace Mobility_Setup_Tool
             this.CloseButton_LBL.Font = new System.Drawing.Font("BankGothic Md BT", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.CloseButton_LBL.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.CloseButton_LBL.Image = ((System.Drawing.Image)(resources.GetObject("CloseButton_LBL.Image")));
-            this.CloseButton_LBL.Location = new System.Drawing.Point(1245, 0);
+            this.CloseButton_LBL.Location = new System.Drawing.Point(1089, 0);
             this.CloseButton_LBL.Margin = new System.Windows.Forms.Padding(0);
             this.CloseButton_LBL.Name = "CloseButton_LBL";
-            this.CloseButton_LBL.Size = new System.Drawing.Size(35, 37);
+            this.CloseButton_LBL.Size = new System.Drawing.Size(31, 35);
             this.CloseButton_LBL.TabIndex = 10;
             this.CloseButton_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.CloseButton_LBL.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CloseButton_LBL_MouseDown);
@@ -146,11 +148,11 @@ namespace Mobility_Setup_Tool
             // 
             // Title_LBL
             // 
-            this.Title_LBL.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Title_LBL.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.Title_LBL.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.Title_LBL.Location = new System.Drawing.Point(35, 0);
             this.Title_LBL.Name = "Title_LBL";
-            this.Title_LBL.Size = new System.Drawing.Size(459, 37);
+            this.Title_LBL.Size = new System.Drawing.Size(402, 35);
             this.Title_LBL.TabIndex = 5;
             this.Title_LBL.Text = "Mobility Setup and Planning Tool - Component Select Screen";
             this.Title_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -168,9 +170,10 @@ namespace Mobility_Setup_Tool
             this.Holder_PNL.Controls.Add(this.Cancel_BTN);
             this.Holder_PNL.Controls.Add(this.Continue_BTN);
             this.Holder_PNL.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.Holder_PNL.Location = new System.Drawing.Point(16, 124);
+            this.Holder_PNL.Location = new System.Drawing.Point(14, 93);
+            this.Holder_PNL.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Holder_PNL.Name = "Holder_PNL";
-            this.Holder_PNL.Size = new System.Drawing.Size(1245, 802);
+            this.Holder_PNL.Size = new System.Drawing.Size(1090, 602);
             this.Holder_PNL.TabIndex = 5;
             // 
             // Parts_DGV
@@ -188,20 +191,21 @@ namespace Mobility_Setup_Tool
             this.Qty,
             this.StorLoc,
             this.SpecialStock});
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.Parts_DGV.DefaultCellStyle = dataGridViewCellStyle1;
-            this.Parts_DGV.Location = new System.Drawing.Point(14, 56);
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.Parts_DGV.DefaultCellStyle = dataGridViewCellStyle4;
+            this.Parts_DGV.Location = new System.Drawing.Point(12, 42);
+            this.Parts_DGV.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Parts_DGV.Name = "Parts_DGV";
             this.Parts_DGV.RowHeadersVisible = false;
             this.Parts_DGV.RowHeadersWidth = 51;
             this.Parts_DGV.RowTemplate.Height = 29;
-            this.Parts_DGV.Size = new System.Drawing.Size(1215, 675);
+            this.Parts_DGV.Size = new System.Drawing.Size(1063, 506);
             this.Parts_DGV.TabIndex = 4;
             // 
             // Selected
@@ -262,27 +266,29 @@ namespace Mobility_Setup_Tool
             this.Filter_LBL.AutoSize = true;
             this.Filter_LBL.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.Filter_LBL.ForeColor = System.Drawing.Color.Black;
-            this.Filter_LBL.Location = new System.Drawing.Point(21, 18);
+            this.Filter_LBL.Location = new System.Drawing.Point(18, 14);
             this.Filter_LBL.Name = "Filter_LBL";
-            this.Filter_LBL.Size = new System.Drawing.Size(68, 20);
+            this.Filter_LBL.Size = new System.Drawing.Size(53, 15);
             this.Filter_LBL.TabIndex = 3;
             this.Filter_LBL.Text = "FILTERS:";
             // 
             // Filter_CB
             // 
             this.Filter_CB.FormattingEnabled = true;
-            this.Filter_CB.Location = new System.Drawing.Point(97, 13);
+            this.Filter_CB.Location = new System.Drawing.Point(85, 10);
+            this.Filter_CB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Filter_CB.Name = "Filter_CB";
-            this.Filter_CB.Size = new System.Drawing.Size(269, 28);
+            this.Filter_CB.Size = new System.Drawing.Size(236, 23);
             this.Filter_CB.TabIndex = 2;
             // 
             // Cancel_BTN
             // 
             this.Cancel_BTN.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Cancel_BTN.ForeColor = System.Drawing.Color.Black;
-            this.Cancel_BTN.Location = new System.Drawing.Point(327, 737);
+            this.Cancel_BTN.Location = new System.Drawing.Point(286, 553);
+            this.Cancel_BTN.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Cancel_BTN.Name = "Cancel_BTN";
-            this.Cancel_BTN.Size = new System.Drawing.Size(308, 54);
+            this.Cancel_BTN.Size = new System.Drawing.Size(270, 40);
             this.Cancel_BTN.TabIndex = 1;
             this.Cancel_BTN.Text = "Cancel";
             this.Cancel_BTN.UseVisualStyleBackColor = true;
@@ -291,9 +297,10 @@ namespace Mobility_Setup_Tool
             // 
             this.Continue_BTN.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Continue_BTN.ForeColor = System.Drawing.Color.Black;
-            this.Continue_BTN.Location = new System.Drawing.Point(13, 737);
+            this.Continue_BTN.Location = new System.Drawing.Point(11, 553);
+            this.Continue_BTN.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Continue_BTN.Name = "Continue_BTN";
-            this.Continue_BTN.Size = new System.Drawing.Size(308, 54);
+            this.Continue_BTN.Size = new System.Drawing.Size(270, 40);
             this.Continue_BTN.TabIndex = 1;
             this.Continue_BTN.Text = "Continue";
             this.Continue_BTN.UseVisualStyleBackColor = true;
@@ -305,27 +312,29 @@ namespace Mobility_Setup_Tool
             this.MainUGLLogo_PB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.MainUGLLogo_PB.ErrorImage = null;
             this.MainUGLLogo_PB.Image = global::Mobility_Setup_Tool.Properties.Resources.LOGOWHITE;
-            this.MainUGLLogo_PB.Location = new System.Drawing.Point(1006, 45);
+            this.MainUGLLogo_PB.Location = new System.Drawing.Point(880, 37);
+            this.MainUGLLogo_PB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MainUGLLogo_PB.Name = "MainUGLLogo_PB";
-            this.MainUGLLogo_PB.Size = new System.Drawing.Size(255, 73);
+            this.MainUGLLogo_PB.Size = new System.Drawing.Size(223, 55);
             this.MainUGLLogo_PB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.MainUGLLogo_PB.TabIndex = 10;
             this.MainUGLLogo_PB.TabStop = false;
             // 
             // PartsSelector
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.ClientSize = new System.Drawing.Size(1280, 945);
+            this.ClientSize = new System.Drawing.Size(1120, 709);
             this.Controls.Add(this.MainUGLLogo_PB);
             this.Controls.Add(this.Holder_PNL);
             this.Controls.Add(this.TitleBar_PNL);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(1280, 945);
+            this.MinimumSize = new System.Drawing.Size(1120, 709);
             this.Name = "PartsSelector";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Components";

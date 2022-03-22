@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using static Mobility_Setup_Tool.MsgBoxs;
 
 /*
  *  TEMPLATE CLASS FOR FORM DESIGN WITH ALL FEATURES, COPY THIS TO MAKE A NEW FORM FOR THE APPLICATION
@@ -18,7 +14,7 @@ namespace Mobility_Setup_Tool
         public MainForm RefForm;
 
         // Window movement globals
-        public bool  isTopPanelDragged;
+        public bool isTopPanelDragged;
         public Point offset;
 
         public TEMPLATE_FORM(MainForm r)
@@ -29,11 +25,11 @@ namespace Mobility_Setup_Tool
 
         private void TEMPLATE_FORM_Load(object sender, EventArgs e)
         {
-            BackColor                    = RefForm.ThemeController.GetBackcolor();
-            TitleBar_PNL.BackColor       = RefForm.ThemeController.GetBordercolor();
+            BackColor = RefForm.ThemeController.GetBackcolor();
+            TitleBar_PNL.BackColor = RefForm.ThemeController.GetBordercolor();
             MinimizeButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
             MaximizeButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
-            CloseButton_LBL.BackColor    = RefForm.ThemeController.GetBordercolor();
+            CloseButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
 
             RefForm.ThemeController.AddControls(TitleBar_PNL, THEME_TYPE.Border);
             RefForm.ThemeController.AddControls(MinimizeButton_LBL, THEME_TYPE.Border);
@@ -43,7 +39,7 @@ namespace Mobility_Setup_Tool
 
         }
 
-#region WINDOW THEME CONTROLS
+        #region WINDOW THEME CONTROLS
 
         // Close button label mouse enter event 
         private void CloseButton_LBL_MouseEnter(object sender, EventArgs e) { CloseButton_LBL.BackColor = RefForm.ThemeController.GetBackcolor(); }
@@ -87,7 +83,7 @@ namespace Mobility_Setup_Tool
                     if ((int)m.Result == 0x01)
                     {
                         Point screenPoint = new Point(m.LParam.ToInt32());
-                        Point clientPoint = this.PointToClient(screenPoint);
+                        Point clientPoint = PointToClient(screenPoint);
                         if (clientPoint.Y <= RESIZE_HANDLE_SIZE)
                         {
                             if (clientPoint.X <= RESIZE_HANDLE_SIZE)
@@ -131,10 +127,10 @@ namespace Mobility_Setup_Tool
             base.OnPaint(e);
 
             // Variables
-            Pen         BorderPen   = new Pen(RefForm.ThemeController.GetBordercolor(), 1.0f);
+            Pen BorderPen = new Pen(RefForm.ThemeController.GetBordercolor(), 1.0f);
             //Brush     Fill        = BorderPen.Brush;
-            Graphics    FormGFX     = e.Graphics;
-            Rectangle   FormBorder;
+            Graphics FormGFX = e.Graphics;
+            Rectangle FormBorder;
 
             // Get rect
             FormBorder = new Rectangle(ClientRectangle.X,
@@ -178,16 +174,17 @@ namespace Mobility_Setup_Tool
         {
             if (e.Button == MouseButtons.Left)
             {
-                isTopPanelDragged = true;
-                Point pointStartPosition = this.PointToScreen(new Point(e.X, e.Y));
-                offset = new Point();
-                offset.X = this.Location.X - pointStartPosition.X;
-                offset.Y = this.Location.Y - pointStartPosition.Y;
+                isTopPanelDragged           = true;
+                Point pointStartPosition    = PointToScreen(new Point(e.X, e.Y));
+                offset                      = new Point
+                {
+                    X = Location.X - pointStartPosition.X,
+                    Y = Location.Y - pointStartPosition.Y
+                };
             }
             else
-            {
                 isTopPanelDragged = false;
-            }
+            
             if (e.Clicks == 2) isTopPanelDragged = false;
         }
 

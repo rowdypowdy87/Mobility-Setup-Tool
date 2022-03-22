@@ -53,9 +53,9 @@ namespace Mobility_Setup_Tool
             this.StoreLocation_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.StoreLocation_LBL.AutoSize = true;
             this.StoreLocation_LBL.Font = new System.Drawing.Font("Calibri", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.StoreLocation_LBL.Location = new System.Drawing.Point(90, 10);
+            this.StoreLocation_LBL.Location = new System.Drawing.Point(84, 6);
             this.StoreLocation_LBL.Name = "StoreLocation_LBL";
-            this.StoreLocation_LBL.Size = new System.Drawing.Size(104, 15);
+            this.StoreLocation_LBL.Size = new System.Drawing.Size(86, 13);
             this.StoreLocation_LBL.TabIndex = 0;
             this.StoreLocation_LBL.Text = "STORE LOCATION:";
             // 
@@ -63,9 +63,10 @@ namespace Mobility_Setup_Tool
             // 
             this.StoreLocation_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.StoreLocation_TB.Font = new System.Drawing.Font("Calibri", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.StoreLocation_TB.Location = new System.Drawing.Point(200, 6);
+            this.StoreLocation_TB.Location = new System.Drawing.Point(176, 3);
+            this.StoreLocation_TB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.StoreLocation_TB.Name = "StoreLocation_TB";
-            this.StoreLocation_TB.Size = new System.Drawing.Size(264, 23);
+            this.StoreLocation_TB.Size = new System.Drawing.Size(230, 20);
             this.StoreLocation_TB.TabIndex = 1;
             // 
             // tableLayoutPanel1
@@ -77,12 +78,13 @@ namespace Mobility_Setup_Tool
             this.tableLayoutPanel1.Controls.Add(this.StoreLocation_LBL, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.SpecialStock_LBL, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.SpecialStock_TB, 1, 1);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(14, 64);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 48);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(467, 70);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(409, 52);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // SpecialStock_LBL
@@ -90,9 +92,9 @@ namespace Mobility_Setup_Tool
             this.SpecialStock_LBL.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.SpecialStock_LBL.AutoSize = true;
             this.SpecialStock_LBL.Font = new System.Drawing.Font("Calibri", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.SpecialStock_LBL.Location = new System.Drawing.Point(40, 45);
+            this.SpecialStock_LBL.Location = new System.Drawing.Point(40, 32);
             this.SpecialStock_LBL.Name = "SpecialStock_LBL";
-            this.SpecialStock_LBL.Size = new System.Drawing.Size(154, 15);
+            this.SpecialStock_LBL.Size = new System.Drawing.Size(130, 13);
             this.SpecialStock_LBL.TabIndex = 0;
             this.SpecialStock_LBL.Text = "SPECIAL STOCK INDICATOR:";
             // 
@@ -100,9 +102,10 @@ namespace Mobility_Setup_Tool
             // 
             this.SpecialStock_TB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.SpecialStock_TB.Font = new System.Drawing.Font("Calibri", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.SpecialStock_TB.Location = new System.Drawing.Point(200, 41);
+            this.SpecialStock_TB.Location = new System.Drawing.Point(176, 29);
+            this.SpecialStock_TB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SpecialStock_TB.Name = "SpecialStock_TB";
-            this.SpecialStock_TB.Size = new System.Drawing.Size(264, 23);
+            this.SpecialStock_TB.Size = new System.Drawing.Size(230, 20);
             this.SpecialStock_TB.TabIndex = 2;
             // 
             // TitleBar_PNL
@@ -112,8 +115,9 @@ namespace Mobility_Setup_Tool
             this.TitleBar_PNL.Controls.Add(this.UGLLogo_PB);
             this.TitleBar_PNL.Controls.Add(this.Title_LBL);
             this.TitleBar_PNL.Location = new System.Drawing.Point(0, 0);
+            this.TitleBar_PNL.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TitleBar_PNL.Name = "TitleBar_PNL";
-            this.TitleBar_PNL.Size = new System.Drawing.Size(497, 40);
+            this.TitleBar_PNL.Size = new System.Drawing.Size(435, 35);
             this.TitleBar_PNL.TabIndex = 3;
             // 
             // CloseButton_LBL
@@ -124,10 +128,10 @@ namespace Mobility_Setup_Tool
             this.CloseButton_LBL.Font = new System.Drawing.Font("BankGothic Md BT", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.CloseButton_LBL.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.CloseButton_LBL.Image = ((System.Drawing.Image)(resources.GetObject("CloseButton_LBL.Image")));
-            this.CloseButton_LBL.Location = new System.Drawing.Point(457, 0);
+            this.CloseButton_LBL.Location = new System.Drawing.Point(400, 0);
             this.CloseButton_LBL.Margin = new System.Windows.Forms.Padding(0);
             this.CloseButton_LBL.Name = "CloseButton_LBL";
-            this.CloseButton_LBL.Size = new System.Drawing.Size(40, 40);
+            this.CloseButton_LBL.Size = new System.Drawing.Size(35, 35);
             this.CloseButton_LBL.TabIndex = 9;
             this.CloseButton_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.CloseButton_LBL.MouseEnter += new System.EventHandler(this.CloseButton_LBL_MouseEnter);
@@ -138,9 +142,10 @@ namespace Mobility_Setup_Tool
             this.UGLLogo_PB.ErrorImage = null;
             this.UGLLogo_PB.Image = global::Mobility_Setup_Tool.Properties.Resources.Sprite11;
             this.UGLLogo_PB.InitialImage = null;
-            this.UGLLogo_PB.Location = new System.Drawing.Point(7, 6);
+            this.UGLLogo_PB.Location = new System.Drawing.Point(5, 5);
+            this.UGLLogo_PB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UGLLogo_PB.Name = "UGLLogo_PB";
-            this.UGLLogo_PB.Size = new System.Drawing.Size(28, 25);
+            this.UGLLogo_PB.Size = new System.Drawing.Size(24, 24);
             this.UGLLogo_PB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.UGLLogo_PB.TabIndex = 8;
             this.UGLLogo_PB.TabStop = false;
@@ -149,9 +154,9 @@ namespace Mobility_Setup_Tool
             // 
             this.Title_LBL.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.Title_LBL.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Title_LBL.Location = new System.Drawing.Point(39, 0);
+            this.Title_LBL.Location = new System.Drawing.Point(35, 0);
             this.Title_LBL.Name = "Title_LBL";
-            this.Title_LBL.Size = new System.Drawing.Size(453, 40);
+            this.Title_LBL.Size = new System.Drawing.Size(308, 35);
             this.Title_LBL.TabIndex = 7;
             this.Title_LBL.Text = "Mobility Setup and Planning Tool - Choose Store";
             this.Title_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -166,17 +171,19 @@ namespace Mobility_Setup_Tool
             this.Border_PNL.Controls.Add(this.Apply_BTN);
             this.Border_PNL.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.Border_PNL.Location = new System.Drawing.Point(0, 0);
+            this.Border_PNL.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Border_PNL.Name = "Border_PNL";
-            this.Border_PNL.Size = new System.Drawing.Size(497, 220);
+            this.Border_PNL.Size = new System.Drawing.Size(435, 165);
             this.Border_PNL.TabIndex = 4;
             this.Border_PNL.Paint += new System.Windows.Forms.PaintEventHandler(this.NewStore_Paint);
             // 
             // Cancel_BTN
             // 
             this.Cancel_BTN.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.Cancel_BTN.Location = new System.Drawing.Point(261, 158);
+            this.Cancel_BTN.Location = new System.Drawing.Point(228, 118);
+            this.Cancel_BTN.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Cancel_BTN.Name = "Cancel_BTN";
-            this.Cancel_BTN.Size = new System.Drawing.Size(220, 45);
+            this.Cancel_BTN.Size = new System.Drawing.Size(192, 34);
             this.Cancel_BTN.TabIndex = 4;
             this.Cancel_BTN.Text = "Cancel";
             this.Cancel_BTN.UseVisualStyleBackColor = true;
@@ -185,9 +192,10 @@ namespace Mobility_Setup_Tool
             // Apply_BTN
             // 
             this.Apply_BTN.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.Apply_BTN.Location = new System.Drawing.Point(17, 158);
+            this.Apply_BTN.Location = new System.Drawing.Point(15, 118);
+            this.Apply_BTN.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Apply_BTN.Name = "Apply_BTN";
-            this.Apply_BTN.Size = new System.Drawing.Size(220, 45);
+            this.Apply_BTN.Size = new System.Drawing.Size(192, 34);
             this.Apply_BTN.TabIndex = 3;
             this.Apply_BTN.Text = "Apply";
             this.Apply_BTN.UseVisualStyleBackColor = true;
@@ -195,13 +203,14 @@ namespace Mobility_Setup_Tool
             // 
             // SelectNewStore
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(497, 220);
+            this.ClientSize = new System.Drawing.Size(435, 165);
             this.Controls.Add(this.TitleBar_PNL);
             this.Controls.Add(this.Border_PNL);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Location = new System.Drawing.Point(20, 20);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "SelectNewStore";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;

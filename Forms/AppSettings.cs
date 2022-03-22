@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace Mobility_Setup_Tool
 {
@@ -10,11 +9,11 @@ namespace Mobility_Setup_Tool
         public MainForm RefForm;
 
         // Window movement globals
-        private bool  isTopPanelDragged;
+        private bool isTopPanelDragged;
         private Point offset;
-        public  string CurPlant;
+        public string CurPlant;
 
-        public AppSettings(MainForm r) 
+        public AppSettings(MainForm r)
         {
             RefForm = r;
             InitializeComponent();
@@ -28,10 +27,12 @@ namespace Mobility_Setup_Tool
             if (e.Button == MouseButtons.Left)
             {
                 isTopPanelDragged = true;
-                Point pointStartPosition = this.PointToScreen(new Point(e.X, e.Y));
-                offset = new Point();
-                offset.X = this.Location.X - pointStartPosition.X;
-                offset.Y = this.Location.Y - pointStartPosition.Y;
+                Point pointStartPosition = PointToScreen(new Point(e.X, e.Y));
+                offset = new Point
+                {
+                    X = Location.X - pointStartPosition.X,
+                    Y = Location.Y - pointStartPosition.Y
+                };
             }
             else
             {
@@ -50,7 +51,7 @@ namespace Mobility_Setup_Tool
             {
                 Point newPoint = TitleBar.PointToScreen(new Point(e.X, e.Y));
                 newPoint.Offset(offset);
-                this.Location = newPoint;
+                Location = newPoint;
             }
         }
 
@@ -60,7 +61,7 @@ namespace Mobility_Setup_Tool
             {
                 Point newPoint = TitleBar.PointToScreen(new Point(e.X, e.Y));
                 newPoint.Offset(offset);
-                this.Location = newPoint;
+                Location = newPoint;
 
             }
         }
@@ -71,10 +72,12 @@ namespace Mobility_Setup_Tool
             if (e.Button == MouseButtons.Left)
             {
                 isTopPanelDragged = true;
-                Point pointStartPosition = this.PointToScreen(new Point(e.X, e.Y));
-                offset = new Point();
-                offset.X = this.Location.X - pointStartPosition.X;
-                offset.Y = this.Location.Y - pointStartPosition.Y;
+                Point pointStartPosition = PointToScreen(new Point(e.X, e.Y));
+                offset = new Point
+                {
+                    X = Location.X - pointStartPosition.X,
+                    Y = Location.Y - pointStartPosition.Y
+                };
             }
             else
             {
@@ -100,15 +103,15 @@ namespace Mobility_Setup_Tool
             AppSettings_PG.SelectedObject = RefForm.AppSettings;
 
             // Set colors
-            TitleBar.BackColor            = RefForm.ThemeController.GetBordercolor();
-            BackColor                     = RefForm.ThemeController.GetBackcolor();
+            TitleBar.BackColor = RefForm.ThemeController.GetBordercolor();
+            BackColor = RefForm.ThemeController.GetBackcolor();
         }
 
         private void Apply_BTN_Click(object sender, EventArgs e)
         {
             // Set colors
-            TitleBar.BackColor  = RefForm.ThemeController.GetBordercolor();
-            BackColor           = RefForm.ThemeController.GetBackcolor();
+            TitleBar.BackColor = RefForm.ThemeController.GetBordercolor();
+            BackColor = RefForm.ThemeController.GetBackcolor();
 
             // Set app defaults && theme settings
             RefForm.AppSettings.SaveSettings();
@@ -116,19 +119,19 @@ namespace Mobility_Setup_Tool
             RefForm.ThemeController.SaveTheme();
 
             // Set field defaults
-            RefForm.FunctionLoc_CB.Text                 = RefForm.AppSettings.ADefaults.FunctionLocation;
-            RefForm.PartyName_CB.Text                   = RefForm.AppSettings.ADefaults.SoldToParty;
-            RefForm.PMActivityType_CB.Text              = RefForm.AppSettings.ADefaults.PmActivityType;
-            RefForm.Priority_CB.Text                    = RefForm.AppSettings.ADefaults.Priority;
-            RefForm.ExternalReference_TB.Text           = RefForm.AppSettings.ADefaults.ExternalReference;
-            RefForm.VarPMActivityType_CB.Text           = RefForm.AppSettings.ADefaults.PmActivityType;
-            RefForm.VarSOPriority_CB.Text               = RefForm.AppSettings.ADefaults.Priority;
-            RefForm.VarExternalReference_TB.Text        = RefForm.AppSettings.ADefaults.ExternalReference;
+            RefForm.FunctionLoc_CB.Text = RefForm.AppSettings.ADefaults.FunctionLocation;
+            RefForm.PartyName_CB.Text = RefForm.AppSettings.ADefaults.SoldToParty;
+            RefForm.PMActivityType_CB.Text = RefForm.AppSettings.ADefaults.PmActivityType;
+            RefForm.Priority_CB.Text = RefForm.AppSettings.ADefaults.Priority;
+            RefForm.ExternalReference_TB.Text = RefForm.AppSettings.ADefaults.ExternalReference;
+            RefForm.VarPMActivityType_CB.Text = RefForm.AppSettings.ADefaults.PmActivityType;
+            RefForm.VarSOPriority_CB.Text = RefForm.AppSettings.ADefaults.Priority;
+            RefForm.VarExternalReference_TB.Text = RefForm.AppSettings.ADefaults.ExternalReference;
 
             // Plants have changed
-            if(RefForm.AppSettings.Plant != CurPlant)
+            if (RefForm.AppSettings.Plant != CurPlant)
             {
-                if(MsgBoxs.MsgBox_Question("The Plant has been changed. A restart is required before these changes will take effect. Do you want to restart now?") == DialogResult.Yes)
+                if (MsgBoxs.MsgBox_Question("The Plant has been changed. A restart is required before these changes will take effect. Do you want to restart now?") == DialogResult.Yes)
                 {
                     RefForm.AppSettings.Restart();
                 }

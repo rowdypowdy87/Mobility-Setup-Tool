@@ -12,11 +12,11 @@ namespace Mobility_Setup_Tool.Forms
         public MainForm RefForm;
 
         // Window movement globals
-        public bool          isTopPanelDragged;
-        public Point         offset;
-        public bool          DidNotUpdate = false;
-        public string        ProgStatus;
-        public string        FilePath;
+        public bool isTopPanelDragged;
+        public Point offset;
+        public bool DidNotUpdate = false;
+        public string ProgStatus;
+        public string FilePath;
 
         public Updater(MainForm r)
         {
@@ -26,8 +26,8 @@ namespace Mobility_Setup_Tool.Forms
 
         private void Updater_Load(object sender, EventArgs e)
         {
-            RefForm.Visible         = false;
-            FilePath                = $"{RefForm.AppSettings.AppData}\\MST_Update.exe";
+            RefForm.Visible = false;
+            FilePath = $"{RefForm.AppSettings.AppData}\\MST_Update.exe";
 
             // Manually centre the form to MainForm
             Location = new Point((RefForm.Location.X + RefForm.Width / 2) - Width / 2, (RefForm.Location.Y + RefForm.Height / 2) - Height / 2);
@@ -39,15 +39,15 @@ namespace Mobility_Setup_Tool.Forms
         protected override void OnPaint(PaintEventArgs e)
         {
             DoubleBuffered = true;
-            ResizeRedraw   = true;
+            ResizeRedraw = true;
 
             // Do form painting first
             base.OnPaint(e);
 
             // Variables
-            Pen         BorderPen   = new Pen(Color.Black, 1.0f);
-            Graphics    FormGFX     = e.Graphics;
-            Rectangle   FormBorder;
+            Pen BorderPen = new Pen(Color.Black, 1.0f);
+            Graphics FormGFX = e.Graphics;
+            Rectangle FormBorder;
 
             // Get rect
             FormBorder = new Rectangle(ClientRectangle.X,
@@ -91,14 +91,14 @@ namespace Mobility_Setup_Tool.Forms
 
         public void UpdateApplication()
         {
-            WebClient SharePoint    = new WebClient();
-            Uri       Link          = new Uri("http://uglteams/sites/fs/AdminLibrary/Mobility%20Setup%20Tool/MST_Update");
+            WebClient SharePoint = new WebClient();
+            Uri Link = new Uri("http://uglteams/sites/fs/AdminLibrary/Mobility%20Setup%20Tool/MST_Update");
 
             SharePoint.UseDefaultCredentials = true;
 
             // Set event handlers
             SharePoint.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgressCallback);
-            SharePoint.DownloadFileCompleted   += new AsyncCompletedEventHandler(DownloadCompletedCallback);
+            SharePoint.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadCompletedCallback);
 
             // Download upate
             SharePoint.DownloadFileAsync(Link, FilePath);
@@ -107,7 +107,7 @@ namespace Mobility_Setup_Tool.Forms
         // Progress updated
         private void DownloadProgressCallback(object sender, DownloadProgressChangedEventArgs e)
         {
-            ActualStatus_LBL.Text = $"Downloading update [{e.BytesReceived/1000000}MB/{e.TotalBytesToReceive/1000000}MBs] {e.ProgressPercentage}%";
+            ActualStatus_LBL.Text = $"Downloading update [{e.BytesReceived / 1000000}MB/{e.TotalBytesToReceive / 1000000}MBs] {e.ProgressPercentage}%";
         }
 
         // Download completed
@@ -119,8 +119,8 @@ namespace Mobility_Setup_Tool.Forms
             using (Process Installer = new Process())
             {
                 Installer.StartInfo.UseShellExecute = true;
-                Installer.StartInfo.FileName        = FilePath;
-                Installer.StartInfo.Verb            = "runas";
+                Installer.StartInfo.FileName = FilePath;
+                Installer.StartInfo.Verb = "runas";
 
                 Installer.Start();
             };
@@ -130,9 +130,9 @@ namespace Mobility_Setup_Tool.Forms
         }
 
         // Titlebar mouse down event 
-        private void TitleBar_MouseUp(object sender, MouseEventArgs e) 
-        { 
-            isTopPanelDragged = false; 
+        private void TitleBar_MouseUp(object sender, MouseEventArgs e)
+        {
+            isTopPanelDragged = false;
         }
 
         private void CloseApp_BTN_Click(object sender, EventArgs e)

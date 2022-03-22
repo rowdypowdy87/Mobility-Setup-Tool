@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Mobility_Setup_Tool
+﻿namespace Mobility_Setup_Tool
 {
     class Module_Quote
     {

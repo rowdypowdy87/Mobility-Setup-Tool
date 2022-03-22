@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Mobility_Setup_Tool.Forms
@@ -15,7 +11,7 @@ namespace Mobility_Setup_Tool.Forms
         // Window movement globals
         public bool isTopPanelDragged;
         public Point offset;
-        public string LongText 
+        public string LongText
         {
             get { return LongText_RTB.Text; }
             set { LongText_RTB.Text = value; }
@@ -29,8 +25,8 @@ namespace Mobility_Setup_Tool.Forms
 
         private void GetLongText_Load(object sender, EventArgs e)
         {
-            BackColor               = RefForm.ThemeController.GetBackcolor();
-            TitleBar_PNL.BackColor  = RefForm.ThemeController.GetBordercolor();
+            BackColor = RefForm.ThemeController.GetBackcolor();
+            TitleBar_PNL.BackColor = RefForm.ThemeController.GetBordercolor();
 
             RefForm.ThemeController.AddControls(TitleBar_PNL, THEME_TYPE.Border);
             RefForm.ThemeController.AddControls(BackColor, THEME_TYPE.Back);
@@ -49,9 +45,9 @@ namespace Mobility_Setup_Tool.Forms
             base.OnPaint(e);
 
             // Variables
-            Pen         BorderPen       = new Pen(RefForm.ThemeController.GetBordercolor(), 1.0f);
-            Graphics    FormGFX         = e.Graphics;
-            Rectangle   FormBorder;
+            Pen BorderPen = new Pen(RefForm.ThemeController.GetBordercolor(), 1.0f);
+            Graphics FormGFX = e.Graphics;
+            Rectangle FormBorder;
 
             // Get rect
             FormBorder = new Rectangle(ClientRectangle.X,
@@ -81,9 +77,11 @@ namespace Mobility_Setup_Tool.Forms
             {
                 isTopPanelDragged = true;
                 Point pointStartPosition = this.PointToScreen(new Point(e.X, e.Y));
-                offset = new Point();
-                offset.X = this.Location.X - pointStartPosition.X;
-                offset.Y = this.Location.Y - pointStartPosition.Y;
+                offset = new Point
+                {
+                    X = this.Location.X - pointStartPosition.X,
+                    Y = this.Location.Y - pointStartPosition.Y
+                };
             }
             else
             {

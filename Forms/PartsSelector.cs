@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+
 using static Mobility_Setup_Tool.MsgBoxs;
 
 namespace Mobility_Setup_Tool
@@ -15,8 +15,8 @@ namespace Mobility_Setup_Tool
         // Window movement globals
         public bool isTopPanelDragged;
         public Point offset;
-        
-        
+
+
         public List<string[]> Filters;
         public List<SAPComponent> ReturnComponents;
 
@@ -28,12 +28,12 @@ namespace Mobility_Setup_Tool
 
         private void PartsSelect_Load(object sender, EventArgs e)
         {
-            
-            BackColor                = RefForm.ThemeController.GetBackcolor();
-            TitleBar_PNL.BackColor              = RefForm.ThemeController.GetBordercolor();
-            MinimizeButton_LBL.BackColor        = RefForm.ThemeController.GetBordercolor();
-            MaximizeButton_LBL.BackColor        = RefForm.ThemeController.GetBordercolor();
-            CloseButton_LBL.BackColor           = RefForm.ThemeController.GetBordercolor();
+
+            BackColor = RefForm.ThemeController.GetBackcolor();
+            TitleBar_PNL.BackColor = RefForm.ThemeController.GetBordercolor();
+            MinimizeButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
+            MaximizeButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
+            CloseButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
 
             RefForm.ThemeController.AddControls(TitleBar_PNL, THEME_TYPE.Border);
             RefForm.ThemeController.AddControls(MinimizeButton_LBL, THEME_TYPE.Border);
@@ -46,15 +46,15 @@ namespace Mobility_Setup_Tool
 
         public void LoadFilters(DataTable Filter)
         {
-            bool        Found           = false;
-            int         i, ii, iii;
+            bool Found;
+            int  i, ii, iii;
 
             // Create new list instance 
             Filters = new List<string[]>();
 
             // Load filters from database 
-           for (i = 0; i < Filter.Rows.Count; i++)
-           {
+            for (i = 0; i < Filter.Rows.Count; i++)
+            {
                 string RawString = Filter.Rows[i]["FILTER"].ToString();
                 string[] ToAdd = RawString.Split(",");
                 Filters.Add(ToAdd);
@@ -69,15 +69,15 @@ namespace Mobility_Setup_Tool
                     if (RawString != "")
                     {
                         Found = false;
-                        for(iii = 0; iii < Filter_CB.Items.Count; iii++)
+                        for (iii = 0; iii < Filter_CB.Items.Count; iii++)
                         {
-                            if(RawString == Filter_CB.Items[iii].ToString())
+                            if (RawString == Filter_CB.Items[iii].ToString())
                             {
                                 Found = true;
                             }
                         }
 
-                        if(!Found) Filter_CB.Items.Add(RawString);
+                        if (!Found) Filter_CB.Items.Add(RawString);
                     }
                 }
             }
@@ -257,16 +257,16 @@ namespace Mobility_Setup_Tool
         {
             if (e.Button == MouseButtons.Left)
             {
-                isTopPanelDragged = true;
-                Point pointStartPosition = this.PointToScreen(new Point(e.X, e.Y));
-                offset = new Point();
-                offset.X = this.Location.X - pointStartPosition.X;
-                offset.Y = this.Location.Y - pointStartPosition.Y;
+                isTopPanelDragged           = true;
+                Point pointStartPosition    = this.PointToScreen(new Point(e.X, e.Y));
+                offset                      = new Point
+                {
+                    X = this.Location.X - pointStartPosition.X,
+                    Y = this.Location.Y - pointStartPosition.Y
+                };
             }
             else
-            {
-                isTopPanelDragged = false;
-            }
+            isTopPanelDragged = false;
             if (e.Clicks == 2) isTopPanelDragged = false;
         }
 
@@ -302,26 +302,26 @@ namespace Mobility_Setup_Tool
 
             ReturnComponents.Clear();
 
-            for(int i = 0; i < Parts_DGV.Rows.Count; i++)
+            for (int i = 0; i < Parts_DGV.Rows.Count; i++)
             {
-                if(Convert.ToBoolean(Parts_DGV.Rows[i].Cells["Selected"].Value))
+                if (Convert.ToBoolean(Parts_DGV.Rows[i].Cells["Selected"].Value))
                 {
                     // Check for null values
-                    if (Parts_DGV.Rows[i].Cells["SpecialStock"].Value != null)  { SS = Parts_DGV.Rows[i].Cells["SpecialStock"].Value.ToString(); }  else { SS = ""; }
-                    if (Parts_DGV.Rows[i].Cells["Qty"].Value != null)           { QT = Parts_DGV.Rows[i].Cells["Qty"].Value.ToString(); }           else { QT = ""; }
-                    if (Parts_DGV.Rows[i].Cells["StorLoc"].Value != null)       { SL = Parts_DGV.Rows[i].Cells["StorLoc"].Value.ToString(); }       else { SL = ""; }
+                    if (Parts_DGV.Rows[i].Cells["SpecialStock"].Value != null) { SS = Parts_DGV.Rows[i].Cells["SpecialStock"].Value.ToString(); } else { SS = ""; }
+                    if (Parts_DGV.Rows[i].Cells["Qty"].Value != null) { QT = Parts_DGV.Rows[i].Cells["Qty"].Value.ToString(); } else { QT = ""; }
+                    if (Parts_DGV.Rows[i].Cells["StorLoc"].Value != null) { SL = Parts_DGV.Rows[i].Cells["StorLoc"].Value.ToString(); } else { SL = ""; }
 
                     SAPComponent ToAdd = new SAPComponent
                     {
-                        ZAWA            = Parts_DGV.Rows[i].Cells["SapMat"].Value.ToString(),
-                        Description     = Parts_DGV.Rows[i].Cells["Desc"].Value.ToString(),
-                        Qauntity        = QT,
-                        StoreLocation   = SL,
-                        SpecialStock    = SS
+                        ZAWA = Parts_DGV.Rows[i].Cells["SapMat"].Value.ToString(),
+                        Description = Parts_DGV.Rows[i].Cells["Desc"].Value.ToString(),
+                        Qauntity = QT,
+                        StoreLocation = SL,
+                        SpecialStock = SS
                     };
 
                     // Verify data selected
-                    if(ToAdd.Qauntity == "")
+                    if (ToAdd.Qauntity == "")
                     {
                         MsgBox_Error("Quantity cannot be blank");
                         return;
@@ -333,7 +333,7 @@ namespace Mobility_Setup_Tool
                         return;
                     }
 
-                    if(ToAdd.StoreLocation == "")
+                    if (ToAdd.StoreLocation == "")
                     {
                         MsgBox_Error($"No store location entered for material {ToAdd.Description}");
                         return;

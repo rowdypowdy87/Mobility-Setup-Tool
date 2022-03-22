@@ -1,57 +1,65 @@
-﻿using System;
+﻿using SAPFEWSELib;
+
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
-using SAPFEWSELib;
-using System.Collections.Generic;
+
 using static Mobility_Setup_Tool.MsgBoxs;
 
 namespace Mobility_Setup_Tool
 {
+    public enum SAPERROR
+    {
+        SAP_CONNECTION_FAILED = 0,
+        EQ_NOT_FOUND = 1,
+        CEL_TABLE_DATA_INVALID = 3,
+        USR_CANCEL = 4,
+        CEL_MPOINTS_MISSING = 5,
+        NONE = 6,
+        EQ_MATSERN_EXISTS = 7,
+        EQ_LOCKED = 8,
+        SO_CANT_FIND = 9
+    };
+
     class Module_ZM12
     {
-        public static AUTOSAP           Session;
+        public static AUTOSAP Session;
         public static MobilityEquipment TemplateInfo;
         public static MobilityEquipment InputInfo;
         public static MobilityEquipment ChangeInfo;
-        public static MainForm          RefForm;
-        public static ExcelDataTables   TableManager = new ExcelDataTables();
-        public static bool              NewEquipment = false;
+        public static MainForm RefForm;
+        public static ExcelDataTables TableManager = new ExcelDataTables();
+        public static bool NewEquipment = false;
 
+        // Set main form reference
         public virtual void SetMainForm(MainForm Reference)
         {
             RefForm = Reference;
             Session = new AUTOSAP(RefForm);
         }
 
-        public virtual bool InitialEquipmentCheck(string              TemplateEquipment, 
-                                                  string              InputSerial, 
-                                                  string              InputZawa,
-                                                  string              InputFuncLoc, 
-                                                  BackgroundWorker    Parent, 
-                                              ref MobilityEquipment   OutputEq) 
+        // Get equipment number only
+        public virtual SAPERROR GetEquipment(string TemplateEquipment,
+                                             string InputSerial,
+                                             string InputZawa,
+                                             BackgroundWorker Parent,
+                                         ref MobilityEquipment OutputEq)
         {
             string InputEquipment;
-  
+
             // Check for open session first
-            if (Session.GetSession()) 
+            if (Session.GetSession())
             {
                 RefForm.SetStatus("Checking if equipment is a material serial", 0);
 
                 // Check if linked to material
-                if (!Session.CheckMaterialSerial(InputSerial, InputZawa)) 
-                {
-                    return false;
-                }
+                if (!Session.CheckMaterialSerial(InputSerial, InputZawa)) return SAPERROR.EQ_MATSERN_EXISTS;
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 RefForm.SetStatus("Finding equipment number from input serial", 0);
 
@@ -59,24 +67,68 @@ namespace Mobility_Setup_Tool
                 InputEquipment = Session.EquipmentNumberFromSerial(InputSerial);
 
                 // Fill output structure
-                OutputEq.ZAWA               = InputZawa;
-                OutputEq.SerialNumber       = InputSerial;
-                OutputEq.FunctionLoc        = InputFuncLoc;
+                OutputEq.ZAWA = InputZawa;
+                OutputEq.SerialNumber = InputSerial;
 
                 // Cannot find equipment number
-                if (InputEquipment == "") 
-                {
-                    return false;
-                }
+                if (InputEquipment == "" || InputEquipment == "nothing") return SAPERROR.EQ_NOT_FOUND;
 
-                if (InputEquipment.Length > 8) 
+                // Update equipment number
+                RefForm.Output_EQNum = InputEquipment;
+                OutputEq.EquipmentNumber = InputEquipment;
+                InputInfo.EquipmentNumber = InputEquipment;
+
+                return SAPERROR.NONE;
+            }
+            else
+            {
+                return SAPERROR.SAP_CONNECTION_FAILED;
+            }
+
+        }
+
+        // Check and correct equipment number
+        public virtual SAPERROR InitialEquipmentCheck(string TemplateEquipment,
+                                                      string InputSerial,
+                                                      string InputZawa,
+                                                      string InputFuncLoc,
+                                                      BackgroundWorker Parent,
+                                                  ref MobilityEquipment OutputEq)
+        {
+            string InputEquipment;
+
+            // Check for open session first
+            if (Session.GetSession())
+            {
+                RefForm.SetStatus("Checking if equipment is a material serial", 0);
+
+                // Check if linked to material
+                if (!Session.CheckMaterialSerial(InputSerial, InputZawa)) return SAPERROR.EQ_MATSERN_EXISTS;
+
+                // Check for cancel
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
+
+                RefForm.SetStatus("Finding equipment number from input serial", 0);
+
+                // Get equipment number
+                InputEquipment = Session.EquipmentNumberFromSerial(InputSerial);
+
+                // Fill output structure
+                OutputEq.ZAWA = InputZawa;
+                OutputEq.SerialNumber = InputSerial;
+                OutputEq.FunctionLoc = InputFuncLoc;
+
+                // Cannot find equipment number
+                if (InputEquipment == "") return SAPERROR.EQ_NOT_FOUND;
+
+                if (InputEquipment.Length > 8)
                 {
                     if (InputEquipment == "No equipment found")
                     {
                         if (MsgBox_Question("No equipment number found with this serial number, do you want to create a new equipment from the template?") == DialogResult.Yes)
                         {
-                            InputEquipment  = Session.CreateNewEquipment(TemplateEquipment, InputSerial, InputZawa, InputFuncLoc);
-                            NewEquipment    = true;
+                            InputEquipment = Session.CreateNewEquipment(TemplateEquipment, InputSerial, InputZawa);
+                            NewEquipment = true;
 
                             // Create equipment failed
                             if (InputEquipment == "")
@@ -86,22 +138,17 @@ namespace Mobility_Setup_Tool
                         }
                         else
                         {
-                            return false;
+                            return SAPERROR.NONE;
                         }
                     }
                 }
 
                 // Update equipment number
-                RefForm.Output_EQNum     = InputEquipment;
+                RefForm.Output_EQNum = InputEquipment;
                 OutputEq.EquipmentNumber = InputEquipment;
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 RefForm.SetStatus("Getting template equipment information", 0);
 
@@ -144,12 +191,7 @@ namespace Mobility_Setup_Tool
                 Session.EndTransaction();
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 RefForm.SetStatus("Getting input equipment information", 0);
 
@@ -163,8 +205,7 @@ namespace Mobility_Setup_Tool
                 {
                     // Not found
                     case 100:
-                        MsgBox_Error("Could not access input equipment, is the equipment locked?");
-                        return false;
+                        return SAPERROR.EQ_LOCKED;
 
                     default:
                         // Front tab
@@ -193,74 +234,76 @@ namespace Mobility_Setup_Tool
                 Session.EndTransaction();
 
                 // Initialize the change structure
-                ChangeInfo.Description  = "";
-                ChangeInfo.ObjectType   = "";
-                ChangeInfo.ModelNumber  = "";
-                ChangeInfo.CatProfile   = "";
-                ChangeInfo.Division     = "";
-                ChangeInfo.DistChan     = "";
-                ChangeInfo.ZAWA         = "";
+                ChangeInfo.Description = "";
+                ChangeInfo.ObjectType = "";
+                ChangeInfo.ModelNumber = "";
+                ChangeInfo.CatProfile = "";
+                ChangeInfo.Division = "";
+                ChangeInfo.DistChan = "";
+                ChangeInfo.ZAWA = "";
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 RefForm.SetStatus("Updating input equipment to template", 0);
 
-                if (InputInfo.Description != TemplateInfo.Description) 
+                if (InputInfo.Description != TemplateInfo.Description)
                 {
                     if (MsgBox_Question($"Equipment description does not match template description {Environment.NewLine}CURRENT: {InputInfo.Description}{Environment.NewLine}TEMPLATE: {TemplateInfo.Description}{Environment.NewLine}Do you want to change this to match the template?") == DialogResult.Yes)
                     {
-                        ChangeInfo.Description  = TemplateInfo.Description;
-                        OutputEq.Description    = TemplateInfo.Description;
+                        ChangeInfo.Description = TemplateInfo.Description;
+                        OutputEq.Description = TemplateInfo.Description;
                     }
                 }
 
-                if (InputInfo.ObjectType != TemplateInfo.ObjectType) {
-                    ChangeInfo.ObjectType   = TemplateInfo.ObjectType;
-                    OutputEq.ObjectType     = TemplateInfo.ObjectType;
+                if (InputInfo.ObjectType != TemplateInfo.ObjectType)
+                {
+                    ChangeInfo.ObjectType = TemplateInfo.ObjectType;
+                    OutputEq.ObjectType = TemplateInfo.ObjectType;
                 }
 
                 // Check model number integrity
-                if(InputInfo.ModelNumber != "")
-                { 
-                    if (InputInfo.ModelNumber.Substring(InputInfo.ModelNumber.Length-4, 4).Contains("x") || InputInfo.ModelNumber.Substring(InputInfo.ModelNumber.Length - 4, 4).Contains("X") || InputInfo.ModelNumber.Contains("??"))
+                if (InputInfo.ModelNumber != "")
+                {
+                    if (InputInfo.ModelNumber.Substring(InputInfo.ModelNumber.Length - 4, 4).Contains("x") || InputInfo.ModelNumber.Substring(InputInfo.ModelNumber.Length - 4, 4).Contains("X") || InputInfo.ModelNumber.Contains("??"))
                     {
-    LBL_FAIL_MODEL:
-                        string Result = RefForm.GetInput("Model number is invalid please enter the correct number in the box below", InputInfo.ModelNumber, InputInfo.ModelNumber);
+                    LBL_FAIL_MODEL:
+                        string Result = RefForm.GetInput($"Model number {InputInfo.ModelNumber} is invalid, please correct", InputInfo.ModelNumber, InputInfo.ModelNumber);
 
+                        // User cancel
+                        if (Result == "CANCEL") return SAPERROR.USR_CANCEL;
+
+                        // Check for continued blanks
                         if (Result == "" || Result == null)
                         {
                             MsgBox_Error("Model number cannot be blank, please enter a model number");
                             goto LBL_FAIL_MODEL;
                         }
 
-                        if (Result == "CANCEL") return false;
-
+                        // Change number
                         ChangeInfo.ModelNumber = Result;
-                        OutputEq.ModelNumber   = Result;
-                    } 
+                        OutputEq.ModelNumber = Result;
+                    }
                 }
-                    else
+                else
                 {
-                    // Blank model number
-    LBL_FAIL_MODEL2:
-                    string Result2 = RefForm.GetInput("Model number is invalid please enter the correct number in the box below", InputInfo.ModelNumber, InputInfo.ModelNumber);
+                // Blank model number
+                LBL_FAIL_MODEL2:
+                    string Result2 = RefForm.GetInput("Model number is blank please enter a model number", InputInfo.ModelNumber, InputInfo.ModelNumber);
 
+                    // User cancel
+                    if (Result2 == "CANCEL") return SAPERROR.USR_CANCEL;
+
+                    // Check for continued blanks
                     if (Result2 == "" || Result2 == null)
                     {
                         MsgBox_Error("Model number cannot be blank, please enter a model number");
                         goto LBL_FAIL_MODEL2;
                     }
 
-                    if (Result2 == "CANCEL") return false;
-
-                    ChangeInfo.ModelNumber  = Result2;
-                    OutputEq.ModelNumber    = Result2;
+                    // Change number
+                    ChangeInfo.ModelNumber = Result2;
+                    OutputEq.ModelNumber = Result2;
                 }
 
                 // Compare information found
@@ -294,7 +337,7 @@ namespace Mobility_Setup_Tool
                 Session.SendVKey(0);
 
                 // If user has asked to change description
-                if (ChangeInfo.Description != "") 
+                if (ChangeInfo.Description != "")
                 {
                     Session.GetTextField("ITOB-SHTXT").Text = ChangeInfo.Description;
                 }
@@ -313,12 +356,7 @@ namespace Mobility_Setup_Tool
                 }
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 // Structure tab
                 Session.GetTab(@"T\04").Select();
@@ -344,18 +382,15 @@ namespace Mobility_Setup_Tool
 
                         if (Session.GetSessionInfo().ScreenNumber != 101) Session.SendVKey(3);
 
+                        Session.ClearErrors(30, false);
+
                         Session.GetCTextField("ITOB-SUBMT").Text = "";
                         Session.GetTextField("ITOB-TIDNR").Text = "";
                     }
                 }
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 // Sales tab
                 Session.GetTab(@"T\06").Select();
@@ -394,29 +429,25 @@ namespace Mobility_Setup_Tool
                 Session.GetButton("btn[11]").Press();
                 Session.EndTransaction();
 
-                return true;
+                return SAPERROR.NONE;
 
             }
-                else
+            else
             {
-                MsgBox_Error("Please ensure SAP is running!");
-                return false;
+                return SAPERROR.SAP_CONNECTION_FAILED;
             }
 
         }
 
-        public virtual AUTOSAP ReturnSession() 
+        public virtual AUTOSAP ReturnSession()
         {
             return Session;
         }
 
         //Check measurement point
-        public virtual bool CheckMeasurementPoints(MobilityTask TaskInfo, BackgroundWorker Parent) 
+        public virtual SAPERROR CheckMeasurementPoints(MobilityTask TaskInfo, BackgroundWorker Parent)
         {
-            if (TaskInfo.CEL == "NON-STANDARD VARIATION" || TaskInfo.CEL == "NONE" || NewEquipment) 
-            {
-                return true;
-            }
+            if (TaskInfo.CEL == "NON-STANDARD VARIATION" || TaskInfo.CEL == "NONE" || NewEquipment) return SAPERROR.NONE;
 
             if (Session.GetSession())
             {
@@ -425,12 +456,7 @@ namespace Mobility_Setup_Tool
                 DataTable TemplateMeasures = Session.GetMeasurementPoints(TemplateInfo.EquipmentNumber);
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 // Import input measurements from SAP
                 RefForm.SetStatus("Getting input equipment measurement points", 0);
@@ -443,12 +469,12 @@ namespace Mobility_Setup_Tool
                 int Delete = 0, Change = 0, Create = 0;
 
                 // Sort numbers
-                for(int i = 0; i < MeasuresToChange.Count; i++)
+                for (int i = 0; i < MeasuresToChange.Count; i++)
                 {
-                    switch(MeasuresToChange[i].Action)
+                    switch (MeasuresToChange[i].Action)
                     {
-                        case ACTION.CREATE:     Create++; break;
-                        case ACTION.CHANGE:     Change++; break;
+                        case ACTION.CREATE: Create++; break;
+                        case ACTION.CHANGE: Change++; break;
                         case ACTION.DEACTIVATE: Delete++; break;
 
                     }
@@ -461,9 +487,9 @@ namespace Mobility_Setup_Tool
                                         $"{Environment.NewLine}{Create} measurements missing and need to be created " +
                                         $"{Environment.NewLine}{Change} measurements found but require correction" +
                                         $"{Environment.NewLine}{Delete} duplicate measurement will be de-activated" +
-                                        $"{Environment.NewLine}{Environment.NewLine}Do you want to continue?") == DialogResult.No) 
+                                        $"{Environment.NewLine}{Environment.NewLine}Do you want to continue?") == DialogResult.No)
                     {
-                        return false;
+                        return SAPERROR.NONE;
                     }
                 }
                 else
@@ -474,19 +500,14 @@ namespace Mobility_Setup_Tool
                     RefForm.SetStatus("", 0);
                     TemplateMeasures.Dispose();
                     EquipmentMeasures.Dispose();
-                    return true;
+                    return SAPERROR.NONE;
                 }
 
                 // Change / create measurement
                 for (int i = 0; i < MeasuresToChange.Count; i++)
                 {
                     // Check for cancel
-                    if (Parent.CancellationPending) 
-                    {
-                        MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                        RefForm.SetStatus("User canceled", 0);
-                        return false;
-                    }
+                    if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                     double perc = (Convert.ToDouble(i) / (Convert.ToDouble(MeasuresToChange.Count - 1)) * 100);
 
@@ -509,7 +530,7 @@ namespace Mobility_Setup_Tool
                             break;
 
                         case ACTION.DEACTIVATE:
-                            RefForm.SetStatus($"De-activating measurement point {MeasuresToChange[i].Info.Description} - [{i}/{MeasuresToChange.Count-1}]", perc > 0 ? Convert.ToInt32(perc) : 1);
+                            RefForm.SetStatus($"De-activating measurement point {MeasuresToChange[i].Info.Description} - [{i}/{MeasuresToChange.Count - 1}]", perc > 0 ? Convert.ToInt32(perc) : 1);
                             Session.DeactiveMeasurement(MeasuresToChange[i].Info.Number);
                             break;
                     }
@@ -520,24 +541,23 @@ namespace Mobility_Setup_Tool
                 TemplateMeasures.Dispose();
                 EquipmentMeasures.Dispose();
 
-                return true;
+                return SAPERROR.NONE;
             }
             else
             {
-                MsgBox_Error("Please ensure SAP is running!");
-                return false;
+                return SAPERROR.SAP_CONNECTION_FAILED;
             }
         }
 
         // Create CEL
-        public virtual bool CreateEntryList(MobilityTask TaskInfo, BackgroundWorker Parent) 
+        public virtual SAPERROR CreateEntryList(MobilityTask TaskInfo, BackgroundWorker Parent)
         {
             // Variables
-            int     ErrorCount      = 0;
-            bool    OverwriteList   = false;
-            string  EntryListNumber = "";
-            string  KeyInput, KeyCEL;
-            bool    Matched;
+            int ErrorCount = 0;
+            bool OverwriteList = false;
+            string EntryListNumber = "";
+            string KeyInput, KeyCEL;
+            bool Matched;
 
             if (Session.GetSession())
             {
@@ -548,8 +568,7 @@ namespace Mobility_Setup_Tool
 
                 if (CELTable == null)
                 {
-                    MsgBox_Error("Cannot find CEL data...");
-                    return false;
+                    return SAPERROR.CEL_TABLE_DATA_INVALID;
                 }
 
                 // Get measurement points
@@ -569,12 +588,7 @@ namespace Mobility_Setup_Tool
                 ErrorTable.Columns.Add("Description");
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 // Find measurements
                 foreach (DataRow CELRow in CELTable.Rows)
@@ -613,7 +627,7 @@ namespace Mobility_Setup_Tool
                     {
                         DataRow ErrorRow = ErrorTable.NewRow();
 
-                        ErrorRow["Position"]    = CELRow["MeasPosition"].ToString();
+                        ErrorRow["Position"] = CELRow["MeasPosition"].ToString();
                         ErrorRow["Description"] = CELRow["MeasPoint Description"].ToString();
 
                         ErrorTable.Rows.Add(ErrorRow);
@@ -624,12 +638,7 @@ namespace Mobility_Setup_Tool
                 }
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 // Errors found
                 if (ErrorCount != 0)
@@ -644,16 +653,11 @@ namespace Mobility_Setup_Tool
 
                     MsgBox_Error($"{ErrorCount} error found trying to generate entry list, please check error log CEL_ERROR.txt on your desktop for more information");
 
-                    return false;
+                    return SAPERROR.CEL_MPOINTS_MISSING;
                 }
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 // Check for existing lists
                 RefForm.SetStatus("Checking for existing entry lists", 0);
@@ -676,7 +680,7 @@ namespace Mobility_Setup_Tool
                     }
                     else
                     {
-                        return false;
+                        return SAPERROR.USR_CANCEL;
                     }
                 }
 
@@ -701,47 +705,38 @@ namespace Mobility_Setup_Tool
                 Session.GetWindow().Maximize();
 
                 if (TaskInfo.Name.Length > 40)
-                {
-                    Session.GetTextField("IMEL-MELTX").Text = TaskInfo.Name.Substring(0, 39);
-                }
+                    Session.GetTextField("IMEL-MELTX").Text = TaskInfo.Name[..39];
                 else
-                {
                     Session.GetTextField("IMEL-MELTX").Text = TaskInfo.Name;
-                }
 
-                GuiTableControl Table   = Session.GetTable("SAPLIMR7ERFALIST");
+                GuiTableControl Table = Session.GetTable("SAPLIMR7ERFALIST");
 
                 // Use visible rows to determine how many lines to update at once this way
                 // on smaller resolution screens the tool will still work
                 // NOTE: we chose visible lines - 2 because SAP was not always showing the same
                 // amount of visible lines each time.
-                int MaxRow              = 0;
-                int Interval            = (OutputEntryList.Rows.Count) / 100;
-                int VisRows             = Table.VisibleRowCount - 2; 
+                int MaxRow = 0;
+                int Interval = (OutputEntryList.Rows.Count) / 100;
+                int VisRows = Table.VisibleRowCount - 2;
 
                 RefForm.SetStatus("Uploading entry list..", 0);
 
                 for (int i = 0; i < OutputEntryList.Rows.Count; i++)
                 {
                     // Check for cancel
-                    if (Parent.CancellationPending)
-                    { 
-                        MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                        RefForm.SetStatus("User canceled", 0);
-                        return false;
-                    }
+                    if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                     RefForm.SetStatus("Uploading entry list", i / VisRows * Interval);
 
-                    ((GuiTextField)Table.FindById($"txtIMEP-SORTF[1,{MaxRow}]")).Text   = OutputEntryList.Rows[i]["Sort Order"].ToString();
+                    ((GuiTextField)Table.FindById($"txtIMEP-SORTF[1,{MaxRow}]")).Text = OutputEntryList.Rows[i]["Sort Order"].ToString();
                     ((GuiCTextField)Table.FindById($"ctxtIMEP-POINT[3,{MaxRow}]")).Text = OutputEntryList.Rows[i]["Measurement Point"].ToString();
 
                     MaxRow++;
 
                     if (MaxRow > VisRows)
                     {
-                        Table.VerticalScrollbar.Position += VisRows+1;
-                        Table  = Session.GetTable("SAPLIMR7ERFALIST");
+                        Table.VerticalScrollbar.Position += VisRows + 1;
+                        Table = Session.GetTable("SAPLIMR7ERFALIST");
                         MaxRow = 0;
                     }
                 }
@@ -763,33 +758,27 @@ namespace Mobility_Setup_Tool
             }
             else
             {
-                MsgBox_Error("Please ensure SAP is running!");
-                return false;
+                return SAPERROR.SAP_CONNECTION_FAILED;
             }
 
-            return true;
+            return SAPERROR.NONE;
         }
 
         // Check for existing orders
-        public virtual bool InitialServiceCheck(MobilityTask     TaskInfo, 
-                                                string           Equipmentnumber, 
-                                                BackgroundWorker Parent) 
+        public virtual SAPERROR InitialServiceCheck(MobilityTask TaskInfo,
+                                                    string Equipmentnumber,
+                                                    BackgroundWorker Parent)
         {
             if (Session.GetSession())
             {
                 DateTime StartDate;
                 DateTime EndDate;
 
-                StartDate   = DateTime.Now.AddMonths(-Convert.ToInt32(RefForm.AppSettings.WarrantyMonthLimit));
-                EndDate     = DateTime.Now;
+                StartDate = DateTime.Now.AddMonths(-Convert.ToInt32(RefForm.AppSettings.WarrantyMonthLimit));
+                EndDate = DateTime.Now;
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 RefForm.SetStatus($"Checking for previous work orders in the last {RefForm.AppSettings.WarrantyMonthLimit} months..", 0);
 
@@ -797,28 +786,28 @@ namespace Mobility_Setup_Tool
                 Session.SetVariant("/FSDS-25-32");
 
                 // Set status exclusions to nothign
-                Session.GetCheckBox("DY_OFN").Selected      = true;
-                Session.GetCheckBox("DY_IAR").Selected      = true;
-                Session.GetCheckBox("DY_MAB").Selected      = true;
-                Session.GetCheckBox("DY_HIS").Selected      = true;
+                Session.GetCheckBox("DY_OFN").Selected = true;
+                Session.GetCheckBox("DY_IAR").Selected = true;
+                Session.GetCheckBox("DY_MAB").Selected = true;
+                Session.GetCheckBox("DY_HIS").Selected = true;
 
                 // Expand all 
                 Session.GetButton("btn[19]").Press();
 
                 // Clear period
-                Session.GetCTextField("DATUV").Text         = StartDate.ToShortDateString().Replace("/", ".");
-                Session.GetCTextField("DATUB").Text         = EndDate.ToShortDateString().Replace("/", ".");
+                Session.GetCTextField("DATUV").Text = StartDate.ToShortDateString().Replace("/", ".");
+                Session.GetCTextField("DATUB").Text = EndDate.ToShortDateString().Replace("/", ".");
 
                 // Equipment number
-                Session.GetCTextField("EQUNR-LOW").Text     = Equipmentnumber;
+                Session.GetCTextField("EQUNR-LOW").Text = Equipmentnumber;
 
                 // Set dates using the basic start and finish date fields doesnt seem to work for some reason??
                 //Session.GetCTextField("GSTRP-LOW").Text    = StartDate.ToShortDateString().Replace("/", "."); // Basic start left field
                 //Session.GetCTextField("GLTRP-LOW").Text    = EndDate.ToShortDateString().Replace("/", ".");   // Basic finish left field
 
                 // Set tasklist filter
-                Session.GetCTextField("PLNNR-LOW").Text     = TaskInfo.Group;
-                Session.GetTextField("PLNAL-LOW").Text      = TaskInfo.Counter;
+                Session.GetCTextField("PLNNR-LOW").Text = TaskInfo.Group;
+                Session.GetTextField("PLNAL-LOW").Text = TaskInfo.Counter;
 
                 Session.SendVKey(8);
 
@@ -827,62 +816,58 @@ namespace Mobility_Setup_Tool
                     if (MsgBox_Question($"This unit has been here with the exact scope of work in the last {RefForm.AppSettings.WarrantyMonthLimit} months. Are you sure this is not a warranty claim?") == DialogResult.No)
                     {
                         Session.EndTransaction();
-                        return false;
+                        return SAPERROR.NONE;
 
                     }
                 }
 
                 Session.EndTransaction();
-                return true;
-   
+                return SAPERROR.NONE;
+
             }
             else
             {
-                MsgBox_Error("Please ensure SAP is running");
-                return false;
+                return SAPERROR.SAP_CONNECTION_FAILED;
             }
         }
 
         // Create notification
-        public virtual bool CreateNotification(MobilityTask             TaskInfo, 
-                                               MobilityEquipment        SetupEquipment,
-                                               MobilityServiceOrder     SOInfo, 
-                                               BackgroundWorker         Parent) 
+        public virtual SAPERROR CreateNotification(MobilityTask TaskInfo,
+                                                   MobilityEquipment SetupEquipment,
+                                                   MobilityServiceOrder SOInfo,
+                                                   BackgroundWorker Parent)
         {
+            string OutputDesc;
 
             if (Session.GetSession())
             {
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 RefForm.SetStatus("Creating notification", 0);
 
                 Session.StartTransaction("IW51");
+
+                // Set notification type for warranty or normal
                 if (TaskInfo.WarrantyClaim)
                 {
                     Session.GetCTextField("RIWO00-QMART").Text = "Z3";
-                }else
+                }
+                else
                 {
                     Session.GetCTextField("RIWO00-QMART").Text = "Z8";
                 }
 
+                // Template notification number to enter and build off of
                 Session.GetCTextField("RIWO00-QWRNUM").Text = "300424160";
-
                 Session.SendVKey(0);
 
-                string OutputDesc;
-
                 // Truncate task description if longer than 40 characters
-                if (TaskInfo.Name.Length > 40) 
+                if (TaskInfo.Name.Length > 40)
                 {
                     OutputDesc = TaskInfo.Name.Remove(40, TaskInfo.Name.Length - 40);
                 }
-                else 
+                else
                 {
                     OutputDesc = TaskInfo.Name;
                 }
@@ -891,77 +876,64 @@ namespace Mobility_Setup_Tool
                 Session.GetTextField("VIQMEL-QMTXT").Text = OutputDesc;
                 Session.GetCTextField("VIQMEL-QMDAT").Text = SOInfo.PurchaseOrderDate;
                 Session.GetCTextField("VIQMEL-MZEIT").Text = DateTime.Now.ToShortTimeString();
-                Session.GetComboBox("VIQMEL-PRIOK").Key = SOInfo.Priority.Substring(0,1);
+                Session.GetComboBox("VIQMEL-PRIOK").Key = SOInfo.Priority[..1];
 
                 Session.ClearErrors(30, true);
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 // Reset reference object view
-                ((GuiMenu)  Session.GetFormById("wnd[0]/mbar/menu[3]/menu[9]/menu[0]")).Select();
-                ((GuiLabel) Session.GetFormById("wnd[1]/usr/lbl[6,3]")).SetFocus();
+                ((GuiMenu)Session.GetFormById("wnd[0]/mbar/menu[3]/menu[9]/menu[0]")).Select();
+                ((GuiLabel)Session.GetFormById("wnd[1]/usr/lbl[6,3]")).SetFocus();
                 ((GuiButton)Session.GetFormById("wnd[1]/tbar[0]/btn[0]")).Press();
 
-                Session.GetCTextField("VIQMEL-AUSWK").Text      = RefForm.AppSettings.Effect;
-                Session.GetCTextField("RIWO00-GEWRK").Text      = TaskInfo.Workcentre;
-                Session.GetCTextField("VIQMEL-VKBUR").Text      = SOInfo.SalesOffice;
-                Session.GetCTextField("VIQMEL-VKGRP").Text      = SOInfo.SalesGroup;
-                Session.GetCTextField("VIQMEL-INGRP").Text      = RefForm.AppSettings.PlannerGroup;
-                Session.GetCTextField("RIWO00-SWERK").Text      = RefForm.AppSettings.Plant;
+                Session.GetCTextField("VIQMEL-AUSWK").Text = RefForm.AppSettings.Effect;
+                Session.GetCTextField("RIWO00-GEWRK").Text = TaskInfo.Workcentre;
+                Session.GetCTextField("VIQMEL-VKBUR").Text = SOInfo.SalesOffice;
+                Session.GetCTextField("VIQMEL-VKGRP").Text = SOInfo.SalesGroup;
+                Session.GetCTextField("VIQMEL-INGRP").Text = RefForm.AppSettings.PlannerGroup;
+                Session.GetCTextField("RIWO00-SWERK").Text = RefForm.AppSettings.Plant;
 
                 Session.SendVKey(0);
 
-                Session.GetCTextField("VIQMEL-QMNAM").Text      = "CU";
-                Session.GetTextField("VIQMEL-BSTNK").Text       = SOInfo.PurchaseOrder;
-                Session.GetCTextField("VIQMEL-BSTDK").Text      = SOInfo.PurchaseOrderDate;
+                Session.GetCTextField("VIQMEL-QMNAM").Text = "CU";
+                Session.GetTextField("VIQMEL-BSTNK").Text = SOInfo.PurchaseOrder;
+                Session.GetCTextField("VIQMEL-BSTDK").Text = SOInfo.PurchaseOrderDate;
 
                 // If we are not creating order without equipment
-                if (!SOInfo.CreateWithoutEq) 
-                {
-                    Session.GetCTextField("RIWO1-EQUNR").Text   = SetupEquipment.EquipmentNumber;
-                }
+                if (!SOInfo.CreateWithoutEq) Session.GetCTextField("RIWO1-EQUNR").Text = SetupEquipment.EquipmentNumber;
 
-                Session.GetCTextField("VIQMEL-KUNUM").Text      = SOInfo.SoldToParty;
+                Session.GetCTextField("VIQMEL-KUNUM").Text = SOInfo.SoldToParty;
 
                 Session.ClearErrors(30, true);
 
-                Session.GetCTextField("VIQMEL-LTRMN").Text      = SOInfo.BasicEndDate;
+                Session.GetCTextField("VIQMEL-LTRMN").Text = SOInfo.BasicEndDate;
                 Session.ClearErrors(30, true);
-                Session.GetCTextField("VIQMEL-STRMN").Text      = SOInfo.BasicStartDate;
+                Session.GetCTextField("VIQMEL-STRMN").Text = SOInfo.BasicStartDate;
                 Session.ClearErrors(30, true);
 
-                Session.GetShell("shell").Text                  = TaskInfo.LongText;
+                Session.GetShell("shell").Text = TaskInfo.LongText;
 
                 Session.GetTab(@"10\TAB06").Select();
 
-                Session.GetCTextField("ILOA-SWERK").Text        = RefForm.AppSettings.Plant;
-                Session.GetCTextField("ILOA-STORT").Text        = RefForm.AppSettings.Location;
-                Session.GetCTextField("RILA0-ARBPL").Text       = TaskInfo.Workcentre;
-                Session.GetCTextField("ILOA-VKORG").Text        = RefForm.AppSettings.Organization;
+                Session.GetCTextField("ILOA-SWERK").Text = RefForm.AppSettings.Plant;
+                Session.GetCTextField("ILOA-STORT").Text = RefForm.AppSettings.Location;
+                Session.GetCTextField("RILA0-ARBPL").Text = TaskInfo.Workcentre;
+                Session.GetCTextField("ILOA-VKORG").Text = RefForm.AppSettings.Organization;
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 Session.ClearErrors(30, true);
 
-                Session.GetCTextField("ILOA-VTWEG").Text        = RefForm.AppSettings.Distribution;
-                Session.GetCTextField("ILOA-SPART").Text        = RefForm.AppSettings.Division;
+                Session.GetCTextField("ILOA-VTWEG").Text = RefForm.AppSettings.Distribution;
+                Session.GetCTextField("ILOA-SPART").Text = RefForm.AppSettings.Division;
 
                 // Set WBS element
-                if (TaskInfo.WBS != "") 
+                if (TaskInfo.WBS != "")
                 {
-                    if (Session.GetCTextField("ILOA-PROID").Text != "" || Session.GetCTextField("ILOA-PROID").Text != TaskInfo.WBS) 
+                    if (Session.GetCTextField("ILOA-PROID").Text != "" || Session.GetCTextField("ILOA-PROID").Text != TaskInfo.WBS)
                     {
                         Session.GetCTextField("ILOA-PROID").Text = "";
                         Session.ClearErrors(30, true);
@@ -976,12 +948,7 @@ namespace Mobility_Setup_Tool
                 Session.GetTab(@"10\TAB01").Select();
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 // Reset data after location
                 Session.GetCTextField("VIQMEL-IWERK").Text = RefForm.AppSettings.Plant;
@@ -993,66 +960,56 @@ namespace Mobility_Setup_Tool
                 Session.GetCTextField("RIWO00-SWERK").Text = RefForm.AppSettings.Plant;
 
                 Session.ClearErrors(30, true);
-                
+
+                return SAPERROR.NONE;
+
             }
             else
             {
-                MsgBox_Error("Please ensure SAP is running");
-                return false;
+                return SAPERROR.SAP_CONNECTION_FAILED;
             }
-
-            return true;
         }
 
         // Create service order
-        public virtual bool CreateServiceOrder(MobilityTask             TaskInfo, 
-                                               MobilityEquipment        SetupEquipment,
-                                               MobilityServiceOrder     SOInfo, 
-                                               List<SAPComponent>       Components, 
-                                               BackgroundWorker         Parent) 
+        public virtual SAPERROR CreateServiceOrder(MobilityTask TaskInfo,
+                                                   MobilityEquipment SetupEquipment,
+                                                   MobilityServiceOrder SOInfo,
+                                                   List<SAPComponent> Components,
+                                                   BackgroundWorker Parent)
         {
             if (Session.GetSession())
             {
                 RefForm.SetStatus("Creating service order", 0);
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 Session.GetButton("*VIQMEL-AUFNR").Press();
 
                 if (!TaskInfo.WarrantyClaim)
                 {
                     ((GuiCTextField)Session.GetFormById("wnd[1]/usr/ctxtRIWO00-AUART")).Text = "ZM12";
-                } 
-                else 
+                }
+                else
                 {
                     ((GuiCTextField)Session.GetFormById("wnd[1]/usr/ctxtRIWO00-AUART")).Text = "ZM32";
                 }
+
                 ((GuiButton)Session.GetFormById("wnd[1]/tbar[0]/btn[0]")).Press();
 
-                Session.SendVKey(0); 
-                Session.SendVKey(0); 
-                Session.SendVKey(0); 
-                Session.SendVKey(0); 
+                Session.SendVKey(0);
+                Session.SendVKey(0);
+                Session.SendVKey(0);
+                Session.SendVKey(0);
                 Session.SendVKey(0);
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 // Set ZDI1
-                if (TaskInfo.WarrantyClaim) 
+                if (TaskInfo.WarrantyClaim)
                 {
-                    Session.GetCTextField("PMSDO-MATNR").Text  = SetupEquipment.ZDI1;
+                    Session.GetCTextField("PMSDO-MATNR").Text = SetupEquipment.ZDI1;
                     Session.GetCTextField("CAUFVD-BEMOT").Text = "02";
                 }
                 else
@@ -1060,55 +1017,45 @@ namespace Mobility_Setup_Tool
                     Session.GetCTextField("PMSDO-MATNR").Text = SetupEquipment.ZDI1;
                 }
 
-                Session.GetTextField("PMSDO-MENGE").Text    = "1";        // Qty
-                Session.GetCTextField("PMSDO-FAKTF").Text   = "01";       // Billing form
+                Session.GetTextField("PMSDO-MENGE").Text = "1";        // Qty
+                Session.GetCTextField("PMSDO-FAKTF").Text = "01";       // Billing form
 
                 Session.SendVKey(0);
 
-                Session.GetCTextField("CAUFVD-GLTRP").Text = SOInfo.BasicEndDate;
+                Session.GetCTextField("CAUFVD-GLTRP").Text  = SOInfo.BasicEndDate;
                 Session.ClearErrors(30, true);
-                Session.GetCTextField("CAUFVD-GSTRP").Text = SOInfo.BasicStartDate;
+                Session.GetCTextField("CAUFVD-GSTRP").Text  = SOInfo.BasicStartDate;
                 Session.ClearErrors(30, true);
 
-                Session.GetCTextField("CAUFVD-ILART").Text = SOInfo.ActivityType;
-                Session.GetComboBox("CAUFVD-PRIOK").Key    = SOInfo.Priority.Substring(0,1);
-                Session.GetCTextField("CAUFVD-VAPLZ").Text = TaskInfo.Workcentre;
+                Session.GetCTextField("CAUFVD-ILART").Text  = SOInfo.ActivityType;
+                Session.GetComboBox("CAUFVD-PRIOK").Key     = SOInfo.Priority[..1];
+                Session.GetCTextField("CAUFVD-VAPLZ").Text  = TaskInfo.Workcentre;
 
                 // Reset equipment
-                Session.GetCTextField("CAUFVD-EQUNR").Text = "";
-                Session.GetCTextField("CAUFVD-TPLNR").Text = "";
+                Session.GetCTextField("CAUFVD-EQUNR").Text  = "";
+                Session.GetCTextField("CAUFVD-TPLNR").Text  = "";
                 Session.ClearErrors(30, true);
-                Session.GetCTextField("CAUFVD-EQUNR").Text = SetupEquipment.EquipmentNumber;
+                Session.GetCTextField("CAUFVD-EQUNR").Text  = SetupEquipment.EquipmentNumber;
                 Session.ClearErrors(30, true);
 
                 // Add missing planner group
-                Session.GetCTextField("CAUFVD-INGPR").Text = RefForm.AppSettings.PlannerGroup;
+                Session.GetCTextField("CAUFVD-INGPR").Text  = RefForm.AppSettings.PlannerGroup;
 
                 // Go to location tab
                 Session.GetTab("ILOA").Select();
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
-                Session.GetCTextField("ILOA-SWERK").Text    = RefForm.AppSettings.Plant;
-                Session.GetCTextField("ILOA-STORT").Text    = RefForm.AppSettings.Location;
-                Session.GetCTextField("RILA0-ARBPL").Text   = TaskInfo.Workcentre;
-                Session.GetTextField("ILOA-EQFNR").Text     = SOInfo.ExternalReference != "" ? SOInfo.ExternalReference : "N/A";
+                Session.GetCTextField("ILOA-SWERK").Text = RefForm.AppSettings.Plant;
+                Session.GetCTextField("ILOA-STORT").Text = RefForm.AppSettings.Location;
+                Session.GetCTextField("RILA0-ARBPL").Text = TaskInfo.Workcentre;
+                Session.GetTextField("ILOA-EQFNR").Text = SOInfo.ExternalReference != "" ? SOInfo.ExternalReference : "N/A";
 
                 Session.ClearErrors(30, true);
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 // Add tasklist
                 if (TaskInfo.Group != "" || TaskInfo.CEL != "NON-STANDARD VARIATION")
@@ -1116,19 +1063,19 @@ namespace Mobility_Setup_Tool
                     ((GuiMenu)Session.GetFormById("wnd[0]/mbar/menu[3]/menu[0]/menu[0]")).Select();
                     //if(Session.GetActiveWindow().Type != "GuiMainWindow") ((GuiButton)Session.GetFormById("wnd[1]/usr/btnSPOP-OPTION1")).Press();
 
-                    ((GuiRadioButton)   Session.GetFormById("wnd[1]/usr/radRIHEA-PN_IHAN")).Selected    = true;
-                    ((GuiCTextField)    Session.GetFormById("wnd[1]/usr/ctxtCAUFVD-PLNNR")).Text        = TaskInfo.Group;
-                    ((GuiTextField)     Session.GetFormById("wnd[1]/usr/txtCAUFVD-PLNAL")).Text         = TaskInfo.Counter;
-                    ((GuiButton)        Session.GetFormById("wnd[1]/tbar[0]/btn[0]")).Press();
+                    ((GuiRadioButton)Session.GetFormById("wnd[1]/usr/radRIHEA-PN_IHAN")).Selected = true;
+                    ((GuiCTextField)Session.GetFormById("wnd[1]/usr/ctxtCAUFVD-PLNNR")).Text = TaskInfo.Group;
+                    ((GuiTextField)Session.GetFormById("wnd[1]/usr/txtCAUFVD-PLNAL")).Text = TaskInfo.Counter;
+                    ((GuiButton)Session.GetFormById("wnd[1]/tbar[0]/btn[0]")).Press();
 
                     // Press yes to delete current operations
-                    if(Session.GetActiveWindow().Type != "GuiMainWindow")
+                    if (Session.GetActiveWindow().Type != "GuiMainWindow")
                     {
                         ((GuiButton)Session.GetFormById("wnd[2]/usr/btnSPOP-OPTION1")).Press();
-                    }    
-                    
+                    }
+
                 }
-                    else
+                else
                 {
                     // Add planned hours
                     string PlannedHours = RefForm.GetInput("Please enter planned hours for this task", "Planned hours", "1");
@@ -1144,44 +1091,41 @@ namespace Mobility_Setup_Tool
                     Session.GetTab("MUEB").Select();
 
                     // Check for cancel
-                    if (Parent.CancellationPending)
-                    {
-                        MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                        RefForm.SetStatus("User canceled", 0);
-                        return false;
-                    }
+                    if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                     // Set to B03
-                    if (MsgBox_Question("Would you like to change the component's store location?") == DialogResult.Yes){
+                    if (MsgBox_Question("Would you like to change the component's store location?") == DialogResult.Yes)
+                    {
 
                         using SelectNewStore NewStoreDialog = new SelectNewStore(RefForm);
                         NewStoreDialog.ShowDialog();
 
                         if (NewStoreDialog.RunChangeStore)
-                        { 
+                        {
                             Session.ChangeStore(NewStoreDialog.StoreLoc, NewStoreDialog.SpecStock, Parent);
                         }
                     }
                 }
-                    else
+                else
                 {
-                    GuiCTextField           CurrentLoc, CurrentStock, CurrentZAWA, CurrentItemCat;
-                    GuiTextField            CurrentQty, CurrentAct;
-                    GuiComponentCollection  ZAWA, Quantity, StoreLoc, SpecialStock, ItemCat, Act;
-                    GuiTableControl         ComponentTable;
+                    // Enter custom components
+                    GuiCTextField CurrentLoc, CurrentStock, CurrentZAWA, CurrentItemCat;
+                    GuiTextField CurrentQty, CurrentAct;
+                    GuiComponentCollection ZAWA, Quantity, StoreLoc, SpecialStock, ItemCat, Act;
+                    GuiTableControl ComponentTable;
 
                     // Get table initially 
-                    ComponentTable  = Session.GetTable("SAPLCOMKTCTRL_3020");
-                    int VisRows     = ComponentTable.VisibleRowCount;
-                    int CurRow      = 0;
+                    ComponentTable = Session.GetTable("SAPLCOMKTCTRL_3020");
+                    int VisRows = ComponentTable.VisibleRowCount;
+                    int CurRow = 0;
 
                     // Find next empty slot 
                     for (int i = 0; i < ComponentTable.Rows.Count; i++)
                     {
                         // Refresh connection to table 
-                        ComponentTable  = Session.GetTable("SAPLCOMKTCTRL_3020");
-                        ZAWA            = ComponentTable.FindAllByName("RESBD-MATNR", "GuiCTextField");
-                        CurrentZAWA     = ((GuiCTextField)ZAWA.Item(i));
+                        ComponentTable = Session.GetTable("SAPLCOMKTCTRL_3020");
+                        ZAWA = ComponentTable.FindAllByName("RESBD-MATNR", "GuiCTextField");
+                        CurrentZAWA = ((GuiCTextField)ZAWA.Item(i));
 
                         if (CurrentZAWA.Text == "") break;
 
@@ -1199,29 +1143,29 @@ namespace Mobility_Setup_Tool
                         }
 
                         // Refresh connection to table 
-                        ComponentTable          = Session.GetTable("SAPLCOMKTCTRL_3020");
-                        ZAWA                    = ComponentTable.FindAllByName("RESBD-MATNR", "GuiCTextField");
-                        Quantity                = ComponentTable.FindAllByName("RESBD-MENGE", "GuiTextField");
-                        StoreLoc                = ComponentTable.FindAllByName("RESBD-LGORT", "GuiCTextField");
-                        SpecialStock            = ComponentTable.FindAllByName("RESBD-SOBKZ_D", "GuiCTextField");
-                        ItemCat                 = ComponentTable.FindAllByName("RESBD-POSTP", "GuiCTextField");
-                        Act                     = ComponentTable.FindAllByName("RESBD-VORNR", "GuiTextField");
+                        ComponentTable = Session.GetTable("SAPLCOMKTCTRL_3020");
+                        ZAWA = ComponentTable.FindAllByName("RESBD-MATNR", "GuiCTextField");
+                        Quantity = ComponentTable.FindAllByName("RESBD-MENGE", "GuiTextField");
+                        StoreLoc = ComponentTable.FindAllByName("RESBD-LGORT", "GuiCTextField");
+                        SpecialStock = ComponentTable.FindAllByName("RESBD-SOBKZ_D", "GuiCTextField");
+                        ItemCat = ComponentTable.FindAllByName("RESBD-POSTP", "GuiCTextField");
+                        Act = ComponentTable.FindAllByName("RESBD-VORNR", "GuiTextField");
 
                         // Get fields in current row 
-                        CurrentLoc              = ((GuiCTextField)StoreLoc.Item(CurRow));
-                        CurrentStock            = ((GuiCTextField)SpecialStock.Item(CurRow));
-                        CurrentZAWA             = ((GuiCTextField)ZAWA.Item(CurRow));
-                        CurrentQty              = ((GuiTextField)Quantity.Item(CurRow));
-                        CurrentItemCat          = ((GuiCTextField)ItemCat.Item(CurRow));
-                        CurrentAct              = ((GuiTextField)Act.Item(CurRow));
+                        CurrentLoc = ((GuiCTextField)StoreLoc.Item(CurRow));
+                        CurrentStock = ((GuiCTextField)SpecialStock.Item(CurRow));
+                        CurrentZAWA = ((GuiCTextField)ZAWA.Item(CurRow));
+                        CurrentQty = ((GuiTextField)Quantity.Item(CurRow));
+                        CurrentItemCat = ((GuiCTextField)ItemCat.Item(CurRow));
+                        CurrentAct = ((GuiTextField)Act.Item(CurRow));
 
                         // Add data 
-                        CurrentItemCat.Text     = "L";
-                        CurrentAct.Text         = "0010";
-                        CurrentZAWA.Text        = Components[i].ZAWA;
-                        CurrentQty.Text         = Components[i].Qauntity;
-                        CurrentStock.Text       = Components[i].SpecialStock;
-                        CurrentLoc.Text         = Components[i].StoreLocation;
+                        CurrentItemCat.Text = "L";
+                        CurrentAct.Text = "0010";
+                        CurrentZAWA.Text = Components[i].ZAWA;
+                        CurrentQty.Text = Components[i].Qauntity;
+                        CurrentStock.Text = Components[i].SpecialStock;
+                        CurrentLoc.Text = Components[i].StoreLocation;
 
                         Session.SendVKey(0);
 
@@ -1234,12 +1178,7 @@ namespace Mobility_Setup_Tool
                 }
 
                 // Check for cancel
-                if (Parent.CancellationPending)
-                {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    RefForm.SetStatus("User canceled", 0);
-                    return false;
-                }
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
                 // Set settlement rule for warranty
                 if (TaskInfo.WarrantyClaim)
@@ -1250,12 +1189,12 @@ namespace Mobility_Setup_Tool
                     Session.GetButton("btn[14]").Press();
 
                     // Add warranty cost re-direction rule
-                    ((GuiCTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/ctxtCOBRB-KONTY[0,0]")).Text    = "G/L";
+                    ((GuiCTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/ctxtCOBRB-KONTY[0,0]")).Text = "G/L";
                     Session.SendVKey(0);
-                    ((GuiCTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/ctxtDKOBR-EMPGE[1,0]")).Text    = "240600";
+                    ((GuiCTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/ctxtDKOBR-EMPGE[1,0]")).Text = "240600";
                     Session.SendVKey(0);
-                    ((GuiTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/txtCOBRB-PROZS[3,0]")).Text      = "100";
-                    ((GuiCTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/ctxtCOBRB-PERBZ[5,0]")).Text    = "FUL";
+                    ((GuiTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/txtCOBRB-PROZS[3,0]")).Text = "100";
+                    ((GuiCTextField)Session.GetFormById("wnd[0]/usr/tblSAPLKOBSTC_RULES/ctxtCOBRB-PERBZ[5,0]")).Text = "FUL";
                     Session.SendVKey(3);
                 }
 
@@ -1266,28 +1205,24 @@ namespace Mobility_Setup_Tool
                 }
 
                 Session.GetButton("btn[11]").Press();
-                
+
                 if (Session.GetActiveWindow().Type != "GuiMainWindow")
                 {
                     ((GuiButton)Session.GetFormById("wnd[1]/usr/btnSPOP-OPTION1")).Press();
-                   Session.GetButton("btn[11]").Press();
+                    Session.GetButton("btn[11]").Press();
                 }
 
                 // Finalize order
-                Finalize(TaskInfo, SOInfo, SetupEquipment);
-                
+                return Finalize(TaskInfo, SOInfo, SetupEquipment);
             }
             else
             {
-                MsgBox_Error("Please ensure SAP is running");
-                return false;
+                return SAPERROR.SAP_CONNECTION_FAILED;
             }
-
-            return true;
         }
 
         // Create service order
-        public virtual bool Finalize(MobilityTask TaskInfo, MobilityServiceOrder InputSO, MobilityEquipment InputEq) 
+        public virtual SAPERROR Finalize(MobilityTask TaskInfo, MobilityServiceOrder InputSO, MobilityEquipment InputEq)
         {
             if (Session.GetSession())
             {
@@ -1298,30 +1233,19 @@ namespace Mobility_Setup_Tool
                 if (Session.GetSessionInfo().ScreenNumber != 3000)
                 {
                     MsgBox_Error("Cannot find service order");
+                    return SAPERROR.SO_CANT_FIND;
                 }
-
-                string Customer = InputSO.CustomerName.Replace(@"/", "");
-                       Customer = InputSO.CustomerName.Replace(@"\", "");
 
                 // Verify the order was created and get the numbers
                 RefForm.Output_ServiceOrder = Session.GetTextField("CAUFVD-AUFNR").Text;
                 RefForm.Output_Notification = Session.GetTextField("CAUFVD-QMNUM").Text;
 
                 // Verify inputs
-                if(Session.GetCTextField("VIQMEL-KUNUM").Text == "")
-                {
-                    MsgBox_Warning($"There were errors in the service order creation, please verify the information for order {RefForm.Output_ServiceOrder}, [SOLD TO PART MISSING]");
-                }
+                if (Session.GetCTextField("VIQMEL-KUNUM").Text == "") MsgBox_Warning($"There were errors in the service order creation, please verify the information for order {RefForm.Output_ServiceOrder}, [SOLD TO PART MISSING]");
 
-                if(Session.GetTextField("PMSDO-BSTKD").Text == "")
-                {
-                    MsgBox_Warning($"There were errors in the service order creation, please verify the information for order {RefForm.Output_ServiceOrder}, [PO MISSING]");
-                }
+                if (Session.GetTextField("PMSDO-BSTKD").Text == "") MsgBox_Warning($"There were errors in the service order creation, please verify the information for order {RefForm.Output_ServiceOrder}, [PO MISSING]");
 
-                if(Session.GetCTextField("PMSDO-FAKTF").Text == "")
-                {
-                    MsgBox_Warning($"There were errors in the service order creation, please verify the information for order {RefForm.Output_ServiceOrder}, [BILLING FORM MISSING]");
-                }
+                if (Session.GetCTextField("PMSDO-FAKTF").Text == "") MsgBox_Warning($"There were errors in the service order creation, please verify the information for order {RefForm.Output_ServiceOrder}, [BILLING FORM MISSING]");
 
                 Session.GetTab("ILOA").Select();
 
@@ -1362,14 +1286,19 @@ namespace Mobility_Setup_Tool
             }
             else
             {
-                MsgBox_Error("Please ensure SAP is running");
+                return SAPERROR.SAP_CONNECTION_FAILED;
             }
 
-            return true;
+            return SAPERROR.NONE;
         }
 
-        // Create service order
-        public virtual bool CreateServiceOrderFromNotification(MobilityTask TaskInfo, MobilityEquipment SetupEquipment, MobilityServiceOrder SOInfo, List<SAPComponent> Components, string Notification, BackgroundWorker Parent)
+        // Create service order from notification variation
+        public virtual SAPERROR CreateServiceOrderFromNotification(MobilityTask TaskInfo,
+                                                                   MobilityEquipment SetupEquipment,
+                                                                   MobilityServiceOrder SOInfo,
+                                                                   List<SAPComponent> Components,
+                                                                   string Notification,
+                                                                   BackgroundWorker Parent)
         {
             if (Session.GetSession())
             {
@@ -1380,20 +1309,20 @@ namespace Mobility_Setup_Tool
                     Session.SendVKey(0);
 
                     // Verify the notification
-                    if (Session.GetSessionInfo().ScreenNumber == 100) 
+                    if (Session.GetSessionInfo().ScreenNumber == 100)
                     {
                         Session.ClearErrors(30, false);
 
-                        if (Session.GetSessionInfo().ScreenNumber == 100) 
+                        if (Session.GetSessionInfo().ScreenNumber == 100)
                         {
                             MsgBox_Error("Cannot find notification you have selected!");
                         }
                     }
 
                     // Check notification
-                    if(Session.GetTextField("VIQMEL-QMTXT").Text != TaskInfo.Name)
+                    if (Session.GetTextField("VIQMEL-QMTXT").Text != TaskInfo.Name)
                     {
-                        if(MsgBox_Question($"Description {Session.GetTextField("VIQMEL-QMTXT").Text} does not match template description {TaskInfo.Name}, do you want to change it?") == DialogResult.Yes)
+                        if (MsgBox_Question($"Description {Session.GetTextField("VIQMEL-QMTXT").Text} does not match template description {TaskInfo.Name}, do you want to change it?") == DialogResult.Yes)
                         {
                             Session.GetTextField("VIQMEL-QMTXT").Text = TaskInfo.Name;
                         }
@@ -1402,21 +1331,17 @@ namespace Mobility_Setup_Tool
                     // Get the PO number
                     SOInfo.PurchaseOrder = Session.GetTextField("VIQMEL-BSTNK").Text;
 
-                    CreateServiceOrder(TaskInfo, SetupEquipment, SOInfo, Components, Parent);
+                    return CreateServiceOrder(TaskInfo, SetupEquipment, SOInfo, Components, Parent);
                 }
                 else
                 {
-                    MsgBox_Normal("User cancel detected, the tool will now be stopped.");
-                    return false;
+                    return SAPERROR.USR_CANCEL;
                 }
             }
             else
             {
-                MsgBox_Error("Please ensure SAP is running");
-                return false;
+                return SAPERROR.SAP_CONNECTION_FAILED;
             }
-
-            return true;
         }
     }
 }

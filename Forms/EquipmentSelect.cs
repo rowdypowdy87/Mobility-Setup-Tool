@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-
-using static System.Windows.Forms.ListView;
 
 namespace Mobility_Setup_Tool
 {
     public partial class EquipmentSelect : Form
     {
-
         public MainForm RefForm;
 
         // Window movement globals
@@ -28,12 +21,11 @@ namespace Mobility_Setup_Tool
 
         private void EquipmentSelect_Load(object sender, EventArgs e)
         {
-
-            BackColor                       = RefForm.ThemeController.GetBackcolor();
-            TitleBar_PNL.BackColor          = RefForm.ThemeController.GetBordercolor();
-            MiniButton_LBL.BackColor        = RefForm.ThemeController.GetBordercolor();
-            MaxiButton_LBL.BackColor        = RefForm.ThemeController.GetBordercolor();
-            CloseButton_LBL.BackColor       = RefForm.ThemeController.GetBordercolor();
+            BackColor = RefForm.ThemeController.GetBackcolor();
+            TitleBar_PNL.BackColor = RefForm.ThemeController.GetBordercolor();
+            MiniButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
+            MaxiButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
+            CloseButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
 
             RefForm.ThemeController.AddControls(TitleBar_PNL, THEME_TYPE.Border);
             RefForm.ThemeController.AddControls(MiniButton_LBL, THEME_TYPE.Border);
@@ -42,9 +34,10 @@ namespace Mobility_Setup_Tool
             RefForm.ThemeController.AddControls(BackColor, THEME_TYPE.Back);
         }
 
-
-        private void EquipmentSelect_Paint(object sender, PaintEventArgs e)
+        protected override void OnPaint(PaintEventArgs e)
         {
+            base.OnPaint(e);
+
             DoubleBuffered = true;
             ResizeRedraw = true;
 
@@ -115,9 +108,12 @@ namespace Mobility_Setup_Tool
             {
                 isTopPanelDragged = true;
                 Point pointStartPosition = this.PointToScreen(new Point(e.X, e.Y));
-                offset = new Point();
-                offset.X = this.Location.X - pointStartPosition.X;
-                offset.Y = this.Location.Y - pointStartPosition.Y;
+
+                offset = new Point
+                {
+                    X = this.Location.X - pointStartPosition.X,
+                    Y = this.Location.Y - pointStartPosition.Y
+                };
             }
             else
             {
@@ -142,9 +138,11 @@ namespace Mobility_Setup_Tool
             {
                 isTopPanelDragged = true;
                 Point pointStartPosition = this.PointToScreen(new Point(e.X, e.Y));
-                offset = new Point();
-                offset.X = this.Location.X - pointStartPosition.X;
-                offset.Y = this.Location.Y - pointStartPosition.Y;
+                offset = new Point
+                {
+                    X = this.Location.X - pointStartPosition.X,
+                    Y = this.Location.Y - pointStartPosition.Y
+                };
             }
             else
             {
@@ -158,7 +156,7 @@ namespace Mobility_Setup_Tool
 
         private void Continue_BTN_Click(object sender, EventArgs e)
         {
-            for(int i = 0; i < EqFound_LV.Items.Count; i++)
+            for (int i = 0; i < EqFound_LV.Items.Count; i++)
             {
                 if (EqFound_LV.Items[i].Checked)
                 {
@@ -170,7 +168,7 @@ namespace Mobility_Setup_Tool
             {
                 MsgBoxs.MsgBox_Error("Nothing was selected!");
             }
-                else
+            else
             {
                 Close();
             }

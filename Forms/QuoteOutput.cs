@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using static Mobility_Setup_Tool.MsgBoxs;
 
 namespace Mobility_Setup_Tool
 {
@@ -13,7 +9,7 @@ namespace Mobility_Setup_Tool
         public MainForm RefForm;
 
         // Window movement globals
-        public bool  isTopPanelDragged;
+        public bool isTopPanelDragged;
         public Point offset;
 
         public QuoteOutput(MainForm r)
@@ -24,20 +20,20 @@ namespace Mobility_Setup_Tool
 
         private void QuoteOutput_Load(object sender, EventArgs e)
         {
-            BackColor                    = RefForm.ThemeController.GetBackcolor();
-            TitleBar_PNL.BackColor       = RefForm.ThemeController.GetBordercolor();
+            BackColor = RefForm.ThemeController.GetBackcolor();
+            TitleBar_PNL.BackColor = RefForm.ThemeController.GetBordercolor();
             MinimizeButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
             MaximizeButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
-            CloseButton_LBL.BackColor    = RefForm.ThemeController.GetBordercolor();
+            CloseButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
 
-            RefForm.ThemeController.AddControls(TitleBar_PNL,       THEME_TYPE.Border);
+            RefForm.ThemeController.AddControls(TitleBar_PNL, THEME_TYPE.Border);
             RefForm.ThemeController.AddControls(MinimizeButton_LBL, THEME_TYPE.Border);
             RefForm.ThemeController.AddControls(MaximizeButton_LBL, THEME_TYPE.Border);
-            RefForm.ThemeController.AddControls(CloseButton_LBL,    THEME_TYPE.Border);
-            RefForm.ThemeController.AddControls(this,               THEME_TYPE.Back);
+            RefForm.ThemeController.AddControls(CloseButton_LBL, THEME_TYPE.Border);
+            RefForm.ThemeController.AddControls(this, THEME_TYPE.Back);
         }
 
-#region WINDOW THEME CONTROLS
+        #region WINDOW THEME CONTROLS
 
         // Close button label mouse enter event 
         private void CloseButton_LBL_MouseEnter(object sender, EventArgs e) { CloseButton_LBL.BackColor = RefForm.ThemeController.GetBackcolor(); }
@@ -120,16 +116,16 @@ namespace Mobility_Setup_Tool
         protected override void OnPaint(PaintEventArgs e)
         {
             DoubleBuffered = true;
-            ResizeRedraw   = true;
+            ResizeRedraw = true;
 
             // Do form painting first
             base.OnPaint(e);
 
             // Variables
-            Pen         BorderPen   = new Pen(RefForm.ThemeController.GetBordercolor(), 1.0f);
-            Brush       Fill        = BorderPen.Brush;
-            Graphics    FormGFX     = e.Graphics;
-            Rectangle   FormBorder, PanelBorder;
+            Pen BorderPen = new Pen(RefForm.ThemeController.GetBordercolor(), 1.0f);
+            Brush Fill = BorderPen.Brush;
+            Graphics FormGFX = e.Graphics;
+            Rectangle FormBorder, PanelBorder;
 
             // Get rect
             FormBorder = new Rectangle(ClientRectangle.X,
@@ -146,7 +142,7 @@ namespace Mobility_Setup_Tool
             // Draw rectangles
             FormGFX.DrawRectangle(BorderPen, FormBorder);
             FormGFX.DrawRectangle(BorderPen, PanelBorder);
-            FormGFX.FillRectangle(Fill,      PanelBorder);
+            FormGFX.FillRectangle(Fill, PanelBorder);
         }
 
         // Title bar double click event 
@@ -182,9 +178,11 @@ namespace Mobility_Setup_Tool
             {
                 isTopPanelDragged = true;
                 Point pointStartPosition = this.PointToScreen(new Point(e.X, e.Y));
-                offset = new Point();
-                offset.X = this.Location.X - pointStartPosition.X;
-                offset.Y = this.Location.Y - pointStartPosition.Y;
+                offset = new Point
+                {
+                    X = this.Location.X - pointStartPosition.X,
+                    Y = this.Location.Y - pointStartPosition.Y
+                };
             }
             else
             {

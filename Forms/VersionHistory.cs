@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using static Mobility_Setup_Tool.MsgBoxs;
 
 namespace Mobility_Setup_Tool
 {
@@ -24,15 +21,15 @@ namespace Mobility_Setup_Tool
 
         private void VersionHist_Load(object sender, EventArgs e)
         {
-            BackColor                    = RefForm.ThemeController.GetBackcolor();
-            TitleBar_PNL.BackColor       = RefForm.ThemeController.GetBordercolor();
-            MinimizeButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
-            MaximizeButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
-            CloseButton_LBL.BackColor    = RefForm.ThemeController.GetBordercolor();
+            BackColor                       = RefForm.ThemeController.GetBackcolor();
+            TitleBar_PNL.BackColor          = RefForm.ThemeController.GetBordercolor();
+            MinimizeButton_LBL.BackColor    = RefForm.ThemeController.GetBordercolor();
+            MaximizeButton_LBL.BackColor    = RefForm.ThemeController.GetBordercolor();
+            CloseButton_LBL.BackColor       = RefForm.ThemeController.GetBordercolor();
 
             List<VersionInfo> VersionHist = RefForm.DatabaseController.GetVersionInfo();
 
-            for(int i = 0; i < VersionHist.Count; i++)
+            for (int i = 0; i < VersionHist.Count; i++)
             {
                 VersionHist_DGV.Rows.Add();
 
@@ -42,7 +39,7 @@ namespace Mobility_Setup_Tool
                 VersionHist_DGV[3, i].Value = VersionHist[i].ApprovedBy;
                 VersionHist_DGV[4, i].Value = VersionHist[i].ChangedBy;
             }
-            
+
         }
 
 
@@ -88,7 +85,7 @@ namespace Mobility_Setup_Tool
                     if ((int)m.Result == 0x01)
                     {
                         Point screenPoint = new Point(m.LParam.ToInt32());
-                        Point clientPoint = this.PointToClient(screenPoint);
+                        Point clientPoint = PointToClient(screenPoint);
                         if (clientPoint.Y <= RESIZE_HANDLE_SIZE)
                         {
                             if (clientPoint.X <= RESIZE_HANDLE_SIZE)
@@ -152,11 +149,13 @@ namespace Mobility_Setup_Tool
         {
             if (e.Button == MouseButtons.Left)
             {
-                isTopPanelDragged = true;
-                Point pointStartPosition = this.PointToScreen(new Point(e.X, e.Y));
-                offset = new Point();
-                offset.X = this.Location.X - pointStartPosition.X;
-                offset.Y = this.Location.Y - pointStartPosition.Y;
+                isTopPanelDragged           = true;
+                Point pointStartPosition    = PointToScreen(new Point(e.X, e.Y));
+                offset                      = new Point
+                {
+                    X = Location.X - pointStartPosition.X,
+                    Y = Location.Y - pointStartPosition.Y
+                };
             }
             else
             {
@@ -195,6 +194,6 @@ namespace Mobility_Setup_Tool
             {
                 e.Graphics.DrawRectangle(BorderPen, 0, 0, Width - 1, Height - 1);
             };
-        }  
+        }
     }
 }

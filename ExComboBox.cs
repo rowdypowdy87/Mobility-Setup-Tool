@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Mobility_Setup_Tool
@@ -11,9 +8,9 @@ namespace Mobility_Setup_Tool
         public ExComboBox()
         {
             // Add event handlers
-            Leave           += new EventHandler(ExCombo_OnLeave);
-            DropDown        += new EventHandler(ExCombo_DropDown);
-            DropDownClosed  += new EventHandler(ExCombo_DropDownClosed);
+            Leave += new EventHandler(ExCombo_OnLeave);
+            DropDown += new EventHandler(ExCombo_DropDown);
+            DropDownClosed += new EventHandler(ExCombo_DropDownClosed);
         }
 
         // When combobox drops down
@@ -37,9 +34,9 @@ namespace Mobility_Setup_Tool
             // matches one of the pre-loaded items, otherwise clear free text
             bool found = false;
 
-            foreach(string item in Items)
+            foreach (string item in Items)
             {
-                if(item == Text)
+                if (item == Text)
                 {
                     found = true;
                     break;

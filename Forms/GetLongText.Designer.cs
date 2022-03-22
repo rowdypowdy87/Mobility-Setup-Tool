@@ -46,8 +46,9 @@ namespace Mobility_Setup_Tool.Forms
             this.TitleBar_PNL.Controls.Add(this.Title_LBL);
             this.TitleBar_PNL.Dock = System.Windows.Forms.DockStyle.Top;
             this.TitleBar_PNL.Location = new System.Drawing.Point(0, 0);
+            this.TitleBar_PNL.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TitleBar_PNL.Name = "TitleBar_PNL";
-            this.TitleBar_PNL.Size = new System.Drawing.Size(677, 37);
+            this.TitleBar_PNL.Size = new System.Drawing.Size(592, 35);
             this.TitleBar_PNL.TabIndex = 7;
             this.TitleBar_PNL.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseDown);
             this.TitleBar_PNL.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseMove);
@@ -58,7 +59,8 @@ namespace Mobility_Setup_Tool.Forms
             this.UGLLogo_PB.ErrorImage = null;
             this.UGLLogo_PB.Image = global::Mobility_Setup_Tool.Properties.Resources.Sprite11;
             this.UGLLogo_PB.InitialImage = null;
-            this.UGLLogo_PB.Location = new System.Drawing.Point(6, 6);
+            this.UGLLogo_PB.Location = new System.Drawing.Point(5, 5);
+            this.UGLLogo_PB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UGLLogo_PB.Name = "UGLLogo_PB";
             this.UGLLogo_PB.Size = new System.Drawing.Size(24, 24);
             this.UGLLogo_PB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -67,11 +69,11 @@ namespace Mobility_Setup_Tool.Forms
             // 
             // Title_LBL
             // 
-            this.Title_LBL.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Title_LBL.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.Title_LBL.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.Title_LBL.Location = new System.Drawing.Point(35, 0);
             this.Title_LBL.Name = "Title_LBL";
-            this.Title_LBL.Size = new System.Drawing.Size(419, 37);
+            this.Title_LBL.Size = new System.Drawing.Size(367, 35);
             this.Title_LBL.TabIndex = 5;
             this.Title_LBL.Text = "Mobility Setup and Planning Tool - Get Long Text";
             this.Title_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -82,26 +84,28 @@ namespace Mobility_Setup_Tool.Forms
             // LongText_RTB
             // 
             this.LongText_RTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.LongText_RTB.Location = new System.Drawing.Point(12, 88);
+            this.LongText_RTB.Location = new System.Drawing.Point(10, 66);
+            this.LongText_RTB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.LongText_RTB.Name = "LongText_RTB";
-            this.LongText_RTB.Size = new System.Drawing.Size(653, 612);
+            this.LongText_RTB.Size = new System.Drawing.Size(571, 459);
             this.LongText_RTB.TabIndex = 8;
             this.LongText_RTB.Text = "";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(15, 57);
+            this.label1.Location = new System.Drawing.Point(13, 43);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(150, 20);
+            this.label1.Size = new System.Drawing.Size(119, 15);
             this.label1.TabIndex = 9;
             this.label1.Text = "Enter Long Text Here:";
             // 
             // Continue_BTN
             // 
-            this.Continue_BTN.Location = new System.Drawing.Point(15, 709);
+            this.Continue_BTN.Location = new System.Drawing.Point(13, 532);
+            this.Continue_BTN.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Continue_BTN.Name = "Continue_BTN";
-            this.Continue_BTN.Size = new System.Drawing.Size(650, 68);
+            this.Continue_BTN.Size = new System.Drawing.Size(569, 51);
             this.Continue_BTN.TabIndex = 10;
             this.Continue_BTN.Text = "Continue";
             this.Continue_BTN.UseVisualStyleBackColor = true;
@@ -109,14 +113,15 @@ namespace Mobility_Setup_Tool.Forms
             // 
             // GetLongText
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(677, 786);
+            this.ClientSize = new System.Drawing.Size(592, 590);
             this.Controls.Add(this.Continue_BTN);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.LongText_RTB);
             this.Controls.Add(this.TitleBar_PNL);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "GetLongText";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;

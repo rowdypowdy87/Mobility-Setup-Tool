@@ -1,28 +1,21 @@
-﻿using Mobility_Setup_Tool.Forms;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Net;
-using System.Windows.Forms;
-
-public struct VersionInfo
-{
-    public string ChangeNumber  { set; get; }
-    public string Description   { set; get; }
-    public string ChangedBy     { get; set; }
-    public string ApprovedBy    { get; set; }
-    public string ChangedOn     { get; set; }
-}
 
 namespace Mobility_Setup_Tool
 {
-    
+    public struct VersionInfo
+    {
+        public string ChangeNumber { set; get; }
+        public string Description { set; get; }
+        public string ChangedBy { get; set; }
+        public string ApprovedBy { get; set; }
+        public string ChangedOn { get; set; }
+    }
 
     // Manage all database information && loading into memory 
     public class Databases
     {
-        MainForm Reference;
+        readonly MainForm Reference;
 
         // Global structures
         public List<MobilityEquipment>  EquipmentList   = new List<MobilityEquipment>();
@@ -42,9 +35,9 @@ namespace Mobility_Setup_Tool
         public void Load()
         {
             ExcelDataTables ExcelManager = new ExcelDataTables();
-            DataTable       LoadTable;
-            int             i;
-            
+            DataTable LoadTable;
+            int i;
+
             // Open sheet
             LoadTable = ExcelManager.ConvertExcelToDataTable(Reference.AppSettings.Defaults.InputsPath, 0);
 
@@ -55,25 +48,23 @@ namespace Mobility_Setup_Tool
             // Add each equipment into box
             for (i = 0; i < LoadTable.Rows.Count; i++)
             {
-                MobilityEquipment _add = new MobilityEquipment();
-
-                // Fill the structure array from table
-                _add.Description        = LoadTable.Rows[i][0]  != null ? LoadTable.Rows[i][0].ToString() : "";
-                _add.EquipmentNumber    = LoadTable.Rows[i][1]  != null ? LoadTable.Rows[i][1].ToString() : "";
-                _add.ZAWA               = LoadTable.Rows[i][2]  != null ? LoadTable.Rows[i][2].ToString() : "";
-                _add.ZDI1               = LoadTable.Rows[i][3]  != null ? LoadTable.Rows[i][3].ToString() : "";
-
-                if ((LoadTable.Rows[i][4]  != null ? LoadTable.Rows[i][4].ToString() : "") == "YES") 
+                MobilityEquipment _add = new MobilityEquipment
                 {
+                    // Fill the structure array from table
+                    Description         = LoadTable.Rows[i][0] != null ? LoadTable.Rows[i][0].ToString() : "",
+                    EquipmentNumber     = LoadTable.Rows[i][1] != null ? LoadTable.Rows[i][1].ToString() : "",
+                    ZAWA                = LoadTable.Rows[i][2] != null ? LoadTable.Rows[i][2].ToString() : "",
+                    ZDI1                = LoadTable.Rows[i][3] != null ? LoadTable.Rows[i][3].ToString() : ""
+                };
+
+                // Check for update to template
+                if ((LoadTable.Rows[i][4] != null ? LoadTable.Rows[i][4].ToString() : "") == "YES")
                     _add.UpdateToTemplate = true;
-                } else 
-                {
+                else
                     _add.UpdateToTemplate = false;
-                }
 
                 // Add to listbox
                 Reference.TemplateEquipmentList_CB.Items.Add(LoadTable.Rows[i][0]);
-
                 Reference.VarTemplate_CB.Items.Add(LoadTable.Rows[i][0]);
 
                 // Add to memory
@@ -88,30 +79,31 @@ namespace Mobility_Setup_Tool
             // Fill task arrays
             for (i = 0; i < LoadTable.Rows.Count; i++)
             {
-                MobilityTask _add = new MobilityTask();
-
-                // Fill the structure array from table'
-                _add.Name           = LoadTable.Rows[i][0]  != null ? LoadTable.Rows[i][0].ToString() : "";
-                _add.CEL            = LoadTable.Rows[i][1]  != null ? LoadTable.Rows[i][1].ToString() : "";
-                _add.Group          = LoadTable.Rows[i][2]  != null ? LoadTable.Rows[i][2].ToString() : ""; 
-                _add.Counter        = LoadTable.Rows[i][3]  != null ? LoadTable.Rows[i][3].ToString() : "";
-                _add.Workcentre     = LoadTable.Rows[i][4]  != null ? LoadTable.Rows[i][4].ToString() : "";
-                _add.WBS            = LoadTable.Rows[i][5]  != null ? LoadTable.Rows[i][5].ToString() : "";
-                _add.Module         = LoadTable.Rows[i][6]  != null ? LoadTable.Rows[i][6].ToString() : "";
-                _add.SalesDoc       = LoadTable.Rows[i][7]  != null ? LoadTable.Rows[i][7].ToString() : "";
-                _add.SalesDocItem   = LoadTable.Rows[i][8]  != null ? LoadTable.Rows[i][8].ToString() : "";
-                _add.LongText       = LoadTable.Rows[i][9]  != null ? LoadTable.Rows[i][9].ToString() : "";
-                _add.FolderPath     = LoadTable.Rows[i][10] != null ? LoadTable.Rows[i][10].ToString() : "";
-                _add.Equipment1     = LoadTable.Rows[i][11] != null ? LoadTable.Rows[i][11].ToString() : "";
-                _add.Equipment2     = LoadTable.Rows[i][12] != null ? LoadTable.Rows[i][12].ToString() : ""; 
-                _add.Equipment3     = LoadTable.Rows[i][13] != null ? LoadTable.Rows[i][13].ToString() : "";
-                _add.Equipment4     = LoadTable.Rows[i][14] != null ? LoadTable.Rows[i][14].ToString() : ""; 
-                _add.Equipment5     = LoadTable.Rows[i][15] != null ? LoadTable.Rows[i][15].ToString() : "";
-                _add.Equipment6     = LoadTable.Rows[i][16] != null ? LoadTable.Rows[i][16].ToString() : "";
-                _add.Equipment7     = LoadTable.Rows[i][17] != null ? LoadTable.Rows[i][17].ToString() : "";
-                _add.Equipment8     = LoadTable.Rows[i][18] != null ? LoadTable.Rows[i][18].ToString() : "";
-                _add.Equipment9     = LoadTable.Rows[i][19] != null ? LoadTable.Rows[i][19].ToString() : "";
-                _add.Equipment10    = LoadTable.Rows[i][20] != null ? LoadTable.Rows[i][20].ToString() : "";
+                MobilityTask _add = new MobilityTask
+                {
+                    // Fill the structure array from table'
+                    Name                = LoadTable.Rows[i][0] != null ? LoadTable.Rows[i][0].ToString() : "",
+                    CEL                 = LoadTable.Rows[i][1] != null ? LoadTable.Rows[i][1].ToString() : "",
+                    Group               = LoadTable.Rows[i][2] != null ? LoadTable.Rows[i][2].ToString() : "",
+                    Counter             = LoadTable.Rows[i][3] != null ? LoadTable.Rows[i][3].ToString() : "",
+                    Workcentre          = LoadTable.Rows[i][4] != null ? LoadTable.Rows[i][4].ToString() : "",
+                    WBS                 = LoadTable.Rows[i][5] != null ? LoadTable.Rows[i][5].ToString() : "",
+                    Module              = LoadTable.Rows[i][6] != null ? LoadTable.Rows[i][6].ToString() : "",
+                    SalesDoc            = LoadTable.Rows[i][7] != null ? LoadTable.Rows[i][7].ToString() : "",
+                    SalesDocItem        = LoadTable.Rows[i][8] != null ? LoadTable.Rows[i][8].ToString() : "",
+                    LongText            = LoadTable.Rows[i][9] != null ? LoadTable.Rows[i][9].ToString() : "",
+                    FolderPath          = LoadTable.Rows[i][10] != null ? LoadTable.Rows[i][10].ToString() : "",
+                    Equipment1          = LoadTable.Rows[i][11] != null ? LoadTable.Rows[i][11].ToString() : "",
+                    Equipment2          = LoadTable.Rows[i][12] != null ? LoadTable.Rows[i][12].ToString() : "",
+                    Equipment3          = LoadTable.Rows[i][13] != null ? LoadTable.Rows[i][13].ToString() : "",
+                    Equipment4          = LoadTable.Rows[i][14] != null ? LoadTable.Rows[i][14].ToString() : "",
+                    Equipment5          = LoadTable.Rows[i][15] != null ? LoadTable.Rows[i][15].ToString() : "",
+                    Equipment6          = LoadTable.Rows[i][16] != null ? LoadTable.Rows[i][16].ToString() : "",
+                    Equipment7          = LoadTable.Rows[i][17] != null ? LoadTable.Rows[i][17].ToString() : "",
+                    Equipment8          = LoadTable.Rows[i][18] != null ? LoadTable.Rows[i][18].ToString() : "",
+                    Equipment9          = LoadTable.Rows[i][19] != null ? LoadTable.Rows[i][19].ToString() : "",
+                    Equipment10         = LoadTable.Rows[i][20] != null ? LoadTable.Rows[i][20].ToString() : ""
+                };
 
                 // Add to memory
                 LeadTasks.Add(_add);
@@ -123,33 +115,34 @@ namespace Mobility_Setup_Tool
             // Fill task arrays
             for (i = 0; i < LoadTable.Rows.Count; i++)
             {
-                MobilityTask _add = new MobilityTask();
+                MobilityTask _add = new MobilityTask
+                {
+                    // Fill the structure array from table
+                    Name                = LoadTable.Rows[i][0] != null ? LoadTable.Rows[i][0].ToString() : "",
+                    CEL                 = LoadTable.Rows[i][1] != null ? LoadTable.Rows[i][1].ToString() : "",
+                    PartsTable          = LoadTable.Rows[i][2] != null ? LoadTable.Rows[i][2].ToString() : "",
+                    Group               = LoadTable.Rows[i][3] != null ? LoadTable.Rows[i][3].ToString() : "",
+                    Counter             = LoadTable.Rows[i][4] != null ? LoadTable.Rows[i][4].ToString() : "",
+                    Workcentre          = LoadTable.Rows[i][5] != null ? LoadTable.Rows[i][5].ToString() : "",
+                    WBS                 = LoadTable.Rows[i][6] != null ? LoadTable.Rows[i][6].ToString() : "",
+                    Module              = LoadTable.Rows[i][7] != null ? LoadTable.Rows[i][7].ToString() : "",
+                    SalesDoc            = LoadTable.Rows[i][8] != null ? LoadTable.Rows[i][8].ToString() : "",
+                    SalesDocItem        = LoadTable.Rows[i][9] != null ? LoadTable.Rows[i][9].ToString() : "",
+                    LongText            = LoadTable.Rows[i][10] != null ? LoadTable.Rows[i][10].ToString() : "",
+                    FolderPath          = LoadTable.Rows[i][11] != null ? LoadTable.Rows[i][11].ToString() : "",
+                    Equipment1          = LoadTable.Rows[i][12] != null ? LoadTable.Rows[i][12].ToString() : "",
+                    Equipment2          = LoadTable.Rows[i][13] != null ? LoadTable.Rows[i][13].ToString() : "",
+                    Equipment3          = LoadTable.Rows[i][14] != null ? LoadTable.Rows[i][14].ToString() : "",
+                    Equipment4          = LoadTable.Rows[i][15] != null ? LoadTable.Rows[i][15].ToString() : "",
+                    Equipment5          = LoadTable.Rows[i][16] != null ? LoadTable.Rows[i][16].ToString() : "",
+                    Equipment6          = LoadTable.Rows[i][17] != null ? LoadTable.Rows[i][17].ToString() : "",
+                    Equipment7          = LoadTable.Rows[i][18] != null ? LoadTable.Rows[i][18].ToString() : "",
+                    Equipment8          = LoadTable.Rows[i][19] != null ? LoadTable.Rows[i][19].ToString() : "",
+                    Equipment9          = LoadTable.Rows[i][20] != null ? LoadTable.Rows[i][20].ToString() : "",
+                    Equipment10         = LoadTable.Rows[i][21] != null ? LoadTable.Rows[i][21].ToString() : ""
+                };
 
-                // Fill the structure array from table
-                _add.Name           = LoadTable.Rows[i][0]  != null ? LoadTable.Rows[i][0].ToString() : "";
-                _add.CEL            = LoadTable.Rows[i][1]  != null ? LoadTable.Rows[i][1].ToString() : "";
-                _add.PartsTable     = LoadTable.Rows[i][2]  != null ? LoadTable.Rows[i][2].ToString() : "";
-                _add.Group          = LoadTable.Rows[i][3]  != null ? LoadTable.Rows[i][3].ToString() : ""; 
-                _add.Counter        = LoadTable.Rows[i][4]  != null ? LoadTable.Rows[i][4].ToString() : "";
-                _add.Workcentre     = LoadTable.Rows[i][5]  != null ? LoadTable.Rows[i][5].ToString() : "";
-                _add.WBS            = LoadTable.Rows[i][6]  != null ? LoadTable.Rows[i][6].ToString() : "";
-                _add.Module         = LoadTable.Rows[i][7]  != null ? LoadTable.Rows[i][7].ToString() : "";
-                _add.SalesDoc       = LoadTable.Rows[i][8]  != null ? LoadTable.Rows[i][8].ToString() : "";
-                _add.SalesDocItem   = LoadTable.Rows[i][9]  != null ? LoadTable.Rows[i][9].ToString() : "";
-                _add.LongText       = LoadTable.Rows[i][10] != null ? LoadTable.Rows[i][10].ToString() : "";
-                _add.FolderPath     = LoadTable.Rows[i][11] != null ? LoadTable.Rows[i][11].ToString() : "";
-                _add.Equipment1     = LoadTable.Rows[i][12] != null ? LoadTable.Rows[i][12].ToString() : "";
-                _add.Equipment2     = LoadTable.Rows[i][13] != null ? LoadTable.Rows[i][13].ToString() : ""; 
-                _add.Equipment3     = LoadTable.Rows[i][14] != null ? LoadTable.Rows[i][14].ToString() : "";
-                _add.Equipment4     = LoadTable.Rows[i][15] != null ? LoadTable.Rows[i][15].ToString() : ""; 
-                _add.Equipment5     = LoadTable.Rows[i][16] != null ? LoadTable.Rows[i][16].ToString() : "";
-                _add.Equipment6     = LoadTable.Rows[i][17] != null ? LoadTable.Rows[i][17].ToString() : "";
-                _add.Equipment7     = LoadTable.Rows[i][18] != null ? LoadTable.Rows[i][18].ToString() : "";
-                _add.Equipment8     = LoadTable.Rows[i][19] != null ? LoadTable.Rows[i][19].ToString() : "";
-                _add.Equipment9     = LoadTable.Rows[i][20] != null ? LoadTable.Rows[i][20].ToString() : "";
-                _add.Equipment10    = LoadTable.Rows[i][21] != null ? LoadTable.Rows[i][21].ToString() : "";
-
-                // Add to memory
+                // Add to memor         y
                 VariationTasks.Add(_add);
             }
 
@@ -168,8 +161,8 @@ namespace Mobility_Setup_Tool
 
                 INPUT_FIELD Add = new INPUT_FIELD
                 {
-                    Name    = LoadTable.Rows[i]["FUNCTION LOC"].ToString(),
-                    Number  = LoadTable.Rows[i]["FUNC LOC"].ToString()
+                    Name = LoadTable.Rows[i]["FUNCTION LOC"].ToString(),
+                    Number = LoadTable.Rows[i]["FUNC LOC"].ToString()
                 };
 
                 FuncLoc.Add(Add);
@@ -220,8 +213,8 @@ namespace Mobility_Setup_Tool
 
                 INPUT_FIELD _add = new INPUT_FIELD
                 {
-                    Name    = LoadTable.Rows[i]["ACTIVITY TYPE DESCRIPTION"] != null ? LoadTable.Rows[i]["ACTIVITY TYPE DESCRIPTION"].ToString() : "",
-                    Number  = LoadTable.Rows[i]["PM ACTIVITY TYPE"]          != null ? LoadTable.Rows[i]["PM ACTIVITY TYPE"].ToString() : ""
+                    Name = LoadTable.Rows[i]["ACTIVITY TYPE DESCRIPTION"] != null ? LoadTable.Rows[i]["ACTIVITY TYPE DESCRIPTION"].ToString() : "",
+                    Number = LoadTable.Rows[i]["PM ACTIVITY TYPE"] != null ? LoadTable.Rows[i]["PM ACTIVITY TYPE"].ToString() : ""
                 };
 
                 Reference.PMActivityType_CB.Items.Add(_add.Name);
@@ -238,7 +231,7 @@ namespace Mobility_Setup_Tool
 
             for (i = 0; i < LoadTable.Rows.Count; i++)
             {
-                QuoteInformation ToAdd = new QuoteInformation  
+                QuoteInformation ToAdd = new QuoteInformation
                 {
                     Equipment           = LoadTable.Rows[i][0] != null ? LoadTable.Rows[i][0].ToString() : "",
                     QuoteTemplate       = LoadTable.Rows[i][1] != null ? LoadTable.Rows[i][1].ToString() : "",
@@ -259,9 +252,9 @@ namespace Mobility_Setup_Tool
             {
                 INPUT_FIELD ToAdd = new INPUT_FIELD
                 {
-                    WC      = LoadTable.Rows[i]["WORK CENTER"]  != null ? LoadTable.Rows[i]["WORK CENTER"].ToString() : "",
-                    Name    = LoadTable.Rows[i]["SALES GROUP"]  != null ? LoadTable.Rows[i]["SALES GROUP"].ToString() : "",
-                    Number  = LoadTable.Rows[i]["SALES OFFICE"] != null ? LoadTable.Rows[i]["SALES OFFICE"].ToString() : "",
+                    WC = LoadTable.Rows[i]["WORK CENTER"] != null ? LoadTable.Rows[i]["WORK CENTER"].ToString() : "",
+                    Name = LoadTable.Rows[i]["SALES GROUP"] != null ? LoadTable.Rows[i]["SALES GROUP"].ToString() : "",
+                    Number = LoadTable.Rows[i]["SALES OFFICE"] != null ? LoadTable.Rows[i]["SALES OFFICE"].ToString() : "",
                 };
 
                 SalesData.Add(ToAdd);
@@ -276,11 +269,11 @@ namespace Mobility_Setup_Tool
             {
                 VersionInfo ToAdd = new VersionInfo
                 {
-                    ChangeNumber    = LoadTable.Rows[i][0] != null ? LoadTable.Rows[i][0].ToString() : "",
-                    Description     = LoadTable.Rows[i][1] != null ? LoadTable.Rows[i][1].ToString() : "",
-                    ChangedBy       = LoadTable.Rows[i][2] != null ? LoadTable.Rows[i][2].ToString() : "",
-                    ApprovedBy      = LoadTable.Rows[i][3] != null ? LoadTable.Rows[i][3].ToString() : "",
-                    ChangedOn       = LoadTable.Rows[i][4] != null ? LoadTable.Rows[i][4].ToString() : ""
+                    ChangeNumber = LoadTable.Rows[i][0] != null ? LoadTable.Rows[i][0].ToString() : "",
+                    Description = LoadTable.Rows[i][1] != null ? LoadTable.Rows[i][1].ToString() : "",
+                    ChangedBy = LoadTable.Rows[i][2] != null ? LoadTable.Rows[i][2].ToString() : "",
+                    ApprovedBy = LoadTable.Rows[i][3] != null ? LoadTable.Rows[i][3].ToString() : "",
+                    ChangedOn = LoadTable.Rows[i][4] != null ? LoadTable.Rows[i][4].ToString() : ""
                 };
 
                 VersionHist.Add(ToAdd);
@@ -289,7 +282,7 @@ namespace Mobility_Setup_Tool
             // Free memory
             LoadTable.Dispose();
         }
-        
+
         public List<VersionInfo> GetVersionInfo()
         {
             return VersionHist;
@@ -336,7 +329,7 @@ namespace Mobility_Setup_Tool
         }
 
         public List<INPUT_FIELD> GetActivityCodes()
-        { return PmActivitys;}
+        { return PmActivitys; }
 
         public List<INPUT_FIELD> GetCustomers()
         { return Customers; }
@@ -346,7 +339,8 @@ namespace Mobility_Setup_Tool
             if (isLead)
             {
                 return LeadTasks;
-            }else
+            }
+            else
             {
                 return VariationTasks;
             }
@@ -354,7 +348,7 @@ namespace Mobility_Setup_Tool
 
         public List<MobilityEquipment> GetTemplateEquipments() { return EquipmentList; }
 
-        public List<QuoteInformation> GetQuotingTemplates() {return QuoteInfo;}
+        public List<QuoteInformation> GetQuotingTemplates() { return QuoteInfo; }
 
         // Get equipment structure by list index 
         public MobilityEquipment GetTemplateEquipment_ByIndex(int index) { return EquipmentList[index]; }
@@ -362,10 +356,10 @@ namespace Mobility_Setup_Tool
         // Get equipment structure by name 
         public MobilityEquipment GetTemplateEquipment_ByName(string name)
         {
-            MobilityEquipment ret = new MobilityEquipment{ Description = "" };
+            MobilityEquipment ret = new MobilityEquipment { Description = "" };
 
             for (int i = 0; i < EquipmentList.Count; i++)
-            {if (name == EquipmentList[i].Description) ret = EquipmentList[i];}
+            { if (name == EquipmentList[i].Description) ret = EquipmentList[i]; }
 
             return ret;
         }
@@ -408,14 +402,14 @@ namespace Mobility_Setup_Tool
         {
 
             for (int i = 0; i < PmActivitys.Count; i++)
-            { 
-                if (name == FuncLoc[i].Name) 
+            {
+                if (name == FuncLoc[i].Name)
                 {
-                    return FuncLoc[i].Number; 
+                    return FuncLoc[i].Number;
                 }
             }
 
-            
+
             return "";
         }
 
@@ -447,7 +441,8 @@ namespace Mobility_Setup_Tool
             if (isLead)
             {
                 return LeadTasks[index];
-            }   else
+            }
+            else
             {
                 return VariationTasks[index];
             }
@@ -468,7 +463,7 @@ namespace Mobility_Setup_Tool
             {
                 for (int i = 0; i < VariationTasks.Count; i++)
                 { if (name == VariationTasks[i].Name) ret = VariationTasks[i]; }
-                return ret;
+                return name == "NON-STANDARD VARIATION" ? new MobilityTask() { Name = "NON-STANDARD VARIATION"} : ret;
             }
         }
     }

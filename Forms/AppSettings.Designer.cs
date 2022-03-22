@@ -55,8 +55,9 @@ namespace Mobility_Setup_Tool
             this.TitleBar.Controls.Add(this.MenuPanel);
             this.TitleBar.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.TitleBar.Location = new System.Drawing.Point(0, 0);
+            this.TitleBar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TitleBar.Name = "TitleBar";
-            this.TitleBar.Size = new System.Drawing.Size(1021, 40);
+            this.TitleBar.Size = new System.Drawing.Size(515, 35);
             this.TitleBar.TabIndex = 4;
             this.TitleBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseDown);
             this.TitleBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseMove);
@@ -65,9 +66,10 @@ namespace Mobility_Setup_Tool
             // pictureBox2
             // 
             this.pictureBox2.Image = global::Mobility_Setup_Tool.Properties.Resources.Sprite11;
-            this.pictureBox2.Location = new System.Drawing.Point(7, 7);
+            this.pictureBox2.Location = new System.Drawing.Point(5, 5);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(27, 25);
+            this.pictureBox2.Size = new System.Drawing.Size(24, 24);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 6;
             this.pictureBox2.TabStop = false;
@@ -76,9 +78,9 @@ namespace Mobility_Setup_Tool
             // 
             this.LBTitle.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.LBTitle.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.LBTitle.Location = new System.Drawing.Point(40, 0);
+            this.LBTitle.Location = new System.Drawing.Point(35, 0);
             this.LBTitle.Name = "LBTitle";
-            this.LBTitle.Size = new System.Drawing.Size(519, 40);
+            this.LBTitle.Size = new System.Drawing.Size(454, 35);
             this.LBTitle.TabIndex = 5;
             this.LBTitle.Text = "Mobility Setup and Planning Tool - Application Settings";
             this.LBTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -89,32 +91,36 @@ namespace Mobility_Setup_Tool
             // CloseButton
             // 
             this.CloseButton.Image = ((System.Drawing.Image)(resources.GetObject("CloseButton.Image")));
-            this.CloseButton.Location = new System.Drawing.Point(1248, 7);
+            this.CloseButton.Location = new System.Drawing.Point(1092, 5);
+            this.CloseButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(34, 35);
+            this.CloseButton.Size = new System.Drawing.Size(30, 26);
             this.CloseButton.TabIndex = 4;
             this.CloseButton.TabStop = false;
             // 
             // MenuPanel
             // 
-            this.MenuPanel.Location = new System.Drawing.Point(0, 40);
+            this.MenuPanel.Location = new System.Drawing.Point(0, 30);
+            this.MenuPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MenuPanel.Name = "MenuPanel";
-            this.MenuPanel.Size = new System.Drawing.Size(1280, 76);
+            this.MenuPanel.Size = new System.Drawing.Size(1120, 57);
             this.MenuPanel.TabIndex = 4;
             // 
             // AppSettings_PG
             // 
-            this.AppSettings_PG.Location = new System.Drawing.Point(17, 57);
+            this.AppSettings_PG.Location = new System.Drawing.Point(15, 43);
+            this.AppSettings_PG.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.AppSettings_PG.Name = "AppSettings_PG";
-            this.AppSettings_PG.Size = new System.Drawing.Size(555, 611);
+            this.AppSettings_PG.Size = new System.Drawing.Size(486, 458);
             this.AppSettings_PG.TabIndex = 12;
             // 
             // Cancel_BTN
             // 
             this.Cancel_BTN.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Cancel_BTN.Location = new System.Drawing.Point(307, 688);
+            this.Cancel_BTN.Location = new System.Drawing.Point(269, 516);
+            this.Cancel_BTN.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Cancel_BTN.Name = "Cancel_BTN";
-            this.Cancel_BTN.Size = new System.Drawing.Size(265, 60);
+            this.Cancel_BTN.Size = new System.Drawing.Size(232, 45);
             this.Cancel_BTN.TabIndex = 11;
             this.Cancel_BTN.Text = "Close";
             this.Cancel_BTN.UseVisualStyleBackColor = true;
@@ -123,9 +129,10 @@ namespace Mobility_Setup_Tool
             // Apply_BTN
             // 
             this.Apply_BTN.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Apply_BTN.Location = new System.Drawing.Point(17, 688);
+            this.Apply_BTN.Location = new System.Drawing.Point(15, 516);
+            this.Apply_BTN.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Apply_BTN.Name = "Apply_BTN";
-            this.Apply_BTN.Size = new System.Drawing.Size(264, 60);
+            this.Apply_BTN.Size = new System.Drawing.Size(231, 45);
             this.Apply_BTN.TabIndex = 10;
             this.Apply_BTN.Text = "Apply";
             this.Apply_BTN.UseVisualStyleBackColor = true;
@@ -133,14 +140,15 @@ namespace Mobility_Setup_Tool
             // 
             // AppSettings
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(589, 773);
+            this.ClientSize = new System.Drawing.Size(515, 580);
             this.Controls.Add(this.AppSettings_PG);
             this.Controls.Add(this.Cancel_BTN);
             this.Controls.Add(this.Apply_BTN);
             this.Controls.Add(this.TitleBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "AppSettings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "AppSettings";

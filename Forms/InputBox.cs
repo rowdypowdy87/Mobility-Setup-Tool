@@ -6,29 +6,38 @@ namespace Mobility_Setup_Tool
 {
     public partial class InputBox : Form
     {
-        MainForm RefForm;
+        // Variables
+        readonly MainForm RefForm;
+        public bool Cancel;
 
+        /// <summary>
+        /// Constructor method
+        /// </summary>
+        /// <param name="r">Parent form</param>
         public InputBox(MainForm r)
         {
             RefForm = r;
+            Cancel = false;
             InitializeComponent();
         }
 
         private void OkayButton_Click(object sender, EventArgs e)
         {
+            Cancel = false;
             Close();
         }
 
         private void CancelBtn_Click(object sender, EventArgs e)
         {
+            Cancel = true;
             Input.Text = "CANCEL";
             Close();
         }
 
         private void InputBox_Load(object sender, EventArgs e)
         {
-            TitleBar_PNL.BackColor  = RefForm.ThemeController.GetBordercolor();
-            BackColor               = RefForm.ThemeController.GetBackcolor();
+            TitleBar_PNL.BackColor = RefForm.ThemeController.GetBordercolor();
+            BackColor = RefForm.ThemeController.GetBackcolor();
             TBInformation.BackColor = RefForm.ThemeController.GetBackcolor();
 
             // Manually centre the form to MainForm

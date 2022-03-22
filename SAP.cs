@@ -1,178 +1,191 @@
-﻿using System;
-using System.Diagnostics;
-using SAPFEWSELib;
-using System.Windows.Forms;
+﻿using SAPFEWSELib;
+
 using SapROTWr;
+
+using System;
+using System.ComponentModel;
 using System.Data;
 using System.Reflection;
+using System.Windows.Forms;
+
 using static Mobility_Setup_Tool.MsgBoxs;
-using EXCEL = Microsoft.Office.Interop.Excel;
-using System.ComponentModel;
 
 /*
     LIBRARY TO AUTOMATE SAP WITH C# USING SAP SCRIPTING ENGINE
     WRITTEN BY CLINTON WHEELER - STRICTLY FOR USE BY UGL PTY LTD
     WRITTEN 2021 
 */
- 
-
-// Structure to hold SAP mobility info
-public struct MobilityTask
-{
-    public string Name { set; get; }
-    public string CEL { set; get; }
-    public string PartsTable { get; set; }
-    public string Group { set; get; }
-    public string Counter { set; get; }
-    public string Workcentre { set; get; }
-    public string WBS { get; set; }
-    public string Module { get; set; }
-    public string LongText { set; get; }
-    public string SalesDoc { get; set; }
-    public string SalesDocItem { get; set; }
-    public string Equipment1 { set; get; }
-    public string Equipment2 { set; get; }
-    public string Equipment3 { set; get; }
-    public string Equipment4 { set; get; }
-    public string Equipment5 { set; get; }
-    public string Equipment6 { set; get; }
-    public string Equipment7 { set; get; }
-    public string Equipment8 { set; get; }
-    public string Equipment9 { set; get; }
-    public string Equipment10 { set; get; }
-    public string FolderPath { set; get; }
-    public bool WarrantyClaim { get; set; }
-};
-
-public struct SAPComponent
-{
-    public string ZAWA { get; set; }
-    public string Qauntity { get; set; }
-    public string StoreLocation { get; set; }
-    public string SpecialStock { get; set; }
-    public string Description { get; set; }
-}
-
-public struct QuoteInformation
-{
-    public string Equipment { get; set; }
-    public string QuoteTemplate { get; set; }
-    public string PartsTemplate { get; set; }
-    public string MandPartsTemplate { get; set; }
-};
-
-public struct MobilityMeasurement
-{
-    public string Number { get; set; }
-    public string Position { get; set; }
-    public string Description { get; set; }
-    public string CharCode { get; set; }
-    public string CodeGroup { get; set; }
-    public string Decimals { get; set; }
-    public string TargetValue { get; set; }
-    public string IsValueCodeSuff { get; set; }
-    public string IsCounter { get; set; }
-    public string LowerLimit { get; set; }
-    public string UpperLimit { get; set; }
-    public string TargetText { get; set; }
-
-};
-
-public struct MobilityEquipment
-{
-    public string SerialNumber { set; get; }
-    public string EquipmentNumber { set; get; }
-    public string Description { set; get; }
-    public string ObjectType { set; get; }
-    public string CatProfile { set; get; }
-    public string SalesOrg { set; get; }
-    public string DistChan { set; get; }
-    public string Division { set; get; }
-    public string EntryListName { set; get; }
-    public string FunctionLoc { set; get; }
-    public string ZAWA { set; get; }
-    public string ZDI1 { set; get; }
-    public string ModelNumber { set; get; }
-    public string TemplateName { set; get; }
-    public string TemplateNumber { set; get; }
-    public bool UpdateToTemplate { set; get; }
-};
-
-public struct MobilityServiceOrder
-{
-    public string Description { set; get; }
-    public string NotificationType { set; get; }
-    public string BasicStartDate { set; get; }
-    public string BasicEndDate { set; get; }
-    public string ActualStartDate { set; get; }
-    public string ActualEndDate { set; get; }
-    public string OrderType { set; get; }
-    public string PurchaseOrder { set; get; }
-    public string PurchaseOrderDate { set; get; }
-    public string SoldToParty { set; get; }
-    public string CustomerName { set; get; }
-    public string Priority { set; get; }
-    public string ActivityType { set; get; }
-    public string SalesGroup { set; get; }
-    public string SalesOffice { set; get; }
-    public string ExternalReference { set; get; }
-    public string Plant { set; get; }
-    public string PlannerGroup { set; get; }
-    public string Location { set; get; }
-    public bool   CreateWithoutEq { set; get; }
-};
 
 namespace Mobility_Setup_Tool
 {
+    // Structure to hold SAP mobility info
+    public struct MobilityTask
+    {
+        public string Name { set; get; }
+        public string CEL { set; get; }
+        public string PartsTable { get; set; }
+        public string Group { set; get; }
+        public string Counter { set; get; }
+        public string Workcentre { set; get; }
+        public string WBS { get; set; }
+        public string Module { get; set; }
+        public string LongText { set; get; }
+        public string SalesDoc { get; set; }
+        public string SalesDocItem { get; set; }
+        public string Equipment1 { set; get; }
+        public string Equipment2 { set; get; }
+        public string Equipment3 { set; get; }
+        public string Equipment4 { set; get; }
+        public string Equipment5 { set; get; }
+        public string Equipment6 { set; get; }
+        public string Equipment7 { set; get; }
+        public string Equipment8 { set; get; }
+        public string Equipment9 { set; get; }
+        public string Equipment10 { set; get; }
+        public string FolderPath { set; get; }
+        public bool WarrantyClaim { get; set; }
+    };
+
+    public struct SAPComponent
+    {
+        public string ZAWA { get; set; }
+        public string Qauntity { get; set; }
+        public string StoreLocation { get; set; }
+        public string SpecialStock { get; set; }
+        public string Description { get; set; }
+    }
+
+    public struct QuoteInformation
+    {
+        public string Equipment { get; set; }
+        public string QuoteTemplate { get; set; }
+        public string PartsTemplate { get; set; }
+        public string MandPartsTemplate { get; set; }
+    };
+
+    public struct MobilityMeasurement
+    {
+        public string Number { get; set; }
+        public string Position { get; set; }
+        public string Description { get; set; }
+        public string CharCode { get; set; }
+        public string CodeGroup { get; set; }
+        public string Decimals { get; set; }
+        public string TargetValue { get; set; }
+        public string IsValueCodeSuff { get; set; }
+        public string IsCounter { get; set; }
+        public string LowerLimit { get; set; }
+        public string UpperLimit { get; set; }
+        public string TargetText { get; set; }
+
+    };
+
+    public struct MobilityEquipment
+    {
+        public string SerialNumber { set; get; }
+        public string EquipmentNumber { set; get; }
+        public string Description { set; get; }
+        public string ObjectType { set; get; }
+        public string CatProfile { set; get; }
+        public string SalesOrg { set; get; }
+        public string DistChan { set; get; }
+        public string Division { set; get; }
+        public string EntryListName { set; get; }
+        public string FunctionLoc { set; get; }
+        public string ZAWA { set; get; }
+        public string ZDI1 { set; get; }
+        public string ModelNumber { set; get; }
+        public string TemplateName { set; get; }
+        public string TemplateNumber { set; get; }
+        public bool UpdateToTemplate { set; get; }
+    };
+
+    public struct MobilityServiceOrder
+    {
+        public string Description { set; get; }
+        public string NotificationType { set; get; }
+        public string BasicStartDate { set; get; }
+        public string BasicEndDate { set; get; }
+        public string ActualStartDate { set; get; }
+        public string ActualEndDate { set; get; }
+        public string OrderType { set; get; }
+        public string PurchaseOrder { set; get; }
+        public string PurchaseOrderDate { set; get; }
+        public string SoldToParty { set; get; }
+        public string CustomerName { set; get; }
+        public string Priority { set; get; }
+        public string ActivityType { set; get; }
+        public string SalesGroup { set; get; }
+        public string SalesOffice { set; get; }
+        public string ExternalReference { set; get; }
+        public string Plant { set; get; }
+        public string PlannerGroup { set; get; }
+        public string Location { set; get; }
+        public bool CreateWithoutEq { set; get; }
+    };
+
     public class AUTOSAP : IDisposable
     {
-        // Internal class control objects
-        public GuiSession       SapSession    { get; set; }
-        public GuiMainWindow    SapWindow     { get; set; }
-        public GuiApplication   SapApp        { get; set; }
-        public GuiConnection    SapConnection { get; set; }
-        public bool             SapConnected  { get; set; }
-        public MainForm         RefForm;
-        private bool            disposedValue;
+        // Global class variables
+        public  GuiSession          SapSession          { get; set; }
+        public  GuiMainWindow       SapWindow           { get; set; }
+        public  GuiApplication      SapApp              { get; set; }
+        public  GuiConnection       SapConnection       { get; set; }
+        public  bool                SapConnected        { get; set; }
+        public  MainForm            RefForm;
+        private bool                disposedValue;
 
-        public AUTOSAP(MainForm r) 
+        /// <summary>
+        /// Constructor method
+        /// </summary>
+        /// <param name="ParentForm">Parent Form</param>
+        public AUTOSAP(MainForm ParentForm)
         {
-            RefForm = r; 
+            RefForm = ParentForm;
         }
 
-        // Find any open SAP session, return false if not open
+        /// <summary>
+        /// Connects to a currently open SAP session
+        /// </summary>
+        /// <returns>true/false</returns>
         public bool GetSession()
         {
-            GuiComponent Con     = null;
-            object       SapGui  = null;
+            GuiComponent Con    = null;
+            object SapGui       = null;
 
             // Create new instance of running object table wrapper
             CSapROTWrapper SapROT = new CSapROTWrapper();
 
             // Try find the SAPGUI object from the running object table
-            try {
+            try
+            {
                 SapGui = SapROT.GetROTEntry("SAPGUI");
-            } catch {
-                SapConnected = false;   
-                return false;   
+            }
+            catch
+            {
+                SapConnected = false;
+                return false;
             }
 
             if (SapGui == null) return false;
 
             // Find the scripting engine object from SAPGUI
-            try {
+            try
+            {
                 SapApp = SapGui.GetType().InvokeMember("GetScriptingEngine", BindingFlags.InvokeMethod, null, SapGui, null) as GuiApplication;
-            } catch {
-                SapConnected = false;  
+            }
+            catch
+            {
+                SapConnected = false;
                 return false;
             }
 
             // Find connection to scripting engine
-            for (int i = 0; i< SapApp.Children.Count; i++)
+            for (int i = 0; i < SapApp.Children.Count; i++)
             {
                 Con = SapApp.Children.ElementAt(i);
 
-                if(Con.Type == "GuiConnection")
+                if (Con.Type == "GuiConnection")
                 {
                     SapConnection = (GuiConnection)Con;
                 }
@@ -186,19 +199,25 @@ namespace Mobility_Setup_Tool
             }
 
             // Try to get SAP session
-            try { 
+            try
+            {
                 SapSession = (GuiSession)SapConnection.Children.ElementAt(0);
-            } catch  { 
+            }
+            catch
+            {
                 SapConnected = false;
-                return false; 
+                return false;
             }
 
             // Try to get SAP window
-            try { 
-                SapWindow = (GuiMainWindow)SapSession.Children.ElementAt(0); 
-            } catch  { 
-                SapConnected = false; 
-                return false; 
+            try
+            {
+                SapWindow = (GuiMainWindow)SapSession.Children.ElementAt(0);
+            }
+            catch
+            {
+                SapConnected = false;
+                return false;
             }
 
             // Success
@@ -206,19 +225,29 @@ namespace Mobility_Setup_Tool
             return true;
         }
 
-        // Active window
+        /// <summary>
+        /// Get currently active (focused) window in SAP
+        /// </summary>
+        /// <returns>GuiFrameWindow object</returns>
         public GuiFrameWindow GetActiveWindow()
         {
             return SapSession.ActiveWindow;
         }
 
-        // Get connected
+        /// <summary>
+        /// Checks SAP connection
+        /// </summary>
+        /// <returns>true/false</returns>
         public bool CheckConnected()
         {
             return SapConnected;
         }
 
-        // Get ID
+        /// <summary>
+        /// Gets a form by address
+        /// </summary>
+        /// <param name="FormID">SAP form address</param>
+        /// <returns>New object</returns>
         public dynamic GetFormById(string FormID)
         {
             if (SapConnected)
@@ -228,7 +257,12 @@ namespace Mobility_Setup_Tool
             return null;
         }
 
-        // Get by name
+        /// <summary>
+        /// Gets a form by name
+        /// </summary>
+        /// <param name="FormName">Form Name</param>
+        /// <param name="FormType">Form Type (e.g GuiTextField)</param>
+        /// <returns>New object</returns>
         public dynamic GetFormByName(string FormName, string FormType)
         {
             if (SapConnected)
@@ -239,7 +273,11 @@ namespace Mobility_Setup_Tool
             return null;
         }
 
-        // Get shell
+        /// <summary>
+        /// Gets a GuiShell object
+        /// </summary>
+        /// <param name="ShellName">Name of object</param>
+        /// <returns>New GuiShell object</returns>
         public GuiShell GetShell(string ShellName)
         {
             GuiShell Shell = null;
@@ -256,11 +294,14 @@ namespace Mobility_Setup_Tool
             return Shell;
         }
 
-        // Start a SAP transaction
+        /// <summary>
+        /// Starts a SAP transaction
+        /// </summary>
+        /// <param name="transCode">Transaction code</param>
         public void StartTransaction(string transCode)
         {
             if (SapConnected)
-            { 
+            {
                 SapSession.StartTransaction(transCode);
 
                 string statusTxt = ((GuiStatusbar)SapWindow.FindById("sbar")).Text;
@@ -272,42 +313,49 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        // Change store location
+        /// <summary>
+        /// Change store location of all components in a SAP service order
+        /// </summary>
+        /// <param name="NewStoreLocation">Store location</param>
+        /// <param name="NewSpecialStock">Special stock indicator (can be blank)</param>
+        /// <param name="Parent">Parent thread</param>
+        /// <returns>true/false</returns>
         public bool ChangeStore(string NewStoreLocation, string NewSpecialStock, BackgroundWorker Parent)
         {
-            string                 PrevLoc, PrevStock                  = "";
-            GuiComponentCollection StoreLocations, SpecialStock        = null;
-            GuiCTextField          CurrentLoc, CurrentStock, Check     = null;
-            GuiTableControl        ComponentTable                      = null;
-            int                    VisibleRow, RowJump;
+            //Variables
+            GuiComponentCollection  StoreLocations, SpecialStock;
+            GuiCTextField           CurrentLoc, CurrentStock, Check;
+            GuiTableControl         ComponentTable;
+            int                     VisibleRow, RowJump;
+            string                  PrevLoc, PrevStock;
 
             VisibleRow = 0;
 
-            if (SapConnected) {
-
+            if (SapConnected)
+            {
                 SapWindow.SetFocus();
 
-                for (int i = 0; i < 9999; i++) 
+                for (int i = 0; i < 9999; i++)
                 {
                     // Re init collection
-                    ComponentTable = ((GuiTableControl)SapWindow.FindByName("SAPLCOMKTCTRL_3020", "GuiTableControl"));
-                    StoreLocations = ComponentTable.FindAllByName("RESBD-LGORT", "GuiCTextField");
-                    SpecialStock   = ComponentTable.FindAllByName("RESBD-SOBKZ_D", "GuiCTextField");
+                    ComponentTable  = ((GuiTableControl)SapWindow.FindByName("SAPLCOMKTCTRL_3020", "GuiTableControl"));
+                    StoreLocations  = ComponentTable.FindAllByName("RESBD-LGORT", "GuiCTextField");
+                    SpecialStock    = ComponentTable.FindAllByName("RESBD-SOBKZ_D", "GuiCTextField");
 
                     // Try to change
-                    if (StoreLocations.Item(VisibleRow).Type == "GuiCTextField") 
+                    if (StoreLocations.Item(VisibleRow).Type == "GuiCTextField")
                     {
                         // Get field collections
-                        CurrentLoc   = ((GuiCTextField)StoreLocations.Item(VisibleRow));
-                        CurrentStock = ((GuiCTextField)SpecialStock.Item(VisibleRow));
-                        Check        = ((GuiCTextField)ComponentTable.FindAllByName("RESBD-MATNR", "GuiCTextField").Item(VisibleRow));
+                        CurrentLoc      = ((GuiCTextField)StoreLocations.Item(VisibleRow));
+                        CurrentStock    = ((GuiCTextField)SpecialStock.Item(VisibleRow));
+                        Check           = ((GuiCTextField)ComponentTable.FindAllByName("RESBD-MATNR", "GuiCTextField").Item(VisibleRow));
 
                         // Exit on blank
                         if (Check.Text == "") break;
 
                         // Get current value in case of error
-                        PrevLoc   = CurrentLoc.Text;
-                        PrevStock = CurrentStock.Text;
+                        PrevLoc             = CurrentLoc.Text;
+                        PrevStock           = CurrentStock.Text;
 
                         // Change to updated value
                         CurrentLoc.Text     = NewStoreLocation;
@@ -317,18 +365,18 @@ namespace Mobility_Setup_Tool
                         if (!ClearErrors(5, false))
                         {
                             // Re-connect to fields
-                            ComponentTable          = ((GuiTableControl)SapWindow.FindByName("SAPLCOMKTCTRL_3020", "GuiTableControl"));
-                            StoreLocations          = ComponentTable.FindAllByName("RESBD-LGORT", "GuiCTextField");
-                            SpecialStock            = ComponentTable.FindAllByName("RESBD-SOBKZ_D", "GuiCTextField");
-                            CurrentLoc              = ((GuiCTextField)StoreLocations.Item(VisibleRow));
-                            CurrentStock            = ((GuiCTextField)SpecialStock.Item(VisibleRow)); 
-                            CurrentLoc.Text         = PrevLoc;
-                            CurrentStock.Text       = PrevStock;
+                            ComponentTable      = ((GuiTableControl)SapWindow.FindByName("SAPLCOMKTCTRL_3020", "GuiTableControl"));
+                            StoreLocations      = ComponentTable.FindAllByName("RESBD-LGORT", "GuiCTextField");
+                            SpecialStock        = ComponentTable.FindAllByName("RESBD-SOBKZ_D", "GuiCTextField");
+                            CurrentLoc          = ((GuiCTextField)StoreLocations.Item(VisibleRow));
+                            CurrentStock        = ((GuiCTextField)SpecialStock.Item(VisibleRow));
+                            CurrentLoc.Text     = PrevLoc;
+                            CurrentStock.Text   = PrevStock;
 
                             ClearErrors(5, false);
                         }
 
-                        if(Parent.CancellationPending) { return false; }
+                        if (Parent.CancellationPending) { return false; }
 
                         // Re-init table
                         ComponentTable = ((GuiTableControl)SapWindow.FindByName("SAPLCOMKTCTRL_3020", "GuiTableControl"));
@@ -338,38 +386,58 @@ namespace Mobility_Setup_Tool
                         VisibleRow++;
 
                         // Move scroll bar if we go out of range
-                        if (VisibleRow > RowJump){
-                            
+                        if (VisibleRow > RowJump)
+                        {
+
                             ComponentTable.VerticalScrollbar.Position += RowJump;
                             VisibleRow = 0;
-                            
+
                         }
                     }
                 }
 
                 return true;
-                
+
             }
 
             return false;
         }
 
-        // Window
+        /// <summary>
+        /// Get the main SAP window
+        /// </summary>
+        /// <returns>GuiMainWindow object</returns>
         public GuiMainWindow GetWindow() { return SapWindow; }
 
-        // Application
+        /// <summary>
+        /// Gets SAP application
+        /// </summary>
+        /// <returns>GuiApplication object</returns>
         public GuiApplication GetApp() { return SapApp; }
 
-        // Info
+        /// <summary>
+        /// Gets the current session information
+        /// </summary>
+        /// <returns>GuiSessionInfo object</returns>
         public GuiSessionInfo GetSessionInfo() { return SapSession.Info; }
 
-        // Sessionob
+        /// <summary>
+        /// Gets SAP session
+        /// </summary>
+        /// <returns>GuiSession object</returns>
         public GuiSession GetSessionObj() { return SapSession; }
 
-        // Close trans
+        /// <summary>
+        /// Ends current transaction
+        /// </summary>
         public void EndTransaction() { SapSession.EndTransaction(); }
 
-        // Get all fields by name & type
+        /// <summary>
+        /// Gets all fields by name
+        /// </summary>
+        /// <param name="fieldName">Field name (can be blank)</param>
+        /// <param name="fieldType">Field type</param>
+        /// <returns>GuiComponentCollection</returns>
         public GuiComponentCollection GetAllByName(string fieldName, string fieldType)
         {
             if (SapConnected)
@@ -379,14 +447,20 @@ namespace Mobility_Setup_Tool
                     return SapWindow.FindAllByName(fieldName, fieldType);
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-            } else { 
+            }
+            else
+            {
 
                 // SAP not connected return null
                 return null;
             }
         }
 
-        // Get GuiComboBox by name
+        /// <summary>
+        /// Gets a combobox form
+        /// </summary>
+        /// <param name="fieldName">Field name</param>
+        /// <returns>GuiComboBox object</returns>
         public GuiComboBox GetComboBox(string fieldName)
         {
             if (SapConnected)
@@ -403,52 +477,79 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        // Get CTextfield by ID
+        /// <summary>
+        /// Gets Ctext field by address
+        /// </summary>
+        /// <param name="Address">Gui address in SAP</param>
+        /// <returns>GuiCTextField object</returns>
         public GuiCTextField GetCTextFieldByID(string Address)
-        { 
-            if (SapConnected) {
+        {
+            if (SapConnected)
+            {
                 // Try to find by name and catch any exceptions
-                try {
-                    return  (GuiCTextField)SapWindow.FindById(Address);
+                try
+                {
+                    return (GuiCTextField)SapWindow.FindById(Address);
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-            } else { 
+            }
+            else
+            {
                 // SAP not connected return null
                 return null;
             }
         }
 
-        // Get Textfield by ID
-        public GuiTextField GetTextFieldByID(string Address) {
-            if (SapConnected) {
+        /// <summary>
+        /// Gets text field by address
+        /// </summary>
+        /// <param name="Address">Gui address in SAP</param>
+        /// <returns>GuiTextField object</returns>
+        public GuiTextField GetTextFieldByID(string Address)
+        {
+            if (SapConnected)
+            {
                 // Try to find by name and catch any exceptions
-                try {
+                try
+                {
                     return (GuiTextField)SapWindow.FindById(Address);
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-            } else
+            }
+            else
             {
                 return null;
             }
             // SAP not connected return null
         }
 
-        // Get Button by ID
-        public GuiButton GetButtonByID(string Address) {
-
-            if (SapConnected) {
+        /// <summary>
+        /// Get button by id
+        /// </summary>
+        /// <param name="Address">Button address in SAP</param>
+        /// <returns>GuiButton object</returns>
+        public GuiButton GetButtonByID(string Address)
+        {
+            if (SapConnected)
+            {
                 // Try to find by name and catch any exceptions
-                try {
+                try
+                {
                     return (GuiButton)SapWindow.FindById(Address);
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
-            } else
+            }
+            else
             {
                 return null;
             }
         }
 
-        // Get CTextField by name
+        /// <summary>
+        /// Get CText field by name
+        /// </summary>
+        /// <param name="fieldName">Field name</param>
+        /// <returns>GuiCTextfield object</returns>
         public GuiCTextField GetCTextField(string fieldName)
         {
             if (SapConnected)
@@ -460,12 +561,17 @@ namespace Mobility_Setup_Tool
                 }
                 catch (Exception ex) { MsgBox_Error(ex.Message); return null; }
             }
-            else {
+            else
+            {
                 return null;
             }
         }
 
-        // Get TextField by name
+        /// <summary>
+        /// Get CText field by name
+        /// </summary>
+        /// <param name="fieldName">Field name</param>
+        /// <returns>GuiCTextfield object</returns>
         public GuiTextField GetTextField(string fieldName)
         {
             if (SapConnected)
@@ -483,7 +589,11 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        // Get GuiButton
+        /// <summary>
+        /// Get button by name
+        /// </summary>
+        /// <param name="fieldName">Name of button</param>
+        /// <returns>GuiButton object</returns>
         public GuiButton GetButton(string fieldName)
         {
             if (SapConnected)
@@ -501,7 +611,11 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        // Get GuiTable
+        /// <summary>
+        /// Get table by name
+        /// </summary>
+        /// <param name="fieldName">Table name</param>
+        /// <returns>GuiTableControl object</returns>
         public GuiTableControl GetTable(string fieldName)
         {
             if (SapConnected)
@@ -518,7 +632,11 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        // Get GuiGridView
+        /// <summary>
+        /// Get grid view by name
+        /// </summary>
+        /// <param name="fieldName">Grid name</param>
+        /// <returns>GuiGridView</returns>
         public GuiGridView GetGridView(string fieldName)
         {
             if (SapConnected)
@@ -535,7 +653,11 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        // Get GuiCheckBox
+        /// <summary>
+        /// Get check box by name
+        /// </summary>
+        /// <param name="fieldName">Check box name</param>
+        /// <returns>GuiCheckBox</returns>
         public GuiCheckBox GetCheckBox(string fieldName)
         {
             if (SapConnected)
@@ -552,7 +674,11 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        // Get GuiRadioButton
+        /// <summary>
+        /// Get radio button by name
+        /// </summary>
+        /// <param name="fieldName">Radio button name</param>
+        /// <returns>GuiRadioButton</returns>
         public GuiRadioButton GetRadioButton(string fieldName)
         {
             if (SapConnected)
@@ -569,7 +695,11 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        // Get GuiTab
+        /// <summary>
+        /// Get tab by name
+        /// </summary>
+        /// <param name="fieldName">Tab name</param>
+        /// <returns>GuiTab</returns>
         public GuiTab GetTab(string fieldName)
         {
             if (SapConnected)
@@ -586,7 +716,10 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        // Send key stroke
+        /// <summary>
+        /// Send a keystroke to the main SAP window
+        /// </summary>
+        /// <param name="keyId">Key ID (0 - Enter, 2 - F2, 4 - F4, 8 - F8)</param>
         public void SendVKey(int keyId)
         {
             if (SapConnected)
@@ -601,6 +734,12 @@ namespace Mobility_Setup_Tool
             return;
         }
 
+        /// <summary>
+        /// Tries to clear common errors until no errors or warning exist, otherwise it will fail
+        /// </summary>
+        /// <param name="RetryAmount">How many times to retry</param>
+        /// <param name="ShowError">Show error box?</param>
+        /// <returns>true/false</returns>
         public bool ClearErrors(int RetryAmount, bool ShowError)
         {
             int Retrys = 0;
@@ -633,7 +772,7 @@ namespace Mobility_Setup_Tool
                     // Check how many times
                     if (Retrys > RetryAmount)
                     {
-                        if(ShowError) MsgBox_Error("Could not clear popup error/warning");
+                        if (ShowError) MsgBox_Error("Could not clear popup error/warning");
                         break;
                     }
                 }
@@ -661,7 +800,10 @@ namespace Mobility_Setup_Tool
             return true;
         }
 
-        // Set variant
+        /// <summary>
+        /// Sets SAP variant
+        /// </summary>
+        /// <param name="VarName">Variant name</param>
         public void SetVariant(string VarName)
         {
             if (SapConnected)
@@ -678,7 +820,11 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        // Create measurement point
+        /// <summary>
+        /// Creates SAP measurement point
+        /// </summary>
+        /// <param name="NewMeasurement">MobilityMeasurement</param>
+        /// <param name="EquipmentNumber">Equipment Number</param>
         public void CreateMeasurementPoint(MobilityMeasurement NewMeasurement, string EquipmentNumber)
         {
             if (SapConnected)
@@ -704,22 +850,22 @@ namespace Mobility_Setup_Tool
 
                     // All good
                     default:
-                        GetTextField("IMPT-PSORT").Text  = NewMeasurement.Position;
+                        GetTextField("IMPT-PSORT").Text = NewMeasurement.Position;
                         GetCTextField("IMPT-ATNAM").Text = NewMeasurement.CharCode;
                         GetCTextField("IMPT-CODGR").Text = NewMeasurement.CodeGroup;
 
                         ClearErrors(30, true);
 
-                        GetTextField("IMPT-PTTXT").Text  = NewMeasurement.Description;
-                        GetTextField("IMPT-DECIM").Text  = NewMeasurement.Decimals;
+                        GetTextField("IMPT-PTTXT").Text = NewMeasurement.Description;
+                        GetTextField("IMPT-DECIM").Text = NewMeasurement.Decimals;
                         GetTextField("RIMR0-DESIC").Text = NewMeasurement.TargetValue;
-                        GetTextField("IMPT-DSTXT").Text  = NewMeasurement.TargetText;
+                        GetTextField("IMPT-DSTXT").Text = NewMeasurement.TargetText;
 
                         ClearErrors(30, true);
 
                         // Check boxes
                         if (NewMeasurement.IsValueCodeSuff == "X") GetCheckBox("IMPT-INDCT").Selected = true;
-                        if (NewMeasurement.IsCounter == "X")       GetCheckBox("IMPT-CDSUF").Selected = true;
+                        if (NewMeasurement.IsCounter == "X") GetCheckBox("IMPT-CDSUF").Selected = true;
 
                         // Goto upper and lower limits
                         GetButton("DETAIL").Press();
@@ -736,7 +882,11 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        // Change measurement point
+        /// <summary>
+        /// Change measurement point
+        /// </summary>
+        /// <param name="ExistingMeasurement">MobilityMeasurement</param>
+        /// <param name="Number">Measurement number</param>
         public void ChangeMeasurementPoint(MobilityMeasurement ExistingMeasurement, string Number)
         {
             if (SapConnected)
@@ -764,7 +914,8 @@ namespace Mobility_Setup_Tool
                 SendVKey(0);
 
                 // Update position
-                if(ExistingMeasurement.Position != GetTextField("IMPT-PSORT").Text){
+                if (ExistingMeasurement.Position != GetTextField("IMPT-PSORT").Text)
+                {
                     GetTextField("IMPT-PSORT").Text = ExistingMeasurement.Position;
                     SendVKey(0);
                     SendVKey(0);
@@ -790,23 +941,25 @@ namespace Mobility_Setup_Tool
             }
         }
 
-        // De-active measurement
-        public void DeactiveMeasurement(string Number) 
+        /// <summary>
+        /// De-activate measurement point
+        /// </summary>
+        /// <param name="Number">Measpoint number</param>
+        public void DeactiveMeasurement(string Number)
         {
-            if (SapConnected) 
+            if (SapConnected)
             {
                 SapSession.StartTransaction("IK02");
                 GetCTextField("IMPT-POINT").Text = Number;
                 SendVKey(0);
                 string Title = GetTextField("IMPT-PTTXT").Text;
 
-                if (Title.Length > 30) {
-                    GetTextField("IMPT-PTTXT").Text = Title.Substring(0, 30) + "_OLD";
-                } else {
+                if (Title.Length > 30)
+                    GetTextField("IMPT-PTTXT").Text = Title[..30] + "_OLD";
+                else
                     GetTextField("IMPT-PTTXT").Text = Title + "_OLD";
-                }
 
-                ((GuiMenu)GetFormById("wnd[0]/mbar/menu[0]/menu[7]/menu[0]/menu[0]")).Select();
+                GetFormById("wnd[0]/mbar/menu[0]/menu[7]/menu[0]/menu[0]").Select();
                 GetButton("btn[11]").Press();
             }
         }
@@ -820,23 +973,22 @@ namespace Mobility_Setup_Tool
 
                 SetVariant("/FSDS-25-45");
 
-                GetCTextField("EQUNR-LOW").Text = "";
-                GetCTextField("EQUNR-HIGH").Text = "";
-                GetTextField("EQKTX-LOW").Text = "";
-                GetTextField("EQKTX-HIGH").Text = "";
-                GetCTextField("MATNR-LOW").Text = "";
-                GetCTextField("MATNR-HIGH").Text = "";
-                GetTextField("SERNR-LOW").Text = "";
-                GetTextField("SERNR-HIGH").Text = "";
-                GetCTextField("EQART-LOW").Text = "";
-                GetCTextField("EQART-HIGH").Text = "";
-                GetCTextField("STAI1-LOW").Text = "";
-                GetCTextField("STAI1-HIGH").Text = "";
-                GetCTextField("STRNO-LOW").Text = "";
-                GetCTextField("STRNO-HIGH").Text = "";
-
-                GetTextField("SERNR-LOW").Text = Serial;
-                GetCTextField("VARIANT").Text = "/FS DEFAULT";
+                GetCTextField("EQUNR-LOW").Text         = "";
+                GetCTextField("EQUNR-HIGH").Text        = "";
+                GetTextField("EQKTX-LOW").Text          = "";
+                GetTextField("EQKTX-HIGH").Text         = "";
+                GetCTextField("MATNR-LOW").Text         = "";
+                GetCTextField("MATNR-HIGH").Text        = "";
+                GetTextField("SERNR-LOW").Text          = "";
+                GetTextField("SERNR-HIGH").Text         = "";
+                GetCTextField("EQART-LOW").Text         = "";
+                GetCTextField("EQART-HIGH").Text        = "";
+                GetCTextField("STAI1-LOW").Text         = "";
+                GetCTextField("STAI1-HIGH").Text        = "";
+                GetCTextField("STRNO-LOW").Text         = "";
+                GetCTextField("STRNO-HIGH").Text        = "";
+                GetTextField("SERNR-LOW").Text          = Serial;
+                GetCTextField("VARIANT").Text           = "/FS DEFAULT";
 
                 SendVKey(8);
 
@@ -845,7 +997,7 @@ namespace Mobility_Setup_Tool
                 switch (GetSessionInfo().ScreenNumber)
                 {
                     case 1000:
-                        return "No equipment found";
+                        return "nothing";
 
                     case 500:
 
@@ -853,7 +1005,7 @@ namespace Mobility_Setup_Tool
 
                         GuiGridView EqTable = GetGridView("shell");
 
-                        for(int i = 0; i < EqTable.RowCount; i++)
+                        for (int i = 0; i < EqTable.RowCount; i++)
                         {
                             string[] ToAdd = new string[3];
 
@@ -877,7 +1029,14 @@ namespace Mobility_Setup_Tool
             return null;
         }
 
-        public string CreateNewEquipment(string TemplateEq, string SerialNumber, string MaterialNumber, string FuncLoc)
+        /// <summary>
+        /// Creates a new equipment number
+        /// </summary>
+        /// <param name="TemplateEq">Template number</param>
+        /// <param name="SerialNumber">Serial number of equipment</param>
+        /// <param name="MaterialNumber">ZAWA material</param>
+        /// <returns>New equipment number</returns>
+        public string CreateNewEquipment(string TemplateEq, string SerialNumber, string MaterialNumber)
         {
             if (SapConnected)
             {
@@ -927,12 +1086,12 @@ namespace Mobility_Setup_Tool
 
                 if (SapSession.Info.ScreenNumber != 1000)
                 {
-                    if (((GuiCTextField)SapWindow.FindByName("ITOBATTR-EQUNR","GuiCTextField")).Text == "")
+                    if (((GuiCTextField)SapWindow.FindByName("ITOBATTR-EQUNR", "GuiCTextField")).Text == "")
                     {
                         MsgBox_Error("This equipment serial number is linked to a material number in SAP but no equipment, please convert the material serial number to an equipment number to continue");
                         return false;
                     }
-                    return true; 
+                    return true;
                 }
 
                 return true;
@@ -941,9 +1100,14 @@ namespace Mobility_Setup_Tool
             return false;
         }
 
+        /// <summary>
+        /// Gets measurement points of an equipment and puts into memory
+        /// </summary>
+        /// <param name="InputEquipment">Equipment number</param>
+        /// <returns>DataTable of measurements</returns>
         public DataTable GetMeasurementPoints(string InputEquipment)
         {
-            ExcelDataTables TableManager    = new ExcelDataTables();
+            ExcelDataTables TableManager = new ExcelDataTables();
 
             if (SapConnected)
             {
@@ -952,7 +1116,8 @@ namespace Mobility_Setup_Tool
                 GetCTextField("EQUNR-LOW").Text = InputEquipment;
                 SendVKey(8);
 
-                switch (GetSessionInfo().ScreenNumber) {
+                switch (GetSessionInfo().ScreenNumber)
+                {
                     // No measurements
                     case 1000: return null;
 
@@ -978,8 +1143,8 @@ namespace Mobility_Setup_Tool
 
                         // Filename popup
                         Popup = (GuiModalWindow)SapSession.FindById("wnd[1]");
-                        ((GuiCTextField)Popup.FindByName("DY_PATH", "GuiCTextField")).Text      = FilePath;
-                        ((GuiCTextField)Popup.FindByName("DY_FILENAME", "GuiCTextField")).Text  = FileName;
+                        ((GuiCTextField)Popup.FindByName("DY_PATH", "GuiCTextField")).Text = FilePath;
+                        ((GuiCTextField)Popup.FindByName("DY_FILENAME", "GuiCTextField")).Text = FileName;
                         ((GuiButton)Popup.FindById("tbar[0]/btn[11]")).Press();
 
                         return TableManager.ControlTexttoDataTable($"{FilePath}{FileName}");
@@ -1011,10 +1176,10 @@ namespace Mobility_Setup_Tool
         // End session
         public void EndSession()
         {
-            SapConnection   = null;
-            SapApp          = null;
-            SapWindow       = null;
-            SapConnected    = false;
+            SapConnection = null;
+            SapApp = null;
+            SapWindow = null;
+            SapConnected = false;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -1023,7 +1188,7 @@ namespace Mobility_Setup_Tool
             {
                 if (disposing)
                 {
-                    
+
                 }
 
                 // Free memory

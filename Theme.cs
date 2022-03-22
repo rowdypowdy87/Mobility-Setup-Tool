@@ -19,14 +19,14 @@ namespace Mobility_Setup_Tool
         public static Color BorderColor, BackgroundColor;
         public string AppData = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\[UGL]Mobility Setup and Planning Tool";
 
-        public Color ThemeBorderColor 
+        public Color ThemeBorderColor
         {
             get { return BorderColor; }
             set { BorderColor = value; }
         }
 
-        public Color ThemeBackgroundColor 
-            {
+        public Color ThemeBackgroundColor
+        {
             get { return BackgroundColor; }
             set { BackgroundColor = value; }
         }
@@ -66,7 +66,7 @@ namespace Mobility_Setup_Tool
                 ThemeFile.WriteLine(BorderColor.ToArgb().ToString());
                 ThemeFile.WriteLine(BackgroundColor.ToArgb().ToString());
                 ThemeFile.Close();
-            }; 
+            };
         }
 
         public void LoadTheme()
@@ -75,7 +75,7 @@ namespace Mobility_Setup_Tool
             {
                 using (StreamReader ThemeFile = new StreamReader($"{AppData}\\THEME"))
                 {
-                    BorderColor     = Color.FromArgb(Convert.ToInt32(ThemeFile.ReadLine()));
+                    BorderColor = Color.FromArgb(Convert.ToInt32(ThemeFile.ReadLine()));
                     BackgroundColor = Color.FromArgb(Convert.ToInt32(ThemeFile.ReadLine()));
                     ThemeFile.Close();
                 };
@@ -84,8 +84,8 @@ namespace Mobility_Setup_Tool
 
         public void RefreshTheme()
         {
-            if(!Program.HighPerformanceMode)
-            { 
+            if (!Program.HighPerformanceMode)
+            {
                 for (int i = 0; i < Controls.Count; i++)
                 {
                     if (Type[i] == THEME_TYPE.Back)

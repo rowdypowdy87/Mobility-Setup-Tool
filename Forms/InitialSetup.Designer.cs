@@ -64,8 +64,9 @@ namespace Mobility_Setup_Tool
             this.TitleBar_PNL.Controls.Add(this.UGLLogo_PB);
             this.TitleBar_PNL.Controls.Add(this.Title_LBL);
             this.TitleBar_PNL.Location = new System.Drawing.Point(0, 0);
+            this.TitleBar_PNL.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TitleBar_PNL.Name = "TitleBar_PNL";
-            this.TitleBar_PNL.Size = new System.Drawing.Size(781, 37);
+            this.TitleBar_PNL.Size = new System.Drawing.Size(683, 35);
             this.TitleBar_PNL.TabIndex = 7;
             this.TitleBar_PNL.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseDown);
             this.TitleBar_PNL.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseMove);
@@ -76,7 +77,8 @@ namespace Mobility_Setup_Tool
             this.UGLLogo_PB.ErrorImage = null;
             this.UGLLogo_PB.Image = global::Mobility_Setup_Tool.Properties.Resources.Sprite11;
             this.UGLLogo_PB.InitialImage = null;
-            this.UGLLogo_PB.Location = new System.Drawing.Point(6, 6);
+            this.UGLLogo_PB.Location = new System.Drawing.Point(5, 5);
+            this.UGLLogo_PB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UGLLogo_PB.Name = "UGLLogo_PB";
             this.UGLLogo_PB.Size = new System.Drawing.Size(24, 24);
             this.UGLLogo_PB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -85,11 +87,11 @@ namespace Mobility_Setup_Tool
             // 
             // Title_LBL
             // 
-            this.Title_LBL.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Title_LBL.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.Title_LBL.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Title_LBL.Location = new System.Drawing.Point(36, 0);
+            this.Title_LBL.Location = new System.Drawing.Point(35, 0);
             this.Title_LBL.Name = "Title_LBL";
-            this.Title_LBL.Size = new System.Drawing.Size(459, 37);
+            this.Title_LBL.Size = new System.Drawing.Size(402, 35);
             this.Title_LBL.TabIndex = 5;
             this.Title_LBL.Text = "Mobility Setup and Planning Tool - Initial Setup";
             this.Title_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -101,9 +103,10 @@ namespace Mobility_Setup_Tool
             this.MainUGLLogo_PB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.MainUGLLogo_PB.ErrorImage = null;
             this.MainUGLLogo_PB.Image = global::Mobility_Setup_Tool.Properties.Resources.LOGOWHITE;
-            this.MainUGLLogo_PB.Location = new System.Drawing.Point(514, 43);
+            this.MainUGLLogo_PB.Location = new System.Drawing.Point(450, 37);
+            this.MainUGLLogo_PB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MainUGLLogo_PB.Name = "MainUGLLogo_PB";
-            this.MainUGLLogo_PB.Size = new System.Drawing.Size(255, 73);
+            this.MainUGLLogo_PB.Size = new System.Drawing.Size(223, 55);
             this.MainUGLLogo_PB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.MainUGLLogo_PB.TabIndex = 12;
             this.MainUGLLogo_PB.TabStop = false;
@@ -112,9 +115,10 @@ namespace Mobility_Setup_Tool
             // 
             this.MainPanel.BackColor = System.Drawing.SystemColors.Control;
             this.MainPanel.Controls.Add(this.tableLayoutPanel1);
-            this.MainPanel.Location = new System.Drawing.Point(12, 127);
+            this.MainPanel.Location = new System.Drawing.Point(10, 95);
+            this.MainPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(757, 375);
+            this.MainPanel.Size = new System.Drawing.Size(662, 281);
             this.MainPanel.TabIndex = 13;
             // 
             // tableLayoutPanel1
@@ -137,6 +141,7 @@ namespace Mobility_Setup_Tool
             this.tableLayoutPanel1.Controls.Add(this.ContinueBTN, 0, 6);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 7;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
@@ -146,17 +151,17 @@ namespace Mobility_Setup_Tool
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(757, 375);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(662, 281);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(165, 16);
+            this.label1.Location = new System.Drawing.Point(155, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(136, 20);
+            this.label1.Size = new System.Drawing.Size(107, 15);
             this.label1.TabIndex = 0;
             this.label1.Text = "Sales Organization:";
             // 
@@ -164,9 +169,9 @@ namespace Mobility_Setup_Tool
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(112, 69);
+            this.label2.Location = new System.Drawing.Point(109, 52);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(189, 20);
+            this.label2.Size = new System.Drawing.Size(153, 15);
             this.label2.TabIndex = 1;
             this.label2.Text = "Plant Number [Mandatory]:";
             // 
@@ -176,7 +181,6 @@ namespace Mobility_Setup_Tool
             this.OrganizatonCB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.OrganizatonCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.OrganizatonCB.BackColor = System.Drawing.SystemColors.HighlightText;
-            this.OrganizatonCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.OrganizatonCB.FormattingEnabled = true;
             this.OrganizatonCB.Items.AddRange(new object[] {
             "0001 - Sales Org. 001",
@@ -238,9 +242,10 @@ namespace Mobility_Setup_Tool
             "9504 - NRT Systems JV",
             "9506 - Gippsland Line Upgra",
             "9901 - Res SProj Asset Serv"});
-            this.OrganizatonCB.Location = new System.Drawing.Point(307, 12);
+            this.OrganizatonCB.Location = new System.Drawing.Point(268, 8);
+            this.OrganizatonCB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.OrganizatonCB.Name = "OrganizatonCB";
-            this.OrganizatonCB.Size = new System.Drawing.Size(328, 28);
+            this.OrganizatonCB.Size = new System.Drawing.Size(288, 23);
             this.OrganizatonCB.TabIndex = 1;
             // 
             // PlantNumberCB
@@ -248,7 +253,6 @@ namespace Mobility_Setup_Tool
             this.PlantNumberCB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.PlantNumberCB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.PlantNumberCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.PlantNumberCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.PlantNumberCB.FormattingEnabled = true;
             this.PlantNumberCB.Items.AddRange(new object[] {
             "100 - UGL Pty Limited",
@@ -348,18 +352,19 @@ namespace Mobility_Setup_Tool
             "9901 - Special Projects",
             "9997 - UGL Resources (Malaysia) Sdn Bhd",
             "9998 - John Holland Pty Ltd and Thiess Pty Ltd"});
-            this.PlantNumberCB.Location = new System.Drawing.Point(307, 65);
+            this.PlantNumberCB.Location = new System.Drawing.Point(268, 48);
+            this.PlantNumberCB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PlantNumberCB.Name = "PlantNumberCB";
-            this.PlantNumberCB.Size = new System.Drawing.Size(328, 28);
+            this.PlantNumberCB.Size = new System.Drawing.Size(288, 23);
             this.PlantNumberCB.TabIndex = 2;
             // 
             // label7
             // 
             this.label7.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(195, 122);
+            this.label7.Location = new System.Drawing.Point(176, 92);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(106, 20);
+            this.label7.Size = new System.Drawing.Size(86, 15);
             this.label7.TabIndex = 4;
             this.label7.Text = "Planner Group:";
             // 
@@ -367,9 +372,9 @@ namespace Mobility_Setup_Tool
             // 
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(239, 281);
+            this.label5.Location = new System.Drawing.Point(213, 212);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(62, 20);
+            this.label5.Size = new System.Drawing.Size(49, 15);
             this.label5.TabIndex = 4;
             this.label5.Text = "Division";
             // 
@@ -377,9 +382,9 @@ namespace Mobility_Setup_Tool
             // 
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(154, 228);
+            this.label4.Location = new System.Drawing.Point(143, 172);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(147, 20);
+            this.label4.Size = new System.Drawing.Size(119, 15);
             this.label4.TabIndex = 3;
             this.label4.Text = "Distribution Channel:";
             // 
@@ -387,9 +392,9 @@ namespace Mobility_Setup_Tool
             // 
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(232, 175);
+            this.label3.Location = new System.Drawing.Point(206, 132);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(69, 20);
+            this.label3.Size = new System.Drawing.Size(56, 15);
             this.label3.TabIndex = 2;
             this.label3.Text = "Location:";
             // 
@@ -398,14 +403,14 @@ namespace Mobility_Setup_Tool
             this.DistriChannelCB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.DistriChannelCB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.DistriChannelCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.DistriChannelCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.DistriChannelCB.FormattingEnabled = true;
             this.DistriChannelCB.Items.AddRange(new object[] {
             "02 - External",
             "03 - Internal (Inter-Co)"});
-            this.DistriChannelCB.Location = new System.Drawing.Point(307, 224);
+            this.DistriChannelCB.Location = new System.Drawing.Point(268, 168);
+            this.DistriChannelCB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DistriChannelCB.Name = "DistriChannelCB";
-            this.DistriChannelCB.Size = new System.Drawing.Size(328, 28);
+            this.DistriChannelCB.Size = new System.Drawing.Size(288, 23);
             this.DistriChannelCB.TabIndex = 5;
             // 
             // LocationCB
@@ -413,7 +418,6 @@ namespace Mobility_Setup_Tool
             this.LocationCB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.LocationCB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.LocationCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.LocationCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.LocationCB.FormattingEnabled = true;
             this.LocationCB.Items.AddRange(new object[] {
             "NSW-ANT - ANTEINNE",
@@ -473,9 +477,10 @@ namespace Mobility_Setup_Tool
             "WA-FOR - FORRESTFIELD",
             "WA-KBT - KWINANA BULK TERMINAL",
             "WA-KFT - KEWDALE FREIGHT TERMINAL"});
-            this.LocationCB.Location = new System.Drawing.Point(307, 171);
+            this.LocationCB.Location = new System.Drawing.Point(268, 128);
+            this.LocationCB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.LocationCB.Name = "LocationCB";
-            this.LocationCB.Size = new System.Drawing.Size(328, 28);
+            this.LocationCB.Size = new System.Drawing.Size(288, 23);
             this.LocationCB.TabIndex = 4;
             // 
             // PlannerGroupCB
@@ -483,7 +488,6 @@ namespace Mobility_Setup_Tool
             this.PlannerGroupCB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.PlannerGroupCB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.PlannerGroupCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.PlannerGroupCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.PlannerGroupCB.FormattingEnabled = true;
             this.PlannerGroupCB.Items.AddRange(new object[] {
             "ARM - ARG Maintenance",
@@ -500,9 +504,10 @@ namespace Mobility_Setup_Tool
             "QCL - Q/Inspect Calib",
             "SCA - Serv Calbration",
             "SCP - Scrap Planning"});
-            this.PlannerGroupCB.Location = new System.Drawing.Point(307, 118);
+            this.PlannerGroupCB.Location = new System.Drawing.Point(268, 88);
+            this.PlannerGroupCB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PlannerGroupCB.Name = "PlannerGroupCB";
-            this.PlannerGroupCB.Size = new System.Drawing.Size(328, 28);
+            this.PlannerGroupCB.Size = new System.Drawing.Size(288, 23);
             this.PlannerGroupCB.TabIndex = 3;
             // 
             // DivisionCB
@@ -510,7 +515,6 @@ namespace Mobility_Setup_Tool
             this.DivisionCB.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.DivisionCB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.DivisionCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.DivisionCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.DivisionCB.FormattingEnabled = true;
             this.DivisionCB.Items.AddRange(new object[] {
             "00 - Common",
@@ -524,18 +528,20 @@ namespace Mobility_Setup_Tool
             "36 - Passenger Build",
             "37 - Freight Build",
             "38 - Engineering"});
-            this.DivisionCB.Location = new System.Drawing.Point(307, 277);
+            this.DivisionCB.Location = new System.Drawing.Point(268, 208);
+            this.DivisionCB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DivisionCB.Name = "DivisionCB";
-            this.DivisionCB.Size = new System.Drawing.Size(328, 28);
+            this.DivisionCB.Size = new System.Drawing.Size(288, 23);
             this.DivisionCB.TabIndex = 6;
             // 
             // ContinueBTN
             // 
             this.ContinueBTN.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tableLayoutPanel1.SetColumnSpan(this.ContinueBTN, 2);
-            this.ContinueBTN.Location = new System.Drawing.Point(269, 327);
+            this.ContinueBTN.Location = new System.Drawing.Point(235, 246);
+            this.ContinueBTN.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ContinueBTN.Name = "ContinueBTN";
-            this.ContinueBTN.Size = new System.Drawing.Size(219, 39);
+            this.ContinueBTN.Size = new System.Drawing.Size(192, 29);
             this.ContinueBTN.TabIndex = 7;
             this.ContinueBTN.Text = "Continue";
             this.ContinueBTN.UseVisualStyleBackColor = true;
@@ -547,23 +553,24 @@ namespace Mobility_Setup_Tool
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label6.ForeColor = System.Drawing.SystemColors.Control;
-            this.label6.Location = new System.Drawing.Point(12, 104);
+            this.label6.Location = new System.Drawing.Point(10, 78);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(432, 20);
+            this.label6.Size = new System.Drawing.Size(341, 15);
             this.label6.TabIndex = 0;
             this.label6.Text = "No plant details are set, please enter your sites details below";
             // 
             // InitialSetup
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.ClientSize = new System.Drawing.Size(781, 564);
+            this.ClientSize = new System.Drawing.Size(683, 423);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.MainUGLLogo_PB);
             this.Controls.Add(this.TitleBar_PNL);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "InitialSetup";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

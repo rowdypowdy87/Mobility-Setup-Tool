@@ -59,8 +59,9 @@ namespace Mobility_Setup_Tool.Forms
             this.TitleBar_PNL.Controls.Add(this.UGLLogo_PB);
             this.TitleBar_PNL.Controls.Add(this.Title_LBL);
             this.TitleBar_PNL.Location = new System.Drawing.Point(0, 0);
+            this.TitleBar_PNL.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TitleBar_PNL.Name = "TitleBar_PNL";
-            this.TitleBar_PNL.Size = new System.Drawing.Size(806, 37);
+            this.TitleBar_PNL.Size = new System.Drawing.Size(705, 35);
             this.TitleBar_PNL.TabIndex = 6;
             this.TitleBar_PNL.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseDown);
             this.TitleBar_PNL.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseMove);
@@ -71,7 +72,8 @@ namespace Mobility_Setup_Tool.Forms
             this.UGLLogo_PB.ErrorImage = null;
             this.UGLLogo_PB.Image = global::Mobility_Setup_Tool.Properties.Resources.Sprite11;
             this.UGLLogo_PB.InitialImage = null;
-            this.UGLLogo_PB.Location = new System.Drawing.Point(6, 6);
+            this.UGLLogo_PB.Location = new System.Drawing.Point(5, 5);
+            this.UGLLogo_PB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UGLLogo_PB.Name = "UGLLogo_PB";
             this.UGLLogo_PB.Size = new System.Drawing.Size(24, 24);
             this.UGLLogo_PB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -80,11 +82,11 @@ namespace Mobility_Setup_Tool.Forms
             // 
             // Title_LBL
             // 
-            this.Title_LBL.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Title_LBL.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.Title_LBL.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.Title_LBL.Location = new System.Drawing.Point(35, 0);
             this.Title_LBL.Name = "Title_LBL";
-            this.Title_LBL.Size = new System.Drawing.Size(459, 37);
+            this.Title_LBL.Size = new System.Drawing.Size(402, 35);
             this.Title_LBL.TabIndex = 5;
             this.Title_LBL.Text = "Mobility Setup and Planning Tool - Updater";
             this.Title_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -106,13 +108,14 @@ namespace Mobility_Setup_Tool.Forms
             this.tableLayoutPanel1.Controls.Add(this.ActualStatus_LBL, 1, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(763, 183);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(668, 137);
             this.tableLayoutPanel1.TabIndex = 7;
             // 
             // CurrentVersion_LBL
@@ -121,10 +124,10 @@ namespace Mobility_Setup_Tool.Forms
             this.CurrentVersion_LBL.AutoSize = true;
             this.CurrentVersion_LBL.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.CurrentVersion_LBL.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.CurrentVersion_LBL.Location = new System.Drawing.Point(25, 0);
+            this.CurrentVersion_LBL.Location = new System.Drawing.Point(36, 0);
             this.CurrentVersion_LBL.Name = "CurrentVersion_LBL";
-            this.CurrentVersion_LBL.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this.CurrentVersion_LBL.Size = new System.Drawing.Size(124, 40);
+            this.CurrentVersion_LBL.Padding = new System.Windows.Forms.Padding(0, 8, 0, 8);
+            this.CurrentVersion_LBL.Size = new System.Drawing.Size(94, 31);
             this.CurrentVersion_LBL.TabIndex = 0;
             this.CurrentVersion_LBL.Text = "Current Version: ";
             this.CurrentVersion_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -135,10 +138,10 @@ namespace Mobility_Setup_Tool.Forms
             this.LatestVersion_LBL.AutoSize = true;
             this.LatestVersion_LBL.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.LatestVersion_LBL.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.LatestVersion_LBL.Location = new System.Drawing.Point(38, 40);
+            this.LatestVersion_LBL.Location = new System.Drawing.Point(44, 31);
             this.LatestVersion_LBL.Name = "LatestVersion_LBL";
-            this.LatestVersion_LBL.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this.LatestVersion_LBL.Size = new System.Drawing.Size(111, 40);
+            this.LatestVersion_LBL.Padding = new System.Windows.Forms.Padding(0, 8, 0, 8);
+            this.LatestVersion_LBL.Size = new System.Drawing.Size(86, 31);
             this.LatestVersion_LBL.TabIndex = 0;
             this.LatestVersion_LBL.Text = "Latest Version: ";
             this.LatestVersion_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -149,10 +152,10 @@ namespace Mobility_Setup_Tool.Forms
             this.Status_LBL.AutoSize = true;
             this.Status_LBL.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.Status_LBL.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Status_LBL.Location = new System.Drawing.Point(91, 80);
+            this.Status_LBL.Location = new System.Drawing.Point(84, 62);
             this.Status_LBL.Name = "Status_LBL";
-            this.Status_LBL.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this.Status_LBL.Size = new System.Drawing.Size(58, 40);
+            this.Status_LBL.Padding = new System.Windows.Forms.Padding(0, 8, 0, 8);
+            this.Status_LBL.Size = new System.Drawing.Size(46, 31);
             this.Status_LBL.TabIndex = 0;
             this.Status_LBL.Text = "Status: ";
             this.Status_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -163,9 +166,9 @@ namespace Mobility_Setup_Tool.Forms
             this.ActualCurrentVer_LBL.AutoSize = true;
             this.ActualCurrentVer_LBL.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.ActualCurrentVer_LBL.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ActualCurrentVer_LBL.Location = new System.Drawing.Point(155, 10);
+            this.ActualCurrentVer_LBL.Location = new System.Drawing.Point(136, 8);
             this.ActualCurrentVer_LBL.Name = "ActualCurrentVer_LBL";
-            this.ActualCurrentVer_LBL.Size = new System.Drawing.Size(0, 20);
+            this.ActualCurrentVer_LBL.Size = new System.Drawing.Size(0, 15);
             this.ActualCurrentVer_LBL.TabIndex = 0;
             this.ActualCurrentVer_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -175,9 +178,9 @@ namespace Mobility_Setup_Tool.Forms
             this.ActualLastestVer_LBL.AutoSize = true;
             this.ActualLastestVer_LBL.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.ActualLastestVer_LBL.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ActualLastestVer_LBL.Location = new System.Drawing.Point(155, 50);
+            this.ActualLastestVer_LBL.Location = new System.Drawing.Point(136, 39);
             this.ActualLastestVer_LBL.Name = "ActualLastestVer_LBL";
-            this.ActualLastestVer_LBL.Size = new System.Drawing.Size(0, 20);
+            this.ActualLastestVer_LBL.Size = new System.Drawing.Size(0, 15);
             this.ActualLastestVer_LBL.TabIndex = 0;
             this.ActualLastestVer_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -185,9 +188,10 @@ namespace Mobility_Setup_Tool.Forms
             // 
             this.CloseApp_BTN.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tableLayoutPanel1.SetColumnSpan(this.CloseApp_BTN, 2);
-            this.CloseApp_BTN.Location = new System.Drawing.Point(271, 128);
+            this.CloseApp_BTN.Location = new System.Drawing.Point(238, 98);
+            this.CloseApp_BTN.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.CloseApp_BTN.Name = "CloseApp_BTN";
-            this.CloseApp_BTN.Size = new System.Drawing.Size(220, 46);
+            this.CloseApp_BTN.Size = new System.Drawing.Size(192, 34);
             this.CloseApp_BTN.TabIndex = 1;
             this.CloseApp_BTN.Text = "Cancel";
             this.CloseApp_BTN.UseVisualStyleBackColor = true;
@@ -197,9 +201,9 @@ namespace Mobility_Setup_Tool.Forms
             // 
             this.ActualStatus_LBL.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.ActualStatus_LBL.AutoSize = true;
-            this.ActualStatus_LBL.Location = new System.Drawing.Point(155, 90);
+            this.ActualStatus_LBL.Location = new System.Drawing.Point(136, 70);
             this.ActualStatus_LBL.Name = "ActualStatus_LBL";
-            this.ActualStatus_LBL.Size = new System.Drawing.Size(147, 20);
+            this.ActualStatus_LBL.Size = new System.Drawing.Size(116, 15);
             this.ActualStatus_LBL.TabIndex = 2;
             this.ActualStatus_LBL.Text = "Preparing for update";
             // 
@@ -208,9 +212,10 @@ namespace Mobility_Setup_Tool.Forms
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.tableLayoutPanel1);
-            this.panel1.Location = new System.Drawing.Point(23, 136);
+            this.panel1.Location = new System.Drawing.Point(20, 102);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(765, 185);
+            this.panel1.Size = new System.Drawing.Size(670, 139);
             this.panel1.TabIndex = 8;
             // 
             // MainUGLLogo_PB
@@ -220,9 +225,10 @@ namespace Mobility_Setup_Tool.Forms
             this.MainUGLLogo_PB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.MainUGLLogo_PB.ErrorImage = null;
             this.MainUGLLogo_PB.Image = global::Mobility_Setup_Tool.Properties.Resources.LOGOWHITE;
-            this.MainUGLLogo_PB.Location = new System.Drawing.Point(539, 45);
+            this.MainUGLLogo_PB.Location = new System.Drawing.Point(472, 34);
+            this.MainUGLLogo_PB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MainUGLLogo_PB.Name = "MainUGLLogo_PB";
-            this.MainUGLLogo_PB.Size = new System.Drawing.Size(255, 73);
+            this.MainUGLLogo_PB.Size = new System.Drawing.Size(223, 55);
             this.MainUGLLogo_PB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.MainUGLLogo_PB.TabIndex = 11;
             this.MainUGLLogo_PB.TabStop = false;
@@ -234,14 +240,15 @@ namespace Mobility_Setup_Tool.Forms
             // 
             // Updater
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.ClientSize = new System.Drawing.Size(806, 348);
+            this.ClientSize = new System.Drawing.Size(705, 261);
             this.Controls.Add(this.MainUGLLogo_PB);
             this.Controls.Add(this.TitleBar_PNL);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Updater";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;

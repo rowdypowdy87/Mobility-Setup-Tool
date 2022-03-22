@@ -78,7 +78,7 @@ namespace Mobility_Setup_Tool
         {
             //This will lock the execution until the file is ready
             //TODO: Add some logic to make it async and cancelable
-            while (!IsFileReady(filename)) 
+            while (!IsFileReady(filename))
             {
                 File.Delete(filename);
             }

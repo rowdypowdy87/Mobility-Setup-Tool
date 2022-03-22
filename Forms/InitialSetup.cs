@@ -5,13 +5,13 @@ using System.Windows.Forms;
 namespace Mobility_Setup_Tool
 {
     public partial class InitialSetup : Form
-    { 
+    {
         public MainForm RefForm;
 
         // Window movement globals
-        public bool     isTopPanelDragged;
-        public Point    offset;
-        public bool     DidNotUpdate = false;
+        public bool isTopPanelDragged;
+        public Point offset;
+        public bool DidNotUpdate = false;
 
         public InitialSetup(MainForm r)
         {
@@ -69,12 +69,12 @@ namespace Mobility_Setup_Tool
 
         private void ContinueBTN_Click(object sender, EventArgs e)
         {
-            if(PlantNumberCB.Text == "")
+            if (PlantNumberCB.Text == "")
             {
                 MsgBoxs.MsgBox_Error("Plant number is a mandatory field, please select a plant");
                 return;
             }
             Close();
         }
-    }   
+    }
 }
