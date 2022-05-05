@@ -10,7 +10,6 @@ namespace Mobility_Setup_Tool
         // Global variables
         public static bool DeveloperMode = false;
         public static bool HighPerformanceMode = false;
-
         /// <summary>
         /// Main entry point of the application
         /// </summary>
@@ -18,10 +17,9 @@ namespace Mobility_Setup_Tool
         ///     -r - Application Restarting
         ///     -a - Start in Developer mode
         /// </param>
-        [STAThreadAttribute]
+        [STAThread]
         static void Main(string[] args)
         {
-            // Variables
             bool IsRestarting = false;
 
             // Check startup arguments
@@ -56,7 +54,9 @@ namespace Mobility_Setup_Tool
             Application.SetCompatibleTextRenderingDefault(false);
 
             // Run main loop
-            Application.Run(new MainForm());
+            MainForm Main = new MainForm();
+            Application.Run(Main);
+
         }
     }
 }

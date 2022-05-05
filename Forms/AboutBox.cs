@@ -25,29 +25,27 @@ namespace Mobility_Setup_Tool
 
         private void AboutBox_Load(object sender, EventArgs e)
         {
-            BackColor = RefForm.ThemeController.GetBackcolor();
-            TitleBar_PNL.BackColor = RefForm.ThemeController.GetBordercolor();
-            CloseButton_LBL.BackColor = RefForm.ThemeController.GetBordercolor();
-            BgPanel.ForeColor = RefForm.ThemeController.GetBordercolor();
+            BackColor                   = RefForm.ThemeController.GetBackcolor();
+            TitleBar_PNL.BackColor      = RefForm.ThemeController.GetBordercolor();
+            CloseButton_LBL.BackColor   = RefForm.ThemeController.GetBordercolor();
+            BgPanel.ForeColor           = RefForm.ThemeController.GetBordercolor();
 
             RefForm.ThemeController.AddControls(TitleBar_PNL, THEME_TYPE.Border);
             RefForm.ThemeController.AddControls(CloseButton_LBL, THEME_TYPE.Border);
             RefForm.ThemeController.AddControls(BackColor, THEME_TYPE.Back);
 
             // EULA
-            AboutText.Text = $"Created for UGL Pty Ltd by Clinton Wheeler 2021{Environment.NewLine}{Environment.NewLine}" +
-                             $"EULA: Permission is hereby granted, free of charge, to any person" +
-                             $" obtaining a copy of this software and associated documentation files, to deal in the Software" +
-                             $" without restriction, including without limitation the rights to use and" +
-                             $" distribution and to permit persons to whom the Software " +
-                             $"is furnished to do so, subject to the following conditions:{Environment.NewLine}{Environment.NewLine}" +
-                             $" - To be used internally by UGL employees only";
+            // EULA
+            AboutText.Text = $"Created for UGL Pty Ltd (2022){Environment.NewLine}" +
+                             $"Written by Clinton Wheeler (clinton.wheeler@ugllimited.com){Environment.NewLine}" +
+                             $"Developed by Mike Ellis (michael.ellis@ugllimited.com){Environment.NewLine}{Environment.NewLine}" +
+                             $"Refer to Help -> Version History for details on previous versions"; 
+
 
             // Manually centre the form to MainForm
             Location = new Point((RefForm.Location.X + RefForm.Width / 2) - Width / 2, (RefForm.Location.Y + RefForm.Height / 2) - Height / 2);
 
             OkButton.Select();
-            AboutText.Select(0, 0);
         }
 
         #region WINDOW THEME CONTROLS

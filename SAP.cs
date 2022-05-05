@@ -864,8 +864,8 @@ namespace Mobility_Setup_Tool
                         ClearErrors(30, true);
 
                         // Check boxes
-                        if (NewMeasurement.IsValueCodeSuff == "X") GetCheckBox("IMPT-INDCT").Selected = true;
-                        if (NewMeasurement.IsCounter == "X") GetCheckBox("IMPT-CDSUF").Selected = true;
+                        if (NewMeasurement.IsValueCodeSuff == "X") GetCheckBox("IMPT-CDSUF").Selected = true;
+                        if (NewMeasurement.IsCounter == "X") GetCheckBox("IMPT-INDCT").Selected = true;
 
                         // Goto upper and lower limits
                         GetButton("DETAIL").Press();
@@ -1123,7 +1123,46 @@ namespace Mobility_Setup_Tool
 
                     // Single point
                     case 5110:
-                        return null;
+                        DataTable Table = new DataTable();
+
+                        // Create columns
+                        Table.Columns.Add("Measurement Point");
+                        Table.Columns.Add("Equipment");
+                        Table.Columns.Add("Position");
+                        Table.Columns.Add("Description");
+                        Table.Columns.Add("Characteristic Name");
+                        Table.Columns.Add("Decimal Places");
+                        Table.Columns.Add("Code Group");
+                        Table.Columns.Add("Target Value");
+                        Table.Columns.Add("Lower Limit");
+                        Table.Columns.Add("Upper Limit");
+                        Table.Columns.Add("Text");
+                        Table.Columns.Add("ValueCode Sufficient");
+                        Table.Columns.Add("Is Counter");
+
+                        // Create and add new row
+                        DataRow NewRow = Table.NewRow();
+
+                        NewRow["Measurement Point"]     = GetTextField("IMPT-POINT").Text;
+                        NewRow["Equipment"]             = GetTextField("RIMR0-MPOBK").Text;
+                        NewRow["Position"]              = GetTextField("IMPT-PSORT").Text;
+                        NewRow["Description"]           = GetTextField("IMPT-PTTXT").Text;
+                        NewRow["Characteristic Name"]   = GetCTextField("IMPT-ATNAM").Text;
+                        NewRow["Decimal Places"]        = GetTextField("IMPT-DECIM").Text;
+                        NewRow["Code Group"]            = GetCTextField("IMPT-CODGR").Text;
+                        NewRow["Target Value"]          = GetTextField("RIMR0-DESIC").Text;
+                        NewRow["Text"]                  = GetTextField("IMPT-DSTXT").Text;
+                        NewRow["ValueCode Sufficient"]  = !GetCheckBox("IMPT-CDSUF").Selected ? "" : "X";
+                        NewRow["Is Counter"]            = !GetCheckBox("IMPT-INDCT").Selected ? "" : "X";
+
+                        // Open the upper lower limit box
+                        GetButton("DETAIL").Press();
+                        NewRow["Lower Limit"]           = ((GuiTextField)GetFormById("wnd[1]/usr/txtRIMR0-MRMAC")).Text;
+                        NewRow["Upper Limit"]           = ((GuiTextField)GetFormById("wnd[1]/usr/txtRIMR0-MRMIC")).Text;
+                        
+                        EndSession();
+
+                        return Table;
 
                     // List view
                     default:

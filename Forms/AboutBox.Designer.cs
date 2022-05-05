@@ -36,8 +36,8 @@ namespace Mobility_Setup_Tool
             this.Title_LBL = new System.Windows.Forms.Label();
             this.MainUGLLogo_PB = new System.Windows.Forms.PictureBox();
             this.BgPanel = new System.Windows.Forms.Panel();
-            this.AboutText = new System.Windows.Forms.TextBox();
             this.OkButton = new System.Windows.Forms.Button();
+            this.AboutText = new System.Windows.Forms.Label();
             this.TitleBar_PNL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UGLLogo_PB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainUGLLogo_PB)).BeginInit();
@@ -53,9 +53,8 @@ namespace Mobility_Setup_Tool
             this.TitleBar_PNL.Controls.Add(this.CloseButton_LBL);
             this.TitleBar_PNL.Controls.Add(this.Title_LBL);
             this.TitleBar_PNL.Location = new System.Drawing.Point(1, 1);
-            this.TitleBar_PNL.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TitleBar_PNL.Name = "TitleBar_PNL";
-            this.TitleBar_PNL.Size = new System.Drawing.Size(568, 35);
+            this.TitleBar_PNL.Size = new System.Drawing.Size(649, 47);
             this.TitleBar_PNL.TabIndex = 4;
             this.TitleBar_PNL.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseDown);
             this.TitleBar_PNL.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TitleBar_MouseMove);
@@ -66,10 +65,9 @@ namespace Mobility_Setup_Tool
             this.UGLLogo_PB.ErrorImage = null;
             this.UGLLogo_PB.Image = global::Mobility_Setup_Tool.Properties.Resources.Sprite11;
             this.UGLLogo_PB.InitialImage = null;
-            this.UGLLogo_PB.Location = new System.Drawing.Point(4, 4);
-            this.UGLLogo_PB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.UGLLogo_PB.Location = new System.Drawing.Point(5, 5);
             this.UGLLogo_PB.Name = "UGLLogo_PB";
-            this.UGLLogo_PB.Size = new System.Drawing.Size(24, 24);
+            this.UGLLogo_PB.Size = new System.Drawing.Size(27, 32);
             this.UGLLogo_PB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.UGLLogo_PB.TabIndex = 6;
             this.UGLLogo_PB.TabStop = false;
@@ -83,10 +81,10 @@ namespace Mobility_Setup_Tool
             this.CloseButton_LBL.Font = new System.Drawing.Font("BankGothic Md BT", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.CloseButton_LBL.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.CloseButton_LBL.Image = global::Mobility_Setup_Tool.Properties.Resources.X;
-            this.CloseButton_LBL.Location = new System.Drawing.Point(537, 0);
+            this.CloseButton_LBL.Location = new System.Drawing.Point(614, 0);
             this.CloseButton_LBL.Margin = new System.Windows.Forms.Padding(0);
             this.CloseButton_LBL.Name = "CloseButton_LBL";
-            this.CloseButton_LBL.Size = new System.Drawing.Size(31, 35);
+            this.CloseButton_LBL.Size = new System.Drawing.Size(35, 47);
             this.CloseButton_LBL.TabIndex = 10;
             this.CloseButton_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.CloseButton_LBL.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CloseButton_LBL_MouseDown);
@@ -97,9 +95,9 @@ namespace Mobility_Setup_Tool
             // 
             this.Title_LBL.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.Title_LBL.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Title_LBL.Location = new System.Drawing.Point(34, -1);
+            this.Title_LBL.Location = new System.Drawing.Point(39, -1);
             this.Title_LBL.Name = "Title_LBL";
-            this.Title_LBL.Size = new System.Drawing.Size(264, 35);
+            this.Title_LBL.Size = new System.Drawing.Size(302, 47);
             this.Title_LBL.TabIndex = 5;
             this.Title_LBL.Text = "Mobility Setup and Planning Tool - About";
             this.Title_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -114,10 +112,9 @@ namespace Mobility_Setup_Tool
             this.MainUGLLogo_PB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.MainUGLLogo_PB.ErrorImage = null;
             this.MainUGLLogo_PB.Image = global::Mobility_Setup_Tool.Properties.Resources.LOGOWHITE;
-            this.MainUGLLogo_PB.Location = new System.Drawing.Point(13, 40);
-            this.MainUGLLogo_PB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MainUGLLogo_PB.Location = new System.Drawing.Point(15, 53);
             this.MainUGLLogo_PB.Name = "MainUGLLogo_PB";
-            this.MainUGLLogo_PB.Size = new System.Drawing.Size(223, 55);
+            this.MainUGLLogo_PB.Size = new System.Drawing.Size(255, 73);
             this.MainUGLLogo_PB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.MainUGLLogo_PB.TabIndex = 10;
             this.MainUGLLogo_PB.TabStop = false;
@@ -127,47 +124,45 @@ namespace Mobility_Setup_Tool
             this.BgPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.BgPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.BgPanel.Controls.Add(this.AboutText);
-            this.BgPanel.Location = new System.Drawing.Point(16, 100);
+            this.BgPanel.Location = new System.Drawing.Point(18, 133);
+            this.BgPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.BgPanel.Name = "BgPanel";
-            this.BgPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.BgPanel.Size = new System.Drawing.Size(544, 166);
+            this.BgPanel.Padding = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.BgPanel.Size = new System.Drawing.Size(621, 221);
             this.BgPanel.TabIndex = 12;
-            // 
-            // AboutText
-            // 
-            this.AboutText.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.AboutText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AboutText.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.AboutText.Location = new System.Drawing.Point(5, 5);
-            this.AboutText.Multiline = true;
-            this.AboutText.Name = "AboutText";
-            this.AboutText.Size = new System.Drawing.Size(532, 154);
-            this.AboutText.TabIndex = 0;
-            this.AboutText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // OkButton
             // 
-            this.OkButton.Location = new System.Drawing.Point(187, 274);
+            this.OkButton.Location = new System.Drawing.Point(214, 365);
+            this.OkButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.OkButton.Name = "OkButton";
-            this.OkButton.Size = new System.Drawing.Size(202, 44);
+            this.OkButton.Size = new System.Drawing.Size(231, 59);
             this.OkButton.TabIndex = 13;
             this.OkButton.Text = "Okay";
             this.OkButton.UseVisualStyleBackColor = true;
             this.OkButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
+            // AboutText
+            // 
+            this.AboutText.AutoSize = true;
+            this.AboutText.Location = new System.Drawing.Point(5, 5);
+            this.AboutText.Name = "AboutText";
+            this.AboutText.Size = new System.Drawing.Size(50, 20);
+            this.AboutText.TabIndex = 0;
+            this.AboutText.Text = "label1";
+            // 
             // AboutBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.ClientSize = new System.Drawing.Size(570, 327);
+            this.ClientSize = new System.Drawing.Size(651, 436);
             this.Controls.Add(this.OkButton);
             this.Controls.Add(this.BgPanel);
             this.Controls.Add(this.MainUGLLogo_PB);
             this.Controls.Add(this.TitleBar_PNL);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AboutBox";
@@ -193,7 +188,7 @@ namespace Mobility_Setup_Tool
         private System.Windows.Forms.Label CloseButton_LBL;
         private System.Windows.Forms.PictureBox MainUGLLogo_PB;
         private System.Windows.Forms.Panel BgPanel;
-        private System.Windows.Forms.TextBox AboutText;
         private System.Windows.Forms.Button OkButton;
+        private System.Windows.Forms.Label AboutText;
     }
 }

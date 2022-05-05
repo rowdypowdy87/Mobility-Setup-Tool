@@ -24,6 +24,13 @@
     <Deterministic>false</Deterministic>
   </PropertyGroup>
 
+	<Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+	<ItemGroup>
+		<DataModelFiles Include="$(ProjectDir)MSTReset.exe" />
+	</ItemGroup>
+	<Copy SourceFiles="@(DataModelFiles)" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="false" />
+	</Target>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <Optimize>false</Optimize>
     <DebugType>full</DebugType>
@@ -123,7 +130,19 @@
 </ItemGroup>
 
 <ItemGroup>
-  <Folder Include="Help\" />
+  <Compile Remove="Help\**" />
+  <EmbeddedResource Remove="Help\**" />
+  <None Remove="Help\**" />
+</ItemGroup>
+
+<ItemGroup>
+  <None Remove="MSTReset.exe" />
+</ItemGroup>
+
+<ItemGroup>
+  <Content Include="MSTReset.exe">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+  </Content>
 </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace Mobility_Setup_Tool
@@ -278,6 +279,8 @@ namespace Mobility_Setup_Tool
 
                 VersionHist.Add(ToAdd);
             }
+
+           
 
             // Free memory
             LoadTable.Dispose();

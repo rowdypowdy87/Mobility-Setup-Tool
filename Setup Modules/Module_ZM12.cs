@@ -21,7 +21,9 @@ namespace Mobility_Setup_Tool
         NONE = 6,
         EQ_MATSERN_EXISTS = 7,
         EQ_LOCKED = 8,
-        SO_CANT_FIND = 9
+        SO_CANT_FIND = 9,
+        NO_NEED_TO_CREATE_CEL = 10,
+        STOP_TOOL = 11
     };
 
     class Module_ZM12
@@ -56,27 +58,33 @@ namespace Mobility_Setup_Tool
                 RefForm.SetStatus("Checking if equipment is a material serial", 0);
 
                 // Check if linked to material
-                if (!Session.CheckMaterialSerial(InputSerial, InputZawa)) return SAPERROR.EQ_MATSERN_EXISTS;
+                if (!Session.CheckMaterialSerial(InputSerial, InputZawa)) 
+                    return SAPERROR.EQ_MATSERN_EXISTS;
 
                 // Check for cancel
-                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
+                if (Parent.CancellationPending)
+                    return SAPERROR.USR_CANCEL;
 
                 RefForm.SetStatus("Finding equipment number from input serial", 0);
 
                 // Get equipment number
-                InputEquipment = Session.EquipmentNumberFromSerial(InputSerial);
+                if (RefForm.Output_EQNum != "")
+                    InputEquipment = RefForm.Output_EQNum;
+                else
+                    InputEquipment = Session.EquipmentNumberFromSerial(InputSerial);
 
                 // Fill output structure
-                OutputEq.ZAWA = InputZawa;
-                OutputEq.SerialNumber = InputSerial;
+                OutputEq.ZAWA           = InputZawa;
+                OutputEq.SerialNumber   = InputSerial;
 
                 // Cannot find equipment number
-                if (InputEquipment == "" || InputEquipment == "nothing") return SAPERROR.EQ_NOT_FOUND;
+                if (InputEquipment == "" || InputEquipment == "nothing") 
+                    return SAPERROR.EQ_NOT_FOUND;
 
                 // Update equipment number
-                RefForm.Output_EQNum = InputEquipment;
-                OutputEq.EquipmentNumber = InputEquipment;
-                InputInfo.EquipmentNumber = InputEquipment;
+                RefForm.Output_EQNum        = InputEquipment;
+                OutputEq.EquipmentNumber    = InputEquipment;
+                InputInfo.EquipmentNumber   = InputEquipment;
 
                 return SAPERROR.NONE;
             }
@@ -138,7 +146,7 @@ namespace Mobility_Setup_Tool
                         }
                         else
                         {
-                            return SAPERROR.NONE;
+                            return SAPERROR.STOP_TOOL;
                         }
                     }
                 }
@@ -342,8 +350,12 @@ namespace Mobility_Setup_Tool
                     Session.GetTextField("ITOB-SHTXT").Text = ChangeInfo.Description;
                 }
 
-                Session.GetTextField("ITOB-MAPAR").Text = ChangeInfo.ModelNumber;
-                Session.GetTextField("ITOB-TYPBZ").Text = ChangeInfo.ModelNumber;
+                if(ChangeInfo.ModelNumber != "" && ChangeInfo.ModelNumber != null)
+                { 
+                    Session.GetTextField("ITOB-MAPAR").Text = ChangeInfo.ModelNumber;
+                    Session.GetTextField("ITOB-TYPBZ").Text = ChangeInfo.ModelNumber;
+                }
+
                 Session.GetTextField("ITOB-SERGE").Text = OutputEq.SerialNumber;
 
                 // Organization tab
@@ -449,11 +461,14 @@ namespace Mobility_Setup_Tool
         {
             if (TaskInfo.CEL == "NON-STANDARD VARIATION" || TaskInfo.CEL == "NONE" || NewEquipment) return SAPERROR.NONE;
 
+            bool CreateMeasures = false;
+
             if (Session.GetSession())
             {
                 // Import template measurements from SAP
                 RefForm.SetStatus("Getting template equipment measurements points", 0);
                 DataTable TemplateMeasures = Session.GetMeasurementPoints(TemplateInfo.EquipmentNumber);
+
 
                 // Check for cancel
                 if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
@@ -462,77 +477,112 @@ namespace Mobility_Setup_Tool
                 RefForm.SetStatus("Getting input equipment measurement points", 0);
                 DataTable EquipmentMeasures = Session.GetMeasurementPoints(InputInfo.EquipmentNumber);
 
-                // Compare the measurements
-                RefForm.SetStatus("Comparing input measurement points to template", 0);
-                List<MeasurementUpdate> MeasuresToChange = TableManager.CompareMeasurements(TemplateMeasures, EquipmentMeasures);
+                // If inpput equipment has no measurements
+                if (TemplateMeasures != null && EquipmentMeasures == null)
+                    CreateMeasures = true;
 
-                int Delete = 0, Change = 0, Create = 0;
-
-                // Sort numbers
-                for (int i = 0; i < MeasuresToChange.Count; i++)
-                {
-                    switch (MeasuresToChange[i].Action)
-                    {
-                        case ACTION.CREATE: Create++; break;
-                        case ACTION.CHANGE: Change++; break;
-                        case ACTION.DEACTIVATE: Delete++; break;
-
-                    }
+                // Check if the tabel is empty
+                if (TemplateMeasures == null && EquipmentMeasures == null)
+                { 
+                    MsgBox_Normal("No measurement points are found, the tool will continue but will not create a CEL");
+                    return SAPERROR.NO_NEED_TO_CREATE_CEL;
                 }
 
-                // Ask user if they would like to fix measurements
-                if (MeasuresToChange.Count > 0)
-                {
-                    if (MsgBox_Question($"EQUIPMENT MEASUREMENT ASSESSMENT:{Environment.NewLine}" +
-                                        $"{Environment.NewLine}{Create} measurements missing and need to be created " +
-                                        $"{Environment.NewLine}{Change} measurements found but require correction" +
-                                        $"{Environment.NewLine}{Delete} duplicate measurement will be de-activated" +
-                                        $"{Environment.NewLine}{Environment.NewLine}Do you want to continue?") == DialogResult.No)
+                if (!CreateMeasures)
+                { 
+                    // Compare the measurements
+                    RefForm.SetStatus("Comparing input measurement points to template", 0);
+                    List<MeasurementUpdate> MeasuresToChange = TableManager.CompareMeasurements(TemplateMeasures, EquipmentMeasures);
+
+                    int Delete = 0, Change = 0, Create = 0;
+
+                    // Sort numbers
+                    for (int i = 0; i < MeasuresToChange.Count; i++)
                     {
+                        switch (MeasuresToChange[i].Action)
+                        {
+                            case ACTION.CREATE: Create++; break;
+                            case ACTION.CHANGE: Change++; break;
+                            case ACTION.DEACTIVATE: Delete++; break;
+
+                        }
+                    }
+
+                    // Ask user if they would like to fix measurements
+                    if (MeasuresToChange.Count > 0)
+                    {
+                        if (MsgBox_Question($"EQUIPMENT MEASUREMENT ASSESSMENT:{Environment.NewLine}" +
+                                            $"{Environment.NewLine}{Create} measurements missing and need to be created " +
+                                            $"{Environment.NewLine}{Change} measurements found but require correction" +
+                                            $"{Environment.NewLine}{Delete} duplicate measurement will be de-activated" +
+                                            $"{Environment.NewLine}{Environment.NewLine}Do you want to continue?") == DialogResult.No)
+                        {
+                            return SAPERROR.NONE;
+                        }
+                    }
+                    else
+                    {
+                        MsgBox_Normal($"No errors found when comparing measurement");
+
+                        // Finish
+                        RefForm.SetStatus("", 0);
+                        TemplateMeasures.Dispose();
+                        EquipmentMeasures.Dispose();
                         return SAPERROR.NONE;
                     }
-                }
-                else
-                {
-                    MsgBox_Normal($"No errors found when comparing measurement");
 
-                    // Finish
-                    RefForm.SetStatus("", 0);
-                    TemplateMeasures.Dispose();
-                    EquipmentMeasures.Dispose();
-                    return SAPERROR.NONE;
-                }
-
-                // Change / create measurement
-                for (int i = 0; i < MeasuresToChange.Count; i++)
-                {
-                    // Check for cancel
-                    if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
-
-                    double perc = (Convert.ToDouble(i) / (Convert.ToDouble(MeasuresToChange.Count - 1)) * 100);
-
-                    switch (MeasuresToChange[i].Action)
+                    // Change / create measurement
+                    for (int i = 0; i < MeasuresToChange.Count; i++)
                     {
-                        case ACTION.CREATE:
-                            if (Create > 0)
-                            {
-                                RefForm.SetStatus($"Creating measurement point {MeasuresToChange[i].Info.Description} - [{i}/{MeasuresToChange.Count - 1}]", perc > 0 ? Convert.ToInt32(perc) : 1);
-                                Session.CreateMeasurementPoint(MeasuresToChange[i].Info, InputInfo.EquipmentNumber);
-                            }
-                            break;
+                        // Check for cancel
+                        if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
 
-                        case ACTION.CHANGE:
-                            if (Change > 0)
-                            {
-                                RefForm.SetStatus($"Changing measurement point {MeasuresToChange[i].Info.Description} - [{i}/{MeasuresToChange.Count - 1}]", perc > 0 ? Convert.ToInt32(perc) : 1);
-                                Session.ChangeMeasurementPoint(MeasuresToChange[i].Info, MeasuresToChange[i].ChangeNumber);
-                            }
-                            break;
+                        double perc = (Convert.ToDouble(i) / (Convert.ToDouble(MeasuresToChange.Count - 1)) * 100);
 
-                        case ACTION.DEACTIVATE:
-                            RefForm.SetStatus($"De-activating measurement point {MeasuresToChange[i].Info.Description} - [{i}/{MeasuresToChange.Count - 1}]", perc > 0 ? Convert.ToInt32(perc) : 1);
-                            Session.DeactiveMeasurement(MeasuresToChange[i].Info.Number);
-                            break;
+                        switch (MeasuresToChange[i].Action)
+                        {
+                            case ACTION.CREATE:
+                                if (Create > 0)
+                                {
+                                    RefForm.SetStatus($"Creating measurement point {MeasuresToChange[i].Info.Description} - [{i}/{MeasuresToChange.Count - 1}]", perc > 0 ? Convert.ToInt32(perc) : 1);
+                                    Session.CreateMeasurementPoint(MeasuresToChange[i].Info, InputInfo.EquipmentNumber);
+                                }
+                                break;
+
+                            case ACTION.CHANGE:
+                                if (Change > 0)
+                                {
+                                    RefForm.SetStatus($"Changing measurement point {MeasuresToChange[i].Info.Description} - [{i}/{MeasuresToChange.Count - 1}]", perc > 0 ? Convert.ToInt32(perc) : 1);
+                                    Session.ChangeMeasurementPoint(MeasuresToChange[i].Info, MeasuresToChange[i].ChangeNumber);
+                                }
+                                break;
+
+                            case ACTION.DEACTIVATE:
+                                RefForm.SetStatus($"De-activating measurement point {MeasuresToChange[i].Info.Description} - [{i}/{MeasuresToChange.Count - 1}]", perc > 0 ? Convert.ToInt32(perc) : 1);
+                                Session.DeactiveMeasurement(MeasuresToChange[i].Info.Number);
+                                break;
+                        }
+                    }
+                }
+                    else
+                {
+                    if (MsgBox_Question($"EQUIPMENT MEASUREMENT ASSESSMENT:{Environment.NewLine}" +
+                                        $"Input equipment has no measurement points, would you like to create them now") == DialogResult.No)
+                        return SAPERROR.NONE;
+                        
+
+                    List<MobilityMeasurement> CreateAll = TableManager.ConvertTableToList(TemplateMeasures);
+
+                     // Change / create measurement
+                    for (int i = 0; i < CreateAll.Count; i++)
+                    {
+                        // Check for cancel
+                        if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
+
+                        double perc = (Convert.ToDouble(i) / (Convert.ToDouble(CreateAll.Count - 1)) * 100);
+
+                        RefForm.SetStatus($"Creating measurement point {CreateAll[i].Description} - [{i}/{CreateAll.Count - 1}]", perc > 0 ? Convert.ToInt32(perc) : 1);
+                        Session.CreateMeasurementPoint(CreateAll[i], InputInfo.EquipmentNumber);
                     }
                 }
 
@@ -765,9 +815,9 @@ namespace Mobility_Setup_Tool
         }
 
         // Check for existing orders
-        public virtual SAPERROR InitialServiceCheck(MobilityTask TaskInfo,
-                                                    string Equipmentnumber,
-                                                    BackgroundWorker Parent)
+        public virtual SAPERROR InitialServiceCheck(MobilityTask        TaskInfo,
+                                                    string              Equipmentnumber,
+                                                    BackgroundWorker    Parent)
         {
             if (Session.GetSession())
             {
@@ -775,7 +825,7 @@ namespace Mobility_Setup_Tool
                 DateTime EndDate;
 
                 StartDate = DateTime.Now.AddMonths(-Convert.ToInt32(RefForm.AppSettings.WarrantyMonthLimit));
-                EndDate = DateTime.Now;
+                EndDate   = DateTime.Now;
 
                 // Check for cancel
                 if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
@@ -786,8 +836,8 @@ namespace Mobility_Setup_Tool
                 Session.SetVariant("/FSDS-25-32");
 
                 // Set status exclusions to nothign
-                Session.GetCheckBox("DY_OFN").Selected = true;
-                Session.GetCheckBox("DY_IAR").Selected = true;
+                Session.GetCheckBox("DY_OFN").Selected = false;
+                Session.GetCheckBox("DY_IAR").Selected = false;
                 Session.GetCheckBox("DY_MAB").Selected = true;
                 Session.GetCheckBox("DY_HIS").Selected = true;
 
@@ -798,12 +848,21 @@ namespace Mobility_Setup_Tool
                 Session.GetCTextField("DATUV").Text = StartDate.ToShortDateString().Replace("/", ".");
                 Session.GetCTextField("DATUB").Text = EndDate.ToShortDateString().Replace("/", ".");
 
+
+                // Clear fields
+                Session.GetCTextField("AUFNR-LOW").Text         = "";
+                Session.GetCTextField("AUFNR-HIGH").Text        = "";
+                Session.GetCTextField("AUART-LOW").Text         = "";
+                Session.GetCTextField("AUART-HIGH").Text        = "";
+                Session.GetCTextField("STRNO-LOW").Text         = "";
+                Session.GetCTextField("STRNO-HIGH").Text        = "";
+                Session.GetTextField("SERIALNR-LOW").Text       = "";
+                Session.GetTextField("SERIALNR-HIGH").Text      = "";
+                Session.GetCTextField("SERMAT-LOW").Text        = "";
+                Session.GetCTextField("SERMAT-HIGH").Text       = "";
+
                 // Equipment number
                 Session.GetCTextField("EQUNR-LOW").Text = Equipmentnumber;
-
-                // Set dates using the basic start and finish date fields doesnt seem to work for some reason??
-                //Session.GetCTextField("GSTRP-LOW").Text    = StartDate.ToShortDateString().Replace("/", "."); // Basic start left field
-                //Session.GetCTextField("GLTRP-LOW").Text    = EndDate.ToShortDateString().Replace("/", ".");   // Basic finish left field
 
                 // Set tasklist filter
                 Session.GetCTextField("PLNNR-LOW").Text = TaskInfo.Group;
@@ -816,9 +875,60 @@ namespace Mobility_Setup_Tool
                     if (MsgBox_Question($"This unit has been here with the exact scope of work in the last {RefForm.AppSettings.WarrantyMonthLimit} months. Are you sure this is not a warranty claim?") == DialogResult.No)
                     {
                         Session.EndTransaction();
-                        return SAPERROR.NONE;
-
+                        return SAPERROR.STOP_TOOL;
                     }
+                }
+
+                // Check for cancel
+                if (Parent.CancellationPending) return SAPERROR.USR_CANCEL;
+
+                RefForm.SetStatus($"Checking for open orders", 0);
+
+                StartDate   = DateTime.Now.AddDays(-30);
+                EndDate     = DateTime.Now.AddDays(30);
+
+                Session.StartTransaction("IW73");
+                Session.SetVariant("/FSDS-25-32");
+
+                // Set status exclusions to nothign
+                Session.GetCheckBox("DY_OFN").Selected = true;
+                Session.GetCheckBox("DY_IAR").Selected = true;
+                Session.GetCheckBox("DY_MAB").Selected = false;
+                Session.GetCheckBox("DY_HIS").Selected = false;
+
+                // Expand all 
+                Session.GetButton("btn[19]").Press();
+
+                // Clear period
+                Session.GetCTextField("DATUV").Text = StartDate.ToShortDateString().Replace("/", ".");
+                Session.GetCTextField("DATUB").Text = EndDate.ToShortDateString().Replace("/", ".");
+
+
+                // Clear fields
+                Session.GetCTextField("AUFNR-LOW").Text = "";
+                Session.GetCTextField("AUFNR-HIGH").Text = "";
+                Session.GetCTextField("AUART-LOW").Text = "";
+                Session.GetCTextField("AUART-HIGH").Text = "";
+                Session.GetCTextField("STRNO-LOW").Text = "";
+                Session.GetCTextField("STRNO-HIGH").Text = "";
+                Session.GetTextField("SERIALNR-LOW").Text = "";
+                Session.GetTextField("SERIALNR-HIGH").Text = "";
+                Session.GetCTextField("SERMAT-LOW").Text = "";
+                Session.GetCTextField("SERMAT-HIGH").Text = "";
+
+                // Equipment number
+                Session.GetCTextField("EQUNR-LOW").Text = Equipmentnumber;
+
+                // Set tasklist filter
+                Session.GetCTextField("PLNNR-LOW").Text = TaskInfo.Group;
+                Session.GetTextField("PLNAL-LOW").Text = TaskInfo.Counter;
+
+                Session.SendVKey(8);
+
+                if (Session.GetSessionInfo().ScreenNumber != 1000)
+                {
+                    MsgBox_Error($"There is already an Service Order currently open with the same Task List, order cannot be created.");
+                    return SAPERROR.STOP_TOOL;
                 }
 
                 Session.EndTransaction();
@@ -893,7 +1003,18 @@ namespace Mobility_Setup_Tool
                 Session.GetCTextField("VIQMEL-VKBUR").Text = SOInfo.SalesOffice;
                 Session.GetCTextField("VIQMEL-VKGRP").Text = SOInfo.SalesGroup;
                 Session.GetCTextField("VIQMEL-INGRP").Text = RefForm.AppSettings.PlannerGroup;
-                Session.GetCTextField("RIWO00-SWERK").Text = RefForm.AppSettings.Plant;
+
+                // Use default plant if none set
+                if (SOInfo.Plant != "")
+                    Session.GetCTextField("RIWO00-SWERK").Text = SOInfo.Plant;
+                else
+                    Session.GetCTextField("RIWO00-SWERK").Text = RefForm.AppSettings.Plant;
+
+                // Use default Activity type if none set
+                if (SOInfo.ActivityType == "") 
+                    Session.GetCTextField("CAUFVD-ILART").Text = RefForm.AppSettings.PmActivityType;
+                else 
+                    Session.GetCTextField("CAUFVD-ILART").Text = SOInfo.ActivityType;
 
                 Session.SendVKey(0);
 

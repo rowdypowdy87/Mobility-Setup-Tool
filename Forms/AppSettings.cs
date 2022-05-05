@@ -103,37 +103,38 @@ namespace Mobility_Setup_Tool
             AppSettings_PG.SelectedObject = RefForm.AppSettings;
 
             // Set colors
-            TitleBar.BackColor = RefForm.ThemeController.GetBordercolor();
-            BackColor = RefForm.ThemeController.GetBackcolor();
+            TitleBar.BackColor                      = RefForm.ThemeController.GetBordercolor();
+            BackColor                               = RefForm.ThemeController.GetBackcolor();
         }
 
         private void Apply_BTN_Click(object sender, EventArgs e)
         {
             // Set colors
-            TitleBar.BackColor = RefForm.ThemeController.GetBordercolor();
-            BackColor = RefForm.ThemeController.GetBackcolor();
+            TitleBar.BackColor                      = RefForm.ThemeController.GetBordercolor();
+            BackColor                               = RefForm.ThemeController.GetBackcolor();
+
+            // Set field defaults
+            RefForm.FunctionLoc_CB.Text             = RefForm.AppSettings.ADefaults.FunctionLocation;
+            RefForm.PartyName_CB.Text               = RefForm.AppSettings.ADefaults.SoldToParty;
+            RefForm.PMActivityType_CB.Text          = RefForm.AppSettings.ADefaults.PmActivityType;
+            RefForm.Priority_CB.Text                = RefForm.AppSettings.ADefaults.Priority;
+            RefForm.ExternalReference_TB.Text       = RefForm.AppSettings.ADefaults.ExternalReference;
+            RefForm.VarPMActivityType_CB.Text       = RefForm.AppSettings.ADefaults.PmActivityType;
+            RefForm.VarSOPriority_CB.Text           = RefForm.AppSettings.ADefaults.Priority;
+            RefForm.VarExternalReference_TB.Text    = RefForm.AppSettings.ADefaults.ExternalReference;
 
             // Set app defaults && theme settings
             RefForm.AppSettings.SaveSettings();
             RefForm.ThemeController.RefreshTheme();
             RefForm.ThemeController.SaveTheme();
 
-            // Set field defaults
-            RefForm.FunctionLoc_CB.Text = RefForm.AppSettings.ADefaults.FunctionLocation;
-            RefForm.PartyName_CB.Text = RefForm.AppSettings.ADefaults.SoldToParty;
-            RefForm.PMActivityType_CB.Text = RefForm.AppSettings.ADefaults.PmActivityType;
-            RefForm.Priority_CB.Text = RefForm.AppSettings.ADefaults.Priority;
-            RefForm.ExternalReference_TB.Text = RefForm.AppSettings.ADefaults.ExternalReference;
-            RefForm.VarPMActivityType_CB.Text = RefForm.AppSettings.ADefaults.PmActivityType;
-            RefForm.VarSOPriority_CB.Text = RefForm.AppSettings.ADefaults.Priority;
-            RefForm.VarExternalReference_TB.Text = RefForm.AppSettings.ADefaults.ExternalReference;
-
             // Plants have changed
             if (RefForm.AppSettings.Plant != CurPlant)
             {
                 if (MsgBoxs.MsgBox_Question("The Plant has been changed. A restart is required before these changes will take effect. Do you want to restart now?") == DialogResult.Yes)
                 {
-                    RefForm.AppSettings.Restart();
+                    Application.Restart();
+                    Environment.Exit(0);
                 }
             }
 

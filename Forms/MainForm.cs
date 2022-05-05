@@ -1,7 +1,5 @@
 ﻿using Mobility_Setup_Tool.Forms;
-
 using SAPFEWSELib;
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -48,22 +46,26 @@ namespace Mobility_Setup_Tool
         // Window movement globals
         public bool isTopPanelDragged;
         public Point offset;
+        public Point Start;
+        public bool FromMax;
+        public bool Restart = false;
 
         // Controllers
         private Module_ZM12 SetupModule;
-        public QuoteOutput Quoter;
-        public Version VersionController;
-        public Theme ThemeController = new Theme();
-        public Databases DatabaseController;
-        public Settings AppSettings;
-        public DataTable QuoteTable;
-        public AUTOSAP SapSession;
+        public QuoteOutput  Quoter;
+        public Version      VersionController;
+        public Theme        ThemeController = new Theme();
+        public Databases    DatabaseController;
+        public Settings     AppSettings;
+        public DataTable    QuoteTable;
+        public AUTOSAP      SapSession;
 
         // Settings
-        public static bool IsRunning = false;
-        public static bool RunFullSetup = false;
-        public SETUP_TYPE SetupType = SETUP_TYPE.SINGLE;
-        public List<SAP_VARS> Variations = new List<SAP_VARS>();
+        public static bool      IsRunning       = false;
+        public static bool      RunFullSetup    = false;
+        public SETUP_TYPE       SetupType       = SETUP_TYPE.SINGLE;
+        public List<SAP_VARS>   Variations      = new List<SAP_VARS>();
+        public InitialInputs[]  SapInputLists   = new InitialInputs[9999];
 
         // Creation method
         public MainForm()
@@ -426,21 +428,23 @@ namespace Mobility_Setup_Tool
         {
             if (GetText(VarSerialNumber_TB) == "")
             {
-                MsgBox_Error("Serial number field cannot be blank");
+                MsgBox_Error("SERIAL NUMBER field cannot be blank");
                 return false;
             }
 
             if (GetText(VarTemplate_CB) == "")
             {
-                MsgBox_Error("Please select a template equipment to use");
+                MsgBox_Error("Please select a TEMPLATE EQUIPMENT to use");
                 return false;
             }
 
             if (GetText(VarTaskType_CB) == "")
             {
-                MsgBox_Error("Please select a task to use");
+                MsgBox_Error("Please select a VARIATION WORK SCOPE");
                 return false;
             }
+
+            
 
             if (RunFullSetup)
             {
@@ -460,19 +464,19 @@ namespace Mobility_Setup_Tool
 
                 if (GetText(VarPMActivityType_CB) == "")
                 {
-                    MsgBox_Error("Please select an activity type");
+                    MsgBox_Error("Please select a PM ACTIVITY TYPE");
                     return false;
                 }
 
                 if (GetText(VarSOPriority_CB) == "")
                 {
-                    MsgBox_Error("Please select an priority");
+                    MsgBox_Error("Please select a PRIORITY");
                     return false;
                 }
 
                 if (GetText(VarExternalReference_TB) == "")
                 {
-                    MsgBox_Error("Please enter an external reference");
+                    MsgBox_Error("Please enter an EXTERNAL REFERENCE");
                     return false;
                 }
             }
@@ -484,14 +488,23 @@ namespace Mobility_Setup_Tool
         {
             if (GetText(TemplateEquipmentList_CB) == "")
             {
-                MsgBox_Error("Please select a template equipment as the basis for the check");
+                MsgBox_Error("Please select a TEMPLATE EQUIPMENT");
                 return false;
             }
 
             if (GetText(TaskType_CB) == "")
             {
-                MsgBox_Error("Please select a task type");
+                MsgBox_Error("Please select a WORK SCOPE");
                 return false;
+            }
+
+            if (AppSettings.Plant == "1002")
+            {
+                if (GetText(FunctionLoc_CB) == "")
+                {
+                    MsgBox_Error("Please select a FUNCTIONAL LOCATION");
+                return false;
+                }
             }
 
             // Only if running the whole tooling
@@ -499,31 +512,31 @@ namespace Mobility_Setup_Tool
             {
                 if (GetText(PartyName_CB) == "")
                 {
-                    MsgBox_Error("Please select a SoldToParty");
+                    MsgBox_Error("Please select a SOLD TO PARTY");
                     return false;
                 }
 
                 if (GetText(PurchaseOrder_TB) == "")
                 {
-                    MsgBox_Error("Please enter a Purchase Order number");
+                    MsgBox_Error("Please enter a PURCHASE ORDER");
                     return false;
                 }
 
                 if (GetText(PMActivityType_CB) == "")
                 {
-                    MsgBox_Error("Please select a PM Activity Type");
+                    MsgBox_Error("Please select an pm ACTIVITY TYPE");
                     return false;
                 }
 
                 if (GetText(Priority_CB) == "")
                 {
-                    MsgBox_Error("Please select a Service Order Priority");
+                    MsgBox_Error("Please select a PRIORITY");
                     return false;
                 }
 
                 if (GetText(ExternalReference_TB) == "")
                 {
-                    MsgBox_Error("Please enter a External Reference Number (if you do not have one enter N/A)");
+                    MsgBox_Error("Please enter a EXTERNAL REFERENCE (if you do not have one enter N/A)");
                     return false;
                 }
             }
@@ -536,16 +549,30 @@ namespace Mobility_Setup_Tool
         {
             if (RunFullSetup == true)
             {
-                if (VarSOStartDate_DP.Value.CompareTo(VarSOEndDate_DP.Value) < 0)
+                if (VarSOStartDate_DP.Value.CompareTo(VarSOEndDate_DP.Value) > 0)
                 {
-                    MsgBox_Warning("The start date cannot be after the finish date");
+                    MsgBox_Error("The PLANNED START DATE cannot be after the PLANNED FINISH DATE");
                     //VarSOStartDate_DP.Value = DateTime.Today.AddDays(-1.0);
                     return false;
                 }
 
-                if (VarSOEndDate_DP.Value.CompareTo(VarSOEndDate_DP.Value) > 0)
+                if (VarSOEndDate_DP.Value.CompareTo(VarSOStartDate_DP.Value) < 0)
                 {
-                    MsgBox_Warning("The finish date cannot be before the start date");
+                    MsgBox_Error("The PLANNED FINISH DATE cannot be before the PLANNED START DATE");
+                    //VarSOStartDate_DP.Value = DateTime.Today.AddDays(-1.0);
+                    return false;
+                }
+
+                if (VarSOStartDate_DP.Value.CompareTo(DateTime.Now.AddDays(-1)) < 0)
+                {
+                    MsgBox_Error("The PLANNED START DATE cannot be in the past");
+                    //VarSOStartDate_DP.Value = DateTime.Today.AddDays(-1.0);
+                    return false;
+                }
+
+                if (VarSOEndDate_DP.Value.CompareTo(DateTime.Now) < 0)
+                {
+                    MsgBox_Error("The PLANNED FINISH DATE cannot be in the past");
                     //VarSOStartDate_DP.Value = DateTime.Today.AddDays(-1.0);
                     return false;
                 }
@@ -554,7 +581,12 @@ namespace Mobility_Setup_Tool
             return true;
         }
 
-        // Verify fields on front tab
+        /// <summary>
+        /// Verify lead Service Order inputs
+        /// </summary>
+        /// <param name="Eq">referenced MobilityEquipment</param>
+        /// <param name="So">referenced MobilityServiceOrder</param>
+        /// <returns></returns>
         private bool VerifyInputs(ref MobilityEquipment Eq, ref MobilityServiceOrder So)
         {
             if (GetText(EquipmentSerial_TB) == "")
@@ -569,39 +601,54 @@ namespace Mobility_Setup_Tool
                 }
             }
 
+            // Full setup verification
             if (RunFullSetup)
             {
+                if (BasicEndDate_DP.Value.CompareTo(DateTime.Today) < 0)
+                {
+                    MsgBox_Error("PLANNED FINISH DATE cannot be in the past");
+                    //PurchaseOrderDate_DP.Value = DateTime.Today.AddDays(-1.0);
+                    return false;
+                }
+
+                if (BasicStartDate_DP.Value.CompareTo(DateTime.Today) < 0)
+                {
+                    MsgBox_Error("PLANNED START DATE cannot be in the past");
+                    //PurchaseOrderDate_DP.Value = DateTime.Today.AddDays(-1.0);
+                    return false;
+                }
+
                 if (PurchaseOrderDate_DP.Value.CompareTo(DateTime.Today) == 1)
                 {
-                    MsgBox_Error("Purchase order date cannot be in the future");
+                    MsgBox_Error("PURCHASE ORDER DATE cannot be in the future");
                     //PurchaseOrderDate_DP.Value = DateTime.Today.AddDays(-1.0);
                     return false;
                 }
 
                 if (BasicStartDate_DP.Value.CompareTo(BasicEndDate_DP.Value) == 1)
                 {
-                    MsgBox_Error("The planned start date cannot be after the planned end date");
+                    MsgBox_Error("The PLANNED START DATE cannot be after the PLANNED FINISH DATE");
                     //BasicStartDate_DP.Value = DateTime.Today.AddDays(-1.0);
                     return false;
                 }
 
                 if (BasicEndDate_DP.Value.CompareTo(BasicStartDate_DP.Value) == -1)
                 {
-                    MsgBox_Error("The planned end date cannot be before the planned start date");
+                    MsgBox_Error("The PLANNED FINISH cannot be before the PLANNED START DATE");
                     //BasicEndDate_DP.Value = DateTime.Today.AddDays(10.0);
                     return false;
                 }
 
                 if (RequiredStartDate_DP.Value.CompareTo(RequiredEndDate_DP.Value) == 1)
                 {
-                    MsgBox_Warning("Required start date cannot be greater than required end date");
+                    MsgBox_Warning("The REQUESTED START DATE cannot be after the REQUESTED FINISH DATE");
                     //RequiredStartDate_DP.Value = DateTime.Today;
                     return false;
                 }
 
                 if (RequiredEndDate_DP.Value.CompareTo(RequiredStartDate_DP.Value) == -1)
                 {
-                    MsgBox_Warning("Required end date cannot be less than required start date");
+                    MsgBox_Warning("The REQUESTED FINISH DATE cannot be before the REQUESTED START DATE");
                     //RequiredEndDate_DP.Value = DateTime.Today.AddDays(10.0);
                     return false;
                 }
@@ -640,7 +687,14 @@ namespace Mobility_Setup_Tool
             return true;
         }
 
-        // Variation setup
+        /// <summary>
+        /// Convert Mobility Notifications to Service Orders
+        /// </summary>
+        /// <param name="SelectedTask">MobilityTask</param>
+        /// <param name="OrderInfo">MobilityServiceOrder</param>
+        /// <param name="SelectedEquipment">MobilityEquipment</param>
+        /// <param name="Components">List<SAPComponents></param>
+        /// <param name="NotificationNumber">Notification number to convert</param>
         private void VarSetup(MobilityTask          SelectedTask,
                               MobilityServiceOrder  OrderInfo,
                               MobilityEquipment     SelectedEquipment,
@@ -684,46 +738,69 @@ namespace Mobility_Setup_Tool
             }
 
             SetupModule.GetEquipment(SelectedEquipment.TemplateNumber,
-                                    SelectedEquipment.SerialNumber.ToUpper(),
-                                    SelectedEquipment.ZAWA,
-                                    SingleSetup_BW,
-                                ref SelectedEquipment);
+                                     SelectedEquipment.SerialNumber.ToUpper(),
+                                     SelectedEquipment.ZAWA,
+                                     SingleSetup_BW,
+                                ref  SelectedEquipment);
 
-            // Create CEL if required
-            if (SelectedTask.CEL != "NONE" && SelectedTask.CEL != "NON-STANDARD VARIATION" && SelectedTask.CEL != null)
-            {
-                switch (SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW))
+            if(!RunFullSetup)
+            { 
+                // Create CEL if required
+                if (SelectedTask.CEL != "NONE" && SelectedTask.CEL != "NON-STANDARD VARIATION" && SelectedTask.CEL != null)
                 {
-                    case SAPERROR.SAP_CONNECTION_FAILED:
-                        MsgBox_Error("Please ensure SAP is connected");
-                        return;
+                    switch (SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW))
+                    {
+                        case SAPERROR.SAP_CONNECTION_FAILED:
+                            MsgBox_Error("Please ensure SAP is connected");
+                            return;
 
-                    case SAPERROR.CEL_TABLE_DATA_INVALID:
-                        MsgBox_Error("No database data found for selected Entry List");
-                        return;
+                        case SAPERROR.CEL_TABLE_DATA_INVALID:
+                            MsgBox_Error("No database data found for selected Entry List");
+                            return;
 
-                    case SAPERROR.CEL_MPOINTS_MISSING:
-                        MsgBox_Error("Variation entry list creation has failed, please ensure the input equipment is up-to-date by running the front tab");
-                        return;
+                        case SAPERROR.CEL_MPOINTS_MISSING:
+                            MsgBox_Error("Variation entry list creation has failed, please ensure the input equipment is up-to-date by running the front tab");
+                            return;
 
-                    case SAPERROR.USR_CANCEL:
-                        MsgBox_Normal("User cancellation detected, the tool will now stop");
-                        return;
+                        case SAPERROR.USR_CANCEL:
+                            MsgBox_Normal("User cancellation detected, the tool will now stop");
+                            return;
+                    }
                 }
-            }
-            else
-            {
-                // Only if we are doing equipment check, stop here is no CEL is required
-                if (!RunFullSetup)
+                else
                 {
                     MsgBox_Normal("There is no template CEL for this tasklist, equipment check complete!");
                     return;
                 }
-            }
 
-            // Run full setup
-            if (RunFullSetup)
+                MsgBox_Normal("Variation Entry List created successfully");
+                return;
+            }
+                else
             {
+                // Create CEL if required
+                if (SelectedTask.CEL != "NONE" && SelectedTask.CEL != "NON-STANDARD VARIATION" && SelectedTask.CEL != null)
+                {
+                    switch (SetupModule.CreateEntryList(SelectedTask, SingleSetup_BW))
+                    {
+                        case SAPERROR.SAP_CONNECTION_FAILED:
+                            MsgBox_Error("Please ensure SAP is connected");
+                            return;
+
+                        case SAPERROR.CEL_TABLE_DATA_INVALID:
+                            MsgBox_Error("No database data found for selected Entry List");
+                            return;
+
+                        case SAPERROR.CEL_MPOINTS_MISSING:
+                            MsgBox_Error("Variation entry list creation has failed, please ensure the input equipment is up-to-date by running the front tab");
+                            return;
+
+                        case SAPERROR.USR_CANCEL:
+                            MsgBox_Normal("User cancellation detected, the tool will now stop");
+                            return;
+                    }
+                }
+
                 // Get long text
                 GetLongText LText = new GetLongText(this)
                 {
@@ -748,15 +825,20 @@ namespace Mobility_Setup_Tool
                     case SAPERROR.SO_CANT_FIND:
                         MsgBox_Error("Failed to create service order");
                         return;
+
+                    case SAPERROR.STOP_TOOL:
+                        return;
                 }
-            }
-            else
-            {
-                MsgBox_Normal("Equipment setup completed successfully!");
             }
         }
 
-        // Initial overhaul setup
+        /// <summary>
+        /// Setup of lead Notification & Service Order
+        /// </summary>
+        /// <param name="SelectedTask">MobilityTask</param>
+        /// <param name="OrderInfo">MobilityServiceOrder</param>
+        /// <param name="SelectedEquipment">MobilityEquipment</param>
+        /// <param name="Components">List<SAPComponents></param>
         private void Setup(MobilityTask         SelectedTask,
                            MobilityServiceOrder OrderInfo,
                            MobilityEquipment    SelectedEquipment,
@@ -867,6 +949,9 @@ namespace Mobility_Setup_Tool
                 case SAPERROR.USR_CANCEL:
                     MsgBox_Normal("User cancellation detected, the tool will now stop");
                     return;
+
+                case SAPERROR.NO_NEED_TO_CREATE_CEL:
+                    goto FULL_SETUP;
             }
 
             // Create CEL
@@ -889,6 +974,7 @@ namespace Mobility_Setup_Tool
                     return;
             }
 
+FULL_SETUP:               
             // Do service order setup
             if (RunFullSetup == true)
             {
@@ -903,9 +989,7 @@ namespace Mobility_Setup_Tool
                                      $"{Environment.NewLine}CONDUCT WARRANTY INVESTIGATION (HOLD FOR ENGINEERING)";
                 }
                 else
-                {
                     LText.LongText = SelectedTask.LongText;
-                }
 
                 LText.ShowDialog();
 
@@ -920,6 +1004,9 @@ namespace Mobility_Setup_Tool
 
                     case SAPERROR.USR_CANCEL:
                         MsgBox_Normal("User cancellation detected, the tool will now stop");
+                        return;
+
+                    case SAPERROR.STOP_TOOL:
                         return;
                 }
 
@@ -1022,10 +1109,13 @@ namespace Mobility_Setup_Tool
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // Maximize window
+            //WindowState = FormWindowState.Maximized;
+
             // Create controller instances
-            AppSettings = new Settings(ThemeController, this);
-            DatabaseController = new Databases(this);
-            SapSession = new AUTOSAP(this);
+            AppSettings         = new Settings(ThemeController, this);
+            DatabaseController  = new Databases(this);
+            SapSession          = new AUTOSAP(this);
 
             // Set defaults
             AppSettings.LoadSettings();
@@ -1049,14 +1139,14 @@ namespace Mobility_Setup_Tool
             DatabaseController.Load();
 
             // Set field defaults
-            FunctionLoc_CB.Text = AppSettings.ADefaults.FunctionLocation;
-            PartyName_CB.Text = AppSettings.ADefaults.SoldToParty;
-            PMActivityType_CB.Text = AppSettings.ADefaults.PmActivityType;
-            Priority_CB.Text = AppSettings.ADefaults.Priority;
-            VarPMActivityType_CB.Text = AppSettings.ADefaults.PmActivityType;
-            VarSOPriority_CB.Text = AppSettings.ADefaults.Priority;
-            ExternalReference_TB.Text = AppSettings.ADefaults.ExternalReference;
-            VarExternalReference_TB.Text = AppSettings.ADefaults.ExternalReference;
+            FunctionLoc_CB.Text             = AppSettings.ADefaults.FunctionLocation;
+            PartyName_CB.Text               = AppSettings.ADefaults.SoldToParty;
+            PMActivityType_CB.Text          = AppSettings.ADefaults.PmActivityType;
+            Priority_CB.Text                = AppSettings.ADefaults.Priority;
+            VarPMActivityType_CB.Text       = AppSettings.ADefaults.PmActivityType;
+            VarSOPriority_CB.Text           = AppSettings.ADefaults.Priority;
+            ExternalReference_TB.Text       = AppSettings.ADefaults.ExternalReference;
+            VarExternalReference_TB.Text    = AppSettings.ADefaults.ExternalReference;
 
             ActivityType_LBL.Focus();
 
@@ -1120,9 +1210,9 @@ namespace Mobility_Setup_Tool
         {
             if (!IsRunning)
             {
-                RunFullSetup = false;
-                IsRunning = true;
-                SetupType = SETUP_TYPE.SINGLE;
+                RunFullSetup    = false;
+                IsRunning       = true;
+                SetupType       = SETUP_TYPE.SINGLE;
                 SingleSetup_BW.RunWorkerAsync();
             }
             else
@@ -1148,9 +1238,9 @@ namespace Mobility_Setup_Tool
         {
             if (!IsRunning)
             {
-                RunFullSetup = false;
-                IsRunning = true;
-                SetupType = SETUP_TYPE.VAR;
+                RunFullSetup    = false;
+                IsRunning       = true;
+                SetupType       = SETUP_TYPE.VAR;
                 SingleSetup_BW.RunWorkerAsync();
             }
             else
@@ -1164,9 +1254,9 @@ namespace Mobility_Setup_Tool
         {
             if (!IsRunning)
             {
-                RunFullSetup = true;
-                IsRunning = true;
-                SetupType = SETUP_TYPE.VAR;
+                RunFullSetup    = true;
+                IsRunning       = true;
+                SetupType       = SETUP_TYPE.VAR;
                 SingleSetup_BW.RunWorkerAsync();
             }
             else
@@ -1180,9 +1270,9 @@ namespace Mobility_Setup_Tool
         {
             if (!IsRunning)
             {
-                RunFullSetup = true;
-                IsRunning = true;
-                SetupType = SETUP_TYPE.SINGLE;
+                RunFullSetup    = true;
+                IsRunning       = true;
+                SetupType       = SETUP_TYPE.SINGLE;
                 SingleSetup_BW.RunWorkerAsync();
             }
             else
@@ -1205,19 +1295,19 @@ namespace Mobility_Setup_Tool
             MobilityServiceOrder    InputSO         = new MobilityServiceOrder();
             MobilityTask            InputTask;
 
-            // Reset outputs
-            Output_CELNum           = "";
-            Output_EQDesc           = "";
-            Output_EQNum            = "";
-            Output_Notification     = "";
-            Output_ServiceOrder     = "";
-            Output_SetupMod         = "";
-            Output_WBS              = "";
-            Output_WorkCenter       = "";
-
             switch (SetupType)
             {
                 case SETUP_TYPE.SINGLE:
+
+                    // Reset outputs
+                    Output_CELNum       = "";
+                    Output_EQDesc       = "";
+                    Output_EQNum        = "";
+                    Output_Notification = "";
+                    Output_ServiceOrder = "";
+                    Output_SetupMod     = "";
+                    Output_WBS          = "";
+                    Output_WorkCenter   = "";
 
                     // Check blank fields
                     if (!CheckBlankFields_Single()) return;
@@ -1274,6 +1364,16 @@ namespace Mobility_Setup_Tool
                     break;
 
                 case SETUP_TYPE.VAR:
+
+                    // Reset outputs
+                    Output_CELNum       = "";
+                    Output_EQDesc       = "";
+                    //Output_EQNum        = "";
+                    Output_Notification = "";
+                    Output_ServiceOrder = "";
+                    Output_SetupMod     = "";
+                    Output_WBS          = "";
+                    Output_WorkCenter   = "";
 
                     // Check blank fields
                     if (!CheckBlankFields_Var()) return;
@@ -1415,6 +1515,7 @@ namespace Mobility_Setup_Tool
 
         private void ResyncDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SingleSetup_BW.CancelAsync();
             SingleSetup_BW.Dispose();
             AppSettings.ResetSettings(true);
         }
@@ -1465,6 +1566,9 @@ namespace Mobility_Setup_Tool
             ExcelDataTables TableManager = new ExcelDataTables();
             SerialNumber = GetText(VarSerialNumber_TB);
 
+            // Reset eqnum
+            Output_EQNum = "";
+
             if (SerialNumber != "" && !SerialNumber.Contains(" "))
             {
                 if (SapSession.GetSession())
@@ -1477,6 +1581,8 @@ namespace Mobility_Setup_Tool
                     // Verify we have got the equipment number
                     if (EqNumber != "nothing")
                     {
+                        Output_EQNum = EqNumber;
+
                         Variations_LB.Items.Clear();
                         Variations.Clear();
 
@@ -1632,13 +1738,15 @@ namespace Mobility_Setup_Tool
         // Close button label mouse down 
         public virtual void CloseButton_LBL_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left) Close();
+            if (e.Button == MouseButtons.Left) 
+                Close();
         }
 
         // Minimize button label mouse down event 
         public virtual void MiniButton_LBL_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left) WindowState = FormWindowState.Minimized;
+            if (e.Button == MouseButtons.Left) 
+                WindowState = FormWindowState.Minimized;
         }
 
         // Minimize button label mouse enter event 
@@ -1686,37 +1794,35 @@ namespace Mobility_Setup_Tool
             base.OnPaint(e);
 
             // Variables
-            Pen BorderPen = new Pen(ThemeController.GetBordercolor(), 1.0f);
-            Brush Fill = BorderPen.Brush;
-            Graphics FormGFX = e.Graphics;
-            Rectangle FormBorder,
+            Pen         BorderPen       = new Pen(ThemeController.GetBordercolor(), 1.0f);
+            Brush       Fill            = BorderPen.Brush;
+            Graphics    FormGFX         = e.Graphics;
+            Rectangle   FormBorder,
                         OutputBorder,
                         TabsBorder;
 
             // Get rect
             FormBorder = new Rectangle(ClientRectangle.X,
-                                         ClientRectangle.Y,
-                                         ClientRectangle.Width - 1,
-                                         ClientRectangle.Height - 1);
+                                       ClientRectangle.Y,
+                                       ClientRectangle.Width - 1,
+                                       ClientRectangle.Height - 1);
 
             OutputBorder = new Rectangle(Output_PNL.Location.X - 1,
-                                         Output_PNL.Location.Y + 67,
+                                         Output_PNL.Location.Y + 76,
                                          Output_PNL.Width + 1,
                                          Output_PNL.Height + 1);
 
             TabsBorder = new Rectangle(DataTabs_TC.Location.X - 1,
-                                       DataTabs_TC.Location.Y + 92,
+                                       DataTabs_TC.Location.Y + 101,
                                        DataTabs_TC.Width + 1,
                                        DataTabs_TC.Height - 24);
 
-
-
             // Draw rectangles
-            FormGFX.DrawRectangle(BorderPen, TabsBorder);
-            FormGFX.FillRectangle(Fill, TabsBorder);
-            FormGFX.DrawRectangle(BorderPen, OutputBorder);
-            FormGFX.FillRectangle(Fill, OutputBorder);
-            FormGFX.DrawRectangle(BorderPen, FormBorder);
+            FormGFX.DrawRectangle(BorderPen,    TabsBorder);
+            FormGFX.FillRectangle(Fill,         TabsBorder);
+            FormGFX.DrawRectangle(BorderPen,    OutputBorder);
+            FormGFX.FillRectangle(Fill,         OutputBorder);
+            FormGFX.DrawRectangle(BorderPen,    FormBorder);
         }
 
         // Maximize button label mouse down event 
@@ -1736,9 +1842,7 @@ namespace Mobility_Setup_Tool
                 }
             }
         }
-
-        // Title bar double click event 
-        public virtual void TitleBar_DoubleClick(object sender, EventArgs e)
+        private void TitleBar_DoubleClick(object sender, EventArgs e)
         {
             if (WindowState == FormWindowState.Maximized)
             {
@@ -1750,58 +1854,68 @@ namespace Mobility_Setup_Tool
                 WindowState = FormWindowState.Maximized;
                 MaximizeButton_LBL.Image = ((Image)(Properties.Resources.ResourceManager.GetObject("MF")));
             }
+
+            isTopPanelDragged = false;
         }
 
         // Titlebar mouse move event 
         public virtual void TitleBar_MouseMove(object sender, MouseEventArgs e)
         {
+            int Sensitivity = 5;
+
             if (isTopPanelDragged)
             {
-                Point newPoint = TitleBar_PNL.PointToScreen(new Point(e.X, e.Y));
-                newPoint.Offset(offset);
-                Location = newPoint;
+                // Compute mouse position to screen instead of client
+                Point MousePoint = PointToScreen(new Point(e.X, e.Y));
+
+                // Get rid of maximize when dragging from max state
+                if (WindowState == FormWindowState.Maximized)
+                {       
+                    // Only initiate movement of window if the mouse has moved more than the variation Sensativity
+                    if (e.X > Start.X + Sensitivity || e.X < Start.X - Sensitivity &&
+                        e.Y > Start.Y + Sensitivity || e.Y < Start.Y - Sensitivity)
+                    { 
+                        WindowState         = FormWindowState.Normal;
+                        FromMax = true;
+                        
+                    }
+                }
+                else
+                {
+                    if (FromMax)
+                        MousePoint.X -= Width/2;
+                    else
+                        MousePoint.Offset(offset);
+                   
+                    Location = MousePoint;
+                }
             }
         }
 
         // Titlebar mouse down event 
         public virtual void TitleBar_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            
+
+            if (e.Button == MouseButtons.Left && e.Clicks == 1)
             {
                 isTopPanelDragged = true;
                 Point pointStartPosition = PointToScreen(new Point(e.X, e.Y));
 
-                // Get rid of maximize when dragging from max state
-                if (WindowState == FormWindowState.Maximized)
-                {
-                    WindowState = FormWindowState.Normal;
-                }
-
+                // Set mouse position at mouse down
+                Start = e.Location;
+                FromMax = false;
                 offset = new Point
                 {
                     X = Location.X - pointStartPosition.X,
                     Y = Location.Y - pointStartPosition.Y
                 };
+    
             }
             else
-            {
                 isTopPanelDragged = false;
-            }
 
-            // Double click to drag
-            if (e.Clicks == 2)
-            {
-                if (WindowState == FormWindowState.Maximized)
-                {
-                    WindowState = FormWindowState.Normal;
-                }
-                else
-                {
-                    WindowState = FormWindowState.Maximized;
-                }
-
-                isTopPanelDragged = false;
-            }
+            
         }
 
         // Titlebar mouse down event 
@@ -1839,6 +1953,8 @@ namespace Mobility_Setup_Tool
 
             Box.Show();
         }
+
+        
     }
 
     #endregion

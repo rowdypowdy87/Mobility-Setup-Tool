@@ -34,6 +34,8 @@ namespace Mobility_Setup_Tool
             // matches one of the pre-loaded items, otherwise clear free text
             bool found = false;
 
+            if (Text == "" || Text == null) return;
+
             foreach (string item in Items)
             {
                 if (item == Text)

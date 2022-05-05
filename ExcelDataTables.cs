@@ -286,6 +286,24 @@ namespace Mobility_Setup_Tool
             MeasurementUpdate Test;
             bool FoundMeas = false;
 
+            // Empty equipment measures
+            if (CompareOther == null)
+            {
+                // Build compare string from first table
+                for (int i = 0; i < Base.Count; i++)
+                {
+                    Test = new MeasurementUpdate
+                    {
+                        Action = ACTION.CREATE,
+                        Info = Base[i]
+                    };
+
+                    Updates.Add(Test);
+                }
+
+                return Updates;
+            }
+
             // Build compare string from first table
             for (int i = 0; i < Base.Count; i++)
             {
