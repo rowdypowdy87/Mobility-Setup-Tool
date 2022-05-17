@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 
 using static Mobility_Setup_Tool.MsgBoxs;
@@ -1842,20 +1843,25 @@ FULL_SETUP:
                 }
             }
         }
+
+        public bool HadDblClick;
+
         private void TitleBar_DoubleClick(object sender, EventArgs e)
         {
+            HadDblClick = true;
+
             if (WindowState == FormWindowState.Maximized)
             {
                 WindowState = FormWindowState.Normal;
                 MaximizeButton_LBL.Image = ((Image)(Properties.Resources.ResourceManager.GetObject("MS")));
+                return;
             }
             else
             {
                 WindowState = FormWindowState.Maximized;
                 MaximizeButton_LBL.Image = ((Image)(Properties.Resources.ResourceManager.GetObject("MF")));
+                return;
             }
-
-            isTopPanelDragged = false;
         }
 
         // Titlebar mouse move event 
@@ -1863,7 +1869,7 @@ FULL_SETUP:
         {
             int Sensitivity = 5;
 
-            if (isTopPanelDragged)
+            if (isTopPanelDragged && !HadDblClick)
             {
                 // Compute mouse position to screen instead of client
                 Point MousePoint = PointToScreen(new Point(e.X, e.Y));
@@ -1895,7 +1901,7 @@ FULL_SETUP:
         // Titlebar mouse down event 
         public virtual void TitleBar_MouseDown(object sender, MouseEventArgs e)
         {
-            
+            if(HadDblClick) HadDblClick = false;
 
             if (e.Button == MouseButtons.Left && e.Clicks == 1)
             {
